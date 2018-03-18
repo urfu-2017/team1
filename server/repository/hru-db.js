@@ -1,19 +1,31 @@
-'use strict';
-const request = require('request-promise-native');
-// TODO: exceptions and return codes
-
-
 /*
-    Usage:
-        const creds = new DatabaseCredentials('uri', 'token');
-        await put(creds, 'key', 'value');
- */
+*   Usage:
+*       const creds = new DatabaseCredentials('uri', 'token');
+*       await put(creds, 'key', 'value');
+*/
+'use strict';
+
+const request = require('request-promise-native');
+
+
+class DatabaseError extends Error {
+    constructor(message, status) {
+        super(message);
+        this.name = this.constructor.name;
+        Error.captureStackTrace(this, this.constructor);
+        this.status = status || 500;
+    }
+}
+
+
+exports.DatabaseError = DatabaseError;
 
 
 // since there are multiple DBs with different tokens
 exports.DatabaseCredentials = class DatabaseCredentials {
-    constructor(...params) {
-        [this.apiUri, this.apiToken] = params;
+    constructor(apiUri, apiToken) {
+        this.apiUri = apiUri;
+        this.apiToken = apiToken;
     }
 };
 
@@ -25,6 +37,7 @@ class _RequestOptions {
         this.headers = {
             Authorization: credentials.apiToken,
         };
+        this.resolveWithFullResponse = true;
     }
 
     setAll() {
@@ -53,12 +66,24 @@ class _RequestOptions {
 }
 
 
+const _handleRequest = async (request) => {
+    const response = await request;
+    if (response.statusCode === 404) {
+        return null;
+    } else if (response.statusCode >= 300) {
+        throw new DatabaseError('Database request failed', response.statusCode);
+    }
+
+    return response.body;
+};
+
+
 exports.put = async (credentials, key, str) => {
     const options = new _RequestOptions(credentials, key)
         .setContentType()
         .setBody(str);
 
-    return await request.put(options);
+    return await _handleRequest(request.put(options));
 };
 
 
@@ -67,14 +92,14 @@ exports.post = async (credentials, key, str) => {
         .setContentType()
         .setBody(str);
 
-    return await request.post(options);
+    return await _handleRequest(request.post(options));
 };
 
 
 exports.get = async (credentials, key) => {
     const options = new _RequestOptions(credentials, key);
 
-    return await request(options);
+    return await _handleRequest(request(options));
 };
 
 
@@ -86,17 +111,17 @@ exports.get = async (credentials, key) => {
 *  limit    – в указанном количестве (по умолчанию, Infinity)
 *  offset   – с отступом от начала выборки (по умолчанию, 0)
 */
-exports.getAll = async (credentials, key, restrictions) => {
+exports.getAll = async (credentials, key, restrictions = null) => {
     const options = new _RequestOptions(credentials, key)
         .setQuery(restrictions)
         .setAll();
 
-    return await request(options);
+    return await _handleRequest(request(options));
 };
 
 
 exports.delete = async (credentials, key) => {
     const options = new _RequestOptions(credentials, key);
 
-    return await request.delete(options);
+    return await _handleRequest(request.delete(options));
 };
