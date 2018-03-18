@@ -5,7 +5,9 @@
     "express": "^4.16.3",
     "next": "^5.0.0",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5"
   },
   "scripts": {
     "dev": "node server",
