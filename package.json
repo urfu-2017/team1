@@ -10,6 +10,17 @@
   "scripts": {
     "dev": "node server",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint:js": "eslint --fix .",
+    "lint": "npm-run-all lint:*"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "npm-run-all": "^4.1.2",
+    "stylelint": "^9.1.3"
   }
 }
