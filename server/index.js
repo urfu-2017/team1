@@ -9,8 +9,10 @@ const render = pageName => (req, res) => app.render(req, res, `/${pageName}`);
 const handleRequest = (req, res) =>
   app.getRequestHandler()(req, res, parse(req.url, true));
 
+const port = process.env.PORT || 3000;
+
 app.prepare().then(() => {
   server
     .get('*', handleRequest)
-    .listen(3000, () => console.log('Listening on http://localhost:3000'));
+    .listen(port, () => console.log(`Listening on http://localhost:${port}`));
 });
