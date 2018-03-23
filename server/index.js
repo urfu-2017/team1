@@ -3,7 +3,13 @@ const { parse } = require('url');
 const next = require('next');
 const server = require('express')();
 
+const { checkUser } = require('./middleware/authentication/IAuthenticationMiddleware');
+const { setUser } = require('./middleware/authorization/IAuthorizationMiddleware');
+
 const app = next({ dev: process.env.NODE_ENV !== 'production' });
+
+app.use(checkUser);
+app.use(setUser);
 
 const render = pageName => (req, res) => app.render(req, res, `/${pageName}`);
 const handleRequest = (req, res) =>
