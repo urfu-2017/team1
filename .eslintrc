@@ -2,5 +2,16 @@
     "extends": "airbnb",
     "parserOptions": {
         "ecmaVersion": 2017
+    },
+    "rules": {
+        "no-return-await": "off",
+        "indent": ["error", 4],
+        "arrow-parens": ["error", "as-needed"],
+        "comma-dangle": ["error", "never"],
+        "no-use-before-define": ["error", { "functions": false, "classes": false, "variables": true }],
+        "arrow-body-style": ["error", "as-needed"],
+        "object-curly-newline": ["error", { "multiline": true, "consistent": true }],
+        "no-param-reassign": ["error", { "props": false }],
+        "strict": [0, "global"]
     }
 }
