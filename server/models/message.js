@@ -1,12 +1,17 @@
 'use strict';
 
-const hruDbRest = require('../repository/hruDb');
+const  IMessengerRepositrory = require('../messengerRepostiories/IMessengerRepository');
+
+const messengerRepository = new IMessengerRepositrory();
 
 const Id = 1;
 
 class Message {
   constructor({
-    content, senderId, previousMessageId, nextMessageId,
+    content,
+    senderId,
+    previousMessageId,
+    nextMessageId,
   }) {
     this.content = content;
     this.senderId = senderId;
@@ -18,11 +23,12 @@ class Message {
 
   save() {
     this.id = Id++;
-    const value = JSON.stringify(this);
-    hruDbRest.saveMessage({ key: this.Id, value });
+    messengerRepository.saveMessage(this);
   }
 
   static create({ content, senderId, previousMessageId }) {
     return new Message({ content, senderId, previousMessageId });
   }
 }
+
+module.exports = Message;

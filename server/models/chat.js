@@ -1,8 +1,9 @@
 
+const  IMessengerRepositrory = require('../messengerRepostiories/IMessengerRepository');
 
-const hruDbRest = require('../repository/hruDb');
+const messengerRepository = new IMessengerRepositrory();
 
-const Id = 1;
+let Id = 1;
 
 class Chat {
   constructor({ name, picture, usersId }) {
@@ -15,17 +16,17 @@ class Chat {
 
   save() {
     this.id = Id++;
-    const value = JSON.stringify(this);
-    hruDbRest.saveMessage({ key: this.Id, value });
+    messengerRepository.saveChat(this);
   }
 
   getUsers() {
-    return this.usersId.map(userId => hruDbRest.getUser(userId));
+    return this.usersId.map(userId => messengerRepository.getUser(userId));
   }
 
-  getMessages(count) {
-    // hruDb.getPreviousTenMessageFor(tailId)
-    return [];
+  getMessagesByRange(oldestMessageAvailableToUser, count) {
+    //oldestMessageAvailableToUser - перед этим сообщением еще нет информации о более старых сообщениях
+    let messageId = oldestMessageAvailableToUser.id;
+    messengerRepository.getMessagesByRange(this.id, messageId, count);
   }
 
   addMessage(messageId) {
@@ -38,7 +39,8 @@ class Chat {
   }
 
   getUnreadMessages() {
-    return this.getMessages().filter(message => !message.isRead);
+    return messengerRepository.getAllMessages(this.id)
+      .filter(message => !message.isRead);
   }
 
   static create({ name, picture, usersId }) {
@@ -46,6 +48,8 @@ class Chat {
   }
 
   static getAllChatesByUserId(id) {
-        //hruDb()
+    return messengerRepository.getAllChats(userId);
   }
 }
+
+module.exports = Chat;
