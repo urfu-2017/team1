@@ -1,8 +1,7 @@
 'use strict';
 
-const IMessengerRepositrory = require('../messengerRepostiories/IMessengerRepository');
+const IMessengerRepository = require('../messengerRepostiories/IMessengerRepository');
 
-const messengerRepository = new IMessengerRepositrory();
 let Id = 1;
 
 class Message {
@@ -17,7 +16,7 @@ class Message {
 
     save() {
         this.createId();
-        messengerRepository.saveMessage(this);
+        IMessengerRepository.saveMessage(this);
     }
 
     static create({ content, senderId, previousMessageId }) {

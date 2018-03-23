@@ -1,8 +1,7 @@
 'use strict';
 
-const IMessengerRepositrory = require('../messengerRepostiories/IMessengerRepository');
+const IMessengerRepository = require('../messengerRepostiories/IMessengerRepository');
 
-const messengerRepository = new IMessengerRepositrory();
 let Id = 1;
 
 class User {
@@ -13,11 +12,12 @@ class User {
     }
 
     addChat(chatId) {
+        this.createId();
         this.chatsId.push(chatId);
     }
 
     save() {
-        messengerRepository.saveUser(this);
+        IMessengerRepository.saveUser(this);
     }
 
     createId() {
