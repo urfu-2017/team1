@@ -14,9 +14,8 @@
     "react-dom": "^16.2.0"
   },
   "scripts": {
+    "dev": "node server",
     "start": "next start",
-    "dev:server": "node server",
-    "dev": "npm-run-all --parallel dev:server build",
     "build": "next build",
     "lint:js": "eslint --fix .",
     "lint": "npm-run-all lint:*"
