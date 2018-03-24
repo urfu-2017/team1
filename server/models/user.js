@@ -1,6 +1,6 @@
 'use strict';
 
-const IMessengerRepository = require('../messengerRepostiories/IMessengerRepository');
+const repository = require('../messengerRepostiories/FakeRepository');
 
 let Id = 1;
 
@@ -12,12 +12,14 @@ class User {
     }
 
     addChat(chatId) {
+        // todo
+        // в моделях chat, message мы создаём id перед методом save, почему тут решили по-другому?
         this.createId();
         this.chatsId.push(chatId);
     }
 
     save() {
-        IMessengerRepository.saveUser(this);
+        repository.saveUser(this);
     }
 
     createId() {

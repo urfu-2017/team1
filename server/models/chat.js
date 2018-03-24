@@ -1,6 +1,6 @@
 'use strict';
 
-const IMessengerRepository = require('../messengerRepostiories/IMessengerRepository');
+const repository = require('../messengerRepostiories/FakeRepository');
 
 let Id = 1;
 
@@ -15,21 +15,24 @@ class Chat {
 
     save() {
         this.createId();
-        IMessengerRepository.saveChat(this);
+        repository.saveChat(this);
     }
 
     getUsers() {
-        return this.usersId.map(userId => IMessengerRepository.getUser(userId));
+        return this.usersId.map(userId => repository.getUser(userId));
     }
 
     getMessagesByRange(oldestMessageAvailableToUser, count) {
     // oldestMessageAvailableToUser -
     // перед этим сообщением еще нет информации о более старых сообщениях
         const messageId = oldestMessageAvailableToUser.id;
-        IMessengerRepository.getMessagesByRange(this.id, messageId, count);
+        repository.getMessagesByRange(this.id, messageId, count);
     }
 
     addMessage(messageId) {
+        // QUESTION
+        // судя по коду tail - это предпоследнее сообщение
+        // Зачем мы это храним?
         this.tail = this.head;
         this.head = messageId;
     }
@@ -39,7 +42,7 @@ class Chat {
     }
 
     getUnreadMessages() {
-        return IMessengerRepository.getAllMessages(this.id)
+        return repository.getAllMessages(this.id)
             .filter(message => !message.isRead);
     }
 
@@ -48,7 +51,7 @@ class Chat {
     }
 
     static getAllChatesByUserId(userId) {
-        return IMessengerRepository.getAllChats(userId);
+        return repository.getAllChats(userId);
     }
 
     createId() {
