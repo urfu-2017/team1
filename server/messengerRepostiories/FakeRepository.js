@@ -1,44 +1,22 @@
 'use strict';
 
 
-const fakeUser1 = {
-    name: 'first',
-    chatsId: [1],
-    id: 1
-};
-const fakeUser2 = {
-    name: 'second',
-    chatsId: [1],
-    id: 2
-};
-const fakeChat = {
-    name: 'rootChat',
-    id: 1,
-    usersId: [1, 2],
-    messages: ['очень старое сообщение 1', 'очень старое сообщение 2', 'новое 1', 'новое 2', 'новое 3']
-};
-
-
-const idToUser = {
-    1: fakeUser1,
-    2: fakeUser2
-};
+const idToMessage = {};
+const idToUser = {};
+const idToChat = {};
 
 
 class FakeRepository {
-
-    // save методы для одного чата не нужны
-
     static saveMessage(message) {
-        // pass
+        idToMessage[message.id] = message;
     }
 
     static saveUser(user) {
-        // pass
+        idToUser[user.id] = user;
     }
 
     static saveChat(chat) {
-        // pass
+        idToChat[chat.id] = chat;
     }
 
     static getUser(userId) {
@@ -46,29 +24,57 @@ class FakeRepository {
     }
 
     static getAllMessages(chatId) {
-        return fakeChat.messages;
+        const lastMessageId = idToChat[chatId].head;
+        let message = idToMessage[lastMessageId];
+        const messages = [message];
+        while (message.previousMessageId) {
+            message = message.previousMessageId;
+            messages.push(message);
+        }
+
+        return messages;
     }
 
     static getMessagesByRange(chatId, oldestMessageId, countMessages) {
-        /* oldestMessageId назввание так себе,
-        смысл что нажно вернуть count сообщений
-         у которых дата создания больше даты startMessage */
-        const oldMessageIndex = fakeChat.messages.find(message => message.contain('очень старое сообщение'));
+        const messages = FakeRepository.getAllMessages(chatId);
+        const oldestMessage = idToMessage[oldestMessageId];
+        const firstNotIncludedIndex = messages.findIndex(message => (
+            message.createAt <= oldestMessage.createAt
+        ));
 
-        return fakeChat.messages.slice(oldMessageIndex, oldMessageIndex + countMessages);
+        return messages.slice(0, Math.min(firstNotIncludedIndex, countMessages));
     }
 
-
-    // все аналогично с чатами, кроме выдачи по диапозону, потому что сообщения добавляются снизу, а чаты сверху
-    // только тут не самое старое сообщние, а самый старый чат, который давно не обновлялся
-
     static getAllChats(userId) {
-        return fakeChat;
+        return idToUser[userId].chatsId.map(chatId => idToChat[chatId]);
     }
 
     static getChatsByRange(userId, oldestChatId, countChats) {
-        return [fakeChat];
+        const chats = FakeRepository.getAllChats(userId);
+        chats.sort(sortDescChatsByDateLastMessage);
+        let lastIncludedIndex = chats.findIndex(chat => chat.id === oldestChatId);
+        if (lastIncludedIndex === -1) {
+            lastIncludedIndex = Number.POSITIVE_INFINITY;
+        }
+
+        return chats.slice(0, Math.min(lastIncludedIndex + 1, countChats));
+    }
+}
+
+function sortDescChatsByDateLastMessage(first, second) {
+    if (!first.tail || !second.tail) {
+        return 1;
+    }
+    const message1 = idToMessage[first.tail];
+    const message2 = idToMessage[second.tail];
+    if (message1.createAt < message2.createAt) {
+        return -1;
+    }
+    if (message1.createAt === message2.createAt) {
+        return 0;
     }
 
-    // todo: последние 4 метода можно обобщить по 2, нужно выделить сущьность обобщения, но видимо потом
+    return 1;
 }
+
+module.exports = FakeRepository;
