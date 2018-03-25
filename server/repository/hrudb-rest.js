@@ -4,30 +4,10 @@
 *       await put(creds, 'key', 'value');
 */
 'use strict';
-
 const request = require('request-promise-native');
 
-
-class DatabaseError extends Error {
-    constructor(message, status) {
-        super(message);
-        this.name = this.constructor.name;
-        Error.captureStackTrace(this, this.constructor);
-        this.status = status || 500;
-    }
-}
-
-
-exports.DatabaseError = DatabaseError;
-
-
-// since there are multiple DBs with different tokens
-exports.DatabaseCredentials = class DatabaseCredentials {
-    constructor(apiUri, apiToken) {
-        this.apiUri = apiUri;
-        this.apiToken = apiToken;
-    }
-};
+const DbError = require('db-error');
+const DbCredentials = require('db-credentials');
 
 
 // parameters of HTTP request
@@ -40,25 +20,25 @@ class _RequestOptions {
         this.resolveWithFullResponse = true;
     }
 
-    setAll() {
+    appendAll() {
         this.uri += 'all';
 
         return this;
     }
 
-    setContentType(type = 'text/plain') {
+    withContentType(type = 'text/plain') {
         this.headers['Content-Type'] = type;
 
         return this;
     }
 
-    setBody(body) {
+    withBody(body) {
         this.body = body;
 
         return this;
     }
 
-    setQuery(queryObj) {
+    withQuery(queryObj) {
         this.qs = queryObj;
 
         return this;
@@ -71,7 +51,7 @@ const _handleRequest = async (request) => {
     if (response.statusCode === 404) {
         return null;
     } else if (response.statusCode >= 300) {
-        throw new DatabaseError('Database request failed', response.statusCode);
+        throw new DbError('Database request failed', response.statusCode);
     }
 
     return response.body;
@@ -80,8 +60,8 @@ const _handleRequest = async (request) => {
 
 exports.put = async (credentials, key, str) => {
     const options = new _RequestOptions(credentials, key)
-        .setContentType()
-        .setBody(str);
+        .withContentType()
+        .withBody(str);
 
     return await _handleRequest(request.put(options));
 };
@@ -89,8 +69,8 @@ exports.put = async (credentials, key, str) => {
 
 exports.post = async (credentials, key, str) => {
     const options = new _RequestOptions(credentials, key)
-        .setContentType()
-        .setBody(str);
+        .withContentType()
+        .withBody(str);
 
     return await _handleRequest(request.post(options));
 };
@@ -113,8 +93,8 @@ exports.get = async (credentials, key) => {
 */
 exports.getAll = async (credentials, key, restrictions = null) => {
     const options = new _RequestOptions(credentials, key)
-        .setQuery(restrictions)
-        .setAll();
+        .withQuery(restrictions)
+        .appendAll();
 
     return await _handleRequest(request(options));
 };
