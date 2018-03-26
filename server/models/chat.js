@@ -31,8 +31,12 @@ class Chat {
     }
 
     addMessage(messageId) {
-        this.tail = this.head;
-        this.head = messageId;
+        if (tail === null && head === null) {
+            this.tail = messageId;
+            this.head = messageId;
+        } else {
+            tail = messageId;
+        }
     }
 
     addUser(id) {
@@ -50,6 +54,10 @@ class Chat {
 
     static getAllChatesByUserId(userId) {
         return messengerRepository.getAllChats(userId);
+    }
+
+    static getChatById(chatId) {
+        return messengerRepository.getChat(chatId);
     }
 
     createId() {

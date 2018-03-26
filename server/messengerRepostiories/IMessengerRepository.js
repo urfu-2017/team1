@@ -18,6 +18,10 @@ class IMessengerRepositrory {
 
     }
 
+    getChat(chatId) {
+        
+    }
+
     getAllMessages(chatId) {
 
     }
