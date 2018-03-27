@@ -23,6 +23,16 @@ class FakeRepository {
         return idToUser[userId];
     }
 
+    static getChat(chatId) {
+        return idToChat[chatId];
+    }
+
+    static getLastMessage(chatId) {
+        const lastMessageId = idToChat[chatId].head;
+
+        return idToMessage[lastMessageId];
+    }
+
     static getAllMessages(chatId) {
         const lastMessageId = idToChat[chatId].head;
         let message = idToMessage[lastMessageId];
@@ -35,6 +45,7 @@ class FakeRepository {
         return messages;
     }
 
+    // долгая операция
     static getMessagesByRange(chatId, oldestMessageId, countMessages) {
         const messages = FakeRepository.getAllMessages(chatId);
         const oldestMessage = idToMessage[oldestMessageId];
