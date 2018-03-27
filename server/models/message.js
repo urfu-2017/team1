@@ -20,14 +20,14 @@ class Message {
         messengerRepository.saveMessage(this);
     }
 
-    static create({ content, senderId, previousMessageId }) {
-        return new Message({ content, senderId, previousMessageId });
-    }
-
     createId() {
         // здесь будет guid и/или что то связанное со временем
         Id += 1;
         this.id = Id;
+    }
+
+    static create({ content, senderId, previousMessageId }) {
+        return new Message({ content, senderId, previousMessageId });
     }
 }
 

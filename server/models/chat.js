@@ -19,6 +19,12 @@ class Chat {
         messengerRepository.saveChat(this);
     }
 
+    createId() {
+        // здесь будет guid и/или что то связанное со временем
+        Id += 1;
+        this.id = Id;
+    }
+
     getUsers() {
         return this.usersId.map(userId => messengerRepository.getUser(userId));
     }
@@ -58,12 +64,6 @@ class Chat {
 
     static getChatById(chatId) {
         return messengerRepository.getChat(chatId);
-    }
-
-    createId() {
-        // здесь будет guid и/или что то связанное со временем
-        Id += 1;
-        this.id = Id;
     }
 }
 

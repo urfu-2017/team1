@@ -12,11 +12,8 @@ class User {
         this.chatsId = [];
     }
 
-    addChat(chatId) {
-        this.chatsId.push(chatId);
-    }
-
     save() {
+        this.createId();
         messengerRepository.saveUser(this);
     }
 
@@ -24,6 +21,10 @@ class User {
         // здесь будет guid и/или что то связанное со временем
         Id += 1;
         this.id = Id;
+    }
+
+    addChat(chatId) {
+        this.chatsId.push(chatId);
     }
 
     static findUserIdByGithubId(githubId) {
