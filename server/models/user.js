@@ -25,6 +25,14 @@ class User {
         Id += 1;
         this.id = Id;
     }
+
+    static findUserIdByGithubId(githubId) {
+        return messengerRepository.getUserIdByGithubId(githubId);
+    }
+
+    static findUserById(userId) {
+        return messengerRepository.getUser(userId);
+    }
 }
 
 module.exports = User;

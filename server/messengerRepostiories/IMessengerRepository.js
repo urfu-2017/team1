@@ -26,6 +26,10 @@ class IMessengerRepositrory {
 
     }
 
+    getUserIdByGithubId(githubId) {
+
+    }
+
     getMessagesByRange(chatId, oldestMessageId, countMessages) {
         /* oldestMessageId назввание так себе,
         смысл что нажно вернуть count сообщений
