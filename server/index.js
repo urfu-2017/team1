@@ -1,16 +1,16 @@
 const { parse } = require('url');
 
+require('dotenv').config()
 const next = require('next');
 const passport = require('passport');
 const server = require('express')();
 
 const authMiddleware = require('./middleware/auth'); 
 const routes = require('./routes');
-const config = require('../config')
 
 server.use(require('cookie-parser')());
 server.use(require('body-parser').urlencoded({ extended: true }));
-server.use(require('express-session')({ secret: config.secret_key, resave: true, saveUninitialized: true }));;
+server.use(require('express-session')({ secret: process.env.SECRET_KEY, resave: true, saveUninitialized: true }));;
 server.use(passport.initialize());
 server.use(passport.session());
 
