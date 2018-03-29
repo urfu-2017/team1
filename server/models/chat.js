@@ -29,8 +29,6 @@ class Chat {
     }
 
     getMessagesByRange(oldestMessageAvailableToUser, count) {
-    // oldestMessageAvailableToUser -
-    // перед этим сообщением еще нет информации о более старых сообщениях
         const messageId = oldestMessageAvailableToUser.id;
         repository.getMessagesByRange(this.id, messageId, count);
     }

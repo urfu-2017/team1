@@ -11,9 +11,6 @@ class User {
         this.chatsId = [];
     }
 
-        // todo
-        // в моделях chat, message мы создаём id перед методом save, почему тут решили по-другому?
-        this.createId();
     save() {
         this.createId();
         messengerRepository.saveUser(this);

@@ -38,14 +38,13 @@ class FakeRepository {
         let message = idToMessage[lastMessageId];
         const messages = [message];
         while (message.previousMessageId) {
-            message = message.previousMessageId;
+            message = idToMessage[message.previousMessageId];
             messages.push(message);
         }
 
         return messages;
     }
 
-    // долгая операция
     static getMessagesByRange(chatId, oldestMessageId, countMessages) {
         const messages = FakeRepository.getAllMessages(chatId);
         const oldestMessage = idToMessage[oldestMessageId];
