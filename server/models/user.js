@@ -1,8 +1,7 @@
 'use strict';
 
-const IMessengerRepositrory = require('../messengerRepostiories/IMessengerRepository');
+const repository = require('../messengerRepostiories/FakeRepository');
 
-const messengerRepository = new IMessengerRepositrory();
 let Id = 1;
 
 class User {
@@ -12,11 +11,8 @@ class User {
         this.chatsId = [];
     }
 
-    addChat(chatId) {
-        this.chatsId.push(chatId);
-    }
-
     save() {
+        this.createId();
         messengerRepository.saveUser(this);
     }
 
@@ -24,6 +20,18 @@ class User {
         // здесь будет guid и/или что то связанное со временем
         Id += 1;
         this.id = Id;
+    }
+
+    addChat(chatId) {
+        this.chatsId.push(chatId);
+    }
+
+    static findUserIdByGithubId(githubId) {
+        return messengerRepository.getUserIdByGithubId(githubId);
+    }
+
+    static findUserById(userId) {
+        return messengerRepository.getUser(userId);
     }
 }
 

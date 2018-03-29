@@ -1,28 +1,36 @@
 'use strict';
 
 /* eslint class-methods-use-this: "error" */
-class IMessengerRepositrory {
-    saveMessage(message) {
+class IMessengerRepository {
+    static saveMessage(message) {
 
     }
 
-    saveUser(user) {
+    static saveUser(user) {
 
     }
 
-    saveChat(chat) {
+    static saveChat(chat) {
 
     }
 
-    getUser(userId) {
+    static getUser(userId) {
 
+    }
+
+    getChat(chatId) {
+        
     }
 
     getAllMessages(chatId) {
 
     }
 
-    getMessagesByRange(chatId, oldestMessageId, countMessages) {
+    getUserIdByGithubId(githubId) {
+
+    }
+
+    static getMessagesByRange(chatId, oldestMessageId, countMessages) {
         /* oldestMessageId назввание так себе,
         смысл что нажно вернуть count сообщений
          у которых дата создания больше даты startMessage*/
@@ -32,15 +40,15 @@ class IMessengerRepositrory {
     // все аналогично с чатами, кроме выдачи по диапозону, потому что сообщения добавляются снизу, а чаты сверху
     // только тут не самое старое сообщние, а самый старый чат, который давно не обновлялся
 
-    getAllChats(userId) {
+    static getAllChats(userId) {
 
     }
 
-    getChatsByRange(userId, oldestChatId, countChats) {
+    static getChatsByRange(userId, oldestChatId, countChats) {
 
     }
 
     // todo: последние 4 метода можно обобщить по 2, нужно выделить сущьность обобщения, но видимо потом
 }
 
-module.exports = IMessengerRepositrory;
+module.exports = IMessengerRepository;

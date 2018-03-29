@@ -1,8 +1,7 @@
 'use strict';
 
-const IMessengerRepositrory = require('../messengerRepostiories/IMessengerRepository');
+const repository = require('../messengerRepostiories/FakeRepository');
 
-const messengerRepository = new IMessengerRepositrory();
 let Id = 1;
 
 class Chat {
@@ -16,23 +15,31 @@ class Chat {
 
     save() {
         this.createId();
-        messengerRepository.saveChat(this);
+        repository.saveChat(this);
+    }
+
+    createId() {
+        // здесь будет guid и/или что то связанное со временем
+        Id += 1;
+        this.id = Id;
     }
 
     getUsers() {
-        return this.usersId.map(userId => messengerRepository.getUser(userId));
+        return this.usersId.map(userId => repository.getUser(userId));
     }
 
     getMessagesByRange(oldestMessageAvailableToUser, count) {
-    // oldestMessageAvailableToUser -
-    // перед этим сообщением еще нет информации о более старых сообщениях
         const messageId = oldestMessageAvailableToUser.id;
-        messengerRepository.getMessagesByRange(this.id, messageId, count);
+        repository.getMessagesByRange(this.id, messageId, count);
     }
 
     addMessage(messageId) {
-        this.tail = this.head;
-        this.head = messageId;
+        if (tail === null && head === null) {
+            this.tail = messageId;
+            this.head = messageId;
+        } else {
+            tail = messageId;
+        }
     }
 
     addUser(id) {
@@ -40,7 +47,7 @@ class Chat {
     }
 
     getUnreadMessages() {
-        return messengerRepository.getAllMessages(this.id)
+        return repository.getAllMessages(this.id)
             .filter(message => !message.isRead);
     }
 
@@ -49,13 +56,11 @@ class Chat {
     }
 
     static getAllChatesByUserId(userId) {
-        return messengerRepository.getAllChats(userId);
+        return repository.getAllChats(userId);
     }
 
-    createId() {
-        // здесь будет guid и/или что то связанное со временем
-        Id += 1;
-        this.id = Id;
+    static getChatById(chatId) {
+        return messengerRepository.getChat(chatId);
     }
 }
 

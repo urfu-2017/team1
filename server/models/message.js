@@ -1,8 +1,7 @@
 'use strict';
 
-const IMessengerRepositrory = require('../messengerRepostiories/IMessengerRepository');
+const repository = require('../messengerRepostiories/FakeRepository');
 
-const messengerRepository = new IMessengerRepositrory();
 let Id = 1;
 
 class Message {
@@ -17,17 +16,17 @@ class Message {
 
     save() {
         this.createId();
-        messengerRepository.saveMessage(this);
-    }
-
-    static create({ content, senderId, previousMessageId }) {
-        return new Message({ content, senderId, previousMessageId });
+        repository.saveMessage(this);
     }
 
     createId() {
         // здесь будет guid и/или что то связанное со временем
         Id += 1;
         this.id = Id;
+    }
+
+    static create({ content, senderId, previousMessageId }) {
+        return new Message({ content, senderId, previousMessageId });
     }
 }
 
