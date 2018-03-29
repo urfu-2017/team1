@@ -18,6 +18,12 @@ class Chat {
         repository.saveChat(this);
     }
 
+    createId() {
+        // здесь будет guid и/или что то связанное со временем
+        Id += 1;
+        this.id = Id;
+    }
+
     getUsers() {
         return this.usersId.map(userId => repository.getUser(userId));
     }
@@ -30,11 +36,12 @@ class Chat {
     }
 
     addMessage(messageId) {
-        // QUESTION
-        // судя по коду tail - это предпоследнее сообщение
-        // Зачем мы это храним?
-        this.tail = this.head;
-        this.head = messageId;
+        if (tail === null && head === null) {
+            this.tail = messageId;
+            this.head = messageId;
+        } else {
+            tail = messageId;
+        }
     }
 
     addUser(id) {
@@ -54,10 +61,8 @@ class Chat {
         return repository.getAllChats(userId);
     }
 
-    createId() {
-        // здесь будет guid и/или что то связанное со временем
-        Id += 1;
-        this.id = Id;
+    static getChatById(chatId) {
+        return messengerRepository.getChat(chatId);
     }
 }
 

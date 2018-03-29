@@ -11,21 +11,30 @@ class User {
         this.chatsId = [];
     }
 
-    addChat(chatId) {
         // todo
         // в моделях chat, message мы создаём id перед методом save, почему тут решили по-другому?
         this.createId();
-        this.chatsId.push(chatId);
-    }
-
     save() {
-        repository.saveUser(this);
+        this.createId();
+        messengerRepository.saveUser(this);
     }
 
     createId() {
         // здесь будет guid и/или что то связанное со временем
         Id += 1;
         this.id = Id;
+    }
+
+    addChat(chatId) {
+        this.chatsId.push(chatId);
+    }
+
+    static findUserIdByGithubId(githubId) {
+        return messengerRepository.getUserIdByGithubId(githubId);
+    }
+
+    static findUserById(userId) {
+        return messengerRepository.getUser(userId);
     }
 }
 

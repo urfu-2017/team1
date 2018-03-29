@@ -18,7 +18,15 @@ class IMessengerRepository {
 
     }
 
-    static getAllMessages(chatId) {
+    getChat(chatId) {
+        
+    }
+
+    getAllMessages(chatId) {
+
+    }
+
+    getUserIdByGithubId(githubId) {
 
     }
 
