@@ -1,66 +1,63 @@
 'use strict';
 
-const repository = require('../messengerRepostiories/FakeRepository');
+const Repository = require('../messengerRepostiories/FakeRepository');
+const createUuid = require('./uuid');
 
-let Id = 1;
 
 class Chat {
     constructor({ name, picture, usersId }) {
         this.name = name;
         this.picture = picture || 'default';
         this.usersId = usersId;
-        this.head = null;
-        this.tail = null;
+        this.usersIdToIdLastReadMessage = {};
+        this.firstMessageId = null;
+        this.lastMessageId = null;
     }
 
     save() {
-        this.createId();
-        repository.saveChat(this);
-    }
-
-    createId() {
-        // здесь будет guid и/или что то связанное со временем
-        Id += 1;
-        this.id = Id;
-    }
-
-    getUsers() {
-        return this.usersId.map(userId => repository.getUser(userId));
-    }
-
-    getMessagesByRange(oldestMessageAvailableToUser, count) {
-        const messageId = oldestMessageAvailableToUser.id;
-        repository.getMessagesByRange(this.id, messageId, count);
-    }
-
-    addMessage(messageId) {
-        if (tail === null && head === null) {
-            this.tail = messageId;
-            this.head = messageId;
-        } else {
-            tail = messageId;
-        }
+        this.id = createUuid();
+        Repository.saveChat(this);
     }
 
     addUser(id) {
         this.usersId.push(id);
     }
 
-    getUnreadMessages() {
-        return repository.getAllMessages(this.id)
-            .filter(message => !message.isRead);
+    getUsers() {
+        return this.usersId.map(userId => Repository.getUser(userId));
     }
 
-    static create({ name, picture, usersId }) {
-        return new Chat({ name, picture, usersId });
-    }
-
-    static getAllChatesByUserId(userId) {
-        return repository.getAllChats(userId);
+    addMessage(messageId) {
+        if (this.lastMessageId === null && this.firstMessageId === null) {
+            this.lastMessageId = messageId;
+            this.firstMessageId = messageId;
+        } else {
+            const penultimateMessage = Repository.getLastMessage(this.id);
+            penultimateMessage.nextMessageId = messageId;
+            const lastMessage = Repository.getMessage(messageId);
+            lastMessage.previousMessageId = penultimateMessage.id;
+            this.lastMessageId = messageId;
+        }
     }
 
     static getChatById(chatId) {
-        return messengerRepository.getChat(chatId);
+        return Repository.getChat(chatId);
+    }
+
+    static getAllChatsByUserId(userId) {
+        return Repository.getUser(userId).chatsId.map(chatId => Repository.getChat(chatId));
+    }
+
+    visitChat(userId) {
+        this.usersIdToIdLastReadMessage[userId] = Repository.getLastMessage(this.id).id;
+    }
+
+    getMessagesOlder({ lastMessage, messagesCount }) {
+        return Repository.getMessagesOlder(this.id, { lastMessage, messagesCount });
+    }
+
+    getUnreadMessages(userId) {
+        return Repository.getUnreadMessages(this.id, userId);
     }
 }
 

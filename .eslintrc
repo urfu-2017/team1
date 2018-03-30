@@ -4,6 +4,7 @@
         "ecmaVersion": 2017
     },
     "rules": {
+        "no-plusplus": "off",
         "no-return-await": "off",
         "indent": ["error", 4],
         "arrow-parens": ["error", "as-needed"],

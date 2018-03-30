@@ -1,32 +1,21 @@
 'use strict';
 
-const repository = require('../messengerRepostiories/FakeRepository');
+const Repository = require('../messengerRepostiories/FakeRepository');
+const createUuid = require('./uuid');
 
-let Id = 1;
 
 class Message {
-    constructor({ content, senderId, previousMessageId }) {
+    constructor({ content, creatorId }) {
         this.content = content;
-        this.senderId = senderId;
+        this.creatorId = creatorId;
         this.createAt = new Date().getTime();
-        this.isRead = false;
-        this.previousMessageId = previousMessageId;
+        this.previousMessageId = null;
         this.nextMessageId = null;
     }
 
     save() {
-        this.createId();
-        repository.saveMessage(this);
-    }
-
-    createId() {
-        // здесь будет guid и/или что то связанное со временем
-        Id += 1;
-        this.id = Id;
-    }
-
-    static create({ content, senderId, previousMessageId }) {
-        return new Message({ content, senderId, previousMessageId });
+        this.id = createUuid();
+        Repository.saveMessage(this);
     }
 }
 
