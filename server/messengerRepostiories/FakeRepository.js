@@ -4,87 +4,140 @@
 const idToMessage = {};
 const idToUser = {};
 const idToChat = {};
+const githubIdToUser = {};
 
 
 class FakeRepository {
+    // save
+
     static saveMessage(message) {
         idToMessage[message.id] = message;
     }
 
     static saveUser(user) {
         idToUser[user.id] = user;
+        githubIdToUser[user.githubId] = user;
     }
 
     static saveChat(chat) {
         idToChat[chat.id] = chat;
     }
 
-    static getUser(userId) {
-        return idToUser[userId];
-    }
+    // get
 
     static getChat(chatId) {
         return idToChat[chatId];
     }
 
-    static getLastMessage(chatId) {
-        const lastMessageId = idToChat[chatId].head;
-
-        return idToMessage[lastMessageId];
+    static getUser(userId) {
+        return idToUser[userId];
     }
 
-    static getAllMessages(chatId) {
-        const lastMessageId = idToChat[chatId].head;
-        let message = idToMessage[lastMessageId];
-        const messages = [message];
-        while (message.previousMessageId) {
-            message = idToMessage[message.previousMessageId];
-            messages.push(message);
+    static getUserIdByGithubId(githubId) {
+        return githubIdToUser[githubId].id;
+    }
+
+    static getMessage(messageId) {
+        return idToMessage[messageId];
+    }
+
+    // messages
+
+    static getLastMessage(chatId) {
+        const messageId = FakeRepository.getChat(chatId).lastMessageId;
+
+        return FakeRepository.getMessage(messageId);
+    }
+
+    static getMessagesOlder(
+        chatId,
+        {
+            lastMessage = FakeRepository.getLastMessage(chatId),
+            messagesCount = Number.POSITIVE_INFINITY
+        }
+    ) {
+        /* eslint-disable no-param-reassign */
+        if (!lastMessage) {
+            return [];
+        }
+        const messages = [];
+        while (lastMessage.previousMessageId && messagesCount) {
+            lastMessage = FakeRepository.getMessage(lastMessage.previousMessageId);
+            messages.push(lastMessage);
+            messagesCount--;
         }
 
         return messages;
     }
 
-    static getMessagesByRange(chatId, oldestMessageId, countMessages) {
-        const messages = FakeRepository.getAllMessages(chatId);
-        const oldestMessage = idToMessage[oldestMessageId];
-        const firstNotIncludedIndex = messages.findIndex(message => (
-            message.createAt <= oldestMessage.createAt
-        ));
-
-        return messages.slice(0, Math.min(firstNotIncludedIndex, countMessages));
-    }
-
-    static getAllChats(userId) {
-        return idToUser[userId].chatsId.map(chatId => idToChat[chatId]);
-    }
-
-    static getChatsByRange(userId, oldestChatId, countChats) {
-        const chats = FakeRepository.getAllChats(userId);
-        chats.sort(sortDescChatsByDateLastMessage);
-        let lastIncludedIndex = chats.findIndex(chat => chat.id === oldestChatId);
-        if (lastIncludedIndex === -1) {
-            lastIncludedIndex = Number.POSITIVE_INFINITY;
+    static getUnreadMessages(chatId, userId) {
+        const chat = FakeRepository.getChat(chatId);
+        const lastReadIdMessage = chat.usersIdToIdLastReadMessage[userId];
+        const messages = [];
+        let message = FakeRepository.getLastMessage(chatId);
+        while (message && message.id !== lastReadIdMessage) {
+            messages.push(message);
+            message = FakeRepository.getMessage(messages.previousMessageId);
         }
 
-        return chats.slice(0, Math.min(lastIncludedIndex + 1, countChats));
+        return messages;
+    }
+
+    // chats
+
+    static getChatsOlder(
+        userId,
+        {
+            lastChat,
+            chatsCounts = Number.POSITIVE_INFINITY
+        }
+    ) {
+        const allChats = getNoEmptyChats(userId);
+        allChats.sort((a, b) => sortChatsByDateLastMessage(a, b, 'desc'));
+        if (!lastChat) {
+            return allChats.slice(0, chatsCounts);
+        }
+        const startIndex = allChats.indexOf(lastChat);
+        if (startIndex === -1) {
+            return [];
+        }
+        return allChats.slice(startIndex + 1, chatsCounts);
     }
 }
 
-function sortDescChatsByDateLastMessage(first, second) {
-    if (!first.tail || !second.tail) {
-        return 1;
+
+function sortChatsByDateLastMessage(first, second, order) {
+    let numberForLeft;
+    /* eslint-disable indent */
+    switch (order) {
+        case 'asc':
+            numberForLeft = 1;
+            break;
+        case 'desc':
+            numberForLeft = -1;
+            break;
+        default:
+            throw new Error('Ф-ия sortChatsByDateLastMessageDesc в качестве order принимает только 2 возможных' +
+                'значения:\n1)asc\n2)desc');
     }
-    const message1 = idToMessage[first.tail];
-    const message2 = idToMessage[second.tail];
-    if (message1.createAt < message2.createAt) {
-        return -1;
+    const message1 = FakeRepository.getMessage(first.lastMessageId);
+    const message2 = FakeRepository.getMessage(second.lastMessageId);
+    if (message1.createAt > message2.createAt) {
+        return numberForLeft;
     }
     if (message1.createAt === message2.createAt) {
         return 0;
     }
 
-    return 1;
+    return -numberForLeft;
 }
+
+function getNoEmptyChats(userId) {
+    const chats = FakeRepository.getUser(userId).chatsId
+        .map(chatId => FakeRepository.getChat(chatId));
+
+    return chats.map(chat => chat.firstMessageId);
+}
+
 
 module.exports = FakeRepository;
