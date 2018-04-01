@@ -3,7 +3,9 @@
 *       const creds = new DatabaseCredentials('uri', 'token');
 *       await put(creds, 'key', 'value');
 */
+
 'use strict';
+
 const request = require('request-promise-native');
 
 const DbError = require('db-error');
@@ -15,7 +17,7 @@ class _RequestOptions {
     constructor(credentials, key) {
         this.uri = `${credentials.apiUri + key}/`;
         this.headers = {
-            Authorization: credentials.apiToken,
+            Authorization: credentials.apiToken
         };
         this.resolveWithFullResponse = true;
     }
@@ -46,7 +48,7 @@ class _RequestOptions {
 }
 
 
-const _handleRequest = async (request) => {
+const _handleRequest = async request => {
     const response = await request;
     if (response.statusCode === 404) {
         return null;

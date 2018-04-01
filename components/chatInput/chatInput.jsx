@@ -8,6 +8,7 @@ export default class ChatInput extends React.Component {
     }
 
     static defaultProps = { onSend: {} }
+
     constructor(props) {
         super(props);
         this.state = { message: '' };

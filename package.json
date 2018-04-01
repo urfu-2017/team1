@@ -26,14 +26,9 @@
     "lint": "npm-run-all lint:*"
   },
   "devDependencies": {
-<<<<<<< 4936fea40bfdb19fde8acbc80481df515df70c92
-    "eslint": "^4.19.1",
-    "css-loader": "^0.28.11",
-=======
     "babel-eslint": "^7.2.3",
     "css-loader": "^0.28.11",
     "eslint": "^4.19.1",
->>>>>>> add send message
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",

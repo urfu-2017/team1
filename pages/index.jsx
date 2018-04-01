@@ -31,11 +31,6 @@ const constContacts = [
 ];
 
 export default class ChatApp extends React.Component {
-    static async getInitialProps({ req }) {
-        const { user } = req;
-        return { user };
-    }
-
     constructor(props) {
         super(props);
         this.state = {
@@ -69,12 +64,11 @@ export default class ChatApp extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <div>Hello {this.props.user.username}! Here was start page</div>
                 <main className={css.chat}>
                     <Contacts contacts={constContacts} />
                     <section className={css.chat__main}>
-                        <Messages messages={constMessages} />
-                        <ChatInput />
+                        <Messages messages={this.state.messages} />
+                        <ChatInput onSend={this.addMessage} />
                     </section>
                 </main>
             </React.Fragment>

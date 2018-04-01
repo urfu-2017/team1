@@ -17,6 +17,7 @@ export default class Messages extends React.Component {
 
     getMessagesList() {
         const { messages } = this.props;
+ 
         return messages.map(currentMessage => (
             <Message
                 key={currentMessage.id}
@@ -27,10 +28,11 @@ export default class Messages extends React.Component {
     }
 
     render() {
-        const messages = this.getMessagesList();
         return (
             <React.Fragment>
-                <section ref={this.getSectionRef} className={css.messages}> {messages}</section>
+                <section ref={this.getSectionRef} className={css.messages}> 
+                    {this.getMessagesList()}
+                </section>
             </React.Fragment>
         );
     }

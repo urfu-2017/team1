@@ -15,6 +15,7 @@ export default class Message extends React.Component {
     }
     render() {
         const { message, creationTime } = this.props;
+
         return (
             <React.Fragment>
                 <article>
