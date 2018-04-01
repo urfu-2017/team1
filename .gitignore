@@ -4,5 +4,5 @@
 .vscode
 .idea
 .env
-.env.production
 .env.dev
+env.production
