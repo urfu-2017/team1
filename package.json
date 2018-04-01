@@ -2,9 +2,15 @@
   "name": "kilogram",
   "version": "0.0.1",
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^5.0.1",
     "express": "^4.16.3",
+    "express-session": "^1.15.6",
     "next": "^5.0.0",
     "now": "^10.2.1",
+    "passport": "^0.4.0",
+    "passport-github": "^1.1.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "request": "^2.83.0",
@@ -12,13 +18,13 @@
   },
   "scripts": {
     "dev": "node server",
-    "build": "next build",
     "start": "next start",
+    "build": "next build",
     "lint:js": "eslint --fix .",
     "lint": "npm-run-all lint:*"
   },
   "devDependencies": {
-    "eslint": "^4.19.0",
+    "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
