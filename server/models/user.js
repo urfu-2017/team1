@@ -1,38 +1,25 @@
 'use strict';
 
-const repository = require('../messengerRepostiories/FakeRepository');
+const uuid = require('uuid/v4');
 
-let Id = 1;
 
 class User {
-    constructor({ name, avatar }) {
+    constructor({ name, avatar, chatsIds, id }) {
         this.name = name;
         this.avatar = avatar;
-        this.chatsId = [];
+        this.chatsIds = chatsIds;
+        this.id = id;
     }
 
-    save() {
-        this.createId();
-        messengerRepository.saveUser(this);
-    }
-
-    createId() {
-        // здесь будет guid и/или что то связанное со временем
-        Id += 1;
-        this.id = Id;
-    }
-
-    addChat(chatId) {
-        this.chatsId.push(chatId);
-    }
-
-    static findUserIdByGithubId(githubId) {
-        return messengerRepository.getUserIdByGithubId(githubId);
-    }
-
-    static findUserById(userId) {
-        return messengerRepository.getUser(userId);
+    static create(name, avatar) {
+        return new User({
+            name,
+            avatar,
+            chatsIds: [],
+            id: uuid()
+        });
     }
 }
+
 
 module.exports = User;
