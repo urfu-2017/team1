@@ -1,6 +1,6 @@
 'use strict';
 
-const hruDb = require('../../../server/repository/hrudb-rest');
+const hruDb = require('../../server/repository/hrudb-rest');
 
 
 class HruRepository {
