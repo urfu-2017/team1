@@ -16,8 +16,11 @@ server.use(passport.session());
 
 server.use(authMiddleware());
 
+<<<<<<< 4936fea40bfdb19fde8acbc80481df515df70c92
 const app = next({ dev: process.env.NODE_ENV !== 'production' });
 
+=======
+>>>>>>> add send message
 const render = pageName => (req, res) => app.render(req, res, `/${pageName}`);
 const handleRequest = (req, res) =>
     app.getRequestHandler()(req, res, parse(req.url, true));

@@ -1,6 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export default class Contact extends React.Component {
+export default class Messages extends React.Component {
+    static propTypes = {
+        name: PropTypes.string
+    }
+
+    static defaultProps = { name: '' };
+
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
     render() {
         const { name } = this.props;
         return (

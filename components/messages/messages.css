@@ -1,10 +1,11 @@
 .messages
 {
     width: 100%;
+    overflow-y: auto;
 
     display: flex;
+    flex: 1;
     flex-direction: column;
-    flex: 1 0 auto;
 }
 
 @media (max-width: 800px)

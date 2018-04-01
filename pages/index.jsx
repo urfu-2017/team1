@@ -7,19 +7,6 @@ import ChatInput from '../components/chatInput/chatInput';
 
 import css from './index.css';
 
-const constMessages = [
-    {
-        id: 1,
-        content: 'Hello',
-        createAt: '12:07'
-    },
-    {
-        id: 2,
-        content: '<strong>Текст</strong>',
-        createAt: '12:08'
-    }
-];
-
 const constContacts = [
     {
         id: 1,
@@ -48,6 +35,37 @@ export default class ChatApp extends React.Component {
         const { user } = req;
         return { user };
     }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            messages: [
+                {
+                    id: 1,
+                    content: 'Hello',
+                    createAt: '12:07'
+                },
+                {
+                    id: 2,
+                    content: '<strong>Текст</strong>',
+                    createAt: '12:08'
+                }
+            ]
+        };
+    }
+
+    addMessage = text => {
+        const message = {
+            id: 3,
+            content: text,
+            createAt: '12:09'
+        };
+        this.setState({ messages: [...this.state.messages, message] });
+    }
+
+    sendMessage = () => {      
+    }
+
     render() {
         return (
             <React.Fragment>
