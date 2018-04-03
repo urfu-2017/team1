@@ -15,7 +15,6 @@ class HruRepository {
         await this._save('user', user, user.id);
     }
 
-    // временный метод, пока не решим, что делать
     async saveUserGithubId(githubId, user) {
         await this._save('githubId', user.id, githubId);
     }
@@ -25,11 +24,9 @@ class HruRepository {
     }
 
     async saveMessage(message, chatId) {
-        await this._save('messages', message, chatId, hruDb.put, false);
+        await this._save('messages', message, chatId, hruDb.post, false);
     }
 
-    // Непрочитанные сообщения -
-    // те, что добавлены позже последнего прочтения определённого чата определённым пользователем
     async saveLastReadTime(userId, chatId, timestamp) {
         await this._save('lastRead', timestamp, `${userId}_${chatId}`);
     }
@@ -46,34 +43,24 @@ class HruRepository {
         return await this._get('lastRead', `${userId}_${chatId}`);
     }
 
-    async getMessages(chatId, restrictions = null) {
+    async getMessages(chatId, { fromTimestamp = null, toTimestamp = null, limit = null }) {
+        const restrictions = HruRepository.getRestrictionsObject(fromTimestamp, toTimestamp, limit);
         return await this._get(
             'messages', chatId,
             (creds, key) => hruDb.getAll(creds, key, restrictions), false
         );
     }
 
-    async getUserIdByGithubId(githubId) {
-        const userId = await this._get('githubId', githubId);
+    async getUserIdByServiceId(serviceUserId, serviceName = 'github') {
+        return await this._get(`${serviceName}Id`, serviceUserId);
+    }
+
+    async getUserByGithubId(githubId) {
+        const userId = await this.getUserIdByServiceId(githubId);
         return await this.getUser(userId);
     }
 
-    /*
-    Нужно дополнительно обсудить интерфейс
-    В данной версии реализация потребует лавины http запросов
-    При этом необходимость таких ограничений не очень ясна
-
-    async getMessagesByRange(chatId, oldestMessageId, countMessages) {
-
-    }
-
-
-    async getChatsByRange(userId, oldestChatId, countChats) {
-
-    }
-    */
-
-    async getAllUserChats(userId) {
+    async getUserChats(userId) {
         const user = await this.getUser(userId);
         const tasks = user.chatsIds
             .map(id => this.getChat(id));
@@ -87,7 +74,12 @@ class HruRepository {
         return await Promise.all(tasks);
     }
 
-    async _save(prefix, obj, id, method = hruDb.post, cache = true) {
+    async getUnreadMessages(userId, chatId) {
+        const fromTimestamp = await this.getLastReadTime(userId, chatId);
+        return await this.getMessages(chatId, { fromTimestamp });
+    }
+
+    async _save(prefix, obj, id, method = hruDb.put, cache = true) {
         const serialized = JSON.stringify(obj);
         const key = `${prefix}_${id}`;
         const outcome = await this._performRequest(
@@ -116,11 +108,21 @@ class HruRepository {
         return obj;
     }
 
+    static getRestrictionsObject(from, to, limit) {
+        const restrictions = { from, to, limit };
+        return Object.entries(restrictions)
+            .filter(([_, val]) => val !== null)
+            .reduce((acc, [k, v]) => {
+                acc[k] = v;
+                return acc;
+            }, {});
+    }
+
     async _performRequest(request) {
         for (let i = 0; i < this._retryTimes; i += 1) {
             try {
                 return await request();
-            } catch(exc) {
+            } catch (exc) {
             }
         }
 
