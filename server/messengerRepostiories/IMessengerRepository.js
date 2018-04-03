@@ -19,7 +19,7 @@ class IMessengerRepository {
     }
 
     getChat(chatId) {
-        
+
     }
 
     getAllMessages(chatId) {
@@ -33,7 +33,7 @@ class IMessengerRepository {
     static getMessagesByRange(chatId, oldestMessageId, countMessages) {
         /* oldestMessageId назввание так себе,
         смысл что нажно вернуть count сообщений
-         у которых дата создания больше даты startMessage*/
+         у которых дата создания больше даты startMessage */
     }
 
 

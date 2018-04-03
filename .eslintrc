@@ -1,11 +1,18 @@
 {
-    "extends": "airbnb",
+    "parser": "babel-eslint",
+    "extends": ["airbnb", "plugin:react/recommended"],
+    "plugins": [
+        "react"
+    ],
     "parserOptions": {
-        "ecmaVersion": 2017
+        "ecmaVersion": 2017,
+        "sourceType": "module"
     },
     "rules": {
         "no-return-await": "off",
         "indent": ["error", 4],
+        "react/jsx-indent": [2, 4],
+        "react/jsx-indent-props": [2, 4],
         "arrow-parens": ["error", "as-needed"],
         "comma-dangle": ["error", "never"],
         "no-use-before-define": ["error", { "functions": false, "classes": false, "variables": true }],
