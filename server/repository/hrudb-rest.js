@@ -8,8 +8,8 @@
 
 const request = require('request-promise-native');
 
-const DbError = require('db-error');
-const DbCredentials = require('db-credentials');
+const DbError = require('./db-error');
+const DbCredentials = require('./db-credentials');
 
 
 // parameters of HTTP request
