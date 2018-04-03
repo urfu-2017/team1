@@ -43,7 +43,7 @@ class HruRepository {
         return await this._get('lastRead', `${userId}_${chatId}`);
     }
 
-    async getMessages(chatId, { fromTimestamp = null, toTimestamp = null, limit = null }) {
+    async getMessages(chatId, fromTimestamp = null, toTimestamp = null, limit = null) {
         const restrictions = HruRepository.getRestrictionsObject(fromTimestamp, toTimestamp, limit);
         return await this._get(
             'messages', chatId,
@@ -122,7 +122,7 @@ class HruRepository {
         for (let i = 0; i < this._retryTimes; i += 1) {
             try {
                 return await request();
-            } catch (exc) {
+            } catch(exc) {
             }
         }
 
