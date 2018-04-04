@@ -122,7 +122,7 @@ class HruRepository {
         for (let i = 0; i < this._retryTimes; i += 1) {
             try {
                 return await request();
-            } catch(exc) {
+            } catch (exc) {
             }
         }
 
@@ -137,3 +137,6 @@ class HruRepository {
         this._cache.set(key, value);
     }
 }
+
+
+module.exports = HruRepository;

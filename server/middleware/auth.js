@@ -3,6 +3,7 @@
 const passport = require('passport');
 const GitHubStrategy = require('passport-github').Strategy;
 
+
 passport.use(new GitHubStrategy(
     {
         clientID: process.env.GITHUB_CLIENT_ID,
@@ -10,6 +11,7 @@ passport.use(new GitHubStrategy(
         callbackURL: `${process.env.URL}/auth/github/callback`
     },
     ((accessToken, refreshToken, profile, cb) => {
+
     // Нужна модель пользователя для того чтобы его создавать
     // Пример:
     // User.findOrCreate({ githubId: profile.id }, function (err, user) {

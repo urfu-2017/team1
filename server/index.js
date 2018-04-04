@@ -5,6 +5,7 @@ const next = require('next');
 const passport = require('passport');
 const server = require('express')();
 
+const restRoutes = require('./controllers/rest/routes');
 const authMiddleware = require('./middleware/auth');
 const routes = require('./routes');
 
@@ -28,6 +29,7 @@ const port = process.env.PORT || 3000;
 app.prepare().then(() => {
     routes(server);
     server
+        .use('/api/rest', restRoutes)
         .get('*', handleRequest)
         .listen(port, () => console.log(`Listening on http://localhost:${port}`));
 });
