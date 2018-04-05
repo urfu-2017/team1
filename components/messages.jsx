@@ -1,8 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-import Message from '../message/message';
-import css from './messages.css';
+import Message from './message';
+
+const MessagesList = styled.section`
+        width: 100%;
+        overflow-y: auto;
+    
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+`;
 
 export default class Messages extends React.Component {
     static propTypes = {
@@ -17,12 +26,13 @@ export default class Messages extends React.Component {
 
     getMessagesList() {
         const { messages } = this.props;
- 
-        return messages.map(currentMessage => (
+
+        return messages.map((currentMessage, index) => (
             <Message
-                key={currentMessage.id}
-                message={currentMessage.content}
+                key={index}
+                message={currentMessage.content.text}
                 creationTime={currentMessage.createAt}
+                from={currentMessage.content.from}
             />
         ));
     }
@@ -30,11 +40,8 @@ export default class Messages extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <section ref={this.getSectionRef} className={css.messages}> 
-                    {this.getMessagesList()}
-                </section>
+                <MessagesList ref={this.getSectionRef}> {this.getMessagesList()} </MessagesList>
             </React.Fragment>
         );
     }
 }
-
