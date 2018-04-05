@@ -9,7 +9,7 @@ module.exports = app => {
         passport.authenticate('github', { failureRedirect: '/auth' }),
         (req, res) => {
             console.log(req.user);
-            res.redirect('/');
+            res.redirect('/index');
         }
     );
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import io from 'socket.io-client';
 
 import Messages from '../components/messages/messages';
 import Contacts from '../components/contacts/contacts';
@@ -49,6 +50,25 @@ export default class ChatApp extends React.Component {
         };
     }
 
+    componentDidMount() {
+        this.socket = io('http://localhost:3000/');
+        this.socket.on('now', data => {
+            const message = {
+                id: 3,
+                content: data.message,
+                createAt: '12:09'
+            };
+            this.setState({
+                messages: [...this.state.messages, message]
+            });
+        });
+    }
+
+    componentWillUnmount() {
+        this.socket.off('now');
+        this.socket.close();
+    }
+
     addMessage = text => {
         const message = {
             id: 3,
@@ -58,7 +78,7 @@ export default class ChatApp extends React.Component {
         this.setState({ messages: [...this.state.messages, message] });
     }
 
-    sendMessage = () => {      
+    sendMessage = () => {
     }
 
     render() {
