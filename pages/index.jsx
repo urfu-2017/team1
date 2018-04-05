@@ -1,77 +1,36 @@
 import React from 'react';
+import styled from 'styled-components';
 
-import Messages from '../components/messages/messages';
-import Contacts from '../components/contacts/contacts';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 
-import ChatInput from '../components/chatInput/chatInput';
+import reducer from '../reducers/index';
+import SideBar from '../containers/sidebar';
+import Chat from '../containers/chat';
 
-import css from './index.css';
+const store = createStore(reducer);
 
-const constContacts = [
-    {
-        id: 1,
-        name: 'chat1',
-        picture: 'picture',
-        lastMessage: {
-            id: 2,
-            content: '<strong>Текст</strong>',
-            createAt: '12:08'
-        }
-    },
-    {
-        id: 2,
-        name: 'chat1',
-        picture: 'picture',
-        lastMessage: {
-            id: 2,
-            content: '<strong>Текст</strong>',
-            createAt: '12:08'
-        }
-    }
-];
+const Wrapper = styled.main`
+    display: flex;
+
+    height: 100%;
+    width: 100%;
+`;
 
 export default class ChatApp extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            messages: [
-                {
-                    id: 1,
-                    content: 'Hello',
-                    createAt: '12:07'
-                },
-                {
-                    id: 2,
-                    content: '<strong>Текст</strong>',
-                    createAt: '12:08'
-                }
-            ]
-        };
-    }
-
-    addMessage = text => {
-        const message = {
-            id: 3,
-            content: text,
-            createAt: '12:09'
-        };
-        this.setState({ messages: [...this.state.messages, message] });
-    }
-
-    sendMessage = () => {      
+        this.state = {};
     }
 
     render() {
         return (
-            <React.Fragment>
-                <main className={css.chat}>
-                    <Contacts contacts={constContacts} />
-                    <section className={css.chat__main}>
-                        <Messages messages={this.state.messages} />
-                        <ChatInput onSend={this.addMessage} />
-                    </section>
-                </main>
-            </React.Fragment>
+            <Provider store={store}>
+                <Wrapper>
+                    <SideBar />
+                    <Chat />
+                </Wrapper>
+            </Provider>
         );
     }
 }
