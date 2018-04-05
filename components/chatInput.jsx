@@ -1,13 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import css from './chatInput.css';
+import styled from 'styled-components';
 
-export default class ChatInput extends React.Component {
+import { connect } from 'react-redux';
+
+import { addMessage } from '../actions/actions';
+
+const Input = styled.input`
+    width: 100%;
+    height: 60px;
+
+    box-sizing: border-box;
+`;
+
+class ChatInput extends React.Component {
     static propTypes = {
-        onSend: PropTypes.func
+        dispatch: PropTypes.func
     }
 
-    static defaultProps = { onSend: {} }
+    static defaultProps = { dispatch: {} }
 
     constructor(props) {
         super(props);
@@ -15,19 +26,20 @@ export default class ChatInput extends React.Component {
     }
 
     handleChange = event => { this.setState({ message: event.target.value }); }
+
     handleSubmit = event => {
         event.preventDefault();
-        this.props.onSend(this.state.message);
+        this.props.dispatch(addMessage({ content: { text: this.state.message, from: 'me' } }));
         this.setState({ message: '' });
     }
+
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                <input
+                <Input
                     onChange={this.handleChange}
                     type="text"
                     placeholder="Введите сообщение"
-                    className={css['creator-message']}
                     value={this.state.message}
                     required
                 />
@@ -35,3 +47,6 @@ export default class ChatInput extends React.Component {
         );
     }
 }
+
+export default connect()(ChatInput);
+
