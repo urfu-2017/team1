@@ -19,7 +19,7 @@ app.use(passport.session());
 
 app.use(authMiddleware());
 
-const nextApp = next({ dev: process.env.NODE_ENV !== 'production' });
+const nextApp = next({ dir: './client', dev: process.env.NODE_ENV !== 'production' });
 
 const render = pageName => (req, res) => nextApp.render(req, res, `/${pageName}`);
 const handleRequest = (req, res) =>
@@ -43,7 +43,9 @@ nextApp.prepare().then(() => {
 });
 
 function myFunc(socket) {
+    console.log('все работает');
     socket.emit('now', {
+        
         message: `Hallelujah!!${Math.random()}!1!!!!`
     });
 }

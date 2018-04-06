@@ -1,5 +1,5 @@
 import React from 'react';
-import io from 'socket.io-client';
+
 import styled from 'styled-components';
 
 import { createStore } from 'redux';
@@ -22,23 +22,6 @@ export default class ChatApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
-    componentDidMount() {
-        this.socket = io('http://localhost:3000/');
-        this.socket.on('now', data => {
-            const message = {
-                id: 3,
-                content: data.message,
-                createAt: '12:09'
-            };
-            this.setState({
-                messages: [...this.state.messages, message]
-            });
-        });
-    }
-
-    componentWillUnmount() {
-        this.socket.off('now');
-        this.socket.close();
     }
 
     sendMessage = () => {
