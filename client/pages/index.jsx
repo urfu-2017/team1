@@ -9,14 +9,13 @@ import reducer from '../reducers/index';
 import SideBar from '../containers/sidebar';
 import Chat from '../containers/chat';
 
-const store = createStore(reducer);
-
 const Wrapper = styled.main`
     display: flex;
-
     height: 100%;
     width: 100%;
 `;
+
+const store = createStore(reducer);
 
 export default class ChatApp extends React.Component {
     constructor(props) {
