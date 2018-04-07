@@ -11,11 +11,9 @@ const ChatWrapper = styled.section`
 
     display: flex;
     flex-direction: column;
-
     box-sizing: border-box;
-    border: 1px solid #111;
-
-    @media (max-width: 800px)
+    background: #f2f3ee;
+    @media (max-width: 400px)
     {
         display: none;
     }
@@ -23,20 +21,21 @@ const ChatWrapper = styled.section`
 
 export default class Chat extends React.Component {
     static propTypes = {
+        title: PropTypes.string,
         messages: PropTypes.arrayOf(PropTypes.object)
     }
 
-    static defaultProps = { messages: [] };
+    static defaultProps = { title: '', messages: [] };
 
     constructor(props) {
         super(props);
         this.state = {};
     }
     render() {
-        const { messages } = this.props;
+        const { messages, title } = this.props;
         return messages.length ?
             <ChatWrapper >
-                <Messages messages={messages} />
+                <Messages messages={messages} title={title} />
                 <ChatInput />
             </ChatWrapper > : <ChatWrapper />;
     }

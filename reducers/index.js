@@ -1,4 +1,4 @@
-import { ADD_MESSAGE, VISIBILITY_CHAT } from '../actions/actions';
+import { ADD_MESSAGE, VISIBILITY_CHAT, SELECT_CHAT, VISIBILITY_MENU } from '../actions/actions';
 
 
 const initialState = {
@@ -7,6 +7,8 @@ const initialState = {
         avatar: 'path-to-avatar.jpeg',
         id: 'ALPHANUMERIC_ID'
     },
+    selectedChatId: null,
+    openMenu: false,
     allChats: [
         {
             title: 'First Chat Title',
@@ -14,7 +16,7 @@ const initialState = {
             id: 'ALPHANUMEfRIC_ID',
             lastMessage: {
                 content: {
-                    text: 'message text',
+                    text: 'message text message text message text',
                     attachments: [],
                     pictures: []
                 },
@@ -101,7 +103,7 @@ const initialState = {
     }
 };
 
-export default function sidebar(state = initialState, action) {
+const reducer = (state = initialState, action) => {
     switch (action.type) {
     case VISIBILITY_CHAT:
         state.currentChat = action.chat;
@@ -109,7 +111,14 @@ export default function sidebar(state = initialState, action) {
     case ADD_MESSAGE:
         state.currentChat.messages = [...state.currentChat.messages, action.message];
         return Object.assign({}, state);
+    case SELECT_CHAT:
+        state.selectedChatId = action.id;
+        return Object.assign({}, state);
+    case VISIBILITY_MENU:
+        state.openMenu = action.visibility;
+        return Object.assign({}, state);
     default: return state;
     }
-}
+};
 
+export default reducer;

@@ -11,10 +11,10 @@ import Chat from '../containers/chat';
 const store = createStore(reducer);
 
 const Wrapper = styled.main`
-    display: flex;
-
     height: 100%;
-    width: 100%;
+    max-width: 1260px;
+    display: flex;
+    margin: 0 auto;
 `;
 
 export default class ChatApp extends React.Component {

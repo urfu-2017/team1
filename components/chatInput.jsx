@@ -8,9 +8,12 @@ import { addMessage } from '../actions/actions';
 
 const Input = styled.input`
     width: 100%;
-    height: 60px;
-
+    height: 45px;
+    border: none;
+    outline: none;
+    padding: 0 0 0 25px;
     box-sizing: border-box;
+    background-color: rgba(255,255,255,.7);
 `;
 
 class ChatInput extends React.Component {

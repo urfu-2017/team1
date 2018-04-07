@@ -8,10 +8,10 @@ const MessageWrapper = styled.article`
     align-self: ${props => (props.from === 'me' ? 'flex-end' : 'flex-start')};
     justify-content: space-between;
     
-    margin: 2px 4px;
+    margin: 6px 4px;
     border-radius: 5px;
-    background-color: #FFFACD;
-    font: 14px Times New Roman;
+    background-color: ${props => (props.from === 'me' ?  '#a3bad2' : '#dbe4ed') };
+    font: 14px;
     
     max-width: 50%;
     min-width: 25%;

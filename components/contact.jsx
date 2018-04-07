@@ -5,11 +5,11 @@ import styled from 'styled-components';
 
 const ContactWrraper = styled.article`
     height: 40px;
-    width: 90%;
+    width: 100%;
     display: flex;
     align-self: center;
     align-items: center;
-    border: 1px solid #ccc;
+    background-color: ${props => (props.select ? '#b7c5f5' : '#fff')};
 `;
 export default class Contact extends React.Component {
     static propTypes = {
