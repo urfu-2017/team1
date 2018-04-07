@@ -135,3 +135,6 @@ class HruRepository {
         this._cache.set(key, value);
     }
 }
+
+
+module.exports = HruRepository;
