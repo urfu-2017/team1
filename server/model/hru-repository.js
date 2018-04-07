@@ -82,8 +82,7 @@ class HruRepository {
     async _save(prefix, obj, id, method = hruDb.put, cache = true) {
         const serialized = JSON.stringify(obj);
         const key = `${prefix}_${id}`;
-        const outcome = await this._performRequest(
-            () => method.call(null, this._credentials, key, serialized));
+        const outcome = await this._performRequest(() => method.call(null, this._credentials, key, serialized));
         if (cache && outcome !== null) {
             this._updateCache(key, obj);
         }
@@ -96,8 +95,7 @@ class HruRepository {
             return cached;
         }
 
-        const serialized = await this._performRequest(
-            () => method.call(null, this._credentials, key));
+        const serialized = await this._performRequest(() => method.call(null, this._credentials, key));
         if (serialized === null) {
             return null;
         }
@@ -122,7 +120,7 @@ class HruRepository {
         for (let i = 0; i < this._retryTimes; i += 1) {
             try {
                 return await request();
-            } catch(exc) {
+            } catch (exc) {
             }
         }
 
