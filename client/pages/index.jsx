@@ -17,7 +17,7 @@ const Wrapper = styled.main`
 
 const store = createStore(reducer);
 
-export default class ChatApp extends React.Component {
+export default class KilogrammApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};

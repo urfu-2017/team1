@@ -1,3 +1,5 @@
+import { RECEIVED_NEW_MESSAGE } from '../actions/actions';
+
 const initialState = [
     {
         title: 'First Chat Title',
@@ -88,5 +90,13 @@ const initialState = [
 ];
 
 export default function chats(state = initialState, action) {
-    return state;
+    switch (action.type) {
+    case RECEIVED_NEW_MESSAGE: {
+        const neededChat = state.find(x => x.id === action.message.chatId);
+        neededChat.messages = [...neededChat.messages, action.message];
+        return state;
+    }
+    default: return state;
+    }
 }
+

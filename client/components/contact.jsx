@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import styled from 'styled-components';
+import io from 'socket.io-client';
+import { connect } from 'react-redux';
+
+import { addMessage } from '../actions/actions';
 
 const ContactWrraper = styled.article`
     height: 40px;
@@ -11,18 +15,39 @@ const ContactWrraper = styled.article`
     align-items: center;
     border: 1px solid #ccc;
 `;
-export default class Contact extends React.Component {
+
+class Contact extends React.Component {
     static propTypes = {
         name: PropTypes.string,
-        onClick: PropTypes.func
+        onClick: PropTypes.func,
+        dispatch: PropTypes.func
     }
 
-    static defaultProps = { name: '', onClick: {} };
+    static defaultProps = { name: '', onClick: {}, dispatch: {} };
 
     constructor(props) {
         super(props);
         this.state = {};
     }
+
+    componentDidMount() {
+        this.socket = io('http://localhost:3000/');
+        this.socket.on(`now-${this.props.chatId}`, data => {
+            this.props.dispatch(addMessage({
+                content: {
+                    text: data.message
+                },
+                chatId: this.props.chatId,
+                from: data.userId
+            }));
+        });
+    }
+
+    componentWillUnmount() {
+        this.socket.off('now');
+        this.socket.close();
+    }
+
     render() {
         const { name, onClick } = this.props;
         return (
@@ -32,3 +57,5 @@ export default class Contact extends React.Component {
         );
     }
 }
+
+export default connect()(Contact);

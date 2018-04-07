@@ -28,24 +28,24 @@ const handleRequest = (req, res) =>
 const port = process.env.PORT || 3000;
 
 io.on('connection', socket => {
-    /* socket.on('answer', {
-        message: 'Hallelujah!!!2!!!!'
-    });*/
     setInterval(myFunc, 1000, socket);
-    //myFunc(socket);
 });
 
 nextApp.prepare().then(() => {
     routes(app);
     app.get('*', handleRequest);
-        //.listen(port, () => console.log(`Listening on http://localhost:${port}`));
-        server.listen(port, () => console.info(`> Ready on http://localhost:${port}`));
+    server.listen(port, () => console.info(`> Ready on http://localhost:${port}`));
 });
 
 function myFunc(socket) {
     console.log('все работает');
-    socket.emit('now', {
-        
-        message: `Hallelujah!!${Math.random()}!1!!!!`
+    socket.emit('now-ALPHANUMEfRIC_ID', {
+
+        message: `Первый!!${Math.random()}!1!!!!`
+    });
+
+    socket.emit('now-ALPHANUMERIC_ID', {
+
+        message: `Второй!!${Math.random()}!1!!!!`
     });
 }

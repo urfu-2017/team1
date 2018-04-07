@@ -3,7 +3,7 @@ import Contacts from '../components/contacts';
 
 import { setVisibilityChat } from '../actions/actions';
 
-const mapStateToProps = state => ({ chats: state.allChats });
+const mapStateToProps = state => ({ allChats: state.allChats });
 
 const mapDispatchToProps = dispatch => (
     {

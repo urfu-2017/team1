@@ -34,27 +34,26 @@ const ContactsList = styled.section`
 
 export default class Contacts extends React.Component {
     static propTypes = {
-        chats: PropTypes.arrayOf(PropTypes.object),
+        allChats: PropTypes.arrayOf(PropTypes.object),
         onClick: PropTypes.func
     }
-    static defaultProps = { chats: [], onClick: '' }
+    static defaultProps = { allChats: [], onClick: '' }
     constructor(props) {
         super(props);
         this.state = {};
     }
 
     getContactsList() {
-        const { chats, onClick } = this.props;
-        return chats.map(contact => {
-            return (
-                <Contact
-                    key={contact.id}
-                    name={contact.title}
-                    // picture={contact.picture}
-                    onClick={() => { onClick(contact); }}
-                />
-            );
-        });
+        const { allChats, onClick } = this.props;
+        return allChats.map(contact => (
+            <Contact
+                key={contact.id}
+                name={contact.title}
+                chatId={contact.id}
+                // picture={contact.picture}
+                onClick={() => { onClick(contact); }}
+            />
+        ));
     }
 
     render() {

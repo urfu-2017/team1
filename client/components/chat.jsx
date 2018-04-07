@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import Messages from '../components/messages';
 import ChatInput from './chatInput';
-import io from 'socket.io-client';
 
 const ChatWrapper = styled.section`
     width: 65%;
@@ -32,26 +31,6 @@ export default class Chat extends React.Component {
         super(props);
         this.state = {};
     }
-
-    /*componentDidMount() {
-        this.socket = io('http://localhost:3000/');
-        this.socket.on('now', data => {
-            const message = {
-                id: 3,
-                content: data.message,
-                createAt: '12:09'
-            };
-            this.setState({
-
-                messages: [...this.state.messages, message]
-            });
-        });
-    }
-
-    componentWillUnmount() {
-        this.socket.off('now');
-        this.socket.close();
-    }*/
 
     render() {
         const { messages } = this.props;
