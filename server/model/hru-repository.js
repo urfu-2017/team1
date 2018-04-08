@@ -11,12 +11,19 @@ class HruRepository {
         this._cache = new Map();
     }
 
-    async saveUser(user) {
+    async updateUser(user) {
         await this._save('user', user, user.id);
     }
 
-    async saveUserGithubId(githubId, user) {
-        await this._save('githubId', user.id, githubId);
+    async saveUser(user) {
+        await Promise.all([
+            this.updateUser(user),
+            this.saveUserGithubId(user.githubId, user.id)
+        ]);
+    }
+
+    async saveUserGithubId(githubId, userId) {
+        await this._save('githubId', userId, githubId);
     }
 
     async saveChat(chat) {
