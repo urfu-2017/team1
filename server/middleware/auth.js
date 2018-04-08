@@ -31,7 +31,7 @@ passport.deserializeUser((user, done) => {
 });
 
 module.exports = () => (req, res, next) => {
-    if (req.user || req.url.startsWith('/auth')) {
+    if (req.user || req.url.startsWith('/auth') || req.url.startsWith('/static')) {
         next();
     } else {
         res.redirect('/auth');
