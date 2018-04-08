@@ -1,6 +1,5 @@
 'use strict';
 
-
 class Message {
     constructor({ content, senderId, createdAt }) {
         this.content = content;

@@ -1,4 +1,4 @@
-import { VISIBILITY_CHAT, SEND_NEW_MESSAGE } from '../actions/actions';
+import { VISIBILITY_CHAT, SEND_NEW_MESSAGE, SELECT_CHAT, VISIBILITY_MENU } from '../actions/actions';
 
 const initialState = {
     currentUser: {
@@ -6,6 +6,8 @@ const initialState = {
         avatar: 'path-to-avatar.jpeg',
         id: 'ALPHANUMERIC_ID'
     },
+    selectedChatId: null,
+    openMenu: false,
     currentChat: {},
     sessionInfoAndSecurityTokens: {
         HereBeDragons: '¯\\_(ツ)_/¯'
@@ -33,10 +35,14 @@ export default function currentInfo(state = initialState, action) {
         //if (res.status !== 200) {
             //вывести что сообщение не отправлено
         //}
-        
         return state;
     }
-
+    case SELECT_CHAT:
+        state.selectedChatId = action.id;
+        return Object.assign({}, state);
+    case VISIBILITY_MENU:
+        state.openMenu = action.visibility;
+        return Object.assign({}, state);
     default: return state;
     }
 }

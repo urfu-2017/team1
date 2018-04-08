@@ -7,6 +7,7 @@ const app = require('express')();
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
+const restRoutes = require('./controllers/rest/routes');
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const authMiddleware = require('./middleware/auth');
@@ -35,7 +36,9 @@ io.on('connection', socket => {
 
 nextApp.prepare().then(() => {
     routes(app);
-    app.get('*', handleRequest);
+    app
+        .use('/api/rest', restRoutes)
+        .get('*', handleRequest);
     server.listen(port, () => console.info(`> Ready on http://localhost:${port}`));
 });
 
