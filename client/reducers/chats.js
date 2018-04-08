@@ -94,7 +94,7 @@ export default function chats(state = initialState, action) {
     case RECEIVED_NEW_MESSAGE: {
         const neededChat = state.find(x => x.id === action.message.chatId);
         neededChat.messages = [...neededChat.messages, action.message];
-        return state;
+        return Object.assign([], state);
     }
     default: return state;
     }
