@@ -15,8 +15,10 @@ module.exports.saveNewMessage = socket => (req, res) => {
         .then(message => {
             socket.emit(`now-ID_${message.chatId}`, message);
             res.sendStatus(201);
+            console.log('сообщение разослано');
         })
         .catch(error => {
             res.sendStatus(400);
+            console.log('при передаче сообщения произошла ошибка');
         });
 };
