@@ -34,6 +34,7 @@ export default class Chat extends React.Component {
 
     render() {
         const { messages } = this.props;
+
         return messages.length ?
             <ChatWrapper >
                 <Messages messages={messages} />

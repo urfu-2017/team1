@@ -4,7 +4,7 @@ const initialState = [
     {
         title: 'First Chat Title',
         picture: 'path-to-chat-pic.jpeg',
-        id: 'ALPHANUMEfRIC_ID',
+        id: 'ID_1',
         lastMessage: {
             content: {
                 text: 'message text',
@@ -59,7 +59,7 @@ const initialState = [
     {
         title: 'Second Chat Title',
         picture: 'path-to-chat-pic.jpeg',
-        id: 'ALPHANUMERIC_ID',
+        id: 'ID_2',
         lastMessage: {
             content: {
                 text: 'message text',

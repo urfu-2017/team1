@@ -4,9 +4,11 @@ require('dotenv').config();
 const next = require('next');
 const passport = require('passport');
 const app = require('express')();
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-
 const authMiddleware = require('./middleware/auth');
 const routes = require('./routes');
 
@@ -39,12 +41,12 @@ nextApp.prepare().then(() => {
 
 function myFunc(socket) {
     console.log('все работает');
-    socket.emit('now-ALPHANUMEfRIC_ID', {
+    socket.emit('now-ID_1', {
 
         message: `Первый!!${Math.random()}!1!!!!`
     });
 
-    socket.emit('now-ALPHANUMERIC_ID', {
+    socket.emit('now-ID_2', {
 
         message: `Второй!!${Math.random()}!1!!!!`
     });

@@ -1,6 +1,7 @@
 'use strict';
 
 const passport = require('passport');
+const { saveNewMessage } = require('./controllers/message');
 
 module.exports = app => {
     app.get('/auth/github', passport.authenticate('github'));
@@ -12,4 +13,6 @@ module.exports = app => {
             res.redirect('/index');
         }
     );
+
+    app.post('/message', saveNewMessage);
 };

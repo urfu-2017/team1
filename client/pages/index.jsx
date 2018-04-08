@@ -23,9 +23,6 @@ export default class KilogrammApp extends React.Component {
         this.state = {};
     }
 
-    sendMessage = () => {
-    }
-
     render() {
         return (
             <Provider store={store}>
