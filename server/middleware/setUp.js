@@ -2,9 +2,9 @@
 
 module.exports = () => (req, res, next) => {
     const user = req.user;
-    let chats = getChats(user);
-    for(let chat of chats) {
-        
+    const chats = getChats(user);
+    for (const chat of chats) {
+
     }
 };
 

@@ -6,7 +6,6 @@ const initialState = {
         avatar: 'path-to-avatar.jpeg',
         id: 'ALPHANUMERIC_ID'
     },
-    selectedChatId: null,
     openMenu: false,
     currentChat: {},
     sessionInfoAndSecurityTokens: {
@@ -20,21 +19,21 @@ export default function currentInfo(state = initialState, action) {
         state.currentChat = action.chat;
         return Object.assign({}, state);
     case SEND_NEW_MESSAGE: {
-        let message = action.message;
+        const message = action.message;
         const options = {
             headers: {
-                'Accept': 'application/json',
+                Accept: 'application/json',
                 'Content-Type': 'application/json'
             },
             method: 'POST',
             body: JSON.stringify({ message })
         };
-        //асинхронный запрос попытаться сохранить в базе
-        //let res = await fetch(URL, options)
+        // асинхронный запрос попытаться сохранить в базе
+        // let res = await fetch(URL, options)
         //    .then(() => fetch(URL));
-        //if (res.status !== 200) {
-            //вывести что сообщение не отправлено
-        //}
+        // if (res.status !== 200) {
+            // вывести что сообщение не отправлено
+        // }
         return state;
     }
     case SELECT_CHAT:

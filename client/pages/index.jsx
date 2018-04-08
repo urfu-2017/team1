@@ -10,9 +10,10 @@ import SideBar from '../containers/sidebar';
 import Chat from '../containers/chat';
 
 const Wrapper = styled.main`
-    display: flex;
     height: 100%;
-    width: 100%;
+    max-width: 1260px;
+    display: flex;
+    margin: 0 auto;
 `;
 
 const store = createStore(reducer);

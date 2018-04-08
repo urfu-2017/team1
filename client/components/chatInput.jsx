@@ -1,16 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-
 import { connect } from 'react-redux';
 
-import { addMessage } from '../actions/actions';
+import Input from '../styles/chatInput';
 
-const Input = styled.input`
-    width: 100%;
-    height: 60px;
-    box-sizing: border-box;
-`;
+import { addMessage } from '../actions/actions';
 
 class ChatInput extends React.Component {
     static propTypes = {

@@ -1,67 +1,54 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import MenuIcon from 'react-icons/lib/fa/list';
+
+import { Header, SearchInput, ContactsList, Paranja, Menu } from '../styles/contacts';
 
 import Contact from './contact';
 
-const Header = styled.header`
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-`;
-
-const SearchInput = styled.input`
-    height: 40px;
-    width: 80%;
-`;
-
-const ContactsList = styled.section`
-    {
-        width: 35%;
-        display: flex;
-        flex-direction: column;
-        box-sizing: border-box;
-        border: 1px solid #111;
-    }
-
-    @media (max-width: 800px)
-    {
-        width: 100%;
-    }
-`;
 
 export default class Contacts extends React.Component {
     static propTypes = {
+        openMenu: PropTypes.bool,
         allChats: PropTypes.arrayOf(PropTypes.object),
-        onClick: PropTypes.func
+        onClickChat: PropTypes.func,
+        onClick: PropTypes.func,
+        selectedChatId: PropTypes.string
     }
-    static defaultProps = { allChats: [], onClick: '' }
+    static defaultProps = { allChats: [], onClickChat: '', onClick: '', selectedChatId: null, openMenu: false }
     constructor(props) {
         super(props);
         this.state = {};
     }
 
     getContactsList() {
-        const { allChats, onClick } = this.props;
+        const { allChats, onClickChat, selectedChatId } = this.props;
+        console.log(selectedChatId);
+        
         return allChats.map(contact => (
             <Contact
                 key={contact.id}
-                name={contact.title}
                 chatId={contact.id}
-                // picture={contact.picture}
-                onClick={() => { onClick(contact); }}
+                select={selectedChatId === contact.id}
+                contact={contact}
+                onClick={() => { onClickChat(contact); }}
             />
         ));
     }
 
     render() {
+        const { onClick, openMenu } = this.props;
+
         return (
             <React.Fragment>
+                { openMenu && (
+                    <Paranja onClick={() => { onClick(false); }}>
+                        <Menu />
+                    </Paranja>
+                )}
                 <ContactsList>
                     <Header>
-                        <MenuIcon />
+                        <MenuIcon onClick={() => { console.log('111111'); onClick(true); }} />
                         <SearchInput placeholder="Поиск" type="search" />
                     </Header>
                     { this.getContactsList() }

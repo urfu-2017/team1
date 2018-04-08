@@ -1,29 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import styled from 'styled-components';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
 
-import { addMessage } from '../actions/actions';
+import { ContactWrraper, ContactHeader, LastMessage, Sender } from '../styles/contact';
 
-const ContactWrraper = styled.article`
-    height: 40px;
-    width: 90%;
-    display: flex;
-    align-self: center;
-    align-items: center;
-    border: 1px solid #ccc;
-`;
+import { addMessage } from '../actions/actions';
 
 class Contact extends React.Component {
     static propTypes = {
-        name: PropTypes.string,
+        contact: PropTypes.objectOf,
+        select: PropTypes.bool,
         onClick: PropTypes.func,
         dispatch: PropTypes.func
     }
 
-    static defaultProps = { name: '', onClick: {}, dispatch: {} };
+    static defaultProps = { contact: {}, select: false, onClick: {}, dispatch: {} };
 
     constructor(props) {
         super(props);
@@ -49,10 +41,14 @@ class Contact extends React.Component {
     }
 
     render() {
-        const { name, onClick } = this.props;
+        const { onClick, contact, select } = this.props;
         return (
-            <ContactWrraper onClick={onClick}>
-                <p>{ name }</p>
+            <ContactWrraper onClick={onClick} select={select}>
+                <ContactHeader>{contact.title}</ContactHeader>
+                <LastMessage>
+                    <Sender>{contact.lastMessage.sender.name}:</Sender>
+                    <span>{contact.lastMessage.content.text}</span>
+                </LastMessage>
             </ContactWrraper>
         );
     }

@@ -10,9 +10,7 @@ const _getEntityById = getter => async (req, res) => {
 };
 
 
-const _checkUserAccessToChat = (user, chatId) => {
-    return user.chatsIds.includes(chatId);
-};
+const _checkUserAccessToChat = (user, chatId) => user.chatsIds.includes(chatId);
 
 
 exports.getChat = _getEntityById(dbConnection.getChat);
