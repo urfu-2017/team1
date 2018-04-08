@@ -15,6 +15,7 @@ const Wrapper = styled.main`
     max-width: 1260px;
     display: flex;
     margin: 0 auto;
+    overflow: hidden;
 `;
 
 export default class ChatApp extends React.Component {

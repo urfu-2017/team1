@@ -1,9 +1,11 @@
 const { parse } = require('url');
+const path = require('path');
 
 require('dotenv').config();
 const next = require('next');
 const passport = require('passport');
-const server = require('express')();
+const express = require('express');
+const server = express();
 
 const restRoutes = require('./controllers/rest/routes');
 const authMiddleware = require('./middleware/auth');
@@ -12,6 +14,7 @@ const routes = require('./routes');
 server.use(require('cookie-parser')());
 server.use(require('body-parser').urlencoded({ extended: true }));
 server.use(require('express-session')({ secret: process.env.SECRET_KEY, resave: true, saveUninitialized: true }));
+server.use('/static', express.static(path.resolve(__dirname, '../public')));
 
 server.use(passport.initialize());
 server.use(passport.session());

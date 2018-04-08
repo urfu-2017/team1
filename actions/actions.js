@@ -10,3 +10,4 @@ export const addMessage = message => ({ type: ADD_MESSAGE, message });
 export const selectChat = id => ({ type: SELECT_CHAT, id });
 
 export const setVisibilityMenu = visibility => ({ type: VISIBILITY_MENU, visibility });
+

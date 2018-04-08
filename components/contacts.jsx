@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import MenuIcon from 'react-icons/lib/fa/list';
+import { Menu } from './menu';
 
 const Header = styled.header`
     height: 60px;
@@ -42,12 +43,6 @@ const Paranja = styled.section`
     position: absolute;
     background: rgba(0,0,0,.2);
     max-width: 1260px;
-`;
-
-const Menu = styled.section`
-    width: 25%;
-    height: 100%;
-    background: #f2f3dE;
 `;
 
 const Contact = styled.article`
@@ -90,6 +85,7 @@ export default class Contacts extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
+        console.log(props);
     }
 
     getContactsList() {
@@ -115,6 +111,7 @@ export default class Contacts extends React.Component {
         const { onClick, openMenu } = this.props;
         return (
             <React.Fragment>
+                <div>{this.props.user}</div>
                 { openMenu && (
                     <Paranja onClick={() => { onClick(false); }}>
                         <Menu />
