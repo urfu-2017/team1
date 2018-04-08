@@ -29,6 +29,7 @@ module.exports = () => async (req, res, next) => {
                 delete msg.senderId;
                 return msg;
             });
+        chat.lastMessage = chat.messages[chat.messages.length - 1];
     }
     req.locals.data = {
         user,
