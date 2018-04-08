@@ -12,6 +12,7 @@ const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const authMiddleware = require('./middleware/auth');
 const routes = require('./routes');
+const saveNewMessage = require('./controllers/message');
 
 app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({ extended: true }));
@@ -31,6 +32,7 @@ const handleRequest = (req, res) =>
 const port = process.env.PORT || 3000;
 
 io.on('connection', socket => {
+    app.post('*', saveNewMessage(socket));
     setInterval(myFunc, 1000, socket);
 });
 
