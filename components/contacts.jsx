@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import MenuIcon from 'react-icons/lib/fa/list';
-import { Menu } from './menu';
+import Menu from './menu';
 
 const Header = styled.header`
     height: 60px;
@@ -79,13 +79,13 @@ export default class Contacts extends React.Component {
         openMenu: PropTypes.bool,
         onClickChat: PropTypes.func,
         selectedChatId: PropTypes.string,
-        chats: PropTypes.arrayOf(PropTypes.object)
+        chats: PropTypes.arrayOf(PropTypes.object),
+        user: PropTypes.object
     }
     static defaultProps = { openMenu: false, chats: [], onClickChat: '', onClick: '', selectedChatId: null }
     constructor(props) {
         super(props);
         this.state = {};
-        console.log(props);
     }
 
     getContactsList() {
@@ -108,13 +108,12 @@ export default class Contacts extends React.Component {
     }
 
     render() {
-        const { onClick, openMenu } = this.props;
+        const { onClick, openMenu, user } = this.props;
         return (
             <React.Fragment>
-                <div>{this.props.user}</div>
                 { openMenu && (
                     <Paranja onClick={() => { onClick(false); }}>
-                        <Menu />
+                        <Menu user={user}/>
                     </Paranja>
                 )}
                 <ContactsList>

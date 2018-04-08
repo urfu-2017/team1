@@ -19,6 +19,11 @@
         "arrow-body-style": ["error", "as-needed"],
         "object-curly-newline": ["error", { "multiline": true, "consistent": true }],
         "no-param-reassign": ["error", { "props": false }],
-        "strict": [0, "global"]
+        "strict": [0, "global"],
+        "max-len": ["error", 120],
+        // Не нужно проверять аргументы функций
+        "no-unused-vars": ["error", {"args": "none"}],
+        // Все равно этому никто не следует :)
+        "no-underscore-dangle": "off"
     }
 }

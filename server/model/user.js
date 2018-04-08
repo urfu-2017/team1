@@ -16,13 +16,23 @@ class User {
         return new User(data);
     }
 
+    static serialize() {
+        return {
+            id: this.id,
+            name: this.name,
+            avatar: this.avatar,
+            chatsIds: this.chatsIds,
+            githubid: this.githubid
+        };
+    }
+
     static async create(name, avatar) {
         const data = {
             name,
             avatar,
             chatsIds: [],
             id: uuid()
-        }
+        };
         await dbConnection.saveUser(data);
         return this.deserialize(data);
     }
@@ -37,8 +47,13 @@ class User {
         return data && this.deserialize(data);
     }
 
-    async addGithubID (githubid) {
+    async addGithubID(githubid) {
         await dbConnection.saveUserGithubId(githubid, this);
+    }
+
+    async update(data) {
+        Object.assign(this, data);
+        return await dbConnection.updateUser(this);
     }
 }
 

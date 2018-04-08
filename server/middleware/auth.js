@@ -16,6 +16,8 @@ passport.use(new GitHubStrategy(
             await User.create(profile.displayName, profile.photos[0].value);
             await user.addGithubID(profile.id);
             user = User.findByGithubID(profile.id);
+        } else {
+            await user.update({ name: profile.displayName, avatar: profile.photos[0].value });
         }
         cb(null, user);
     })

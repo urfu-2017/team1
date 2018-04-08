@@ -103,22 +103,25 @@ const initialState = {
     }
 };
 
-const reducer = (state = initialState, action) => {
-    switch (action.type) {
-    case VISIBILITY_CHAT:
-        state.currentChat = action.chat;
-        return Object.assign({}, state);
-    case ADD_MESSAGE:
-        state.currentChat.messages = [...state.currentChat.messages, action.message];
-        return Object.assign({}, state);
-    case SELECT_CHAT:
-        state.selectedChatId = action.id;
-        return Object.assign({}, state);
-    case VISIBILITY_MENU:
-        state.openMenu = action.visibility;
-        return Object.assign({}, state);
-    default: return state;
-    }
+const makeReducer = initialProps => {
+    const initial = Object.assign({}, initialState, initialProps);
+    return (state = initial, action) => {
+        switch (action.type) {
+        case VISIBILITY_CHAT:
+            state.currentChat = action.chat;
+            return Object.assign({}, state);
+        case ADD_MESSAGE:
+            state.currentChat.messages = [...state.currentChat.messages, action.message];
+            return Object.assign({}, state);
+        case SELECT_CHAT:
+            state.selectedChatId = action.id;
+            return Object.assign({}, state);
+        case VISIBILITY_MENU:
+            state.openMenu = action.visibility;
+            return Object.assign({}, state);
+        default: return state;
+        }
+    };
 };
 
-export default reducer;
+export default makeReducer;
