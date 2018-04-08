@@ -1,26 +1,38 @@
 'use strict';
 
-module.exports = () => (req, res, next) => {
-    const user = req.user;
-    let chats = getChats(user);
-    for(let chat of chats) {
-        
-    }
-};
+const dbConnection = require('../db-connection');
 
-function getChats(user) {
-    // сходить в базу и достать
-    return [
-        {
-            title: 'title1',
-            picture: 'picture1',
-            usersIds: [1, 2],
-            id: 'ID_1'
-        },
-        {
-            title: 'title2',
-            picture: 'picture2',
-            usersIds: [1, 2],
-            id: 'ID_2'
-        }];
-}
+
+module.exports = () => async (req, res, next) => {
+    const userId = req.user.id;
+    // нужно уточнить, что собой представляет req.user
+    // кажется, это то, что пришло из кук
+    // но тогда информации о чатах доверять нельзя
+    const user = await dbConnection.getUser(userId);
+    const chats = await dbConnection.getUserChats(userId);
+    // шквар какой-то :(
+    const [messages, users] = await Promise.all([
+        Promise.all(chats.map(c => dbConnection.getMessages(c.id))),
+        Promise.all(chats.map(c => dbConnection.getAllChatUsers(c.id)))
+    ]);
+    const usersMap = new Map(
+        users.reduce((acc, val) => acc.concat(val), []) // flatten
+            .map(u => [u.id, u])
+    );
+    for (let i = 0; i < chats.length; i += 1) {
+        const chat = chats[i];
+        delete chat.usersIds;
+        chat.users = users[i];
+        chat.messages = messages[i]
+            .map(msg => {
+                msg.sender = usersMap.get(msg.senderId);
+                delete msg.senderId;
+                return msg;
+            });
+    }
+    req.locals.data = {
+        user,
+        chats
+    };
+    next();
+};
