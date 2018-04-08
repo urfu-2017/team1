@@ -1,24 +1,20 @@
 import styled from 'styled-components';
 
 export const MessageWrapper = styled.article`
-    display: flex;
-    align-items: flex-end;
-    align-self: ${props => (props.from === 'me' ? 'flex-end' : 'flex-start')};
-    justify-content: space-between;
-    
-    margin: 6px 4px;
-    border-radius: 5px;
-    background-color: ${props => (props.from === 'me' ?  '#a3bad2' : '#dbe4ed') };
-    font: 14px;
-    
-    max-width: 50%;
-    min-width: 25%;
-    width: max-content;
-    word-wrap: break-word;
+    background: #fff;
+    height:auto;
+    padding: 10px;
 `;
 
 export const Text = styled.p`
-    margin: 0;
+    float: ${props => (props.from === 'me' ? 'right' : 'left')};
+    max-width: 70%;
+    width: fit-content;
+    word-wrap: break-word;
+    height:auto;
+    min-height: 18px;
+    background-color: ${props => (props.from === 'me' ? '#92d7ef' : '#a2eae0')};
+    border-radius: 5px;
     padding: 6px 4px 6px 6px;
 `;
 

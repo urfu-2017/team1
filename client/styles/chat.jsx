@@ -6,7 +6,7 @@ const ChatWrapper = styled.section`
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    background: #f2f3ee;
+    background: #e4e0dc;
     
     @media (max-width: 400px)
     {

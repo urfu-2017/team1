@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const MessagesList = styled.section`
     width: 100%;
-    overflow-y: auto;
+    overflow-y: scroll;
     display: flex;
     flex: 1;
     flex-direction: column;

@@ -12,7 +12,20 @@ export default class Messages extends React.Component {
 
     static defaultProps = { title: '', messages: [] }
 
-    componentDidUpdate = () => { this.node.scrollTop = this.node.scrollHeight; }
+    componentDidMount() {
+        this.node.scrollTop = this.node.scrollHeight;
+    }
+
+    componentWillUpdate = function () {
+        this.shouldScrollBottom = this.node.scrollTop +
+            this.node.offsetHeight === this.node.scrollHeight;
+    }
+
+    componentDidUpdate = function () {
+        if (this.shouldScrollBottom) {
+            this.node.scrollTop = this.node.scrollHeight;
+        }
+    }
 
     getSectionRef = node => { this.node = node; }
 
