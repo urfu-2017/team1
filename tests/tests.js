@@ -20,6 +20,10 @@ describe('User', () => {
             assert.equal(user.name, userName),
             assert.equal(user.avatar, avatarPath);
         })
+        it('Получение не существуюшего пользователя', async () => {
+            const missingUser = await User.findByID('Deadline blizko');
+            assert.isNull(missingUser);
+        })
         it('Добавление githubid к пользователю', async () => {
             await user.addGithubID(githubID);
         })
@@ -30,5 +34,9 @@ describe('User', () => {
             assert.equal(user.name, githubUser.name),
             assert.equal(user.avatar, githubUser.avatar);
         })
+        it('Поиск по githubid по несуществующему юзеру', async () => {
+            const user = await User.findByGithubID('yakotik');
+            assert.isNull(user);
+        }).timeout(10000);
     });
 })
