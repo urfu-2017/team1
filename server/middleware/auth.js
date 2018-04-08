@@ -13,9 +13,13 @@ passport.use(new GitHubStrategy(
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
         callbackURL: `${process.env.URL}/auth/github/callback`
     },
-    ((accessToken, refreshToken, profile, cb) => {
-        const user = User.create(profile.username, profile.id, profile._json.avatar_url);
-        dbConnection.saveUser(user);
+    (async (accessToken, refreshToken, profile, cb) => {
+        const githubId = profile.id;
+        let user = await dbConnection.getUserByGithubId(githubId);
+        if (user === null) {
+            user = User.create(profile.username, profile.id, profile._json.avatar_url);
+            dbConnection.saveUser(user);
+        }
         cb(null, user);
     })
 ));

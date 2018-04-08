@@ -64,6 +64,9 @@ class HruRepository {
 
     async getUserByGithubId(githubId) {
         const userId = await this.getUserIdByServiceId(githubId);
+        if (userId === null) {
+            return null;
+        }
         return await this.getUser(userId);
     }
 
