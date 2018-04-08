@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
 import MenuIcon from 'react-icons/lib/fa/list';
 
 const Header = styled.header`
@@ -13,6 +14,10 @@ const Header = styled.header`
 const SearchInput = styled.input`
     height: 40px;
     width: 80%;
+`;
+
+const MenuIconWrapper = styled.div`
+    cursor: pointer;
 `;
 
 const ContactsList = styled.section`
@@ -47,6 +52,7 @@ const Menu = styled.section`
 
 const Contact = styled.article`
     width: 84%;
+    cursor: pointer;
     height: 50px;
     margin: 4px 0;
     padding: 0 25px;
@@ -116,7 +122,9 @@ export default class Contacts extends React.Component {
                 )}
                 <ContactsList>
                     <Header>
-                        <MenuIcon onClick={() => { onClick(true); }} />
+                        <MenuIconWrapper>
+                            <MenuIcon onClick={() => { onClick(true); }} />
+                        </MenuIconWrapper>
                         <SearchInput placeholder="Поиск" type="search" />
                     </Header>
                     { this.getContactsList() }

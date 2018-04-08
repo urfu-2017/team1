@@ -54,7 +54,6 @@ const _handleRequest = async request => {
     } else if (response.statusCode >= 300) {
         throw new DbError('Database request failed', response.statusCode);
     }
-
     return response.body;
 };
 

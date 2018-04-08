@@ -12,11 +12,11 @@ class HruRepository {
     }
 
     async saveUser(user) {
-        await this._save('user', user, user.id);
+        return await this._save('user', user, user.id, hruDb.post);
     }
 
     async saveUserGithubId(githubId, user) {
-        await this._save('githubId', user.id, githubId);
+        return await this._save('githubId', user.id, githubId);
     }
 
     async saveChat(chat) {
