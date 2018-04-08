@@ -10,7 +10,7 @@ export const MenuRoot = styled.section`
 
 export class Menu extends React.Component {
     static async getInitialProps(req) {
-        console.log(req);
+        // console.log(req);
     }
 
     render() {

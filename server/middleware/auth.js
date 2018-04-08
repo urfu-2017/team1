@@ -1,8 +1,8 @@
 'use strict';
 
 const passport = require('passport');
+const User = require('../model/user');
 const GitHubStrategy = require('passport-github').Strategy;
-
 
 passport.use(new GitHubStrategy(
     {
@@ -10,23 +10,23 @@ passport.use(new GitHubStrategy(
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
         callbackURL: `${process.env.URL}/auth/github/callback`
     },
-    ((accessToken, refreshToken, profile, cb) => {
-
-    // Нужна модель пользователя для того чтобы его создавать
-    // Пример:
-    // User.findOrCreate({ githubId: profile.id }, function (err, user) {
-    //     return cb(err, user);
-    // });
-        cb(null, profile);
+    (async (accessToken, refreshToken, profile, cb) => {
+        let user = await User.findByGithubID(profile.id);
+        if (!user) {
+            await User.create(profile.displayName, profile.photos[0].value);
+            await user.addGithubID(profile.id);
+            user = User.findByGithubID(profile.id);
+        }
+        cb(null, user);
     })
 ));
 
 passport.serializeUser((user, done) => {
-    // когда будет модель пользоватея
-    done(null, user);
+    done(null, user.id);
 });
 
-passport.deserializeUser((user, done) => {
+passport.deserializeUser(async (id, done) => {
+    const user = await User.findByID(id);
     done(null, user);
 });
 

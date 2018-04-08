@@ -28,11 +28,13 @@ class User {
     }
 
     static async findByID(id) {
-        return this.deserialize(await dbConnection.getUser(id));
+        const data = await dbConnection.getUser(id);
+        return data && this.deserialize(data);
     }
 
     static async findByGithubID(githubid) {
-        return this.deserialize(await dbConnection.getUserByGithubId(githubid));
+        const data = await dbConnection.getUserByGithubId(githubid);
+        return data && this.deserialize(data);
     }
 
     async addGithubID (githubid) {
