@@ -20,7 +20,8 @@ const saveStatus = (status, userMessage) =>
     ({ type: MESSAGE_SAVED, info: { status, userMessage } });
 
 export const asyncSendMessage = message => dispatch => {
-    /* const options = {
+    const URL = 'http://localhost:3000';
+    const options = {
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
@@ -30,17 +31,11 @@ export const asyncSendMessage = message => dispatch => {
     };
     fetch(URL, options)
         .then(response => {
-     вывести что сообщение не отправлено
-     } */
-
-    // todo: поменять урл на когда будет готово
-    const URL = 'https://webdev-task-2-rmcovhtbdk.now.sh/places';
-    fetch(URL)
-        .then(response => {
-            if (response.status === 200) {
+            console.log(response);
+            if (response.status === 201) {
                 dispatch(saveStatus('(сохранено)', message));
             } else {
-                dispatch(saveStatus('(не отправлено)', message));
+                dispatch(saveStatus('(не сохранено)', message));
             }
         });
 };

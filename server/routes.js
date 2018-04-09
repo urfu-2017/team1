@@ -13,5 +13,5 @@ module.exports = app => {
         }
     );
 
-    app.post('/message', saveNewMessage);
+    app.post('*', saveNewMessage);
 };
