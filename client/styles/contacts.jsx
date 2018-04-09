@@ -5,6 +5,9 @@ export const Header = styled.header`
     display: flex;
     align-items: center;
     justify-content: space-around;
+    .header__menu-icon {
+        cursor: pointer;
+    }
 `;
 
 export const SearchInput = styled.input`

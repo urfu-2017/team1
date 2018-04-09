@@ -56,7 +56,9 @@ export default class Contacts extends React.Component {
                 )}
                 <ContactsList>
                     <Header>
-                        <MenuIcon onClick={() => { onClick(true); }} />
+                        <div className="header__menu-icon">
+                            <MenuIcon onClick={() => { onClick(true); }} />
+                        </div> 
                         <SearchInput placeholder="Поиск" type="search" />
                     </Header>
                     { this.getContactsList() }

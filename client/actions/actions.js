@@ -35,7 +35,7 @@ export const asyncSendMessage = message => dispatch => {
 
     // todo: поменять урл на когда будет готово
     const URL = 'https://webdev-task-2-rmcovhtbdk.now.sh/places';
-    window.fetch(URL)
+    fetch(URL)
         .then(response => {
             if (response.status === 200) {
                 dispatch(saveStatus('(сохранено)', message));
