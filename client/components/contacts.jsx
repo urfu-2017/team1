@@ -13,17 +13,17 @@ export default class Contacts extends React.Component {
         allChats: PropTypes.arrayOf(PropTypes.object),
         onClickChat: PropTypes.func,
         onClick: PropTypes.func,
-        selectedChatId: PropTypes.string
+        selectedChatId: PropTypes.string,
+        currentUserId: PropTypes.string
     }
-    static defaultProps = { allChats: [], onClickChat: '', onClick: '', selectedChatId: null, openMenu: false }
+    static defaultProps = { allChats: [], onClickChat: '', onClick: '', selectedChatId: null, currentUserId: null, openMenu: false }
     constructor(props) {
         super(props);
         this.state = {};
     }
 
     getContactsList() {
-        const { allChats, onClickChat, selectedChatId } = this.props;
-        console.log(selectedChatId);
+        const { allChats, onClickChat, selectedChatId, currentUserId } = this.props;
         
         return allChats.map(contact => (
             <Contact
@@ -31,6 +31,7 @@ export default class Contacts extends React.Component {
                 chatId={contact.id}
                 select={selectedChatId === contact.id}
                 contact={contact}
+                currentUserId={currentUserId}
                 onClick={() => { onClickChat(contact); }}
             />
         ));

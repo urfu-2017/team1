@@ -6,7 +6,8 @@ import { setVisibilityChat, setVisibilityMenu, selectChat } from '../actions/act
 const mapStateToProps = state => ({
     allChats: state.allChats,
     selectedChatId: state.currentInfo.selectedChatId,
-    openMenu: state.currentInfo.openMenu
+    openMenu: state.currentInfo.openMenu,
+    currentUserId: state.currentInfo.currentUser.id
 });
 
 const mapDispatchToProps = dispatch => (

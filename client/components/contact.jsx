@@ -5,17 +5,18 @@ import { connect } from 'react-redux';
 
 import { ContactWrraper, ContactHeader, LastMessage, Sender } from '../styles/contact';
 
-import { addMessage } from '../actions/actions';
+import { addMessageFromSocket } from '../actions/actions';
 
 class Contact extends React.Component {
     static propTypes = {
-        contact: PropTypes.objectOf,
+        contact: PropTypes.object,
         select: PropTypes.bool,
         onClick: PropTypes.func,
-        dispatch: PropTypes.func
+        dispatch: PropTypes.func,
+        currentUserId: PropTypes.string
     }
 
-    static defaultProps = { contact: {}, select: false, onClick: {}, dispatch: {} };
+    static defaultProps = { contact: {}, select: false, onClick: {}, dispatch: {}, currentUserId: null };
 
     constructor(props) {
         super(props);
@@ -25,13 +26,16 @@ class Contact extends React.Component {
     componentDidMount() {
         this.socket = io('http://localhost:3000/');
         this.socket.on(`now-${this.props.chatId}`, data => {
-            this.props.dispatch(addMessage({
+            const { currentUserId } = this.props;
+            const message = {
                 content: {
                     text: data.message
                 },
                 chatId: this.props.chatId,
                 from: data.userId
-            }));
+            };
+            this.props.dispatch(addMessageFromSocket(message, currentUserId));
+
         });
     }
 

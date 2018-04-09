@@ -2,8 +2,9 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
 
 import reducer from '../reducers/index';
 import SideBar from '../containers/sidebar';
@@ -16,7 +17,7 @@ const Wrapper = styled.main`
     margin: 0 auto;
 `;
 
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(thunk));
 
 export default class KilogrammApp extends React.Component {
     constructor(props) {

@@ -3,15 +3,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Input from '../styles/chatInput';
-
-import { addMessage } from '../actions/actions';
+import { asyncSendMessage, addMessageFromChatInput } from '../actions/actions';
 
 class ChatInput extends React.Component {
     static propTypes = {
-        dispatch: PropTypes.func
+        dispatch: PropTypes.func,
+        currentChatId: PropTypes.string,
+        currentUserId: PropTypes.string
     }
 
-    static defaultProps = { dispatch: {} }
+    static defaultProps = { dispatch: {}, currentChatId: '', currentUserId: ''  }
 
     constructor(props) {
         super(props);
@@ -22,7 +23,19 @@ class ChatInput extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        this.props.dispatch(addMessage({ content: { text: this.state.message, from: 'me' } }));
+        const { currentChatId, currentUserId } = this.props;
+        const message = {
+            content: {
+                text: this.state.message,
+                from: 'me'
+            },
+            chatId: currentChatId,
+            userId: currentUserId,
+            from: 'me',
+            userMessageId: Math.random()
+        }
+        this.props.dispatch(addMessageFromChatInput(message));
+        this.props.dispatch(asyncSendMessage(message));
         this.setState({ message: '' });
     }
 

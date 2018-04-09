@@ -1,4 +1,4 @@
-import { RECEIVED_NEW_MESSAGE } from '../actions/actions';
+import { RECEIVED_NEW_MESSAGE, SEND_NEW_MESSAGE, MESSAGE_SAVED } from '../actions/actions';
 
 const initialState = [
     {
@@ -92,8 +92,25 @@ const initialState = [
 export default function chats(state = initialState, action) {
     switch (action.type) {
     case RECEIVED_NEW_MESSAGE: {
+        const { message } = action.info;
+        if (action.info.currentUserId === message.userId) {
+            return state;
+        }
+        const neededChat = state.find(x => x.id === message.chatId);
+        neededChat.messages = [...neededChat.messages, message];
+        return Object.assign([], state);
+    }
+    case SEND_NEW_MESSAGE: {
+        action.message.content.text += '(отправлено)';
         const neededChat = state.find(x => x.id === action.message.chatId);
         neededChat.messages = [...neededChat.messages, action.message];
+        return Object.assign([], state);
+    }
+    case MESSAGE_SAVED: {
+        const { userMessage } = action.info;
+        const neededChat = state.find(x => x.id === userMessage.chatId);
+        const neededMessage = neededChat.messages.find(m => m.userMessageId === userMessage.userMessageId)
+        neededMessage.content.text += action.info.status;
         return Object.assign([], state);
     }
     default: return state;
