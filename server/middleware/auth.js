@@ -13,9 +13,9 @@ passport.use(new GitHubStrategy(
     (async (accessToken, refreshToken, profile, cb) => {
         let user = await User.findByGithubID(profile.id);
         if (!user) {
-            await User.create(profile.displayName, profile.photos[0].value);
+            user = await User.create(profile.displayName, profile.photos[0].value);
             await user.addGithubID(profile.id);
-            user = User.findByGithubID(profile.id);
+            user = await User.findByGithubID(profile.id);
         } else {
             await user.update({ name: profile.displayName, avatar: profile.photos[0].value });
         }
