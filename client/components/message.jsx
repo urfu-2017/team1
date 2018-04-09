@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MessageWrapper, Text,  Time } from '../styles/message';
+import { MessageWrapper, Text, Time } from '../styles/message';
 
 export default class Message extends React.Component {
     static propTypes = {
@@ -19,7 +19,7 @@ export default class Message extends React.Component {
         const { message, creationTime, from } = this.props;
         return (
             <MessageWrapper from={from}>
-                <Text dangerouslySetInnerHTML={{ __html: message }} />
+                <Text from={from} dangerouslySetInnerHTML={{ __html: message }} />
                 <Time>{creationTime}</Time>
             </MessageWrapper>
         );
