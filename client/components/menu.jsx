@@ -26,7 +26,7 @@ export default class Menu extends React.Component {
         return <MenuRoot>
             <div className="profile">
                 <img className="profile__avatar" src={user.avatar} />
-                <div className="profile__name">{ user.name }</div>
+                <div className="profile__name">{user.name}</div>
             </div>
         </MenuRoot>
     }

@@ -1,4 +1,5 @@
 const chai = require('chai');
+const { describe, it } = require('mocha');
 
 const assert = chai.assert;
 
@@ -18,7 +19,7 @@ describe('User', () => {
         it('Получение пользователя', async () => {
             user = await User.findByID(user.id);
             assert.instanceOf(user, User);
-            assert.equal(user.name, userName),
+            assert.equal(user.name, userName);
             assert.equal(user.avatar, avatarPath);
         });
         it('Получение не существуюшего пользователя', async () => {
@@ -32,7 +33,7 @@ describe('User', () => {
             const githubUser = await User.findByGithubID(githubID);
             assert.instanceOf(user, User);
             assert.equal(user.id, githubUser.id);
-            assert.equal(user.name, githubUser.name),
+            assert.equal(user.name, githubUser.name);
             assert.equal(user.avatar, githubUser.avatar);
         });
         it('Поиск по githubid по несуществующему юзеру', async () => {

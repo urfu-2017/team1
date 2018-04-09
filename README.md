@@ -8,7 +8,7 @@ Team1 is cool
 
 1) `npm i`
 2) Скопировать содержимое файла `.env.example` в `.env`
-3) Взять `GITHUB_CLIENT_ID` и `GITHUB_CLIENT_SECRET` у Анастасии Бабушкиной или зарегистрировать свое приложение на Github-е
+3) Взять `GITHUB_CLIENT_ID` и `GITHUB_CLIENT_SECRET` у Анастасии Бабушкиной или зарегистрировать свое приложение на Github-е, `HRUDB_TOKEN` у Ивана Тощева
 4) `npm run-script dev`
 5) Перейти по http://localhost:3000, ТАДАМ, все работает
 

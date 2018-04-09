@@ -10,7 +10,7 @@ module.exports = () => async (req, res, next) => {
         return;
     }
     const userId = req.user.id;
-    /*{ name: 'Lyapa96',
+    /* { name: 'Lyapa96',
     githubId: '11576176',
     avatar: 'https://avatars1.githubusercontent.com/u/11576176?v=4',
     chatsIds: [],
@@ -25,10 +25,8 @@ module.exports = () => async (req, res, next) => {
         Promise.all(chats.map(c => dbConnection.getMessages(c.id))),
         Promise.all(chats.map(c => dbConnection.getAllChatUsers(c.id)))
     ]);
-    const usersMap = new Map(
-        users.reduce((acc, val) => acc.concat(val), []) // flatten
-            .map(u => [u.id, u])
-    );
+    const usersMap = new Map(users.reduce((acc, val) => acc.concat(val), []) // flatten
+        .map(u => [u.id, u]));
     for (let i = 0; i < chats.length; i += 1) {
         const chat = chats[i];
         delete chat.usersIds;

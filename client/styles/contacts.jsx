@@ -33,9 +33,3 @@ export const Paranja = styled.section`
     background: rgba(0,0,0,.2);
     max-width: 1260px;
 `;
-
-export const Menu = styled.section`
-    width: 25%;
-    height: 100%;
-    background: #f2f3dE;
-`;

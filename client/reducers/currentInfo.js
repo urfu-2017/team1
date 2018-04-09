@@ -1,4 +1,4 @@
-import { VISIBILITY_CHAT, SEND_NEW_MESSAGE, SELECT_CHAT, VISIBILITY_MENU } from '../actions/actions';
+import { VISIBILITY_CHAT, SELECT_CHAT, VISIBILITY_MENU } from '../actions/actions';
 
 const initialState = {
     currentUser: {

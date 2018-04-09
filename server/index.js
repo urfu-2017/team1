@@ -5,6 +5,7 @@ require('dotenv').config();
 const next = require('next');
 const passport = require('passport');
 const express = require('express');
+
 const app = express();
 const bodyParser = require('body-parser');
 
@@ -26,37 +27,34 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(authMiddleware());
-//app.use(setUpMiddleware());
+// app.use(setUpMiddleware());
 
 const nextApp = next({ dir: './client', dev: process.env.NODE_ENV !== 'production' });
 
-const render = pageName => (req, res) => app.render(req, res, `/${pageName}`); // eslint-disable-line no-unused-vars, max-len
+const render = pageName => (req, res) => nextApp.render(req, res, `/${pageName}`); // eslint-disable-line no-unused-vars, max-len
 const handleRequest = (req, res) =>
     nextApp.getRequestHandler()(req, res, parse(req.url, true));
 
 const port = process.env.PORT || 3000;
 
 io.on('connection', socket => {
-    // setInterval(myFunc, 1000, socket);
+    setInterval(myFunc, 1000, socket);
 });
 
 nextApp.prepare().then(() => {
     routes(app);
     app
         .use('/api/rest', restRoutes)
-        .get('*', handleRequest)
+        .get('*', handleRequest);
     server.listen(port, () => console.info(`> Ready on http://localhost:${port}`)); // eslint-disable-line no-console, max-len
 });
 
 function myFunc(socket) {
-    console.log('все работает');
     socket.emit('now-ID_1', {
-
         message: `Первый!!${Math.random()}!1!!!!`
     });
 
     socket.emit('now-ID_2', {
-
         message: `Второй!!${Math.random()}!1!!!!`
     });
 }

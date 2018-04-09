@@ -110,7 +110,7 @@ export default function chats(state = initialState, action) {
     case MESSAGE_SAVED: {
         const { userMessage } = action.info;
         const neededChat = state.find(x => x.id === userMessage.chatId);
-        const neededMessage = neededChat.messages.find(m => m.userMessageId === userMessage.userMessageId)
+        const neededMessage = neededChat.messages.find(m => m.userMessageId === userMessage.userMessageId);
         neededMessage.content.text += action.info.status;
         return Object.assign([], state);
     }

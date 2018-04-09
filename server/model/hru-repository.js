@@ -127,9 +127,9 @@ class HruRepository {
         for (let i = 0; i < this._retryTimes; i += 1) {
             try {
                 return await request();
-            } catch (exc) {
-                if (exc.statusCode >= 500) {
-                    console.error(`Can't make a request, reason: ${exc}`);
+            } catch (error) {
+                if (error.statusCode >= 500) {
+                    console.error(`Can't make a request, reason: ${error}`);
                 }
             }
         }
