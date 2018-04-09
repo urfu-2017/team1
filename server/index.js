@@ -27,7 +27,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(authMiddleware());
-// app.use(setUpMiddleware());
+app.use(setUpMiddleware());
 
 const nextApp = next({ dir: './client', dev: process.env.NODE_ENV !== 'production' });
 
