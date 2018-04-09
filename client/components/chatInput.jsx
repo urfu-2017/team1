@@ -1,27 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-
 import { connect } from 'react-redux';
 
-import { addMessage } from '../actions/actions';
-
-const Input = styled.input`
-    width: 100%;
-    height: 45px;
-    border: none;
-    outline: none;
-    padding: 0 0 0 25px;
-    box-sizing: border-box;
-    background-color: rgba(255,255,255,.7);
-`;
+import Input from '../styles/chatInput';
+import { asyncSendMessage, addMessageFromChatInput } from '../actions/actions';
 
 class ChatInput extends React.Component {
     static propTypes = {
-        dispatch: PropTypes.func
+        dispatch: PropTypes.func,
+        currentChatId: PropTypes.string,
+        currentUserId: PropTypes.string
     }
 
-    static defaultProps = { dispatch: {} }
+    static defaultProps = { dispatch: {}, currentChatId: '', currentUserId: ''  }
 
     constructor(props) {
         super(props);
@@ -32,7 +23,19 @@ class ChatInput extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        this.props.dispatch(addMessage({ content: { text: this.state.message, from: 'me' } }));
+        const { currentChatId, currentUserId } = this.props;
+        const message = {
+            content: {
+                text: this.state.message,
+                from: 'me'
+            },
+            chatId: currentChatId,
+            userId: currentUserId,
+            from: 'me',
+            userMessageId: Math.random()
+        }
+        this.props.dispatch(addMessageFromChatInput(message));
+        this.props.dispatch(asyncSendMessage(message));
         this.setState({ message: '' });
     }
 

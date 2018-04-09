@@ -1,13 +1,14 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
 
 import makeReducer from '../reducers/index';
 import SideBar from '../containers/sidebar';
 import Chat from '../containers/chat';
-
 
 const Wrapper = styled.main`
     height: 100%;
@@ -17,11 +18,11 @@ const Wrapper = styled.main`
     overflow: hidden;
 `;
 
-export default class ChatApp extends React.Component {
+export default class KilogrammApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.store = createStore(makeReducer(props));
+        this.store = createStore(makeReducer(props), applyMiddleware(thunk));
     }
 
     static async getInitialProps({ req }) {

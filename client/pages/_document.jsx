@@ -3,16 +3,17 @@ import { ServerStyleSheet, injectGlobal } from 'styled-components';
 
 injectGlobal`
     html {
-        margin: 0;
+        width: 100%;
         height: 100%;
+        margin: 0;
     }
     body {
-        margin: 0;
+        width: 100%;
         height: 100%;
+        margin: 0;
     }
     body > div:first-child
     {
-        font: 16px Time New Roman;
         height: 100%;
     }
 `;

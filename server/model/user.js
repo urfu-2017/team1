@@ -4,12 +4,12 @@ const uuid = require('uuid/v4');
 const dbConnection = require('../db-connection');
 
 class User {
-    constructor({ name, avatar, chatsIds, id, githubid = null }) {
+    constructor({ name, avatar, chatsIds, id, githubId = null }) {
         this.name = name;
         this.avatar = avatar;
         this.chatsIds = chatsIds;
         this.id = id;
-        this.githubid = githubid;
+        this.githubId = githubId;
     }
 
     static deserialize(data) {

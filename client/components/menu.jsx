@@ -23,7 +23,6 @@ export const MenuRoot = styled.section`
 export default class Menu extends React.Component {
     render() {
         const { user } = this.props;
-        console.log(user);
         return <MenuRoot>
             <div className="profile">
                 <img className="profile__avatar" src={user.avatar} />

@@ -5,36 +5,58 @@ require('dotenv').config();
 const next = require('next');
 const passport = require('passport');
 const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
 
-const server = express();
-
+app.use(bodyParser.json());
 const restRoutes = require('./controllers/rest/routes');
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 const authMiddleware = require('./middleware/auth');
+const setUpMiddleware = require('./middleware/setUp');
 const routes = require('./routes');
 
-server.use(require('cookie-parser')());
-server.use(require('body-parser').urlencoded({ extended: true }));
-server.use(require('express-session')({ secret: process.env.SECRET_KEY, resave: true, saveUninitialized: true }));
+app.use(require('cookie-parser')());
+app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(require('express-session')({ secret: process.env.SECRET_KEY, resave: true, saveUninitialized: true }));
 
-server.use('/static', express.static(path.resolve(__dirname, '../public')));
+app.use('/static', express.static(path.resolve(__dirname, '../public')));
 
-server.use(passport.initialize());
-server.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
-server.use(authMiddleware());
+app.use(authMiddleware());
+//app.use(setUpMiddleware());
 
-const app = next({ dev: process.env.NODE_ENV !== 'production' });
+const nextApp = next({ dir: './client', dev: process.env.NODE_ENV !== 'production' });
 
 const render = pageName => (req, res) => app.render(req, res, `/${pageName}`); // eslint-disable-line no-unused-vars, max-len
 const handleRequest = (req, res) =>
-    app.getRequestHandler()(req, res, parse(req.url, true));
+    nextApp.getRequestHandler()(req, res, parse(req.url, true));
 
 const port = process.env.PORT || 3000;
 
-app.prepare().then(() => {
-    routes(server);
-    server
+io.on('connection', socket => {
+    setInterval(myFunc, 1000, socket);
+});
+
+nextApp.prepare().then(() => {
+    routes(app);
+    app
         .use('/api/rest', restRoutes)
         .get('*', handleRequest)
         .listen(port, () => console.log(`Listening on http://localhost:${port}`)); // eslint-disable-line no-console, max-len
 });
+
+function myFunc(socket) {
+    console.log('все работает');
+    socket.emit('now-ID_1', {
+
+        message: `Первый!!${Math.random()}!1!!!!`
+    });
+
+    socket.emit('now-ID_2', {
+
+        message: `Второй!!${Math.random()}!1!!!!`
+    });
+}
