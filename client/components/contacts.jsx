@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MenuIcon from 'react-icons/lib/fa/list';
+import Menu from './menu';
 
-import { Header, SearchInput, ContactsList, Paranja, Menu } from '../styles/contacts';
+import { Header, SearchInput, ContactsList, Paranja } from '../styles/contacts';
 
 import Contact from './contact';
 
@@ -14,8 +15,7 @@ export default class Contacts extends React.Component {
         onClickChat: PropTypes.func,
         onClick: PropTypes.func,
         selectedChatId: PropTypes.string,
-        currentUserId: PropTypes.string,
-        initial: PropTypes.object
+        user: PropTypes.object
     }
     static defaultProps = { 
         allChats: [], 
@@ -30,7 +30,7 @@ export default class Contacts extends React.Component {
     }
 
     getContactsList() {
-        const { allChats, onClickChat, selectedChatId, initial } = this.props;
+        const { allChats, onClickChat, selectedChatId, user } = this.props;
         
         return allChats.map(contact => (
             <Contact
@@ -38,20 +38,20 @@ export default class Contacts extends React.Component {
                 chatId={contact.id}
                 select={selectedChatId === contact.id}
                 contact={contact}
-                currentUserId={inital.user.id}
+                currentUserId={user.id}
                 onClick={() => { onClickChat(contact); }}
             />
         ));
     }
 
     render() {
-        const { onClick, openMenu } = this.props;
+        const { onClick, openMenu, user } = this.props;
 
         return (
             <React.Fragment>
                 { openMenu && (
                     <Paranja onClick={() => { onClick(false); }}>
-                        <Menu user={initial.user} />
+                        <Menu user={user} />
                     </Paranja>
                 )}
                 <ContactsList>

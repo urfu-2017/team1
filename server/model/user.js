@@ -22,7 +22,7 @@ class User {
             name: this.name,
             avatar: this.avatar,
             chatsIds: this.chatsIds,
-            githubid: this.githubid
+            githubId: this.githubId
         };
     }
 
@@ -42,13 +42,13 @@ class User {
         return data && this.deserialize(data);
     }
 
-    static async findByGithubID(githubid) {
-        const data = await dbConnection.getUserByGithubId(githubid);
+    static async findByGithubID(githubId) {
+        const data = await dbConnection.getUserByGithubId(githubId);
         return data && this.deserialize(data);
     }
 
-    async addGithubID(githubid) {
-        await dbConnection.saveUserGithubId(githubid, this);
+    async addGithubID(githubId) {
+        await dbConnection.saveUserGithubId(githubId, this);
     }
 
     async update(data) {

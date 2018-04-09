@@ -6,6 +6,7 @@ export const MessagesList = styled.section`
     display: flex;
     flex: 1;
     flex-direction: column;
+    background-color: #ffffff;
 `;
 
 export const Header = styled.section`
@@ -14,6 +15,5 @@ export const Header = styled.section`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 0 10px 0;
     background-color: rgba(255,255,255, .7);
 `;

@@ -37,7 +37,7 @@ const handleRequest = (req, res) =>
 const port = process.env.PORT || 3000;
 
 io.on('connection', socket => {
-    setInterval(myFunc, 1000, socket);
+    // setInterval(myFunc, 1000, socket);
 });
 
 nextApp.prepare().then(() => {
@@ -45,7 +45,7 @@ nextApp.prepare().then(() => {
     app
         .use('/api/rest', restRoutes)
         .get('*', handleRequest)
-        .listen(port, () => console.log(`Listening on http://localhost:${port}`)); // eslint-disable-line no-console, max-len
+    server.listen(port, () => console.info(`> Ready on http://localhost:${port}`)); // eslint-disable-line no-console, max-len
 });
 
 function myFunc(socket) {

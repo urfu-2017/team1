@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const MessageWrapper = styled.article`
-    background: #fff;
     height:auto;
     padding: 10px;
 `;

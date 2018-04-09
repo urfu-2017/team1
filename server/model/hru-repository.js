@@ -16,7 +16,7 @@ class HruRepository {
     }
 
     async updateUser(user) {
-        return await this._save('user', user, user.id, hruDb.put);
+        return await this._save('user', user, user.id);
     }
 
     async saveUserGithubId(githubId, user) {
@@ -128,7 +128,9 @@ class HruRepository {
             try {
                 return await request();
             } catch (exc) {
-                console.error(`Can't make a request, reason: ${exc}`);
+                if (exc.statusCode >= 500) {
+                    console.error(`Can't make a request, reason: ${exc}`);
+                }
             }
         }
 

@@ -3,12 +3,14 @@ import Contacts from '../components/contacts';
 
 import { setVisibilityChat, setVisibilityMenu, selectChat } from '../actions/actions';
 
-const mapStateToProps = (state, props) => ({
-    chats: state.allChats,
-    selectedChatId: state.selectedChatId,
-    openMenu: state.openMenu,
-    user: state.user
-});
+const mapStateToProps = (state, props) => {
+    return {
+        allChats: state.allChats,
+        selectedChatId: state.currentInfo.selectedChatId,
+        openMenu: state.currentInfo.openMenu,
+        user: state.initial.user
+    }
+};
 
 const mapDispatchToProps = dispatch => (
     {

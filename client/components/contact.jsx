@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
 
-import { ContactWrraper, ContactHeader, LastMessage, Sender } from '../styles/contact';
+import { ContactWrapper, ContactHeader, LastMessage, Sender } from '../styles/contact';
 
 import { addMessageFromSocket } from '../actions/actions';
 
@@ -47,13 +47,13 @@ class Contact extends React.Component {
     render() {
         const { onClick, contact, select } = this.props;
         return (
-            <ContactWrraper onClick={onClick} select={select}>
+            <ContactWrapper onClick={onClick} select={select}>
                 <ContactHeader>{contact.title}</ContactHeader>
                 <LastMessage>
                     <Sender>{contact.lastMessage.sender.name}:</Sender>
                     <span>{contact.lastMessage.content.text}</span>
                 </LastMessage>
-            </ContactWrraper>
+            </ContactWrapper>
         );
     }
 }

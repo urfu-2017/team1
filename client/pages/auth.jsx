@@ -25,7 +25,7 @@ const AuthWrapper = styled.section`
 export default class Auth extends React.Component {
     render () {
         return <AuthWrapper>
-            <div className="blockInner">
+            <div className="block-inner">
                 <div className="inner">
                     Авторизоваться через:
                     <a href="/auth/github/">

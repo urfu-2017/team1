@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ContactWrraper = styled.article`
+export const ContactWrapper = styled.article`
     width: 90%;
     height: 50px;
     margin: 4px 0;
