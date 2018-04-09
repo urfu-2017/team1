@@ -11,6 +11,7 @@ const restRoutes = require('./controllers/rest/routes');
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const authMiddleware = require('./middleware/auth');
+const setUpMiddleware = require('./middleware/setUp');
 const routes = require('./routes');
 
 app.use(require('cookie-parser')());
@@ -21,6 +22,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(authMiddleware());
+//app.use(setUpMiddleware());
 
 const nextApp = next({ dir: './client', dev: process.env.NODE_ENV !== 'production' });
 
