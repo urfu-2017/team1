@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MenuIcon from 'react-icons/lib/fa/list';
 import Menu from './menu';
 
-import { Header, SearchInput, ContactsList, Paranja } from '../styles/contacts';
+import { Header, SearchInput, ChatsList, Paranja } from '../styles/chats';
 
-import Contact from './contact';
+import Chat from './chat';
 
 
-export default class Contacts extends React.Component {
+export default class Chats extends Component {
     static propTypes = {
         openMenu: PropTypes.bool,
         allChats: PropTypes.arrayOf(PropTypes.object),
@@ -17,23 +17,22 @@ export default class Contacts extends React.Component {
         selectedChatId: PropTypes.string,
         user: PropTypes.object
     }
-    static defaultProps = { 
-        allChats: [], 
-        onClickChat: '', 
-        onClick: '', 
-        selectedChatId: null, 
-        openMenu: false 
+    static defaultProps = {
+        allChats: [],
+        onClickChat: '',
+        onClick: '',
+        selectedChatId: null,
+        openMenu: false
     }
     constructor(props) {
         super(props);
         this.state = {};
     }
 
-    getContactsList() {
-        const { allChats, onClickChat, selectedChatId, user } = this.props;
-        
+    getChatsList() {
+        const { allChats, onClickChat, selectedChatId, user } = this.props;  
         return allChats.map(contact => (
-            <Contact
+            <Chat
                 key={contact.id}
                 chatId={contact.id}
                 select={selectedChatId === contact.id}
@@ -54,15 +53,15 @@ export default class Contacts extends React.Component {
                         <Menu user={user} />
                     </Paranja>
                 )}
-                <ContactsList>
+                <ChatsList>
                     <Header>
                         <div className="header__menu-icon">
                             <MenuIcon onClick={() => { onClick(true); }} />
-                        </div> 
+                        </div>
                         <SearchInput placeholder="Поиск" type="search" />
                     </Header>
-                    { this.getContactsList() }
-                </ContactsList>
+                    { this.getChatsList() }
+                </ChatsList>
             </React.Fragment>
         );
     }

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { MessagesList, Header } from '../styles/messages';
 
 import Message from './message';
 
-export default class Messages extends React.Component {
+export default class Messages extends Component {
     static propTypes = {
         title: PropTypes.string,
         messages: PropTypes.arrayOf(PropTypes.object)

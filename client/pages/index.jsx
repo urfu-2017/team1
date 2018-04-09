@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 
 import makeReducer from '../reducers/index';
 import SideBar from '../containers/sidebar';
-import Chat from '../containers/chat';
+import ChatWindow from '../containers/chatWindow';
 
 const Wrapper = styled.main`
     height: 100%;
@@ -34,7 +34,7 @@ export default class KilogrammApp extends React.Component {
             <Provider store={this.store}>
                 <Wrapper>
                     <SideBar />
-                    <Chat />
+                    <ChatWindow />
                 </Wrapper>
             </Provider>
         );

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { MessageWrapper, Text, Time } from '../styles/message';
 
-export default class Message extends React.Component {
+export default class Message extends Component {
     static propTypes = {
         from: PropTypes.string,
         message: PropTypes.string,

@@ -15,7 +15,7 @@ export const SearchInput = styled.input`
     width: 80%;
 `;
 
-export const ContactsList = styled.section`
+export const ChatsList = styled.section`
     width: 35%;
     display: flex;
     flex-direction: column;

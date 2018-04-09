@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { MenuRoot } from '../styles/menu';
 
 
-export default class Menu extends React.Component {
+export default class Menu extends Component {
     render() {
         const { user } = this.props;
         return <MenuRoot>

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Chat from '../components/chat';
+import ChatWindow from '../components/chatWindow';
 
 const mapStateToProps = state => ({ 
     messages: state.currentInfo.currentChat.messages,
@@ -8,4 +8,4 @@ const mapStateToProps = state => ({
     currentUserId: state.currentInfo.currentUser.id
 });
 
-export default connect(mapStateToProps)(Chat);
+export default connect(mapStateToProps)(ChatWindow);

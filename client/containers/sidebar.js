@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Contacts from '../components/contacts';
+import Chats from '../components/chats';
 
 import { setVisibilityChat, setVisibilityMenu, selectChat } from '../actions/actions';
 
@@ -26,6 +26,6 @@ const mapDispatchToProps = dispatch => (
 const Sidebar = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Contacts);
+)(Chats);
 
 export default Sidebar;

@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import Input from '../styles/chatInput';
+import Input from '../styles/chatWindowInput';
 import { asyncSendMessage, addMessageFromChatInput } from '../actions/actions';
 
-class ChatInput extends React.Component {
+class ChatWindowInput extends Component {
     static propTypes = {
         dispatch: PropTypes.func,
         currentChatId: PropTypes.string,
@@ -33,7 +33,7 @@ class ChatInput extends React.Component {
             userId: currentUserId,
             from: 'me',
             userMessageId: Math.random()
-        }
+        };
         this.props.dispatch(addMessageFromChatInput(message));
         this.props.dispatch(asyncSendMessage(message));
         this.setState({ message: '' });
@@ -54,5 +54,5 @@ class ChatInput extends React.Component {
     }
 }
 
-export default connect()(ChatInput);
+export default connect()(ChatWindowInput);
 
