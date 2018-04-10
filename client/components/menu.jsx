@@ -11,6 +11,9 @@ export default class Menu extends Component {
                 <img className="profile__avatar" src={user.avatar} />
                 <div className="profile__name">{user.name}</div>
             </div>
+            <main>
+                <p className="contacts">Контакты</p>
+            </main>
         </MenuRoot>
     }
 }

@@ -16,4 +16,12 @@ export const MenuRoot = styled.section`
         width: 64px;
         height: 64px;
     }
+    .contacts {
+        padding: 20px 10px;
+        cursor: default;
+        &:hover {
+           background: #b7c5f5;;
+        }
+    }
+    
 `;

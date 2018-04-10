@@ -12,6 +12,7 @@ passport.use(new GitHubStrategy(
     },
     (async (accessToken, refreshToken, profile, cb) => {
         let user = await User.findByGithubID(profile.id);
+        
         if (!user) {
             user = await User.create(profile.displayName, profile.photos[0].value, profile.id);
             // Иногда возникают причины делать так, но, кажется, не в нашем случае
