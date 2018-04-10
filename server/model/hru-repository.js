@@ -4,11 +4,12 @@ const hruDb = require('./hru-requester/hrudb-rest');
 
 
 class HruRepository {
-    constructor(credentials, retryTimes = 5) {
+    constructor(credentials, retryTimes = 5, disableCache = false) {
         this._credentials = credentials;
         this._retryTimes = retryTimes;
 
         this._cache = new Map();
+        this._disableCache = disableCache;
     }
 
     async updateUser(user) {
@@ -27,7 +28,7 @@ class HruRepository {
     }
 
     async saveUserGithubId(githubId, user) {
-        return await this._save('githubId', user.id, githubId);
+        return await this._save('githubId', githubId, user.id);
     }
 
     async saveChat(chat) {
@@ -54,7 +55,7 @@ class HruRepository {
         return await this._get('lastRead', `${userId}_${chatId}`);
     }
 
-    async getMessages(chatId, { from = null, to = null, limit = null, offset = null, sort = 'date' }) {
+    async getMessages(chatId, sort = 'date', from = null, to = null, limit = null, offset = null) {
         const restrictions = {
             from,
             to,
@@ -100,7 +101,7 @@ class HruRepository {
     }
 
     // sort: 'date' | 'alph'
-    async getAllUsers({ from = null, to = null, limit = null, offset = null, sort = 'date' }) {
+    async getAllUsers(sort = 'date', from = null, to = null, limit = null, offset = null) {
         const restrictions = {
             from,
             to,
@@ -171,10 +172,16 @@ class HruRepository {
     }
 
     _tryGetFromCache(key) {
-        return this._cache.get(key);
+        if (!this._disableCache) {
+            return this._cache.get(key);
+        }
+        return null;
     }
 
     _updateCache(key, value) {
+        if (this._disableCache) {
+            return;
+        }
         this._cache.set(key, value);
     }
 }
