@@ -3,11 +3,22 @@ import styled from 'styled-components';
 export const MessageWrapper = styled.article`
     height:auto;
     padding: 10px;
+    p {
+        margin: 3px;
+        line-height: 0;
+    }
+    p * {
+        margin: 0;
+        width: 85%;
+        line-height: initial;
+        background-size: contain;
+    }
 `;
 
 export const Text = styled.p`
     float: ${props => (props.fromMe ? 'right' : 'left')};
     max-width: 70%;
+    white-space: pre;
     width: fit-content;
     word-wrap: break-word;
     height:auto;

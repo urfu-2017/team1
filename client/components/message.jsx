@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { MessageWrapper, Text, Time } from '../styles/message';
+import marked from 'marked';
+import emoji from 'node-emoji';
 
 export default class Message extends Component {
     static propTypes = {
@@ -19,7 +21,8 @@ export default class Message extends Component {
         const { message, creationTime, fromMe } = this.props;
         return (
             <MessageWrapper fromMe={fromMe}>
-                <Text fromMe={fromMe} dangerouslySetInnerHTML={{ __html: message }} />
+                <Text fromMe={fromMe} dangerouslySetInnerHTML={{ __html:  emoji.emojify(marked(message),
+                     (res) => res ) }} />
                 <Time>{creationTime}</Time>
             </MessageWrapper>
         );
