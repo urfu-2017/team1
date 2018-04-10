@@ -4,7 +4,9 @@ const path = require('path');
 require('dotenv').config();
 const next = require('next');
 const passport = require('passport');
+const passportSocketIo = require('passport.socketio');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const bodyParser = require('body-parser');
@@ -17,10 +19,12 @@ const authMiddleware = require('./middleware/auth');
 const setUpMiddleware = require('./middleware/userSetUp');
 const metaInfoSetUpMiddleware = require('./middleware/metaInfoSetUp');
 const routes = require('./routes');
+const session = require('express-session');
+const memoryStore = require('session-memory-store')(session)();
 
-app.use(require('cookie-parser')());
+app.use(cookieParser());
 app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(require('express-session')({ secret: process.env.SECRET_KEY, resave: true, saveUninitialized: true }));
+app.use(session({ store: memoryStore, secret: process.env.SECRET_KEY, resave: true, saveUninitialized: true }));
 
 app.use('/static', express.static(path.resolve(__dirname, '../public')));
 
@@ -39,7 +43,16 @@ const handleRequest = (req, res) =>
 
 const port = process.env.PORT || 3000;
 
+io.use(passportSocketIo.authorize({
+    store: memoryStore,
+    secret: process.env.SECRET_KEY,
+    passport,
+    cookieParser
+}));
+
+
 io.on('connection', socket => {
+    // console.log(socket.request.user);
     setInterval(myFunc, 1000, socket);
 });
 
