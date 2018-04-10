@@ -39,6 +39,7 @@ class Chat extends Component {
             const { currentUserId } = this.props;
             this.props.dispatch(addMessageFromSocket(data.message, currentUserId));
         });
+        this.socket.emit('gib', {});
     }
 
     componentWillUnmount() {

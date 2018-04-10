@@ -12,17 +12,18 @@ class HruRepository {
     }
 
     async updateUser(user) {
-        await this._save('user', user, user.id);
+        return await this._save('user', user, user.id);
     }
 
     async saveUser(user) {
         // TODO: possible vulnerability
         const usersIndexEntry = `${user.name}_${user.id}`;
-        await Promise.all([
-            this.updateUser(user),
+        const updateTask = this.updateUser(user);
+        return await Promise.all([
+            updateTask,
             this.saveUserGithubId(user.githubId, user.id),
             this._save('usersIndex', usersIndexEntry, '', hruDb.post, false)
-        ]);
+        ])[0];
     }
 
     async saveUserGithubId(githubId, user) {
@@ -30,15 +31,15 @@ class HruRepository {
     }
 
     async saveChat(chat) {
-        await this._save('chat', chat, chat.id);
+        return await this._save('chat', chat, chat.id);
     }
 
     async saveMessage(message, chatId) {
-        await this._save('messages', message, chatId, hruDb.post, false);
+        return await this._save('messages', message, chatId, hruDb.post, false);
     }
 
     async saveLastReadTime(userId, chatId, timestamp) {
-        await this._save('lastRead', timestamp, `${userId}_${chatId}`);
+        return await this._save('lastRead', timestamp, `${userId}_${chatId}`);
     }
 
     async getUser(userId) {
@@ -54,7 +55,13 @@ class HruRepository {
     }
 
     async getMessages(chatId, { from = null, to = null, limit = null, offset = null, sort = 'date' }) {
-        const restrictions = { from, to, limit, offset, sort };
+        const restrictions = {
+            from,
+            to,
+            limit,
+            offset,
+            sort
+        };
         return await this._get(
             'messages', chatId,
             (creds, key) => hruDb.getAll(creds, key, restrictions), false
@@ -94,7 +101,13 @@ class HruRepository {
 
     // sort: 'date' | 'alph'
     async getAllUsers({ from = null, to = null, limit = null, offset = null, sort = 'date' }) {
-        const restrictions = { from, to, limit, offset, sort };
+        const restrictions = {
+            from,
+            to,
+            limit,
+            offset,
+            sort
+        };
         const users = await this._get(
             'usersIndex', '',
             (creds, key) => hruDb.getAll(creds, key, restrictions), false
@@ -122,6 +135,7 @@ class HruRepository {
         if (cache && outcome !== null) {
             this._updateCache(key, obj);
         }
+        return outcome;
     }
 
     async _get(prefix, id, method = hruDb.get, cache = true) {

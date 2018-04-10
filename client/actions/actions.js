@@ -27,7 +27,8 @@ export const asyncSendMessage = message => dispatch => {
             'Content-Type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify({ message })
+        body: JSON.stringify({ message }),
+        credentials: 'same-origin'
     };
     fetch(URL, options)
         .then(response => {

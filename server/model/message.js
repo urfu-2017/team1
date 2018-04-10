@@ -1,9 +1,10 @@
 'use strict';
 
 class Message {
-    constructor({ content, senderId, createdAt }) {
+    constructor({ content, senderId, chatId, createdAt }) {
         this.content = content;
         this.senderId = senderId;
+        this.chatId = chatId;
         this.createdAt = createdAt;
     }
 
