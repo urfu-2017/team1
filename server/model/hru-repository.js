@@ -16,6 +16,7 @@ class HruRepository {
     }
 
     async saveUser(user) {
+        // TODO: possible vulnerability
         const usersIndexEntry = `${user.name}_${user.id}`;
         await Promise.all([
             this.updateUser(user),
@@ -99,7 +100,9 @@ class HruRepository {
             (creds, key) => hruDb.getAll(creds, key, restrictions), false
         );
         // taking cd_ef from ab_cd_ef:
-        return users.map(u => u.split(/_(.+)/)[1]);
+        const usersIds = users.map(u => u.split(/_(.+)/)[1]);
+        const tasks = usersIds.map(id => this.getUser(id));
+        return await Promise.all(tasks);
     }
 
     async getUserContacts(userId) {
