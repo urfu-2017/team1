@@ -53,10 +53,22 @@ nextApp.prepare().then(() => {
 
 function myFunc(socket) {
     socket.emit('now-ID_1', {
-        message: `Первый!!${Math.random()}!1!!!!`
+        message: {
+            content: {
+                text: `Первый!!${Math.random()}!1!!!!`
+            },
+            chatId: 'ID_1',
+            senderId: 'sender_1'
+        }
     });
 
     socket.emit('now-ID_2', {
-        message: `Второй!!${Math.random()}!1!!!!`
+        message: {
+            content: {
+                text: `Второй!!${Math.random()}!1!!!!`
+            },
+            chatId: 'ID_2',
+            senderId: 'sender_2'
+        }
     });
 }

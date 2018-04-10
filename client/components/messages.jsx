@@ -7,10 +7,11 @@ import Message from './message';
 export default class Messages extends Component {
     static propTypes = {
         title: PropTypes.string,
-        messages: PropTypes.arrayOf(PropTypes.object)
+        messages: PropTypes.arrayOf(PropTypes.object),
+        currentUserId: PropTypes.string
     }
 
-    static defaultProps = { title: '', messages: [] }
+    static defaultProps = { title: '', messages: [], currentUserId: '' }
 
     componentDidMount() {
         this.node.scrollTop = this.node.scrollHeight;
@@ -30,13 +31,14 @@ export default class Messages extends Component {
     getSectionRef = node => { this.node = node; }
 
     getMessagesList() {
-        const { messages } = this.props;
+        const { messages, currentUserId } = this.props;
+        
         return messages.map((currentMessage, index) => (
             <Message
                 key={index}
                 message={currentMessage.content.text}
                 creationTime={currentMessage.createAt}
-                from={currentMessage.content.from}
+                fromMe={currentMessage.senderId === currentUserId}
             />
         ));
     }

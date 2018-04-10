@@ -11,6 +11,7 @@ const initialState = [
                 attachments: [],
                 pictures: []
             },
+             //todo fix this to senderId
             sender: {
                 name: 'user1',
                 avatar: 'path-to-avatar.jpeg',
@@ -24,11 +25,7 @@ const initialState = [
                     attachments: [],
                     pictures: []
                 },
-                sender: {
-                    name: 'user1',
-                    avatar: 'path-to-avatar.jpeg',
-                    id: 'ALPHANUMERIC_ID'
-                }
+                senderId: 'ALPHANUMERIC_ID'
             },
             {
                 content: {
@@ -36,11 +33,7 @@ const initialState = [
                     attachments: [],
                     pictures: []
                 },
-                sender: {
-                    name: 'user2',
-                    avatar: 'path-to-avatar.jpeg',
-                    id: 'ALPHANUMERIC_ID'
-                }
+                senderId: 'ALPHANUMERIC_ID'
             },
             {
                 content: {
@@ -48,11 +41,7 @@ const initialState = [
                     attachments: [],
                     pictures: []
                 },
-                sender: {
-                    name: 'user1',
-                    avatar: 'path-to-avatar.jpeg',
-                    id: 'ALPHANUMERIC_ID'
-                }
+                senderId: 'ALPHANUMERIC_ID'
             }
         ]
     },
@@ -67,7 +56,7 @@ const initialState = [
                 pictures: []
             },
             sender: {
-                name: 'user2',
+                name: 'user1',
                 avatar: 'path-to-avatar.jpeg',
                 id: 'ALPHANUMERIC_ID'
             }
@@ -78,13 +67,8 @@ const initialState = [
                     text: 'my message kek',
                     attachments: [],
                     pictures: [],
-                    from: 'me'
                 },
-                sender: {
-                    name: 'user1',
-                    avatar: 'path-to-avatar.jpeg',
-                    id: 'ALPHANUMERIC_ID'
-                }
+                senderId: 'USER_ID'
             }
         ]
     }

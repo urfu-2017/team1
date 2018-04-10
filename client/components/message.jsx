@@ -4,22 +4,22 @@ import { MessageWrapper, Text, Time } from '../styles/message';
 
 export default class Message extends Component {
     static propTypes = {
-        from: PropTypes.string,
+        fromMe: PropTypes.string,
         message: PropTypes.string,
         creationTime: PropTypes.string
     }
 
-    static defaultProps = { from: '', message: '', creationTime: '' }
+    static defaultProps = { fromMe: '', message: '', creationTime: '' }
 
     constructor(props) {
         super(props);
         this.state = {};
     }
     render() {
-        const { message, creationTime, from } = this.props;
+        const { message, creationTime, fromMe } = this.props;
         return (
-            <MessageWrapper from={from}>
-                <Text from={from} dangerouslySetInnerHTML={{ __html: message }} />
+            <MessageWrapper fromMe={fromMe}>
+                <Text fromMe={fromMe} dangerouslySetInnerHTML={{ __html: message }} />
                 <Time>{creationTime}</Time>
             </MessageWrapper>
         );

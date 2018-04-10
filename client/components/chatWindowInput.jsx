@@ -27,11 +27,9 @@ class ChatWindowInput extends Component {
         const message = {
             content: {
                 text: this.state.message,
-                from: 'me'
             },
             chatId: currentChatId,
-            userId: currentUserId,
-            from: 'me',
+            senderId: currentUserId,
             userMessageId: Math.random()
         };
         this.props.dispatch(addMessageFromChatInput(message));

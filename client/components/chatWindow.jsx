@@ -27,6 +27,7 @@ export default class ChatWindow extends Component {
                 <Messages
                     messages={messages}
                     title={title}
+                    currentUserId={currentUserId}
                 />
                 <ChatWindowInput
                     currentChatId={currentChatId}

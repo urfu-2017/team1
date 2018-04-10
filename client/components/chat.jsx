@@ -34,18 +34,10 @@ class Chat extends Component {
     componentDidMount() {
         const { serverURL, chatSocketPrefix } = this.props.meta;
         const chatId = this.props.chat.id;
-
         this.socket = io(serverURL);
         this.socket.on(`${chatSocketPrefix}-${chatId}`, data => {
             const { currentUserId } = this.props;
-            const message = {
-                content: {
-                    text: data.message
-                },
-                chatId,
-                from: data.userId
-            };
-            this.props.dispatch(addMessageFromSocket(message, currentUserId));
+            this.props.dispatch(addMessageFromSocket(data.message, currentUserId));
         });
     }
 

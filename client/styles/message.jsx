@@ -6,13 +6,13 @@ export const MessageWrapper = styled.article`
 `;
 
 export const Text = styled.p`
-    float: ${props => (props.from === 'me' ? 'right' : 'left')};
+    float: ${props => (props.fromMe ? 'right' : 'left')};
     max-width: 70%;
     width: fit-content;
     word-wrap: break-word;
     height:auto;
     min-height: 18px;
-    background-color: ${props => (props.from === 'me' ? '#92d7ef' : '#a2eae0')};
+    background-color: ${props => (props.fromMe ? '#92d7ef' : '#a2eae0')};
     border-radius: 5px;
     padding: 6px 4px 6px 6px;
 `;
