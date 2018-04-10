@@ -14,7 +14,8 @@ const restRoutes = require('./controllers/rest/routes');
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const authMiddleware = require('./middleware/auth');
-const setUpMiddleware = require('./middleware/setUp');
+const setUpMiddleware = require('./middleware/userSetUp');
+const metaInfoSetUpMiddleware = require('./middleware/metaInfoSetUp');
 const routes = require('./routes');
 
 app.use(require('cookie-parser')());
@@ -28,6 +29,7 @@ app.use(passport.session());
 
 app.use(authMiddleware());
 app.use(setUpMiddleware());
+app.use(metaInfoSetUpMiddleware(process.env.URL));
 
 const nextApp = next({ dir: './client', dev: process.env.NODE_ENV !== 'production' });
 

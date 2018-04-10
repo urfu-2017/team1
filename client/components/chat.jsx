@@ -9,19 +9,21 @@ import { addMessageFromSocket } from '../actions/actions';
 
 class Chat extends Component {
     static propTypes = {
-        contact: PropTypes.object,
+        chat: PropTypes.object,
         select: PropTypes.bool,
         onClick: PropTypes.func,
         dispatch: PropTypes.func,
-        currentUserId: PropTypes.string
+        currentUserId: PropTypes.string,
+        meta: PropTypes.object
     }
 
     static defaultProps = {
-        contact: {},
+        chat: {},
         select: false,
         onClick: {},
         dispatch: {},
-        currentUserId: null
+        currentUserId: null,
+        meta: {}
     };
 
     constructor(props) {
@@ -30,14 +32,17 @@ class Chat extends Component {
     }
 
     componentDidMount() {
-        this.socket = io('http://localhost:3000/');
-        this.socket.on(`now-${this.props.chatId}`, data => {
+        const { serverURL, chatSocketPrefix } = this.props.meta;
+        const chatId = this.props.chat.id;
+
+        this.socket = io(serverURL);
+        this.socket.on(`${chatSocketPrefix}-${chatId}`, data => {
             const { currentUserId } = this.props;
             const message = {
                 content: {
                     text: data.message
                 },
-                chatId: this.props.chatId,
+                chatId,
                 from: data.userId
             };
             this.props.dispatch(addMessageFromSocket(message, currentUserId));
@@ -50,13 +55,13 @@ class Chat extends Component {
     }
 
     render() {
-        const { onClick, contact, select } = this.props;
+        const { onClick, chat, select } = this.props;
         return (
             <ChatWrapper onClick={onClick} select={select}>
-                <ChatHeader>{contact.title}</ChatHeader>
+                <ChatHeader>{chat.title}</ChatHeader>
                 <LastMessage>
-                    <Sender>{contact.lastMessage.sender.name}:</Sender>
-                    <span>{contact.lastMessage.content.text}</span>
+                    <Sender>{chat.lastMessage.sender.name}:</Sender>
+                    <span>{chat.lastMessage.content.text}</span>
                 </LastMessage>
             </ChatWrapper>
         );
