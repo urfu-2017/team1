@@ -4,11 +4,12 @@ const uuid = require('uuid/v4');
 const dbConnection = require('../db-connection');
 
 class User {
-    constructor({ name, avatar, chatsIds, id, githubId = null }) {
+    constructor({ id, name, avatar, chatsIds, contactsIds, githubId }) {
+        this.id = id;
         this.name = name;
         this.avatar = avatar;
         this.chatsIds = chatsIds;
-        this.id = id;
+        this.contactsIds = contactsIds;
         this.githubId = githubId;
     }
 
@@ -26,12 +27,14 @@ class User {
         };
     }
 
-    static async create(name, avatar) {
+    static async create(name, avatar, githubId) {
         const data = {
             name,
             avatar,
             chatsIds: [],
-            id: uuid()
+            contactsIds: [],
+            id: uuid(),
+            githubId
         };
         await dbConnection.saveUser(data);
         return this.deserialize(data);
@@ -45,10 +48,6 @@ class User {
     static async findByGithubID(githubId) {
         const data = await dbConnection.getUserByGithubId(githubId);
         return data && this.deserialize(data);
-    }
-
-    async addGithubID(githubId) {
-        await dbConnection.saveUserGithubId(githubId, this);
     }
 
     async update(data) {

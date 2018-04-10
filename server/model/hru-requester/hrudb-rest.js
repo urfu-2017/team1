@@ -83,6 +83,16 @@ exports.get = async (credentials, key) => {
 };
 
 
+const getRestrictionsObject = restrictions => {
+    return Object.entries(restrictions)
+        .filter(([_, val]) => val !== null)
+        .reduce((acc, [k, v]) => {
+            acc[k] = v;
+            return acc;
+        }, {});
+};
+
+
 /*
 Объект restrictions:
 *  from     - моложе указанного таймстемпа (new Date().getTime())
@@ -92,6 +102,7 @@ exports.get = async (credentials, key) => {
 *  offset   – с отступом от начала выборки (по умолчанию, 0)
 */
 exports.getAll = async (credentials, key, restrictions = null) => {
+    restrictions = restrictions && getRestrictionsObject(restrictions);
     const options = new _RequestOptions(credentials, key)
         .withQuery(restrictions)
         .appendAll();

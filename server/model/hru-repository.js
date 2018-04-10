@@ -11,12 +11,17 @@ class HruRepository {
         this._cache = new Map();
     }
 
-    async saveUser(user) {
-        return await this._save('user', user, user.id, hruDb.post);
+    async updateUser(user) {
+        await this._save('user', user, user.id);
     }
 
-    async updateUser(user) {
-        return await this._save('user', user, user.id);
+    async saveUser(user) {
+        const usersIndexEntry = `${user.name}_${user.id}`;
+        await Promise.all([
+            this.updateUser(user),
+            this.saveUserGithubId(user.githubId, user.id),
+            this._save('usersIndex', usersIndexEntry, '', hruDb.post, false)
+        ]);
     }
 
     async saveUserGithubId(githubId, user) {
@@ -47,8 +52,8 @@ class HruRepository {
         return await this._get('lastRead', `${userId}_${chatId}`);
     }
 
-    async getMessages(chatId, fromTimestamp = null, toTimestamp = null, limit = null) {
-        const restrictions = HruRepository.getRestrictionsObject(fromTimestamp, toTimestamp, limit);
+    async getMessages(chatId, { from = null, to = null, limit = null, offset = null, sort = 'date' }) {
+        const restrictions = { from, to, limit, offset, sort };
         return await this._get(
             'messages', chatId,
             (creds, key) => hruDb.getAll(creds, key, restrictions), false
@@ -82,8 +87,29 @@ class HruRepository {
     }
 
     async getUnreadMessages(userId, chatId) {
-        const fromTimestamp = await this.getLastReadTime(userId, chatId);
-        return await this.getMessages(chatId, { fromTimestamp });
+        const from = await this.getLastReadTime(userId, chatId);
+        return await this.getMessages(chatId, { from });
+    }
+
+    // sort: 'date' | 'alph'
+    async getAllUsers({ from = null, to = null, limit = null, offset = null, sort = 'date' }) {
+        const restrictions = { from, to, limit, offset, sort };
+        const users = await this._get(
+            'usersIndex', '',
+            (creds, key) => hruDb.getAll(creds, key, restrictions), false
+        );
+        // taking cd_ef from ab_cd_ef:
+        return users.map(u => u.split(/_(.+)/)[1]);
+    }
+
+    async getUserContacts(userId) {
+        const user = await this.getUser(userId);
+        if (user === null) {
+            return null;
+        }
+
+        const tasks = user.contactsIds.map(contactId => this.getUser(contactId));
+        return await Promise.all(tasks);
     }
 
     async _save(prefix, obj, id, method = hruDb.put, cache = true) {
@@ -111,16 +137,6 @@ class HruRepository {
             this._updateCache(key, obj);
         }
         return obj;
-    }
-
-    static getRestrictionsObject(from, to, limit) {
-        const restrictions = { from, to, limit };
-        return Object.entries(restrictions)
-            .filter(([_, val]) => val !== null)
-            .reduce((acc, [k, v]) => {
-                acc[k] = v;
-                return acc;
-            }, {});
     }
 
     async _performRequest(request) {
