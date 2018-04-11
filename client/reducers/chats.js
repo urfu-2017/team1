@@ -66,7 +66,7 @@ const initialState = [
                 content: {
                     text: 'my message kek',
                     attachments: [],
-                    pictures: [],
+                    pictures: []
                 },
                 senderId: 'USER_ID'
             }

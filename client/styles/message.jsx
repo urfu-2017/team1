@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const MessageWrapper = styled.article`
     height:auto;
     padding: 10px;
+    cursor: default;
 `;
 
 export const Text = styled.p`

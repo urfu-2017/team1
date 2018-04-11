@@ -4,6 +4,7 @@ import chats from './chats';
 import currentInfo from './currentInfo';
 import initialReducer from './initial';
 import createMetaReducer from './meta';
+import createUsersReducer from './users';
 
 export default function makeReducer(initialProps) {
     return combineReducers({
@@ -13,6 +14,7 @@ export default function makeReducer(initialProps) {
         meta: createMetaReducer({
             serverURL: initialProps.serverURL,
             chatSocketPrefix: initialProps.chatSocketPrefix
-        })
+        }),
+        contacts: createUsersReducer(initialProps)
     });
 }

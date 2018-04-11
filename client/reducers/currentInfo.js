@@ -1,4 +1,4 @@
-import { VISIBILITY_CHAT, SELECT_CHAT, VISIBILITY_MENU } from '../actions/actions';
+import { VISIBILITY_CHAT, SELECT_CHAT, VISIBILITY_MENU, VISIBILITY_CONTACTS } from '../actions/actions';
 
 const initialState = {
     currentUser: {
@@ -6,8 +6,9 @@ const initialState = {
         avatar: 'path-to-avatar.jpeg',
         id: 'USER_ID'
     },
-    openMenu: false,
     currentChat: {},
+    openMenu: false,
+    openContacts: false,
     sessionInfoAndSecurityTokens: {
         HereBeDragons: '¯\\_(ツ)_/¯'
     }
@@ -23,6 +24,9 @@ export default function currentInfo(state = initialState, action) {
         return Object.assign({}, state);
     case VISIBILITY_MENU:
         state.openMenu = action.visibility;
+        return Object.assign({}, state);
+    case VISIBILITY_CONTACTS:
+        state.openContacts = action.visibility;
         return Object.assign({}, state);
     default: return state;
     }

@@ -27,6 +27,7 @@ const memoryStore = require('session-memory-store')(session)();
 app.use(cookieParser());
 app.use(require('body-parser')
     .urlencoded({ extended: true }));
+
 app.use(session({
     store: memoryStore,
     secret: process.env.SECRET_KEY,
