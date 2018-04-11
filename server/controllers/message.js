@@ -8,7 +8,7 @@ module.exports.saveNewMessage = socket => async (req, res) => {
     const { content, chatId, senderId } = req.body.message;
     const message = Message.create(content, senderId, chatId);
     try {
-        await dbConnection.saveMessage(message);
+        await dbConnection.saveMessage(message, chatId);
         res.sendStatus(201);
     } catch (error) {
         res.sendStatus(500);
