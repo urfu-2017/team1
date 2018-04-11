@@ -20,7 +20,7 @@ const saveStatus = (status, userMessage) =>
     ({ type: MESSAGE_SAVED, info: { status, userMessage } });
 
 export const asyncSendMessage = message => dispatch => {
-    const URL = 'http://localhost:3000';
+    const URL = 'http://localhost:3000/message';
     const options = {
         headers: {
             Accept: 'application/json',

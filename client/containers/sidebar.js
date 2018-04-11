@@ -7,7 +7,7 @@ const mapStateToProps = (state, props) => ({
     allChats: state.allChats,
     selectedChatId: state.currentInfo.selectedChatId,
     openMenu: state.currentInfo.openMenu,
-    user: state.initial.user,
+    user: state.currentInfo.currentUser,
     meta: state.meta
 });
 

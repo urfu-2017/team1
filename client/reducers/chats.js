@@ -78,8 +78,10 @@ export default function chats(state = initialState, action) {
     switch (action.type) {
     case RECEIVED_NEW_MESSAGE: {
         const { message } = action.info;
-        if (action.info.currentUserId === message.userId) {
-            return state;
+        console.log(action.info.currentUserId);
+        console.log(message.senderId);
+        if (action.info.currentUserId === message.senderId) {
+            return Object.assign([], state);
         }
         const neededChat = state.find(x => x.id === message.chatId);
         neededChat.messages = [...neededChat.messages, message];
@@ -96,6 +98,8 @@ export default function chats(state = initialState, action) {
         const neededChat = state.find(x => x.id === userMessage.chatId);
         const neededMessage = neededChat.messages.find(m => m.userMessageId === userMessage.userMessageId);
         neededMessage.content.text += action.info.status;
+        neededChat.messages = Object.assign([], neededChat.messages);
+
         return Object.assign([], state);
     }
     default: return state;

@@ -36,9 +36,7 @@ class HruRepository {
     }
 
     async saveMessage(message, chatId) {
-        var res = await this._save('messages', message, chatId, hruDb.post, false);
-        throw new Error('my error');
-        return res;
+        return await this._save('messages', message, chatId, hruDb.post, false);
     }
 
     async saveLastReadTime(userId, chatId, timestamp) {
@@ -162,7 +160,6 @@ class HruRepository {
     async _performRequest(request) {
         for (let i = 0; i < this._retryTimes; i += 1) {
             try {
-                console.log(`attempt #${i}`);
                 return await request();
             } catch (error) {
                 if (error.statusCode >= 500) {

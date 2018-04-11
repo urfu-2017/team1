@@ -3,7 +3,7 @@
 const passport = require('passport');
 const { saveNewMessage } = require('./controllers/message');
 
-module.exports = app => {
+module.exports = (app, io) => {
     app.get('/auth/github', passport.authenticate('github'));
     app.get(
         '/auth/github/callback',
@@ -13,5 +13,7 @@ module.exports = app => {
         }
     );
 
-    app.post('*', saveNewMessage);
+    io.on('connection', socket => {
+        app.post('/message', saveNewMessage(socket));
+    });
 };

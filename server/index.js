@@ -70,7 +70,7 @@ io.on('connection', socket => {
 
 nextApp.prepare()
     .then(() => {
-        routes(app);
+        routes(app, io);
         app
             .use('/api/rest', restRoutes)
             .get('*', handleRequest);

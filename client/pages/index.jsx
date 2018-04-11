@@ -29,7 +29,6 @@ export default class KilogrammApp extends React.Component {
     }
 
     static async getInitialProps({ req }) {
-        console.log(req.contacts);
         return {
             user: req.user,
             serverURL: req.serverURL,
