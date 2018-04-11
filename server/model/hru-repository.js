@@ -4,7 +4,7 @@ const hruDb = require('./hru-requester/hrudb-rest');
 
 
 class HruRepository {
-    constructor(credentials, retryTimes = 5, disableCache = false) {
+    constructor(credentials, retryTimes = 5, disableCache = true) {
         this._credentials = credentials;
         this._retryTimes = retryTimes;
 
@@ -77,10 +77,11 @@ class HruRepository {
             offset,
             sort
         };
-        return await this._get(
+        const serializedMessages = await this._get(
             'messages', chatId,
             (creds, key) => hruDb.getAll(creds, key, restrictions), false
         );
+        return serializedMessages.map(JSON.parse);
     }
 
     async getUserIdByServiceId(serviceUserId, serviceName = 'github') {
@@ -104,6 +105,7 @@ class HruRepository {
 
     async getAllChatUsers(chatId) {
         const chat = await this.getChat(chatId);
+        console.log(chat.usersIds);
         const tasks = chat.usersIds
             .map(id => this.getUser(id));
         return await Promise.all(tasks);
@@ -128,7 +130,8 @@ class HruRepository {
             (creds, key) => hruDb.getAll(creds, key, restrictions), false
         );
         // taking cd_ef from ab_cd_ef:
-        const usersIds = users.map(u => u.split(/_(.+)/)[1]);
+        const usersIds = users.map(JSON.parse)
+            .map(u => u.split(/_(.+)/)[1]);
         const tasks = usersIds.map(id => this.getUser(id));
         return await Promise.all(tasks);
     }
@@ -147,7 +150,8 @@ class HruRepository {
             (creds, key) => hruDb.getAll(creds, key, restrictions), false
         );
         // taking cd_ef from ab_cd_ef:
-        const chatsIds = chats.map(c => c.split(/_(.+)/)[1]);
+        const chatsIds = chats.map(JSON.parse)
+            .map(c => c.split(/_(.+)/)[1]);
         const tasks = chatsIds.map(id => this.getChat(id));
         return await Promise.all(tasks);
     }
@@ -208,7 +212,7 @@ class HruRepository {
         if (!this._disableCache) {
             return this._cache.get(key);
         }
-        return null;
+        return undefined;
     }
 
     _updateCache(key, value) {
