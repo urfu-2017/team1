@@ -12,12 +12,11 @@ passport.use(new GitHubStrategy(
     },
     (async (accessToken, refreshToken, profile, cb) => {
         let user = await User.findByGithubID(profile.id);
+        const name = profile.displayName || profile.username;
         if (!user) {
-            user = await User.create(profile.displayName, profile.photos[0].value, profile.id);
-            // Иногда возникают причины делать так, но, кажется, не в нашем случае
-            // user = await User.findByGithubID(profile.id);
+            user = await User.create(name, profile.photos[0].value, profile.id);
         } else {
-            await user.update({ name: profile.displayName, avatar: profile.photos[0].value });
+            await user.update({ name, avatar: profile.photos[0].value });
         }
         cb(null, user);
     })

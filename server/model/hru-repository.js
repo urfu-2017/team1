@@ -20,19 +20,33 @@ class HruRepository {
         // TODO: possible vulnerability
         const usersIndexEntry = `${user.name}_${user.id}`;
         const updateTask = this.updateUser(user);
-        return await Promise.all([
+        await Promise.all([
             updateTask,
             this.saveUserGithubId(user.githubId, user.id),
             this._save('usersIndex', usersIndexEntry, '', hruDb.post, false)
-        ])[0];
+        ]);
+        return await updateTask;
     }
 
-    async saveUserGithubId(githubId, user) {
-        return await this._save('githubId', githubId, user.id);
+    // TODO: refactor
+    async saveUserGithubId(githubId, userId) {
+        return await this._save('githubId', userId, githubId);
     }
 
-    async saveChat(chat) {
+    async updateChat(chat) {
         return await this._save('chat', chat, chat.id);
+    }
+
+    // TODO: refactor
+    async saveChat(chat) {
+        // TODO: possible vulnerability
+        const chatsIndexEntry = `${chat.title}_${chat.id}`;
+        const updateTask = this.updateChat(chat);
+        await Promise.all([
+            updateTask,
+            this._save('chatsIndex', chatsIndexEntry, '', hruDb.post, false)
+        ]);
+        return await updateTask;
     }
 
     async saveMessage(message, chatId) {
@@ -116,6 +130,25 @@ class HruRepository {
         // taking cd_ef from ab_cd_ef:
         const usersIds = users.map(u => u.split(/_(.+)/)[1]);
         const tasks = usersIds.map(id => this.getUser(id));
+        return await Promise.all(tasks);
+    }
+
+    // TODO: refactor
+    async getAllChats(sort = 'date', from = null, to = null, limit = null, offset = null) {
+        const restrictions = {
+            from,
+            to,
+            limit,
+            offset,
+            sort
+        };
+        const chats = await this._get(
+            'chatsIndex', '',
+            (creds, key) => hruDb.getAll(creds, key, restrictions), false
+        );
+        // taking cd_ef from ab_cd_ef:
+        const chatsIds = chats.map(c => c.split(/_(.+)/)[1]);
+        const tasks = chatsIds.map(id => this.getChat(id));
         return await Promise.all(tasks);
     }
 
