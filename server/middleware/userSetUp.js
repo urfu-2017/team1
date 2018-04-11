@@ -9,7 +9,6 @@ module.exports = () => async (req, res, next) => {
         return;
     }
     const userId = req.user.id;
-    const user = await dbConnection.getUser(userId);
     const chats = await dbConnection.getUserChats(userId);
 
     const [messages, users] = await Promise.all([
@@ -19,7 +18,6 @@ module.exports = () => async (req, res, next) => {
 
     const usersMap = new Map(users.reduce((acc, val) => acc.concat(val), []) // flatten
         .map(u => [u.id, u]));
-
     for (let i = 0; i < chats.length; i += 1) {
         const chat = chats[i];
         delete chat.usersIds;
