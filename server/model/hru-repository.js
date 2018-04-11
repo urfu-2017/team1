@@ -1,10 +1,10 @@
 'use strict';
 
-const hruDb = require('./hru-requester/hrudb-rest');
+const hruDb = require('../lib/hru-requester/hrudb-rest');
 
 
 class HruRepository {
-    constructor(credentials, retryTimes = 5, disableCache = false) {
+    constructor(credentials, retryTimes = 5, disableCache = true) {
         this._credentials = credentials;
         this._retryTimes = retryTimes;
 
@@ -20,19 +20,33 @@ class HruRepository {
         // TODO: possible vulnerability
         const usersIndexEntry = `${user.name}_${user.id}`;
         const updateTask = this.updateUser(user);
-        return await Promise.all([
+        await Promise.all([
             updateTask,
             this.saveUserGithubId(user.githubId, user.id),
             this._save('usersIndex', usersIndexEntry, '', hruDb.post, false)
-        ])[0];
+        ]);
+        return await updateTask;
     }
 
-    async saveUserGithubId(githubId, user) {
-        return await this._save('githubId', githubId, user.id);
+    // TODO: refactor
+    async saveUserGithubId(githubId, userId) {
+        return await this._save('githubId', userId, githubId);
     }
 
-    async saveChat(chat) {
+    async updateChat(chat) {
         return await this._save('chat', chat, chat.id);
+    }
+
+    // TODO: refactor
+    async saveChat(chat) {
+        // TODO: possible vulnerability
+        const chatsIndexEntry = `${chat.title}_${chat.id}`;
+        const updateTask = this.updateChat(chat);
+        await Promise.all([
+            updateTask,
+            this._save('chatsIndex', chatsIndexEntry, '', hruDb.post, false)
+        ]);
+        return await updateTask;
     }
 
     async saveMessage(message, chatId) {
@@ -63,10 +77,11 @@ class HruRepository {
             offset,
             sort
         };
-        return await this._get(
+        const serializedMessages = await this._get(
             'messages', chatId,
             (creds, key) => hruDb.getAll(creds, key, restrictions), false
         );
+        return serializedMessages.map(JSON.parse);
     }
 
     async getUserIdByServiceId(serviceUserId, serviceName = 'github') {
@@ -90,6 +105,7 @@ class HruRepository {
 
     async getAllChatUsers(chatId) {
         const chat = await this.getChat(chatId);
+        console.log(chat.usersIds);
         const tasks = chat.usersIds
             .map(id => this.getUser(id));
         return await Promise.all(tasks);
@@ -114,8 +130,29 @@ class HruRepository {
             (creds, key) => hruDb.getAll(creds, key, restrictions), false
         );
         // taking cd_ef from ab_cd_ef:
-        const usersIds = users.map(u => u.split(/_(.+)/)[1]);
+        const usersIds = users.map(JSON.parse)
+            .map(u => u.split(/_(.+)/)[1]);
         const tasks = usersIds.map(id => this.getUser(id));
+        return await Promise.all(tasks);
+    }
+
+    // TODO: refactor
+    async getAllChats(sort = 'date', from = null, to = null, limit = null, offset = null) {
+        const restrictions = {
+            from,
+            to,
+            limit,
+            offset,
+            sort
+        };
+        const chats = await this._get(
+            'chatsIndex', '',
+            (creds, key) => hruDb.getAll(creds, key, restrictions), false
+        );
+        // taking cd_ef from ab_cd_ef:
+        const chatsIds = chats.map(JSON.parse)
+            .map(c => c.split(/_(.+)/)[1]);
+        const tasks = chatsIds.map(id => this.getChat(id));
         return await Promise.all(tasks);
     }
 
@@ -175,7 +212,7 @@ class HruRepository {
         if (!this._disableCache) {
             return this._cache.get(key);
         }
-        return null;
+        return undefined;
     }
 
     _updateCache(key, value) {

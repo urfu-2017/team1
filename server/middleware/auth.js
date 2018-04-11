@@ -4,6 +4,9 @@ const passport = require('passport');
 const User = require('../model/user');
 const GitHubStrategy = require('passport-github').Strategy;
 
+const { getPathToGeneratedPicture } = require('../lib/avatar-generation');
+
+
 passport.use(new GitHubStrategy(
     {
         clientID: process.env.GITHUB_CLIENT_ID,
@@ -11,13 +14,15 @@ passport.use(new GitHubStrategy(
         callbackURL: `${process.env.URL}/auth/github/callback`
     },
     (async (accessToken, refreshToken, profile, cb) => {
-        let user = await User.findByGithubID(profile.id);
+        const githubId = profile.id;
+        const name = profile.displayName || profile.username;
+        let user = await User.findByGithubID(githubId);
         if (!user) {
-            user = await User.create(profile.displayName, profile.photos[0].value, profile.id);
-            // Иногда возникают причины делать так, но, кажется, не в нашем случае
-            // user = await User.findByGithubID(profile.id);
+            const avatarPath = `images/avatars/github/${githubId}.png`;
+            getPathToGeneratedPicture(`../../public/${avatarPath}`, githubId);
+            user = await User.create(name, `/static/${avatarPath}`, githubId);
         } else {
-            await user.update({ name: profile.displayName, avatar: profile.photos[0].value });
+            await user.update({ name });
         }
         cb(null, user);
     })
