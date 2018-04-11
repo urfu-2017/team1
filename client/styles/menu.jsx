@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const MenuRoot = styled.section`
-    width: 25%;
+    width: 300px;
     height: 100%;
     background: #f2f3dE;
     .profile {
@@ -16,4 +16,12 @@ export const MenuRoot = styled.section`
         width: 64px;
         height: 64px;
     }
+    .contacts {
+        padding: 20px 10px;
+        cursor: default;
+        &:hover {
+           background: #b7c5f5;;
+        }
+    }
+    
 `;

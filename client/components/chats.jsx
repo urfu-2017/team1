@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import MenuIcon from 'react-icons/lib/fa/list';
 import Menu from './menu';
 
-import { Header, SearchInput, ChatsList, Paranja } from '../styles/chats';
+import { Header, SearchInput, ChatsList, Paranja, Contacts, Contact } from '../styles/chats';
 
 import Chat from './chat';
 
@@ -11,19 +11,25 @@ import Chat from './chat';
 export default class Chats extends Component {
     static propTypes = {
         openMenu: PropTypes.bool,
+        openContacts: PropTypes.bool,
         allChats: PropTypes.arrayOf(PropTypes.object),
         onClickChat: PropTypes.func,
+        onClickContacts: PropTypes.func,
         onClick: PropTypes.func,
         selectedChatId: PropTypes.string,
-        user: PropTypes.object,
-        meta: PropTypes.object,
+        contacts: PropTypes.arrayOf(PropTypes.object),
+        user: PropTypes.objectOf,
+        meta: PropTypes.objectOf
     }
     static defaultProps = {
         allChats: [],
         onClickChat: '',
+        onClickContacts: '',
         onClick: '',
         selectedChatId: null,
         openMenu: false,
+        openContacts: false,
+        contacts: [],
         user: {},
         meta: {}
     }
@@ -33,7 +39,7 @@ export default class Chats extends Component {
     }
 
     getChatsList() {
-        const { allChats, onClickChat, selectedChatId, user, meta } = this.props;  
+        const { allChats, onClickChat, selectedChatId, user, meta } = this.props;
         return allChats.map(chat => (
             <Chat
                 key={chat.id}
@@ -46,14 +52,41 @@ export default class Chats extends Component {
         ));
     }
 
+    getContactsList() {
+        const { contacts, onClickChat, allChats } = this.props;
+
+        return contacts.map(contact => (
+            <Contact
+                key={contact.name}
+                onClick={() => {
+                    const needChat = allChats.find(chat => chat.id === contact.id);
+                    onClickChat(needChat);
+                }}
+            >
+                <img src={contact.img} alt="Изображение аватарки" className="contact__image" />
+                <p>{contact.name}</p>
+            </Contact>
+        ));
+    }
     render() {
-        const { onClick, openMenu, user } = this.props;
+        const { onClick, openMenu, openContacts, onClickContacts, user } = this.props;
 
         return (
             <React.Fragment>
                 { openMenu && (
                     <Paranja onClick={() => { onClick(false); }}>
-                        <Menu user={user} />
+                        { !openContacts && (<Menu user={user} onClick={onClickContacts} />)}
+                    </Paranja>
+                )}
+                { openContacts && (
+                    <Paranja onClick={() => { onClick(false); onClickContacts(false); }}>
+                        <Contacts
+                            onClick={() => { onClickContacts(true); }}
+                        >
+                            <section className="contacts__list">
+                                { this.getContactsList() }
+                            </section>
+                        </Contacts>
                     </Paranja>
                 )}
                 <ChatsList>
