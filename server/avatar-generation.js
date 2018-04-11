@@ -8,14 +8,6 @@ const streamToPromise = require('stream-to-promise');
 const fs = require('fs');
 const path = require('path');
 
-const styleGithub = {
-    pixelSize: 70,
-    bgColor: '#F0F0F0',
-    pixelPadding: -1,
-    imagePadding: 35,
-    tiles: 5
-};
-
 
 /**
  * @param {String} strForHash - произвольная строка
@@ -51,7 +43,7 @@ function saveToDisk(stream, pathToSave) {
  * (https://www.npmjs.com/package/retricon-without-canvas)
  * @return {Promise}
  */
-module.exports.getPictureInBase64 = (usedId, opts = styleGithub) => {
+module.exports.getPictureInBase64 = (usedId, opts = retricon.style.github) => {
     const stream = generateAvatar(usedId, opts);
 
     return encodeToBase64(stream);
@@ -65,7 +57,7 @@ module.exports.getPictureInBase64 = (usedId, opts = styleGithub) => {
  * @param {String} pathToSave - (абсолютный/относительный).png
  * @return {Promise}
  */
-module.exports.getPathToGeneratedPicture = (pathToSave, usedId, opts = styleGithub) => {
+module.exports.getPathToGeneratedPicture = (pathToSave, usedId, opts = retricon.style.github) => {
     const stream = generateAvatar(usedId, opts);
 
     return saveToDisk(stream, pathToSave);
