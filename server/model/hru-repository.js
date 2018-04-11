@@ -105,7 +105,6 @@ class HruRepository {
 
     async getAllChatUsers(chatId) {
         const chat = await this.getChat(chatId);
-        console.log(chat.usersIds);
         const tasks = chat.usersIds
             .map(id => this.getUser(id));
         return await Promise.all(tasks);
@@ -184,7 +183,6 @@ class HruRepository {
         }
 
         const serialized = await this._performRequest(() => method.call(null, this._credentials, key));
-        console.log(serialized);
         
         if (serialized === null) {
             return null;
@@ -207,7 +205,7 @@ class HruRepository {
             }
         }
 
-        throw new Error('hru db connection exception');
+        return null;
     }
 
     _tryGetFromCache(key) {

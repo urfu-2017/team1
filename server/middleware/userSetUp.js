@@ -5,12 +5,9 @@ const dbConnection = require('../db-connection');
 
 module.exports = () => async (req, res, next) => {
     if (!req.user) {
-        console.log(2);
-        
         next();
         return;
     }
-    console.log(3);
     
     const userId = req.user.id;
     const chats = await dbConnection.getUserChats(userId);
