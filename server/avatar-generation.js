@@ -2,25 +2,71 @@
 
 const retricon = require('retricon-without-canvas');
 const base64 = require('base64-stream');
-const toString = require('stream-to-string')
+const streamToString = require('stream-to-string');
+const streamToPromise = require('stream-to-promise');
 
 const fs = require('fs');
+const path = require('path');
+
+const styleGithub = {
+    pixelSize: 70,
+    bgColor: '#F0F0F0',
+    pixelPadding: -1,
+    imagePadding: 35,
+    tiles: 5
+};
 
 
 /**
- * @param {String} strForHash
- * @param {Object} opts - (P.S width = height = pixelSize * tiles)
- * (https://www.npmjs.com/package/retricon-without-canvas)
+ * @param {String} strForHash - произвольная строка
+ * @param {Object} opts - см библиотеку retricon
  * @return {Stream}
  */
-function generateAvatar(strForHash, opts = { pixelSize: 20, tiles: 5 }) {
+function generateAvatar(strForHash, opts) {
     return retricon(strForHash, opts).pngStream();
 }
 
-async function encodeToBase64(stream) {
-    return await toString(stream.pipe(base64.encode()));
+/**
+ * @param {Stream} stream
+ * @return {Promise}
+ */
+function encodeToBase64(stream) {
+    return streamToString(stream.pipe(base64.encode()));
 }
 
-function saveToDisck(stream, pathToSave = 'check.png') {
-    stream.pipe(fs.createWriteStream(pathToSave));
+/**
+ * @param {Stream} stream
+ * @param {String} pathToSave
+ * @returns {Promise}
+ */
+function saveToDisk(stream, pathToSave) {
+    const resultPath = path.resolve(__dirname, pathToSave);
+
+    return streamToPromise(stream.pipe(fs.createWriteStream(resultPath))).then(() => resultPath);
 }
+
+/**
+ * @param {String} usedId
+ * @param {Object} opts - необязательный
+ * (https://www.npmjs.com/package/retricon-without-canvas)
+ * @return {Promise}
+ */
+module.exports.getPictureInBase64 = (usedId, opts = styleGithub) => {
+    const stream = generateAvatar(usedId, opts);
+
+    return encodeToBase64(stream);
+};
+
+/**
+ * @param {String} usedId
+ * @param {Object} opts - необязательный
+ * (P.S width = height = pixelSize * tiles)
+ * (см https://www.npmjs.com/package/retricon-without-canvas)
+ * @param {String} pathToSave - (абсолютный/относительный).png
+ * @return {Promise}
+ */
+module.exports.getPathToGeneratedPicture = (pathToSave, usedId, opts = styleGithub) => {
+    const stream = generateAvatar(usedId, opts);
+
+    return saveToDisk(stream, pathToSave);
+};
