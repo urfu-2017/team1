@@ -87,10 +87,19 @@ exports.createMessage = async (req, res) => {
 };
 
 
+const awaitAllWithOutcome = async (...promises) => (await Promise.all(promises))
+    .reduce((acc, curr) => acc && curr, true);
+
+
 exports.createChat = async (req, res) => {
     const { title, picture } = req.body.chat;
-    const chat = Chat.create(title, [req.user.id], req.user.id, picture);
-    const outcome = await dbConnection.saveChat(chat);
+    const currentUser = req.user;
+    const chat = Chat.create(title, [currentUser.id], currentUser.id, picture);
+    currentUser.chatsIds.push(chat.id);
+    const outcome = await awaitAllWithOutcome(
+        dbConnection.saveChat(chat),
+        currentUser.update({})
+    );
     if (outcome !== null) {
         res.json(chat);
     } else {
@@ -100,18 +109,26 @@ exports.createChat = async (req, res) => {
 
 
 exports.startChatWithUser = async (req, res) => {
-    const otherUser = await dbConnection.getUser(req.params.id);
+    const otherUser = await User.findByID(req.params.id);
     if (otherUser === null) {
         res.sendStatus(404);
         return;
     }
+
+    const currentUser = req.user;
     const chat = Chat.create(
         otherUser.name,
         [req.user.id, otherUser.id],
         req.user.id,
         otherUser.avatar
     );
-    const outcome = await dbConnection.saveChat(chat);
+    currentUser.chatsIds.push(chat.id);
+    otherUser.chatsIds.push(chat.id);
+    const outcome = await awaitAllWithOutcome(
+        dbConnection.saveChat(chat),
+        currentUser.update({}),
+        otherUser.update({})
+    );
     if (outcome !== null) {
         res.json(chat);
     } else {
@@ -135,10 +152,10 @@ exports.addContact = async (req, res) => {
     }
     currentUser.contactsIds.push(contact.id);
     contact.contactsIds.push(currentUser.id);
-    const outcome = (await Promise.all([
+    const outcome = await awaitAllWithOutcome(
         currentUser.update({}),
         contact.update({})
-    ])).reduce((acc, curr) => acc && curr, true);
+    );
     if (outcome !== null) {
         res.sendStatus(200);
     } else {
@@ -163,10 +180,10 @@ exports.addChat = async (req, res) => {
     }
     currentUser.chatsIds.push(chat.id);
     chat.usersIds.push(currentUser.id);
-    const outcome = (await Promise.all([
+    const outcome = await awaitAllWithOutcome(
         currentUser.update({}),
         dbConnection.updateChat(chat)
-    ])).reduce((acc, curr) => acc && curr, true);
+    );
     if (outcome !== null) {
         res.sendStatus(200);
     } else {
