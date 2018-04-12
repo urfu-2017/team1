@@ -16,6 +16,6 @@ module.exports = (app, io) => {
 
     io.on('connection', socket => {
         app.post('/message', saveNewMessage(socket));
-        app.post('/chat', saveChat(socket));
+        //app.post('/chat', saveChat(socket));
     });
 };

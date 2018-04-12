@@ -10,7 +10,7 @@ const mapStateToProps = (state, props) => ({
     openContacts: state.currentInfo.openContacts,
     user: state.currentInfo.currentUser,
     contacts: state.contacts,
-    meta: state.meta
+    meta: state.meta,
 });
 
 const mapDispatchToProps = dispatch => (
@@ -28,8 +28,8 @@ const mapDispatchToProps = dispatch => (
         addNewChatFromSocket: (chat, currentUserId) => {
             dispatch(addNewChatFromSocket(chat, currentUserId));
         },
-        asyncCreateChat: chat => {
-            dispatch(asyncCreateChat(chat));
+        asyncCreateChat: (chat, serverURL) => {
+            dispatch(asyncCreateChat(chat, serverURL));
         },
         addChatFromContacts: chat => {
             dispatch(addChatFromContacts(chat));

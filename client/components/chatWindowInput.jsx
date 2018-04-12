@@ -9,10 +9,11 @@ class ChatWindowInput extends Component {
     static propTypes = {
         dispatch: PropTypes.func,
         currentChatId: PropTypes.string,
-        currentUserId: PropTypes.string
+        currentUserId: PropTypes.string,
+        serverURL: PropTypes.string
     }
 
-    static defaultProps = { dispatch: {}, currentChatId: '', currentUserId: ''  }
+    static defaultProps = { dispatch: {}, currentChatId: '', currentUserId: '', serverURL: '' }
 
     constructor(props) {
         super(props);
@@ -23,7 +24,7 @@ class ChatWindowInput extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        const { currentChatId, currentUserId } = this.props;
+        const { currentChatId, currentUserId, serverURL } = this.props;
         const message = {
             content: {
                 text: this.state.message,
@@ -33,7 +34,7 @@ class ChatWindowInput extends Component {
             userMessageId: Math.random()
         };
         this.props.dispatch(addMessageFromChatInput(message));
-        this.props.dispatch(asyncSendMessage(message));
+        this.props.dispatch(asyncSendMessage(message, serverURL));
         this.setState({ message: '' });
     }
 

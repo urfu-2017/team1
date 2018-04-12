@@ -29,11 +29,18 @@ export default class KilogrammApp extends React.Component {
     }
 
     static async getInitialProps({ req }) {
+        console.log('=========================');
+        console.log(req.user);
+        console.log(req.chats);
+        console.log(req.users);
+        console.log('=========================');     
         return {
             user: req.user,
             serverURL: req.serverURL,
             chatSocketPrefix: req.chatSocketPrefix,
-            newChatsSocketPrefix: req.newChatsSocketPrefix
+            newChatsSocketPrefix: req.newChatsSocketPrefix,
+            users: req.users,
+            chats: req.chats
         };
     }
 
