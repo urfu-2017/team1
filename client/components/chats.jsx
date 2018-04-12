@@ -46,19 +46,12 @@ export default class Chats extends Component {
 
     componentDidMount() {
         const { serverURL, newChatsSocketPrefix } = this.props.meta;
-        console.log('======================');
-        console.log(this.props.meta);
-        console.log(newChatsSocketPrefix);
-        console.log('++++++++++++++++++1');
         
         this.socket = io(serverURL);
-        this.socket.on('user', data => {
-            console.log('++++++++++++++++++2');
+        this.socket.on(newChatsSocketPrefix, data => {
+            console.log('get new chat from socket');
             const currentUserId = this.props.user.id;
-            console.log(currentUserId);
             this.props.addNewChatFromSocket(data.chat, currentUserId);
-            // const { currentUserId } = this.props;
-            // this.props.dispatch(addChatFromSocket(data.chat, currentUserId));
         });
     }
 
@@ -71,7 +64,7 @@ export default class Chats extends Component {
         const { allChats, onClickChat, selectedChatId, user, meta } = this.props;
         return allChats.map(chat => (
             <Chat
-                key={chat.id}
+                key={Math.random()}
                 select={selectedChatId === chat.id}
                 chat={chat}
                 currentUserId={user.id}
@@ -88,15 +81,13 @@ export default class Chats extends Component {
             <Contact
                 key={contact.name + Math.random()}
                 onClick={() => {
-                    console.log('осправляю запрос');
-                    console.log(contact);
-                    console.log('******************************');
                     const chat = {
                         title: `${contact.name} and ${user.name}`,
                         picture: 'picture1',
                         creatorId: user.id,
                         usersIds: [user.id, contact.id],
                         userChatId: `${Math.random()}`,
+                        //без этого ломается
                         lastMessage: {
                             content: {
                                 text: 'message text',
@@ -109,6 +100,7 @@ export default class Chats extends Component {
                                 id: 'ALPHANUMERIC_ID'
                             }
                         },
+                        //с пустым массивом пропадает ввод
                         messages: [{
                             content: {
                                 text: 'my message kek',
@@ -120,7 +112,7 @@ export default class Chats extends Component {
                     };
                     addChatFromContacts(chat);
                     asyncCreateChat(chat);
-                    console.log('получил новый чат');
+
                     onClickChat(chat);
                 }
                 }

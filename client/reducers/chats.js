@@ -105,7 +105,6 @@ export default function chats(state = initialState, action) {
     }
     case RECEIVED_NEW_CHAT: {
         console.log(RECEIVED_NEW_CHAT);
-        console.log(action)
         const { chat, currentUserId } = action.info;
         console.log(currentUserId);
         console.log(chat.creatorId);

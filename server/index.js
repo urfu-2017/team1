@@ -99,7 +99,7 @@ function myFunc(socket) {
         }
     });
 
-    socket.emit('userff', {
+    socket.emit('user1', {
         chat: {
             title: 'Chat1',
             picture: 'picture1',
