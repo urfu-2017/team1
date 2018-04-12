@@ -11,7 +11,7 @@ module.exports = () => async (req, res, next) => {
     const userId = req.user.id;
     const chats = await dbConnection.getUserChats(userId);
 
-    const messages = await Promise.all(chats.map(c => dbConnection.getMessages(c.id)));
+    const messages = await Promise.all(chats.map(c => dbConnection.getMessages(c.id, {})));
     for (let i = 0; i < chats.length; i += 1) {
         const chat = chats[i];
         chat.messages = messages[i];

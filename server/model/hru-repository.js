@@ -4,7 +4,7 @@ const hruDb = require('../lib/hru-requester/hrudb-rest');
 
 
 class HruRepository {
-    constructor(credentials, retryTimes = 5, disableCache = true) {
+    constructor(credentials, retryTimes = 8, disableCache = false) {
         this._credentials = credentials;
         this._retryTimes = retryTimes;
 
@@ -69,7 +69,7 @@ class HruRepository {
         return await this._get('lastRead', `${userId}_${chatId}`);
     }
 
-    async getMessages(chatId, sort = 'date', from = null, to = null, limit = null, offset = null) {
+    async getMessages(chatId, { sort = 'date', from = null, to = null, limit = null, offset = null }) {
         const restrictions = {
             from,
             to,
@@ -79,7 +79,8 @@ class HruRepository {
         };
         const serializedMessages = await this._get(
             'messages', chatId,
-            (creds, key) => hruDb.getAll(creds, key, restrictions), false
+            (creds, key) => hruDb.getAll(creds, key, restrictions),
+            false
         );
         return serializedMessages.map(JSON.parse);
     }
@@ -105,7 +106,6 @@ class HruRepository {
 
     async getAllChatUsers(chatId) {
         const chat = await this.getChat(chatId);
-        console.log(chat.usersIds);
         const tasks = chat.usersIds
             .map(id => this.getUser(id));
         return await Promise.all(tasks);
@@ -117,7 +117,7 @@ class HruRepository {
     }
 
     // sort: 'date' | 'alph'
-    async getAllUsers(sort = 'date', from = null, to = null, limit = null, offset = null) {
+    async getAllUsers({ sort = 'date', from = null, to = null, limit = null, offset = null }) {
         const restrictions = {
             from,
             to,
@@ -137,7 +137,7 @@ class HruRepository {
     }
 
     // TODO: refactor
-    async getAllChats(sort = 'date', from = null, to = null, limit = null, offset = null) {
+    async getAllChats({ sort = 'date', from = null, to = null, limit = null, offset = null }) {
         const restrictions = {
             from,
             to,
@@ -205,19 +205,26 @@ class HruRepository {
             }
         }
 
-        throw new Error('hru db connection exception');
+        return null;
     }
 
     _tryGetFromCache(key) {
-        if (!this._disableCache) {
-            return this._cache.get(key);
+        if (this._disableCache) {
+            return undefined;
         }
-        return undefined;
+        const value = this._cache.get(key);
+        if (typeof value === 'object') {
+            return { ...value };
+        }
+        return value;
     }
 
     _updateCache(key, value) {
         if (this._disableCache) {
             return;
+        }
+        if (typeof value === 'object') {
+            value = { ...value };
         }
         this._cache.set(key, value);
     }
