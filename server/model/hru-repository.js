@@ -205,7 +205,7 @@ class HruRepository {
             }
         }
 
-        throw new Error('hru db connection exception');
+        return null;
     }
 
     _tryGetFromCache(key) {
