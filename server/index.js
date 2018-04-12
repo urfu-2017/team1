@@ -98,4 +98,26 @@ function myFunc(socket) {
             senderId: 'sender_2'
         }
     });
+
+    socket.emit('userff', {
+        chat: {
+            title: 'Chat1',
+            picture: 'picture1',
+            usersIds: [],
+            id: `${Math.random()}-8812-4f37-9221-0176447b9ee1`,
+            messages: [],
+            lastMessage: {
+                content: {
+                    text: 'message text',
+                    attachments: [],
+                    pictures: []
+                },
+                sender: {
+                    name: 'user1',
+                    avatar: 'path-to-avatar.jpeg',
+                    id: 'ALPHANUMERIC_ID'
+                }
+            }
+        }
+    });
 }

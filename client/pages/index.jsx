@@ -32,12 +32,9 @@ export default class KilogrammApp extends React.Component {
         return {
             user: req.user,
             serverURL: req.serverURL,
-            chatSocketPrefix: req.chatSocketPrefix
+            chatSocketPrefix: req.chatSocketPrefix,
+            newChatsSocketPrefix: req.newChatsSocketPrefix
         };
-    }
-
-    componentDidMount() {
-        this.socket = io('http://127.0.0.1:3000');
     }
 
     render() {

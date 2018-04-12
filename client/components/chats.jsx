@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import io from 'socket.io-client';
 import PropTypes from 'prop-types';
 import MenuIcon from 'react-icons/lib/fa/list';
+
 import Menu from './menu';
-
 import { Header, SearchInput, ChatsList, Paranja, Contacts, Contact } from '../styles/chats';
-
 import Chat from './chat';
 
 
@@ -18,8 +18,11 @@ export default class Chats extends Component {
         onClick: PropTypes.func,
         selectedChatId: PropTypes.string,
         contacts: PropTypes.arrayOf(PropTypes.object),
-        user: PropTypes.objectOf,
-        meta: PropTypes.objectOf
+        user: PropTypes.object,
+        meta: PropTypes.object,
+        addNewChatFromSocket: PropTypes.func,
+        asyncCreateChat: PropTypes.func,
+        addChatFromContacts: PropTypes.func
     }
     static defaultProps = {
         allChats: [],
@@ -31,11 +34,37 @@ export default class Chats extends Component {
         openContacts: false,
         contacts: [],
         user: {},
-        meta: {}
+        meta: {},
+        addNewChatFromSocket: {},
+        asyncCreateChat: {},
+        addChatFromContacts: {}
     }
     constructor(props) {
         super(props);
         this.state = {};
+    }
+
+    componentDidMount() {
+        const { serverURL, newChatsSocketPrefix } = this.props.meta;
+        console.log('======================');
+        console.log(this.props.meta);
+        console.log(newChatsSocketPrefix);
+        console.log('++++++++++++++++++1');
+        
+        this.socket = io(serverURL);
+        this.socket.on('user', data => {
+            console.log('++++++++++++++++++2');
+            const currentUserId = this.props.user.id;
+            console.log(currentUserId);
+            this.props.addNewChatFromSocket(data.chat, currentUserId);
+            // const { currentUserId } = this.props;
+            // this.props.dispatch(addChatFromSocket(data.chat, currentUserId));
+        });
+    }
+
+    componentWillUnmount() {
+        this.socket.off('user');
+        this.socket.close();
     }
 
     getChatsList() {
@@ -53,15 +82,48 @@ export default class Chats extends Component {
     }
 
     getContactsList() {
-        const { contacts, onClickChat, allChats } = this.props;
+        const { contacts, onClickChat, allChats, user, asyncCreateChat, addChatFromContacts } = this.props;
 
         return contacts.map(contact => (
             <Contact
-                key={contact.name}
+                key={contact.name + Math.random()}
                 onClick={() => {
-                    const needChat = allChats.find(chat => chat.id === contact.id);
-                    onClickChat(needChat);
-                }}
+                    console.log('осправляю запрос');
+                    console.log(contact);
+                    console.log('******************************');
+                    const chat = {
+                        title: `${contact.name} and ${user.name}`,
+                        picture: 'picture1',
+                        creatorId: user.id,
+                        usersIds: [user.id, contact.id],
+                        userChatId: `${Math.random()}`,
+                        lastMessage: {
+                            content: {
+                                text: 'message text',
+                                attachments: [],
+                                pictures: []
+                            },
+                            sender: {
+                                name: 'user1',
+                                avatar: 'path-to-avatar.jpeg',
+                                id: 'ALPHANUMERIC_ID'
+                            }
+                        },
+                        messages: [{
+                            content: {
+                                text: 'my message kek',
+                                attachments: [],
+                                pictures: []
+                            },
+                            senderId: 'USER_ID'
+                        }]
+                    };
+                    addChatFromContacts(chat);
+                    asyncCreateChat(chat);
+                    console.log('получил новый чат');
+                    onClickChat(chat);
+                }
+                }
             >
                 <img src={contact.img} alt="Изображение аватарки" className="contact__image" />
                 <p>{contact.name}</p>

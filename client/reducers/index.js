@@ -11,7 +11,8 @@ export default function makeReducer(initialProps) {
         currentInfo: createCurrentInfo(initialProps.user),
         meta: createMetaReducer({
             serverURL: initialProps.serverURL,
-            chatSocketPrefix: initialProps.chatSocketPrefix
+            chatSocketPrefix: initialProps.chatSocketPrefix,
+            newChatsSocketPrefix: initialProps.newChatsSocketPrefix
         }),
         contacts: createUsersReducer(initialProps)
     });
