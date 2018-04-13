@@ -11,8 +11,8 @@ export const CHAT_SAVED = 'CHAT_SAVED';
 
 export const setVisibilityChat = chat => ({ type: VISIBILITY_CHAT, chat });
 
-export const addMessageFromSocket = (message, currentUserId) =>
-    ({ type: RECEIVED_NEW_MESSAGE, info: { message, currentUserId } });
+export const addMessageFromSocket = (message, currentUserId, sender) =>
+    ({ type: RECEIVED_NEW_MESSAGE, info: { message, currentUserId, sender } });
 
 export const addMessageFromChatInput = message => ({ type: SEND_NEW_MESSAGE, message });
 

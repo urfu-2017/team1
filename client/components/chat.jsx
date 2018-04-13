@@ -14,7 +14,9 @@ class Chat extends Component {
         onClick: PropTypes.func,
         dispatch: PropTypes.func,
         currentUserId: PropTypes.string,
-        meta: PropTypes.object
+        meta: PropTypes.object,
+        user: PropTypes.object,
+        contacts: PropTypes.arrayOf(PropTypes.object)
     }
 
     static defaultProps = {
@@ -23,7 +25,9 @@ class Chat extends Component {
         onClick: {},
         dispatch: {},
         currentUserId: null,
-        meta: {}
+        meta: {},
+        user: {},
+        contacts: []
     };
 
     constructor(props) {
@@ -36,10 +40,19 @@ class Chat extends Component {
         const chatId = this.props.chat.id;
         this.socket = io(serverURL);
         this.socket.on(`${chatSocketPrefix}-${chatId}`, data => {
+            const { contacts, user } = this.props;
             console.log('Got something');
-            console.log(data)
+            console.log(data);
+            console.log(contacts);
             const { currentUserId } = this.props;
-            this.props.dispatch(addMessageFromSocket(data.message, currentUserId));
+            let sender = contacts.find(x => x.id === data.message.senderId);
+            if (!sender) {
+                sender = user;
+                console.log('сообщение от самого себя');
+                console.log(sender);
+            }
+            console.log(sender);
+            this.props.dispatch(addMessageFromSocket(data.message, currentUserId, sender));
         });
     }
 

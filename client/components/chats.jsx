@@ -63,7 +63,7 @@ export default class Chats extends Component {
     }
 
     getChatsList() {
-        const { allChats, onClickChat, selectedChatId, user, meta } = this.props;
+        const { allChats, onClickChat, selectedChatId, user, meta, contacts } = this.props;
         return allChats.map(chat => (
             <Chat
                 key={Math.random()}
@@ -71,6 +71,8 @@ export default class Chats extends Component {
                 chat={chat}
                 currentUserId={user.id}
                 meta={meta}
+                user={user}
+                contacts={contacts}
                 onClick={() => { onClickChat(chat); }}
             />
         ));
