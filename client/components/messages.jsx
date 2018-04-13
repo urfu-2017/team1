@@ -4,14 +4,63 @@ import { MessagesList, Header } from '../styles/messages';
 
 import Message from './message';
 
+class ScrollButton extends React.Component {
+    constructor() {
+        super();
+
+        this.state = {
+            intervalId: 0
+        };
+    }
+
+    scrollStep() {
+        const messagesBlock = document.getElementById('messages');
+        const scrollHeight = messagesBlock.scrollHeight
+        if (messagesBlock.pageYOffset !== scrollHeight) {
+            console.info('window.pageYOffset', window.pageYOffset);
+            console.info('scrollHeight', scrollHeight);
+            clearInterval(this.state.intervalId);
+        }
+        messagesBlock.scroll(0.0, scrollHeight - this.props.scrollStepInPx);
+    }
+
+    scrollToBottom() {
+        let intervalId = setInterval(this.scrollStep.bind(this), this.props.delayInMs);
+        this.setState({ intervalId });
+    }
+
+    render() {
+        const buttonStyle = {
+            backgroundColor: '#b7c5f5',
+            position: 'absolute',
+            bottom: '50px',
+            width: '20px',
+            height: '20px',
+            borderRadius: '5px',
+            borderColor: '#b7c5f5',
+            right: '30px',
+            cursor: 'pointer'
+        };
+        return (
+            <button
+                style={buttonStyle}
+                title="Жмяк вниз"
+                className="scroll"
+                onClick={() => { this.scrollToBottom(); }}
+            />
+        );
+    }
+}
+
+
 export default class Messages extends Component {
     static propTypes = {
         title: PropTypes.string,
         messages: PropTypes.arrayOf(PropTypes.object),
         currentUserId: PropTypes.string
-    }
+    };
 
-    static defaultProps = { title: '', messages: [], currentUserId: '' }
+    static defaultProps = { title: '', messages: [], currentUserId: '' };
 
     componentDidMount() {
         this.node.scrollTop = this.node.scrollHeight;
@@ -20,19 +69,19 @@ export default class Messages extends Component {
     componentWillUpdate = function () {
         this.shouldScrollBottom = this.node.scrollTop +
             this.node.offsetHeight === this.node.scrollHeight;
-    }
+    };
 
     componentDidUpdate = function () {
         if (this.shouldScrollBottom) {
             this.node.scrollTop = this.node.scrollHeight;
         }
-    }
+    };
 
     getSectionRef = node => { this.node = node; }
 
     getMessagesList() {
         const { messages, currentUserId } = this.props;
-        
+
         return messages.map((currentMessage, index) => (
             <Message
                 key={index}
@@ -48,7 +97,10 @@ export default class Messages extends Component {
         return (
             <React.Fragment>
                 <Header> {title} </Header>
-                <MessagesList ref={this.getSectionRef}> {this.getMessagesList()} </MessagesList>
+                <MessagesList id="messages" ref={this.getSectionRef}>
+                    <ScrollButton scrollStepInPx="50" delayInMs="16.66"/>
+                    {this.getMessagesList()}
+                </MessagesList>
             </React.Fragment>
         );
     }

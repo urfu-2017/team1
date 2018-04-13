@@ -10,10 +10,11 @@ export default class ChatWindow extends Component {
         title: PropTypes.string,
         messages: PropTypes.arrayOf(PropTypes.object),
         currentChatId: PropTypes.string,
-        currentUserId: PropTypes.string
-    }
+        currentUserId: PropTypes.string,
+        background: PropTypes.string
+    };
 
-    static defaultProps = { title: '', messages: [], currentChatId: '', currentUserId: '' };
+    static defaultProps = { title: '', messages: [], currentChatId: '', currentUserId: '', background: '' };
 
     constructor(props) {
         super(props);
@@ -23,7 +24,7 @@ export default class ChatWindow extends Component {
         const { messages, title, currentChatId, currentUserId } = this.props;
 
         return messages.length ?
-            <ChatWindowWrapper >
+            <ChatWindowWrapper>
                 <Messages
                     messages={messages}
                     title={title}

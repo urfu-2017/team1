@@ -7,7 +7,7 @@ export default class Message extends Component {
         fromMe: PropTypes.string,
         message: PropTypes.string,
         creationTime: PropTypes.string
-    }
+    };
 
     static defaultProps = { fromMe: '', message: '', creationTime: '' }
 

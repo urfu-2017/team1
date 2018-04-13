@@ -9,8 +9,6 @@ import thunk from 'redux-thunk';
 import makeReducer from '../reducers/index';
 import SideBar from '../containers/sidebar';
 import ChatWindow from '../containers/chatWindow';
-import io from 'socket.io-client';
-import { addMessageFromSocket } from '../actions/actions';
 
 
 const Wrapper = styled.main`
@@ -36,16 +34,13 @@ export default class KilogrammApp extends React.Component {
         };
     }
 
-    componentDidMount() {
-        this.socket = io('http://127.0.0.1:3000');
-    }
 
     render() {
         return (
             <Provider store={this.store}>
                 <Wrapper>
-                    <SideBar/>
-                    <ChatWindow/>
+                    <SideBar />
+                    <ChatWindow />
                 </Wrapper>
             </Provider>
         );

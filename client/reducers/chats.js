@@ -78,8 +78,8 @@ export default function chats(state = initialState, action) {
     switch (action.type) {
     case RECEIVED_NEW_MESSAGE: {
         const { message } = action.info;
-        console.log(action.info.currentUserId);
-        console.log(message.senderId);
+        // console.log(action.info.currentUserId);
+        // console.log(message.senderId);
         if (action.info.currentUserId === message.senderId) {
             return Object.assign([], state);
         }

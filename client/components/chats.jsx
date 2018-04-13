@@ -16,8 +16,9 @@ export default class Chats extends Component {
         onClick: PropTypes.func,
         selectedChatId: PropTypes.string,
         user: PropTypes.object,
-        meta: PropTypes.object,
-    }
+        meta: PropTypes.object
+    };
+
     static defaultProps = {
         allChats: [],
         onClickChat: '',
@@ -26,14 +27,15 @@ export default class Chats extends Component {
         openMenu: false,
         user: {},
         meta: {}
-    }
+    };
+
     constructor(props) {
         super(props);
         this.state = {};
     }
 
     getChatsList() {
-        const { allChats, onClickChat, selectedChatId, user, meta } = this.props;  
+        const { allChats, onClickChat, selectedChatId, user, meta } = this.props;
         return allChats.map(chat => (
             <Chat
                 key={chat.id}

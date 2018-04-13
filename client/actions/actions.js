@@ -7,6 +7,19 @@ export const MESSAGE_SAVED = 'MESSAGE_SAVED';
 
 export const setVisibilityChat = chat => ({ type: VISIBILITY_CHAT, chat });
 
+export const cursorIsPressedFromBelow = () => {
+    const messages = document.querySelector('#messages');
+
+    return messages.scrollTop + messages.offsetHeight === messages.scrollHeight;
+};
+
+export const moveCursorDown = () => {
+    const messages = document.querySelector('#messages');
+    setTimeout(() => {
+        messages.scrollTop = messages.scrollHeight - messages.offsetHeight;
+    }, 0);
+};
+
 export const addMessageFromSocket = (message, currentUserId) =>
     ({ type: RECEIVED_NEW_MESSAGE, info: { message, currentUserId } });
 
@@ -32,7 +45,6 @@ export const asyncSendMessage = message => dispatch => {
     };
     fetch(URL, options)
         .then(response => {
-            console.log(response);
             if (response.status === 201) {
                 dispatch(saveStatus('(сохранено)', message));
             } else {
