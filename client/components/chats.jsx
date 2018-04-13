@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import io from 'socket.io-client';
 import PropTypes from 'prop-types';
 import MenuIcon from 'react-icons/lib/fa/list';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 import Menu from './menu';
 import { Header, SearchInput, ChatsList, Paranja, Contacts, Contact } from '../styles/chats';
@@ -127,8 +128,11 @@ export default class Chats extends Component {
                         </div>
                         <SearchInput placeholder="Поиск" type="search" />
                     </Header>
-                    { this.getChatsList() }
+                    <Scrollbars universal>
+                        { this.getChatsList() }
+                    </Scrollbars>
                 </ChatsList>
+
             </React.Fragment>
         );
     }
