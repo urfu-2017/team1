@@ -184,6 +184,7 @@ class HruRepository {
         }
 
         const serialized = await this._performRequest(() => method.call(null, this._credentials, key));
+        
         if (serialized === null) {
             return null;
         }

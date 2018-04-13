@@ -1,4 +1,5 @@
-import { RECEIVED_NEW_MESSAGE, SEND_NEW_MESSAGE, MESSAGE_SAVED } from '../actions/actions';
+import { RECEIVED_NEW_MESSAGE, SEND_NEW_MESSAGE, MESSAGE_SAVED, 
+    RECEIVED_NEW_CHAT, SEND_NEW_CHAT, CHAT_SAVED } from '../actions/actions';
 
 const initialState = [
     {
@@ -11,7 +12,7 @@ const initialState = [
                 attachments: [],
                 pictures: []
             },
-             //todo fix this to senderId
+            // todo fix this to senderId
             sender: {
                 name: 'user1',
                 avatar: 'path-to-avatar.jpeg',
@@ -66,7 +67,7 @@ const initialState = [
                 content: {
                     text: 'my message kek',
                     attachments: [],
-                    pictures: [],
+                    pictures: []
                 },
                 senderId: 'USER_ID'
             }
@@ -78,8 +79,8 @@ export default function chats(state = initialState, action) {
     switch (action.type) {
     case RECEIVED_NEW_MESSAGE: {
         const { message } = action.info;
-        console.log(action.info.currentUserId);
-        console.log(message.senderId);
+        // console.log(action.info.currentUserId);
+        // console.log(message.senderId);
         if (action.info.currentUserId === message.senderId) {
             return Object.assign([], state);
         }
@@ -99,6 +100,30 @@ export default function chats(state = initialState, action) {
         const neededMessage = neededChat.messages.find(m => m.userMessageId === userMessage.userMessageId);
         neededMessage.content.text += action.info.status;
         neededChat.messages = Object.assign([], neededChat.messages);
+
+        return Object.assign([], state);
+    }
+    case RECEIVED_NEW_CHAT: {
+        console.log(RECEIVED_NEW_CHAT);
+        const { chat, currentUserId } = action.info;
+        console.log(currentUserId);
+        console.log(chat.creatorId);
+        if (action.info.currentUserId === chat.creatorId) {
+            return Object.assign([], state);
+        }
+
+        return [chat, ...state];
+    }
+    case SEND_NEW_CHAT: {
+        const { chat } = action;
+        chat.title += '(создан)';
+
+        return [chat, ...state];
+    }
+    case CHAT_SAVED: {
+        const { userChat } = action.info;
+        const neededChat = state.find(x => x.userChatId === userChat.userChatId);
+        neededChat.title += action.info.status;
 
         return Object.assign([], state);
     }

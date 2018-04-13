@@ -8,6 +8,7 @@ module.exports = () => async (req, res, next) => {
         next();
         return;
     }
+    
     const userId = req.user.id;
     const chats = await dbConnection.getUserChats(userId);
 

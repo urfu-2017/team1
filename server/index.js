@@ -27,6 +27,7 @@ const memoryStore = require('session-memory-store')(session)();
 app.use(cookieParser());
 app.use(require('body-parser')
     .urlencoded({ extended: true }));
+
 app.use(session({
     store: memoryStore,
     secret: process.env.SECRET_KEY,
@@ -95,6 +96,28 @@ function myFunc(socket) {
             },
             chatId: 'ID_2',
             senderId: 'sender_2'
+        }
+    });
+
+    socket.emit('user1', {
+        chat: {
+            title: 'Chat1',
+            picture: 'picture1',
+            usersIds: [],
+            id: `${Math.random()}-8812-4f37-9221-0176447b9ee1`,
+            messages: [],
+            lastMessage: {
+                content: {
+                    text: 'message text',
+                    attachments: [],
+                    pictures: []
+                },
+                sender: {
+                    name: 'user1',
+                    avatar: 'path-to-avatar.jpeg',
+                    id: 'ALPHANUMERIC_ID'
+                }
+            }
         }
     });
 }

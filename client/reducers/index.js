@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 
 import chats from './chats';
 import createMetaReducer from './meta';
+import createUsersReducer from './users';
 import createCurrentInfo from './currentInfo';
 
 export default function makeReducer(initialProps) {
@@ -10,7 +11,9 @@ export default function makeReducer(initialProps) {
         currentInfo: createCurrentInfo(initialProps.user),
         meta: createMetaReducer({
             serverURL: initialProps.serverURL,
-            chatSocketPrefix: initialProps.chatSocketPrefix
-        })
+            chatSocketPrefix: initialProps.chatSocketPrefix,
+            newChatsSocketPrefix: initialProps.newChatsSocketPrefix
+        }),
+        contacts: createUsersReducer(initialProps)
     });
 }

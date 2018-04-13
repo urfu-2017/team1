@@ -3,7 +3,11 @@ export const RECEIVED_NEW_MESSAGE = 'RECEIVED_NEW_MESSAGE';
 export const SEND_NEW_MESSAGE = 'SEND_NEW_MESSAGE';
 export const SELECT_CHAT = 'SELECT_CHAT';
 export const VISIBILITY_MENU = 'VISIBILITY_MENU';
+export const VISIBILITY_CONTACTS = 'VISIBILITY_CONTACTS';
 export const MESSAGE_SAVED = 'MESSAGE_SAVED';
+export const RECEIVED_NEW_CHAT = 'RECEIVED_NEW_CHAT';
+export const SEND_NEW_CHAT = 'SEND_NEW_CHAT';
+export const CHAT_SAVED = 'CHAT_SAVED';
 
 export const setVisibilityChat = chat => ({ type: VISIBILITY_CHAT, chat });
 
@@ -15,6 +19,8 @@ export const addMessageFromChatInput = message => ({ type: SEND_NEW_MESSAGE, mes
 export const selectChat = id => ({ type: SELECT_CHAT, id });
 
 export const setVisibilityMenu = visibility => ({ type: VISIBILITY_MENU, visibility });
+
+export const setVisibilityContacts = visibility => ({ type: VISIBILITY_CONTACTS, visibility });
 
 const saveStatus = (status, userMessage) =>
     ({ type: MESSAGE_SAVED, info: { status, userMessage } });
@@ -40,3 +46,34 @@ export const asyncSendMessage = message => dispatch => {
             }
         });
 };
+
+export const addNewChatFromSocket = (chat, currentUserId) =>
+    ({ type: RECEIVED_NEW_CHAT, info: { chat, currentUserId } });
+
+const saveChat = (status, userChat) =>
+    ({ type: CHAT_SAVED, info: { status, userChat } });
+
+export const asyncCreateChat = chat => dispatch => {
+    const URL = 'http://localhost:3000/chat';
+    const options = {
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify({ chat }),
+        credentials: 'same-origin'
+    };
+    fetch(URL, options)
+        .then(response => {
+            console.log(response);
+            if (response.status === 201) {
+                dispatch(saveChat('(сохраненен)', chat));
+            } else {
+                dispatch(saveChat('(не сохранен)', chat));
+            }
+        });
+};
+
+export const addChatFromContacts = chat =>
+    ({ type: SEND_NEW_CHAT, chat });
