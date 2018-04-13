@@ -22,6 +22,7 @@ export const setVisibilityMenu = visibility => ({ type: VISIBILITY_MENU, visibil
 
 export const setVisibilityContacts = visibility => ({ type: VISIBILITY_CONTACTS, visibility });
 
+
 const saveStatus = (status, userMessage) =>
     ({ type: MESSAGE_SAVED, info: { status, userMessage } });
 
@@ -40,9 +41,9 @@ export const asyncSendMessage = (message, serverURL) => dispatch => {
         .then(response => {
             console.log(response);
             if (response.status === 201) {
-                dispatch(saveStatus('(сохранено)', message));
+                dispatch(saveStatus('\t✓', message));
             } else {
-                dispatch(saveStatus('(не сохранено)', message));
+                dispatch(saveStatus('\t⨯', message));
             }
         });
 };
@@ -68,9 +69,9 @@ export const asyncCreateChat = (chat, contactId, serverURL) => dispatch => {
         .then(response => {
             console.log(response);
             if (response.status === 201) {
-                dispatch(saveChat('(сохраненен)', chat));
+                dispatch(saveChat('\t✓', chat));
             } else {
-                dispatch(saveChat('(не сохранен)', chat));
+                dispatch(saveChat('\t⨯', chat));
             }
         });
 };
