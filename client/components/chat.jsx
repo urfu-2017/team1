@@ -63,9 +63,12 @@ class Chat extends Component {
 
     render() {
         const { onClick, chat, select } = this.props;
+        const { currentUserId } = this.props;
+        const names = chat.title.split('!_!_!');
+        const chatName = currentUserId === chat.creatorId ? names[0] : names[1];
         return (
             <ChatWrapper onClick={onClick} select={select}>
-                <ChatHeader>{chat.title}</ChatHeader>
+                <ChatHeader>{chatName}</ChatHeader>
                 { chat.lastMessage && chat.lastMessage.content &&
                     <LastMessage>
                         <Sender>{chat.lastMessage.sender.name}:</Sender>
