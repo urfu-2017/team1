@@ -25,8 +25,10 @@ export const setVisibilityContacts = visibility => ({ type: VISIBILITY_CONTACTS,
 const saveStatus = (status, userMessage) =>
     ({ type: MESSAGE_SAVED, info: { status, userMessage } });
 
-export const asyncSendMessage = message => dispatch => {
-    const URL = 'http://localhost:3000/message';
+export const asyncSendMessage = (message, serverURL) => dispatch => {
+    const URL = `${serverURL}/message`;
+    console.log('URLURLURLULRLULRULRLURLURLURLURLU');
+    console.log(URL);
     const options = {
         headers: {
             Accept: 'application/json',
@@ -53,8 +55,10 @@ export const addNewChatFromSocket = (chat, currentUserId) =>
 const saveChat = (status, userChat) =>
     ({ type: CHAT_SAVED, info: { status, userChat } });
 
-export const asyncCreateChat = chat => dispatch => {
-    const URL = 'http://localhost:3000/chat';
+export const asyncCreateChat = (chat, serverURL) => dispatch => {
+    const URL = `${serverURL}/chat`;
+    console.log('2222URLURLURLULRLULRULRLURLURLURLURLU222');
+    console.log(URL);
     const options = {
         headers: {
             Accept: 'application/json',

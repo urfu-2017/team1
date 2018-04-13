@@ -37,7 +37,7 @@ export default class Chats extends Component {
         meta: {},
         addNewChatFromSocket: {},
         asyncCreateChat: {},
-        addChatFromContacts: {}
+        addChatFromContacts: {},
     }
     constructor(props) {
         super(props);
@@ -111,7 +111,7 @@ export default class Chats extends Component {
                         }]
                     };
                     addChatFromContacts(chat);
-                    asyncCreateChat(chat);
+                    asyncCreateChat(chat, this.props.meta.serverURL);
 
                     onClickChat(chat);
                 }

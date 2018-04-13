@@ -28,6 +28,8 @@ module.exports = () => async (req, res, next) => {
         return chat;
     });
 
+    let users = await dbConnection.getUserContacts(userId);
     req.chats = chats;
+    req.users = users
     next();
 };
