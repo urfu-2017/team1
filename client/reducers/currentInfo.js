@@ -20,9 +20,13 @@ export default function createMetaReducer(currentUser) {
     return (state = initialState, action) => {
         switch (action.type) {
         case VISIBILITY_CHAT:
+            console.log('chat');
+            console.log(action.chat);
             state.currentChat = action.chat;
             return Object.assign({}, state);
         case SELECT_CHAT:
+            console.log('chatId');
+            console.log(action.id);
             state.selectedChatId = action.id;
             return Object.assign({}, state);
         case VISIBILITY_MENU:

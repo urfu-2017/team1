@@ -1,5 +1,11 @@
-import { RECEIVED_NEW_MESSAGE, SEND_NEW_MESSAGE, MESSAGE_SAVED, 
-    RECEIVED_NEW_CHAT, SEND_NEW_CHAT, CHAT_SAVED } from '../actions/actions';
+import {
+    RECEIVED_NEW_MESSAGE,
+    RECEIVED_NEW_CHAT,
+    SEND_NEW_MESSAGE,
+    MESSAGE_SAVED,
+    SEND_NEW_CHAT,
+    CHAT_SAVED
+} from '../actions/actions';
 
 const initialState = [
     {
@@ -63,14 +69,14 @@ const initialState = [
             }
         },
         messages: [
-            {
-                content: {
-                    text: 'my message kek',
-                    attachments: [],
-                    pictures: []
-                },
-                senderId: 'USER_ID'
-            }
+            // {
+            //     content: {
+            //         text: 'my message kek',
+            //         attachments: [],
+            //         pictures: []
+            //     },
+            //     senderId: 'USER_ID'
+            // }
         ]
     }
 ];

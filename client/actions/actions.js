@@ -75,5 +75,4 @@ export const asyncCreateChat = chat => dispatch => {
         });
 };
 
-export const addChatFromContacts = chat =>
-    ({ type: SEND_NEW_CHAT, chat });
+export const addChatFromContacts = chat => ({ type: SEND_NEW_CHAT, chat });

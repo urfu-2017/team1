@@ -46,7 +46,7 @@ export default class Chats extends Component {
 
     componentDidMount() {
         const { serverURL, newChatsSocketPrefix } = this.props.meta;
-        
+
         this.socket = io(serverURL);
         this.socket.on(newChatsSocketPrefix, data => {
             console.log('get new chat from socket');
@@ -75,7 +75,7 @@ export default class Chats extends Component {
     }
 
     getContactsList() {
-        const { contacts, onClickChat, allChats, user, asyncCreateChat, addChatFromContacts } = this.props;
+        const { contacts, onClickChat, user, asyncCreateChat, addChatFromContacts } = this.props;
 
         return contacts.map(contact => (
             <Contact
@@ -86,36 +86,13 @@ export default class Chats extends Component {
                         picture: 'picture1',
                         creatorId: user.id,
                         usersIds: [user.id, contact.id],
-                        userChatId: `${Math.random()}`,
-                        //без этого ломается
-                        lastMessage: {
-                            content: {
-                                text: 'message text',
-                                attachments: [],
-                                pictures: []
-                            },
-                            sender: {
-                                name: 'user1',
-                                avatar: 'path-to-avatar.jpeg',
-                                id: 'ALPHANUMERIC_ID'
-                            }
-                        },
-                        //с пустым массивом пропадает ввод
-                        messages: [{
-                            content: {
-                                text: 'my message kek',
-                                attachments: [],
-                                pictures: []
-                            },
-                            senderId: 'USER_ID'
-                        }]
+                        id: `${Math.random()}`,
+                        userChatId: `${Math.random()}`
                     };
                     addChatFromContacts(chat);
                     asyncCreateChat(chat);
-
                     onClickChat(chat);
-                }
-                }
+                }}
             >
                 <img src={contact.img} alt="Изображение аватарки" className="contact__image" />
                 <p>{contact.name}</p>
