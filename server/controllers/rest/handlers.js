@@ -127,7 +127,7 @@ handlers.startChatWithUser = async (req, res) => {
     }
 
     const chat = Chat.create(
-        otherUser.name,
+        `${otherUser.name} and ${currentUser.name} conversation`,
         [req.user.id, otherUser.id],
         req.user.id,
         otherUser.avatar
@@ -139,9 +139,6 @@ handlers.startChatWithUser = async (req, res) => {
         currentUser.update({}),
         otherUser.update({})
     );
-    // TODO: remove when fixed
-    chat.lastMessage = Message.create({ text: 'Hi!' }, currentUser.id, chat.id);
-    chat.lastMessage.sender = currentUser;
     if (outcome !== null) {
         console.log('emitting');
         for (let id of [currentUser.id, otherUser.id]) {

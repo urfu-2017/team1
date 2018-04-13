@@ -27,8 +27,6 @@ const saveStatus = (status, userMessage) =>
 
 export const asyncSendMessage = (message, serverURL) => dispatch => {
     const URL = `api/rest/chats/${message.chatId}/messages`;
-    console.log('URLURLURLULRLULRULRLURLURLURLURLU');
-    console.log(URL);
     const options = {
         headers: {
             Accept: 'application/json',
@@ -57,8 +55,6 @@ const saveChat = (status, userChat) =>
 
 export const asyncCreateChat = (chat, contactId, serverURL) => dispatch => {
     const URL = `api/rest/users/${contactId}/start-chat`;
-    console.log('2222URLURLURLULRLULRULRLURLURLURLURLU222');
-    console.log(URL);
     const options = {
         headers: {
             Accept: 'application/json',

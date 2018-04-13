@@ -53,10 +53,10 @@ class Chat extends Component {
         return (
             <ChatWrapper onClick={onClick} select={select}>
                 <ChatHeader>{chat.title}</ChatHeader>
-                { chat.lastMessage &&
+                { chat.lastMessage && chat.lastMessage.content &&
                     <LastMessage>
                         <Sender>{chat.lastMessage.sender.name}:</Sender>
-                        {/*<span>{chat.lastMessage.content.text}</span>*/}
+                        <span>{chat.lastMessage.content.text}</span>
                     </LastMessage>
                 }
             </ChatWrapper>

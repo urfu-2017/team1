@@ -91,7 +91,7 @@ export default class Chats extends Component {
                         id: `${Math.random()}`,
                         userChatId: `${Math.random()}`
                     };
-                    addChatFromContacts(chat);
+                    // addChatFromContacts(chat);
                     asyncCreateChat(chat, contact.id, this.props.meta.serverURL);
                     onClickChat(chat);
                 }}
