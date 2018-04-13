@@ -23,8 +23,9 @@ export default class ChatWindow extends Component {
     }
     render() {
         const { messages, title, currentChatId, currentUserId, serverURL } = this.props;
-
-        return messages.length ?
+        console.log(`current${currentChatId}`);
+        
+        return currentChatId ?
             <ChatWindowWrapper >
                 <Messages
                     messages={messages}

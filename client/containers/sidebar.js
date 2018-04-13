@@ -32,6 +32,7 @@ const mapDispatchToProps = dispatch => (
             dispatch(asyncCreateChat(chat, serverURL));
         },
         addChatFromContacts: chat => {
+            // console.log(chat);
             dispatch(addChatFromContacts(chat));
         }
     }
