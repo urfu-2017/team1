@@ -26,7 +26,7 @@ const saveStatus = (status, userMessage) =>
     ({ type: MESSAGE_SAVED, info: { status, userMessage } });
 
 export const asyncSendMessage = (message, serverURL) => dispatch => {
-    const URL = `${serverURL}/message`;
+    const URL = `api/rest/chats/${message.chatId}/messages`;
     console.log('URLURLURLULRLULRULRLURLURLURLURLU');
     console.log(URL);
     const options = {
@@ -55,8 +55,8 @@ export const addNewChatFromSocket = (chat, currentUserId) =>
 const saveChat = (status, userChat) =>
     ({ type: CHAT_SAVED, info: { status, userChat } });
 
-export const asyncCreateChat = (chat, serverURL) => dispatch => {
-    const URL = `${serverURL}/chat`;
+export const asyncCreateChat = (chat, contactId, serverURL) => dispatch => {
+    const URL = `api/rest/users/${contactId}/start-chat`;
     console.log('2222URLURLURLULRLULRULRLURLURLURLURLU222');
     console.log(URL);
     const options = {

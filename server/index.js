@@ -73,7 +73,7 @@ nextApp.prepare()
     .then(() => {
         routes(app, io);
         app
-            .use('/api/rest', restRoutes)
+            .use('/api/rest', restRoutes(io))
             .get('*', handleRequest);
         server.listen(port, () => console.info(`> Ready on http://localhost:${port}`)); // eslint-disable-line no-console, max-len
     });

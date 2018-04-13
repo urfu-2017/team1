@@ -36,10 +36,11 @@ class Chat extends Component {
         const chatId = this.props.chat.id;
         this.socket = io(serverURL);
         this.socket.on(`${chatSocketPrefix}-${chatId}`, data => {
+            console.log('Got something');
+            console.log(data)
             const { currentUserId } = this.props;
             this.props.dispatch(addMessageFromSocket(data.message, currentUserId));
         });
-        this.socket.emit('gib', {});
     }
 
     componentWillUnmount() {
@@ -54,7 +55,7 @@ class Chat extends Component {
                 <ChatHeader>{chat.title}</ChatHeader>
                 <LastMessage>
                     <Sender>{chat.lastMessage.sender.name}:</Sender>
-                    <span>{chat.lastMessage.content.text}</span>
+                    {/*<span>{chat.lastMessage.content.text}</span>*/}
                 </LastMessage>
             </ChatWrapper>
         );

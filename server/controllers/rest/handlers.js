@@ -5,6 +5,9 @@ const Message = require('../../model/message');
 const Chat = require('../../model/chat');
 const User = require('../../model/user');
 
+const handlers = {};
+let io = null;
+
 
 const _getEntityById = getter => async (req, res) => {
     const { id } = req.params;
@@ -16,13 +19,13 @@ const _getEntityById = getter => async (req, res) => {
 const _checkUserAccessToChat = (user, chatId) => user.chatsIds.includes(chatId);
 
 
-exports.getChat = _getEntityById(id => dbConnection.getChat(id));
+handlers.getChat = _getEntityById(id => dbConnection.getChat(id));
 
 
-exports.getUser = _getEntityById(id => dbConnection.getUser(id));
+handlers.getUser = _getEntityById(id => dbConnection.getUser(id));
 
 
-exports.getChatMessages = async (req, res) => {
+handlers.getChatMessages = async (req, res) => {
     const chatId = req.params.id;
     // Check if user has rights to read chat
     if (!_checkUserAccessToChat(req.user, chatId)) {
@@ -31,12 +34,16 @@ exports.getChatMessages = async (req, res) => {
     }
     const { from, to, limit } = req.query;
     const messages = await dbConnection
-        .getMessages(chatId, { from, to, limit });
+        .getMessages(chatId, {
+            from,
+            to,
+            limit
+        });
     res.json(messages);
 };
 
 
-exports.getAllChatInfo = async (req, res) => {
+handlers.getAllChatInfo = async (req, res) => {
     const chatId = req.params.id;
     if (!_checkUserAccessToChat(req.user, chatId)) {
         res.sendStatus(401);
@@ -66,12 +73,12 @@ const _getWithRestrictions = getter => async (req, res) => {
 };
 
 
-exports.getAllUsers = _getWithRestrictions(restr => dbConnection.getAllUsers(restr));
+handlers.getAllUsers = _getWithRestrictions(restr => dbConnection.getAllUsers(restr));
 
-exports.getAllChats = _getWithRestrictions(restr => dbConnection.getAllChats(restr));
+handlers.getAllChats = _getWithRestrictions(restr => dbConnection.getAllChats(restr));
 
 
-exports.createMessage = async (req, res) => {
+handlers.createMessage = async (req, res) => {
     const chatId = req.params.id;
     if (!_checkUserAccessToChat(req.user, chatId)) {
         res.sendStatus(401);
@@ -81,16 +88,28 @@ exports.createMessage = async (req, res) => {
     const outcome = await dbConnection.saveMessage(message, chatId);
     if (outcome !== null) {
         res.sendStatus(201);
+        io.emit(`${req.chatSocketPrefix}-${chatId}`, {
+            message
+        });
     } else {
         res.sendStatus(500);
     }
 };
 
 
-exports.createChat = async (req, res) => {
+const awaitAllWithOutcome = async (...promises) => (await Promise.all(promises))
+    .reduce((acc, curr) => acc && curr, true);
+
+
+handlers.createChat = async (req, res) => {
     const { title, picture } = req.body.chat;
-    const chat = Chat.create(title, [req.user.id], req.user.id, picture);
-    const outcome = await dbConnection.saveChat(chat);
+    const currentUser = req.user;
+    const chat = Chat.create(title, [currentUser.id], currentUser.id, picture);
+    currentUser.chatsIds.push(chat.id);
+    const outcome = await awaitAllWithOutcome(
+        dbConnection.saveChat(chat),
+        currentUser.update({})
+    );
     if (outcome !== null) {
         res.json(chat);
     } else {
@@ -99,28 +118,45 @@ exports.createChat = async (req, res) => {
 };
 
 
-exports.startChatWithUser = async (req, res) => {
-    const otherUser = await dbConnection.getUser(req.params.id);
+handlers.startChatWithUser = async (req, res) => {
+    const currentUser = req.user;
+    const otherUser = await User.findByID(req.params.id);
     if (otherUser === null) {
         res.sendStatus(404);
         return;
     }
+
     const chat = Chat.create(
         otherUser.name,
         [req.user.id, otherUser.id],
         req.user.id,
         otherUser.avatar
     );
-    const outcome = await dbConnection.saveChat(chat);
+    currentUser.chatsIds.push(chat.id);
+    otherUser.chatsIds.push(chat.id);
+    const outcome = await awaitAllWithOutcome(
+        dbConnection.saveChat(chat),
+        currentUser.update({}),
+        otherUser.update({})
+    );
+    // TODO: remove when fixed
+    chat.lastMessage = Message.create({ text: 'Hi!' }, currentUser.id, chat.id);
+    chat.lastMessage.sender = currentUser;
     if (outcome !== null) {
-        res.json(chat);
+        console.log('emitting');
+        for (let id of [currentUser.id, otherUser.id]) {
+            console.log(`${req.newChatsSocketPrefix}-${id}`);
+            io.emit(`${req.newChatsSocketPrefix}-${id}`, { chat });
+        }
+        res.sendStatus(201);
+        // res.json(chat);
     } else {
         res.sendStatus(500);
     }
 };
 
 
-exports.addContact = async (req, res) => {
+handlers.addContact = async (req, res) => {
     const contactId = req.params.id;
     const currentUser = req.user;
     if (currentUser.contactsIds.includes(contactId)) {
@@ -135,10 +171,10 @@ exports.addContact = async (req, res) => {
     }
     currentUser.contactsIds.push(contact.id);
     contact.contactsIds.push(currentUser.id);
-    const outcome = (await Promise.all([
+    const outcome = await awaitAllWithOutcome(
         currentUser.update({}),
         contact.update({})
-    ])).reduce((acc, curr) => acc && curr, true);
+    );
     if (outcome !== null) {
         res.sendStatus(200);
     } else {
@@ -148,7 +184,7 @@ exports.addContact = async (req, res) => {
 
 
 // TODO: refactor
-exports.addChat = async (req, res) => {
+handlers.addChat = async (req, res) => {
     const chatId = req.params.id;
     const currentUser = req.user;
     if (currentUser.chatsIds.includes(chatId)) {
@@ -163,10 +199,10 @@ exports.addChat = async (req, res) => {
     }
     currentUser.chatsIds.push(chat.id);
     chat.usersIds.push(currentUser.id);
-    const outcome = (await Promise.all([
+    const outcome = await awaitAllWithOutcome(
         currentUser.update({}),
         dbConnection.updateChat(chat)
-    ])).reduce((acc, curr) => acc && curr, true);
+    );
     if (outcome !== null) {
         res.sendStatus(200);
     } else {
@@ -181,6 +217,12 @@ const _getEntityByUserId = getter => async (req, res) => {
     res.json(chats);
 };
 
-exports.getAllUserChats = _getEntityByUserId(id => dbConnection.getUserChats(id));
+handlers.getAllUserChats = _getEntityByUserId(id => dbConnection.getUserChats(id));
 
-exports.getAllUserContacts = _getEntityByUserId(id => dbConnection.getUserContacts(id));
+handlers.getAllUserContacts = _getEntityByUserId(id => dbConnection.getUserContacts(id));
+
+
+module.exports = sock => {
+    io = sock;
+    return handlers;
+};

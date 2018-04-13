@@ -46,10 +46,11 @@ export default class Chats extends Component {
 
     componentDidMount() {
         const { serverURL, newChatsSocketPrefix } = this.props.meta;
-        
+
         this.socket = io(serverURL);
-        this.socket.on(newChatsSocketPrefix, data => {
-            console.log('get new chat from socket');
+        const socketNamespace = `${newChatsSocketPrefix}-${this.props.user.id}`;
+        this.socket.on(socketNamespace, data => {
+            console.log('got new chat from socket');
             const currentUserId = this.props.user.id;
             this.props.addNewChatFromSocket(data.chat, currentUserId);
         });
@@ -82,7 +83,7 @@ export default class Chats extends Component {
                 key={contact.name + Math.random()}
                 onClick={() => {
                     const chat = {
-                        title: `${contact.name} and ${user.name}`,
+                        title: `${contact.name}`,
                         picture: 'picture1',
                         creatorId: user.id,
                         usersIds: [user.id, contact.id],
@@ -111,7 +112,7 @@ export default class Chats extends Component {
                         }]
                     };
                     addChatFromContacts(chat);
-                    asyncCreateChat(chat, this.props.meta.serverURL);
+                    asyncCreateChat(chat, contact.id, this.props.meta.serverURL);
 
                     onClickChat(chat);
                 }
