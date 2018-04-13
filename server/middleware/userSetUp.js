@@ -28,8 +28,9 @@ module.exports = () => async (req, res, next) => {
         return chat;
     });
 
-    let users = await dbConnection.getUserContacts(userId);
+    //let users = await dbConnection.getUserContacts(userId);
+    let users = await dbConnection.getAllUsers({ sort: 'date', from: null, to: null, limit: null, offset: null });
     req.chats = chats;
-    req.users = users
+    req.users = users.filter(x => x !== null);
     next();
 };
