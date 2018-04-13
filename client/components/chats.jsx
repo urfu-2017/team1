@@ -57,7 +57,8 @@ export default class Chats extends Component {
     }
 
     componentWillUnmount() {
-        this.socket.off('user');
+        const { serverURL, newChatsSocketPrefix } = this.props.meta;
+        this.socket.off( `${newChatsSocketPrefix}-${this.props.user.id}`);
         this.socket.close();
     }
 

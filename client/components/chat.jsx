@@ -56,7 +56,7 @@ class Chat extends Component {
                 { chat.lastMessage &&
                     <LastMessage>
                         <Sender>{chat.lastMessage.sender.name}:</Sender>
-                        <span>{chat.lastMessage.content.text}</span>
+                        {/*<span>{chat.lastMessage.content.text}</span>*/}
                     </LastMessage>
                 }
             </ChatWrapper>
