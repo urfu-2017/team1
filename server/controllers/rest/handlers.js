@@ -219,6 +219,11 @@ handlers.getAllUserChats = _getEntityByUserId(id => dbConnection.getUserChats(id
 handlers.getAllUserContacts = _getEntityByUserId(id => dbConnection.getUserContacts(id));
 
 
+handlers.invalidateCache = () => {
+    dbConnection._cache = new Map();
+};
+
+
 module.exports = sock => {
     io = sock;
     return handlers;
