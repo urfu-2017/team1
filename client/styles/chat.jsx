@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const ChatWrapper = styled.article`
-    width: 90%;
+    max-width: 86%;
     height: 50px;
     margin: 4px 0;
     padding: 0 25px;
