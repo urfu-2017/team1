@@ -24,12 +24,12 @@ export default class ChatWindow extends Component {
     render() {
         const { messages, title, currentChatId, currentUserId, serverURL } = this.props;
         console.log(`current${currentChatId}`);
-        
+
         return currentChatId ?
             <ChatWindowWrapper >
                 <Messages
                     messages={messages}
-                    title={title}
+                    title={title.replace('!_!_!', ' and ')}
                     currentUserId={currentUserId}
                 />
                 <ChatWindowInput

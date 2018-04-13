@@ -127,7 +127,7 @@ handlers.startChatWithUser = async (req, res) => {
     }
 
     const chat = Chat.create(
-        `${otherUser.name} and ${currentUser.name} conversation`,
+        `${otherUser.name}!_!_!${currentUser.name}`,
         [req.user.id, otherUser.id],
         req.user.id,
         otherUser.avatar
