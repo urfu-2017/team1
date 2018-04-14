@@ -17,15 +17,14 @@ export const addMessageFromSocket = (message, currentUserId, sender) =>
 
 export const cursorIsPressedFromBelow = () => {
     const messages = document.querySelector('#messages');
-
-    return messages.scrollTop + messages.offsetHeight === messages.scrollHeight;
+    return Math.ceil(messages.scrollTop) + messages.offsetHeight === messages.scrollHeight;
 };
 
 export const moveCursorDown = () => {
     const messages = document.querySelector('#messages');
     setTimeout(() => {
         messages.scrollTop = messages.scrollHeight - messages.offsetHeight;
-    }, 0);
+    }, 500);
 };
 
 
