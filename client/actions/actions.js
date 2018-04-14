@@ -24,7 +24,7 @@ export const moveCursorDown = () => {
     const messages = document.querySelector('#messages');
     setTimeout(() => {
         messages.scrollTop = messages.scrollHeight - messages.offsetHeight;
-    }, 500);
+    }, 0);
 };
 
 

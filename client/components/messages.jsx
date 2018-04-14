@@ -33,6 +33,7 @@ class ScrollButton extends React.Component {
         const buttonStyle = {
             backgroundColor: '#b7c5f5',
             position: 'absolute',
+            padding: '0',
             bottom: '50px',
             width: '20px',
             height: '20px',
@@ -42,9 +43,11 @@ class ScrollButton extends React.Component {
             cursor: 'pointer'
         };
         return (
-            <button
+            <input
+                type="button"
                 style={buttonStyle}
                 title="Жмяк вниз"
+                value="↧"
                 className="scroll"
                 onClick={() => { this.scrollToBottom(); }}
             />
