@@ -134,6 +134,7 @@ handlers.startChatWithUser = async (req, res) => {
     );
     currentUser.chatsIds.push(chat.id);
     otherUser.chatsIds.push(chat.id);
+    res.json(chat);
     for (let id of [currentUser.id, otherUser.id]) {
         console.log(`${req.newChatsSocketPrefix}-${id}`);
         io.emit(`${req.newChatsSocketPrefix}-${id}`, { chat });
@@ -143,12 +144,6 @@ handlers.startChatWithUser = async (req, res) => {
         currentUser.update({}),
         otherUser.update({})
     );
-    if (outcome !== null) {
-        res.sendStatus(201);
-        // res.json(chat);
-    } else {
-        res.sendStatus(500);
-    }
 };
 
 

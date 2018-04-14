@@ -68,7 +68,7 @@ export const addNewChatFromSocket = (chat, currentUserId) =>
 const saveChat = (status, userChat) =>
     ({ type: CHAT_SAVED, info: { status, userChat } });
 
-export const asyncCreateChat = (chat, contactId, serverURL) => dispatch => {
+export const asyncCreateChat = (chat, contactId, serverURL, callback) => dispatch => {
     const URL = `api/rest/users/${contactId}/start-chat`;
     const options = {
         headers: {
@@ -80,14 +80,8 @@ export const asyncCreateChat = (chat, contactId, serverURL) => dispatch => {
         credentials: 'same-origin'
     };
     fetch(URL, options)
-        .then(response => {
-            console.log(response);
-            if (response.status === 201) {
-                dispatch(saveChat('\t✓', chat));
-            } else {
-                dispatch(saveChat('\t⨯', chat));
-            }
-        });
+        .then(response => response.json())
+        .then(response => console.log('|||||||||') || console.log(response) || dispatch(callback(response)));
 };
 
 export const addChatFromContacts = chat => ({ type: SEND_NEW_CHAT, chat });

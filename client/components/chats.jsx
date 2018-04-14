@@ -83,7 +83,6 @@ export default class Chats extends Component {
 
     getContactsList() {
         const { contacts, onClickChat, user, asyncCreateChat, addChatFromContacts } = this.props;
-
         return contacts.map(contact => (
             <Contact
                 key={contact.name + Math.random()}
@@ -97,8 +96,7 @@ export default class Chats extends Component {
                         userChatId: `${Math.random()}`
                     };
                     // addChatFromContacts(chat);
-                    asyncCreateChat(chat, contact.id, this.props.meta.serverURL);
-                    onClickChat(chat);
+                    asyncCreateChat(chat, contact.id, this.props.meta.serverURL, onClickChat);
                 }}
             >
                 <img src={contact.avatar} alt="Изображение аватарки" className="contact__image" />
