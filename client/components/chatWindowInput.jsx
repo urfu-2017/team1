@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Textarea from '../styles/chatWindowInput';
-import { asyncSendMessage, addMessageFromChatInput, saveWeatherData } from '../actions/actions';
+import { asyncSendMessage, addMessageFromChatInput, cursorIsPressedFromBelow, moveCursorDown, selectChat,
+    setVisibilityChat, saveWeatherData } from '../actions/actions';
 import isChatWithWeatherBot from '../bot/typeChat';
 import getWeather from '../bot/weather';
 
@@ -41,8 +42,17 @@ class ChatWindowInput extends Component {
                 senderId: currentUserId,
                 userMessageId: Math.random()
             };
+            let cursorInBottom = cursorIsPressedFromBelow();
             this.props.dispatch(addMessageFromChatInput(message));
+            if (cursorInBottom) {
+                moveCursorDown();
+            }
             this.props.dispatch(asyncSendMessage(message, serverURL));
+            // @lms: этот хак сделан для обновления чата, который пришел через сокет
+            // todo: удалить и сделать нормально
+            const chat = this.props.allChats.find(x => x.id === currentChatId);
+            this.props.dispatch(selectChat(currentChatId));
+            this.props.dispatch(setVisibilityChat(chat));
             this.setState({ message: '' });
 
             const chatWithBot = await isChatWithWeatherBot(currentChatId);
@@ -60,8 +70,12 @@ class ChatWindowInput extends Component {
                         senderId: botWeatherId,
                         userMessageId: Math.random()
                     };
+                    cursorInBottom = cursorIsPressedFromBelow();
                     this.props.dispatch(addMessageFromChatInput(botMessage));
-                    this.props.dispatch(asyncSendMessage(botMessage, serverURL));
+
+                    if (cursorInBottom) {
+                        moveCursorDown();
+                    }
 
                     return;
                 }
