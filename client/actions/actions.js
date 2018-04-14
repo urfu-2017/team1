@@ -14,6 +14,21 @@ export const setVisibilityChat = chat => ({ type: VISIBILITY_CHAT, chat });
 export const addMessageFromSocket = (message, currentUserId, sender) =>
     ({ type: RECEIVED_NEW_MESSAGE, info: { message, currentUserId, sender } });
 
+
+export const cursorIsPressedFromBelow = () => {
+    const messages = document.querySelector('#messages');
+
+    return messages.scrollTop + messages.offsetHeight === messages.scrollHeight;
+};
+
+export const moveCursorDown = () => {
+    const messages = document.querySelector('#messages');
+    setTimeout(() => {
+        messages.scrollTop = messages.scrollHeight - messages.offsetHeight;
+    }, 0);
+};
+
+
 export const addMessageFromChatInput = message => ({ type: SEND_NEW_MESSAGE, message });
 
 export const selectChat = id => ({ type: SELECT_CHAT, id });
@@ -39,7 +54,6 @@ export const asyncSendMessage = (message, serverURL) => dispatch => {
     };
     fetch(URL, options)
         .then(response => {
-            console.log(response);
             if (response.status === 201) {
                 dispatch(saveStatus('\t✓', message));
             } else {
