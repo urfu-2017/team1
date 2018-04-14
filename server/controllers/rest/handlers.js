@@ -137,7 +137,7 @@ handlers.startChatWithUser = async (req, res) => {
     otherUser.chatsIds.push(chat.id);
     res.json(chat);
     for (let id of [currentUser.id, otherUser.id]) {
-        console.log(`${req.newChatsSocketPrefix}-${id}`);
+        // console.log(`${req.newChatsSocketPrefix}-${id}`);
         io.emit(`${req.newChatsSocketPrefix}-${id}`, { chat });
     }
     const outcome = await awaitAllWithOutcome(

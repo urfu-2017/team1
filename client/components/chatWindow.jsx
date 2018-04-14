@@ -14,22 +14,24 @@ export default class ChatWindow extends Component {
         currentUserId: PropTypes.string,
         serverURL: PropTypes.string,
         background: PropTypes.string,
-        allChats: PropTypes.arrayOf(PropTypes.object)
+        allChats: PropTypes.arrayOf(PropTypes.object),
+        weatherData: PropTypes.object
     };
 
 
-    static defaultProps = { title: '', messages: [], currentChatId: '', currentUserId: '', serverURL: '', background: '', allChats: [] };
+    static defaultProps = { title: '', messages: [], currentChatId: '', currentUserId: '', serverURL: '',
+        background: '', allChats: [], weatherData: {} };
 
     constructor(props) {
         super(props);
         this.state = {};
     }
     render() {
-        const { messages, title, currentChatId, currentUserId, serverURL, allChats } = this.props;
+        const { messages, title, currentChatId, currentUserId, serverURL, allChats, weatherData } = this.props;
 
         return currentChatId ?
             <ChatWindowWrapper >
-                <Background />
+                <Background weatherData={weatherData}/>
                 <Messages
                     messages={messages}
                     title={title.replace('!_!_!', ' and ')}

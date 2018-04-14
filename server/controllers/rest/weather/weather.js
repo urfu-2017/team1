@@ -27,11 +27,11 @@ function translateCityName(cityInRussian) {
 function getWeatherById(cityId) {
     return getResponse(createUrl(
         'http',
-        'samples.openweathermap.org',
+        'api.openweathermap.org',
         'data/2.5/weather',
         {
             id: `${cityId}`,
-            APPID: '6697dca63b971475924f2ce159157d5d'
+            APPID: '395cf740351f6e429a4f9c2473d775f7'
         }
     ));
 }

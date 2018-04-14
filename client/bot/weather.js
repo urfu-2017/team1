@@ -1,19 +1,22 @@
 const dateFormatOptions = {
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
+    hour: '2-digit'
 };
-const kelvinToDegree = -273.15;
+const kelvinToDegree = 273.15;
+const secondsToMilliseconds = 1000;
 
 
 function parseWeather(weather, name) {
     return {
         name,
         id: weather.weather[0].id,
-        date: new Date(weather.dt).toLocaleString('en', dateFormatOptions),
-        temperature: weather.main.temp - kelvinToDegree,
-        humidity: weather.main.humidity,
-        windSpeed: weather.wind.speed,
-        windDeg: weather.wind.deg
+        date: new Date(secondsToMilliseconds * weather.dt).toLocaleString('ru', dateFormatOptions),
+        temperature: Math.round(weather.main.temp - kelvinToDegree),
+        humidity: Math.round(weather.main.humidity),
+        windSpeed: Math.round(weather.wind.speed),
+        windDeg: Math.round(weather.wind.deg),
+        cleanTime: new Date(secondsToMilliseconds * weather.dt)
     };
 }
 

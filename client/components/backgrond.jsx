@@ -2,23 +2,26 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BackgroundWrapper from '../styles/backgrond';
 import WeatherResponse from './weather/response';
+import WeatherRequest from './weather/request';
 
 export default class Background extends Component {
     static propTypes = {
-        background: PropTypes.string
+        weatherData: PropTypes.object
     };
 
-    static defaultProps = { background: '' };
+    static defaultProps = { weatherData: {} };
 
     constructor(props) {
         super(props);
         this.state = {};
     }
     render() {
+        const { weatherData } = this.props;
+
         return (
             <BackgroundWrapper id="background">
-                <WeatherResponse />
-                {/*<WeatherRequest />*/}
+                <WeatherResponse weatherData={weatherData} />
+                <WeatherRequest weatherData={weatherData} />
             </BackgroundWrapper>
         );
     }
