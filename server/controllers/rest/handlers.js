@@ -85,12 +85,12 @@ handlers.createMessage = async (req, res) => {
         return;
     }
     const message = Message.create(req.body.message.content, req.user.id, chatId);
+    io.emit(`${req.chatSocketPrefix}-${chatId}`, {
+        message
+    });
     const outcome = await dbConnection.saveMessage(message, chatId);
     if (outcome !== null) {
         res.sendStatus(201);
-        io.emit(`${req.chatSocketPrefix}-${chatId}`, {
-            message
-        });
     } else {
         res.sendStatus(500);
     }
@@ -134,17 +134,16 @@ handlers.startChatWithUser = async (req, res) => {
     );
     currentUser.chatsIds.push(chat.id);
     otherUser.chatsIds.push(chat.id);
+    for (let id of [currentUser.id, otherUser.id]) {
+        console.log(`${req.newChatsSocketPrefix}-${id}`);
+        io.emit(`${req.newChatsSocketPrefix}-${id}`, { chat });
+    }
     const outcome = await awaitAllWithOutcome(
         dbConnection.saveChat(chat),
         currentUser.update({}),
         otherUser.update({})
     );
     if (outcome !== null) {
-        console.log('emitting');
-        for (let id of [currentUser.id, otherUser.id]) {
-            console.log(`${req.newChatsSocketPrefix}-${id}`);
-            io.emit(`${req.newChatsSocketPrefix}-${id}`, { chat });
-        }
         res.sendStatus(201);
         // res.json(chat);
     } else {

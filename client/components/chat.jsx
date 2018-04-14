@@ -17,7 +17,7 @@ class Chat extends Component {
         meta: PropTypes.object,
         user: PropTypes.object,
         contacts: PropTypes.arrayOf(PropTypes.object)
-    }
+    };
 
     static defaultProps = {
         chat: {},
@@ -38,7 +38,9 @@ class Chat extends Component {
     componentDidMount() {
         const { serverURL, chatSocketPrefix } = this.props.meta;
         const chatId = this.props.chat.id;
-        this.socket = io(serverURL);
+        this.socket = io({
+            transports: ['websocket']
+        });
         this.socket.on(`${chatSocketPrefix}-${chatId}`, data => {
             const { contacts, user } = this.props;
             console.log('Got something');
@@ -69,11 +71,11 @@ class Chat extends Component {
         return (
             <ChatWrapper onClick={onClick} select={select}>
                 <ChatHeader>{chatName}</ChatHeader>
-                { chat.lastMessage && chat.lastMessage.content &&
-                    <LastMessage>
-                        <Sender>{chat.lastMessage.sender.name}:</Sender>
-                        <span>{chat.lastMessage.content.text}</span>
-                    </LastMessage>
+                {chat.lastMessage && chat.lastMessage.content &&
+                <LastMessage>
+                    <Sender>{chat.lastMessage.sender.name}:</Sender>
+                    <span>{chat.lastMessage.content.text}</span>
+                </LastMessage>
                 }
             </ChatWrapper>
         );
