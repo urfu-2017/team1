@@ -9,7 +9,7 @@ export default class Messages extends Component {
         title: PropTypes.string,
         messages: PropTypes.arrayOf(PropTypes.object),
         currentUserId: PropTypes.string
-    }
+    };
 
     static defaultProps = { title: '', messages: [], currentUserId: '' }
 
@@ -20,15 +20,15 @@ export default class Messages extends Component {
     componentWillUpdate = function () {
         this.shouldScrollBottom = this.node.scrollTop +
             this.node.offsetHeight === this.node.scrollHeight;
-    }
+    };
 
     componentDidUpdate = function () {
         if (this.shouldScrollBottom) {
             this.node.scrollTop = this.node.scrollHeight;
         }
-    }
+    };
 
-    getSectionRef = node => { this.node = node; }
+    getSectionRef = node => { this.node = node; };
 
     getMessagesList() {
         const { messages, currentUserId } = this.props;

@@ -17,7 +17,7 @@ class Chat extends Component {
         meta: PropTypes.object,
         user: PropTypes.object,
         contacts: PropTypes.arrayOf(PropTypes.object)
-    }
+    };
 
     static defaultProps = {
         chat: {},
@@ -41,17 +41,17 @@ class Chat extends Component {
         this.socket = io(serverURL);
         this.socket.on(`${chatSocketPrefix}-${chatId}`, data => {
             const { contacts, user } = this.props;
-            console.log('Got something');
-            console.log(data);
-            console.log(contacts);
+            // console.log('Got something');
+            // console.log(data);
+            // console.log(contacts);
             const { currentUserId } = this.props;
             let sender = contacts.find(x => x.id === data.message.senderId);
             if (!sender) {
                 sender = user;
-                console.log('сообщение от самого себя');
-                console.log(sender);
+                // console.log('сообщение от самого себя');
+                // console.log(sender);
             }
-            console.log(sender);
+            // console.log(sender);
             this.props.dispatch(addMessageFromSocket(data.message, currentUserId, sender));
         });
     }

@@ -43,6 +43,8 @@ const getRouter = io => {
     // для упрощения работы со стороны клиента, все тела запросов (кроме createMessage, createChat) пустые
     // всё равно потом переходить на graphql
 
+    router.get('/weather', handlers.getWeather);
+
     return router;
 };
 

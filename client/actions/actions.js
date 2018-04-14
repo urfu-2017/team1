@@ -39,7 +39,7 @@ export const asyncSendMessage = (message, serverURL) => dispatch => {
     };
     fetch(URL, options)
         .then(response => {
-            console.log(response);
+            // console.log(response);
             if (response.status === 201) {
                 dispatch(saveStatus('\t✓', message));
             } else {
@@ -67,7 +67,7 @@ export const asyncCreateChat = (chat, contactId, serverURL) => dispatch => {
     };
     fetch(URL, options)
         .then(response => {
-            console.log(response);
+            // console.log(response);
             if (response.status === 201) {
                 dispatch(saveChat('\t✓', chat));
             } else {

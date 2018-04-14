@@ -9,10 +9,10 @@ module.exports.saveChat = socket => async (req, res) => {
     
     try {
         await dbConnection.saveChat(chat);
-        console.log('успех');
+        // console.log('успех');
         res.sendStatus(201);
     } catch (error) {
-        console.log('ошибка');
+        // console.log('ошибка');
         res.sendStatus(500);
         return;
     }

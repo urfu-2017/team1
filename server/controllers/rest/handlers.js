@@ -4,6 +4,7 @@ const dbConnection = require('../../db-connection');
 const Message = require('../../model/message');
 const Chat = require('../../model/chat');
 const User = require('../../model/user');
+const getWeather = require('./weather/weather');
 
 const handlers = {};
 let io = null;
@@ -140,9 +141,9 @@ handlers.startChatWithUser = async (req, res) => {
         otherUser.update({})
     );
     if (outcome !== null) {
-        console.log('emitting');
+        // console.log('emitting');
         for (let id of [currentUser.id, otherUser.id]) {
-            console.log(`${req.newChatsSocketPrefix}-${id}`);
+            // console.log(`${req.newChatsSocketPrefix}-${id}`);
             io.emit(`${req.newChatsSocketPrefix}-${id}`, { chat });
         }
         res.sendStatus(201);
@@ -223,6 +224,11 @@ handlers.invalidateCache = () => {
     dbConnection._cache = new Map();
 };
 
+handlers.getWeather = async (req, res) => {
+    const { city } = req.query;
+    const weather = await getWeather(city);
+    res.send(weather);
+};
 
 module.exports = sock => {
     io = sock;

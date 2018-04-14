@@ -4,6 +4,7 @@ import ChatWindowWrapper from '../styles/chatWindow';
 
 import Messages from '../components/messages';
 import ChatWindowInput from './chatWindowInput';
+import Background from './backgrond';
 
 export default class ChatWindow extends Component {
     static propTypes = {
@@ -12,7 +13,7 @@ export default class ChatWindow extends Component {
         currentChatId: PropTypes.string,
         currentUserId: PropTypes.string,
         serverURL: PropTypes.string
-    }
+    };
 
 
     static defaultProps = { title: '', messages: [], currentChatId: '', currentUserId: '', serverURL: '' };
@@ -26,6 +27,7 @@ export default class ChatWindow extends Component {
 
         return currentChatId ?
             <ChatWindowWrapper >
+                <Background />
                 <Messages
                     messages={messages}
                     title={title.replace('!_!_!', ' and ')}

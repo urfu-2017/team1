@@ -154,7 +154,7 @@ export default function createChatReducer(chatProps) {
                 return Object.assign([], state);
             }
             neededChat.messages = [...neededChat.messages, message];
-            
+
             return Object.assign([], state);
         }
         case SEND_NEW_MESSAGE: {
@@ -173,9 +173,9 @@ export default function createChatReducer(chatProps) {
             return Object.assign([], state);
         }
         case RECEIVED_NEW_CHAT: {
-            console.log(RECEIVED_NEW_CHAT);
+            // console.log(RECEIVED_NEW_CHAT);
             const { chat, currentUserId } = action.info;
-            console.log(chat);
+            // console.log(chat);
             // TODO:
             // if (action.info.currentUserId === chat.creatorId) {
             //     return Object.assign([], state);
