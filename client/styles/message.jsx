@@ -22,7 +22,7 @@ export const Text = styled.p`
     width: fit-content;
     word-wrap: break-word;
     height:auto;
-    min-height: 18px;
+    min-height: 25px;
     background-color: ${props => (props.fromMe ? '#92d7ef' : '#a2eae0')};
     border-radius: 5px;
     padding: 6px 4px 6px 6px;
