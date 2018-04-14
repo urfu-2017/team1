@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { ChatWrapper, ChatHeader, LastMessage, Sender } from '../styles/chat';
 
-import { addMessageFromSocket } from '../actions/actions';
+import { addMessageFromSocket, cursorIsPressedFromBelow, moveCursorDown } from '../actions/actions';
 
 class Chat extends Component {
     static propTypes = {
@@ -54,6 +54,12 @@ class Chat extends Component {
                 console.log(sender);
             }
             console.log(sender);
+            const cursorInBottom = cursorIsPressedFromBelow();
+            this.props.dispatch(addMessageFromSocket(data.message, currentUserId));
+            if (cursorInBottom) {
+                moveCursorDown();
+            }
+
             this.props.dispatch(addMessageFromSocket(data.message, currentUserId, sender));
         });
     }
