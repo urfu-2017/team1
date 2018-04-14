@@ -1,4 +1,5 @@
-import { VISIBILITY_CHAT, SELECT_CHAT, VISIBILITY_MENU, VISIBILITY_CONTACTS } from '../actions/actions';
+import { VISIBILITY_CHAT, SELECT_CHAT, VISIBILITY_MENU, VISIBILITY_CONTACTS, WEATHER_GET }
+    from '../actions/actions';
 
 const initialStateStub = {
     currentUser: {
@@ -11,7 +12,8 @@ const initialStateStub = {
     openContacts: false,
     sessionInfoAndSecurityTokens: {
         HereBeDragons: '¯\\_(ツ)_/¯'
-    }
+    },
+    weatherData: {}
 };
 
 export default function createMetaReducer(currentUser) {
@@ -19,6 +21,9 @@ export default function createMetaReducer(currentUser) {
     const initialState = Object.assign({}, initialStateStub);
     return (state = initialState, action) => {
         switch (action.type) {
+        case WEATHER_GET:
+            state.weatherData = action.weatherData;
+            return Object.assign({}, state);
         case VISIBILITY_CHAT:
             // console.log('chat');
             // console.log(action.chat);

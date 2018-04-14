@@ -8,6 +8,9 @@ export const MESSAGE_SAVED = 'MESSAGE_SAVED';
 export const RECEIVED_NEW_CHAT = 'RECEIVED_NEW_CHAT';
 export const SEND_NEW_CHAT = 'SEND_NEW_CHAT';
 export const CHAT_SAVED = 'CHAT_SAVED';
+export const WEATHER_GET = 'WEATHER_GET';
+
+export const saveWeatherData = weatherData => ({ type: WEATHER_GET, weatherData });
 
 export const setVisibilityChat = chat => ({ type: VISIBILITY_CHAT, chat });
 

@@ -67,7 +67,9 @@ export default class Chats extends Component {
 
     hideBackground() {
         const background = document.querySelector('#background');
-        background.style.display = 'none';
+        if (background) {
+            background.style.display = 'none';
+        }
     }
 
     getChatsList() {

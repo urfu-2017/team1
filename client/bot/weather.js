@@ -8,7 +8,7 @@ const kelvinToDegree = -273.15;
 function parseWeather(weather, name) {
     return {
         name,
-        id: weather[0].id,
+        id: weather.weather[0].id,
         date: new Date(weather.dt).toLocaleString('en', dateFormatOptions),
         temperature: weather.main.temp - kelvinToDegree,
         humidity: weather.main.humidity,

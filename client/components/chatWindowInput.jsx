@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Textarea from '../styles/chatWindowInput';
-import { asyncSendMessage, addMessageFromChatInput } from '../actions/actions';
+import { asyncSendMessage, addMessageFromChatInput, saveWeatherData } from '../actions/actions';
 import isChatWithWeatherBot from '../bot/typeChat';
 import getWeather from '../bot/weather';
 
@@ -43,10 +43,16 @@ class ChatWindowInput extends Component {
             // const chatWithBot = await isChatWithWeatherBot(this.props.currentChatId);
             // if (chatWithBot) {
             const weather = await getWeather(message.content.text);
+            console.log(weather);
             // 1)в зависимости от фона подставляем разные картинки
-            const background = document.querySelector('#background');
-            background.style.display = 'block';
-            background.style.backgroundImage = "url('https://i.gifer.com/2MZq.gif')";
+
+            // const background = document.querySelector('#background');
+            // background.style.display = 'block';
+            // background.style.backgroundImage = "url('https://i.gifer.com/2MZq.gif')";
+            console.log('before');
+            this.props.dispatch(saveWeatherData(weather));
+            console.log('after');
+
             // 2)нужно на фоне создать блок, в котором написать всю инфу
             // }
         }
