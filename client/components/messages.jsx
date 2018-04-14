@@ -4,6 +4,55 @@ import { MessagesList, Header } from '../styles/messages';
 
 import Message from './message';
 
+class ScrollButton extends React.Component {
+    constructor() {
+        super();
+
+        this.state = {
+            intervalId: 0
+        };
+    }
+
+    scrollStep() {
+        const messagesBlock = document.getElementById('messages');
+        const scrollHeight = messagesBlock.scrollHeight
+        if (messagesBlock.pageYOffset !== scrollHeight) {
+            console.info('window.pageYOffset', window.pageYOffset);
+            console.info('scrollHeight', scrollHeight);
+            clearInterval(this.state.intervalId);
+        }
+        messagesBlock.scroll(0.0, scrollHeight - this.props.scrollStepInPx);
+    }
+
+    scrollToBottom() {
+        let intervalId = setInterval(this.scrollStep.bind(this), this.props.delayInMs);
+        this.setState({ intervalId });
+    }
+
+    render() {
+        const buttonStyle = {
+            backgroundColor: '#b7c5f5',
+            position: 'absolute',
+            bottom: '50px',
+            width: '20px',
+            height: '20px',
+            borderRadius: '5px',
+            borderColor: '#b7c5f5',
+            right: '30px',
+            cursor: 'pointer'
+        };
+        return (
+            <button
+                style={buttonStyle}
+                title="Жмяк вниз"
+                className="scroll"
+                onClick={() => { this.scrollToBottom(); }}
+            />
+        );
+    }
+}
+
+
 export default class Messages extends Component {
     static propTypes = {
         title: PropTypes.string,
@@ -48,7 +97,10 @@ export default class Messages extends Component {
         return (
             <React.Fragment>
                 <Header> {title} </Header>
-                <MessagesList ref={this.getSectionRef}> {this.getMessagesList()} </MessagesList>
+                <MessagesList id="messages" ref={this.getSectionRef}>
+                    <ScrollButton scrollStepInPx="50" delayInMs="16.66"/>
+                    {this.getMessagesList()}
+                </MessagesList>
             </React.Fragment>
         );
     }

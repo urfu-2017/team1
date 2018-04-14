@@ -20,6 +20,7 @@ module.exports = () => async (req, res, next) => {
     }
 
     const lastMessagesUsersIds = chats.map(chat => chat.lastMessage.senderId)
+        .filter(Boolean)
         .map(id => dbConnection.getUser(id));
     const lastMessagesUsers = await Promise.all(lastMessagesUsersIds);
     chats.map((chat, i) => {
@@ -29,7 +30,7 @@ module.exports = () => async (req, res, next) => {
     });
 
     //let users = await dbConnection.getUserContacts(userId);
-    let users = await dbConnection.getAllUsers({ sort: 'date', from: null, to: null, limit: null, offset: null });
+    let users = await dbConnection.getAllUsers({});
     req.chats = chats;
     req.users = users.filter(x => x !== null)
         .filter(x => x.id !== userId);

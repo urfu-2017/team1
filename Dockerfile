@@ -4,7 +4,6 @@ COPY server /server
 COPY client /client
 COPY public /public
 COPY package.json /
-COPY env.production /.env
 
 RUN npm i --production
 

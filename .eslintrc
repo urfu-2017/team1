@@ -9,6 +9,7 @@
         "sourceType": "module"
     },
     "rules": {
+        "react/no-multi-comp": 0,
         "no-return-await": "off",
         "indent": ["error", 4],
         "react/jsx-indent": [2, 4],

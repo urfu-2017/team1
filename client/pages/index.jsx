@@ -48,8 +48,8 @@ export default class KilogrammApp extends React.Component {
         return (
             <Provider store={this.store}>
                 <Wrapper>
-                    <SideBar/>
-                    <ChatWindow/>
+                    <SideBar />
+                    <ChatWindow />
                 </Wrapper>
             </Provider>
         );

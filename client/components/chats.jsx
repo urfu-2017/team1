@@ -24,7 +24,11 @@ export default class Chats extends Component {
         addNewChatFromSocket: PropTypes.func,
         asyncCreateChat: PropTypes.func,
         addChatFromContacts: PropTypes.func
+<<<<<<< HEAD
     };
+=======
+    }
+>>>>>>> 78555161b5fd04efaae26a7eb738531e903f51ef
 
     static defaultProps = {
         allChats: [],
@@ -39,8 +43,13 @@ export default class Chats extends Component {
         meta: {},
         addNewChatFromSocket: {},
         asyncCreateChat: {},
+<<<<<<< HEAD
         addChatFromContacts: {},
     };
+=======
+        addChatFromContacts: {}
+    }
+>>>>>>> 78555161b5fd04efaae26a7eb738531e903f51ef
 
     constructor(props) {
         super(props);
@@ -93,7 +102,6 @@ export default class Chats extends Component {
 
     getContactsList() {
         const { contacts, onClickChat, user, asyncCreateChat, addChatFromContacts } = this.props;
-
         return contacts.map(contact => (
             <Contact
                 key={contact.name + Math.random()}
@@ -107,8 +115,7 @@ export default class Chats extends Component {
                         userChatId: `${Math.random()}`
                     };
                     // addChatFromContacts(chat);
-                    asyncCreateChat(chat, contact.id, this.props.meta.serverURL);
-                    onClickChat(chat);
+                    asyncCreateChat(chat, contact.id, onClickChat);
                 }}
             >
                 <img src={contact.avatar} alt="Изображение аватарки" className="contact__image" />

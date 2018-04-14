@@ -4,7 +4,7 @@ const hruDb = require('../lib/hru-requester/hrudb-rest');
 
 
 class HruRepository {
-    constructor(credentials, retryTimes = 8, disableCache = false) {
+    constructor(credentials, retryTimes = 30, disableCache = false) {
         this._credentials = credentials;
         this._retryTimes = retryTimes;
 
@@ -184,7 +184,7 @@ class HruRepository {
         }
 
         const serialized = await this._performRequest(() => method.call(null, this._credentials, key));
-        
+
         if (serialized === null) {
             return null;
         }

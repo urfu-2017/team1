@@ -31,5 +31,6 @@ export default async function getWeather(city) {
 
     return fetch(url, options)
         .then(response => response.json())
-        .then(weather => parseWeather(weather, city));
+        .then(weather => parseWeather(weather, city))
+        .catch(() => undefined);
 }

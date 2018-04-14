@@ -159,7 +159,11 @@ export default function createChatReducer(chatProps) {
         }
         case SEND_NEW_MESSAGE: {
             // action.message.content.text += '(отправлено)';
+           
             const neededChat = state.find(x => x.id === action.message.chatId);
+            if (!neededChat.messages) {
+                neededChat.messages = [];
+            }
             neededChat.messages = [...neededChat.messages, action.message];
             return Object.assign([], state);
         }
@@ -180,8 +184,8 @@ export default function createChatReducer(chatProps) {
             // if (action.info.currentUserId === chat.creatorId) {
             //     return Object.assign([], state);
             // }
-
-            return [chat, ...state];
+            let newState = [...state, chat];
+            return Object.assign([], newState);
         }
         case SEND_NEW_CHAT: {
             const { chat } = action;
