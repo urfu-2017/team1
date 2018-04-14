@@ -12,18 +12,19 @@ export default class ChatWindow extends Component {
         currentChatId: PropTypes.string,
         currentUserId: PropTypes.string,
         serverURL: PropTypes.string,
-        background: PropTypes.string
+        background: PropTypes.string,
+        allChats: PropTypes.arrayOf(PropTypes.object)
     };
 
 
-    static defaultProps = { title: '', messages: [], currentChatId: '', currentUserId: '', serverURL: '', background: '' };
+    static defaultProps = { title: '', messages: [], currentChatId: '', currentUserId: '', serverURL: '', background: '', allChats: [] };
 
     constructor(props) {
         super(props);
         this.state = {};
     }
     render() {
-        const { messages, title, currentChatId, currentUserId, serverURL } = this.props;
+        const { messages, title, currentChatId, currentUserId, serverURL, allChats } = this.props;
 
         return currentChatId ?
             <ChatWindowWrapper>
@@ -36,6 +37,7 @@ export default class ChatWindow extends Component {
                     currentChatId={currentChatId}
                     currentUserId={currentUserId}
                     serverURL={serverURL}
+                    allChats={allChats}
                 />
             </ChatWindowWrapper > : <ChatWindowWrapper />;
     }

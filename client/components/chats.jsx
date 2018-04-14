@@ -96,7 +96,7 @@ export default class Chats extends Component {
                         userChatId: `${Math.random()}`
                     };
                     // addChatFromContacts(chat);
-                    asyncCreateChat(chat, contact.id, this.props.meta.serverURL, onClickChat);
+                    asyncCreateChat(chat, contact.id, onClickChat);
                 }}
             >
                 <img src={contact.avatar} alt="Изображение аватарки" className="contact__image" />

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Textarea from '../styles/chatWindowInput';
-import { asyncSendMessage, addMessageFromChatInput, cursorIsPressedFromBelow, moveCursorDown }
+import { asyncSendMessage, addMessageFromChatInput, cursorIsPressedFromBelow, moveCursorDown, selectChat, setVisibilityChat }
     from '../actions/actions';
 
 class ChatWindowInput extends Component {
@@ -11,10 +11,11 @@ class ChatWindowInput extends Component {
         dispatch: PropTypes.func,
         currentChatId: PropTypes.string,
         currentUserId: PropTypes.string,
-        serverURL: PropTypes.string
+        serverURL: PropTypes.string,
+        allChats: PropTypes.arrayOf(PropTypes.object)
     }
 
-    static defaultProps = { dispatch: {}, currentChatId: '', currentUserId: '', serverURL: '' }
+    static defaultProps = { dispatch: {}, currentChatId: '', currentUserId: '', serverURL: '', allChats: [] }
 
     constructor(props) {
         super(props);
@@ -35,13 +36,19 @@ class ChatWindowInput extends Component {
                 senderId: currentUserId,
                 userMessageId: Math.random()
             };
-
             const cursorInBottom = cursorIsPressedFromBelow();
             this.props.dispatch(addMessageFromChatInput(message));
+
             if (cursorInBottom) {
                 moveCursorDown();
             }
+            
             this.props.dispatch(asyncSendMessage(message, serverURL));
+            // @lms: этот хак сделан для обновления чата, который пришел через сокет
+            // todo: удалить и сделать нормально
+            let chat = this.props.allChats.find(x => x.id === currentChatId);
+            this.props.dispatch(selectChat(currentChatId));
+            this.props.dispatch(setVisibilityChat(chat));
 
             this.setState({ message: '' });
         }

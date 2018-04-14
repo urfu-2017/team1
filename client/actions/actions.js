@@ -68,7 +68,7 @@ export const addNewChatFromSocket = (chat, currentUserId) =>
 const saveChat = (status, userChat) =>
     ({ type: CHAT_SAVED, info: { status, userChat } });
 
-export const asyncCreateChat = (chat, contactId, serverURL, callback) => dispatch => {
+export const asyncCreateChat = (chat, contactId, callback) => dispatch => {
     const URL = `api/rest/users/${contactId}/start-chat`;
     const options = {
         headers: {
