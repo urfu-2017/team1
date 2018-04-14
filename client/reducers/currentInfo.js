@@ -28,7 +28,7 @@ export default function createMetaReducer(currentUser) {
             // console.log('chat');
             // console.log(action.chat);
             state.currentChat = action.chat;
-            // return Object.assign({}, state);
+            return Object.assign({}, state);
         case SELECT_CHAT:
             // console.log('chatId');
             // console.log(action.id);

@@ -1,4 +1,4 @@
-const botWeatherId = '537bb8f3-d803-4331-b32f-a9ffcb4d3e50';
+const botWeatherId = '92098d13-6542-4c72-83df-033468ed235b';
 
 export default async function isChatWithWeatherBot(chatId) {
     const url = `api/rest/chats/${chatId}`;

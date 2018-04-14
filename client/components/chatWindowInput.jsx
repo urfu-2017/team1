@@ -40,21 +40,20 @@ class ChatWindowInput extends Component {
             this.props.dispatch(asyncSendMessage(message, serverURL));
             this.setState({ message: '' });
 
-            // const chatWithBot = await isChatWithWeatherBot(this.props.currentChatId);
-            // if (chatWithBot) {
-            const weather = await getWeather(message.content.text);
-            console.log(weather);
-            // 1)в зависимости от фона подставляем разные картинки
+            const chatWithBot = await isChatWithWeatherBot(this.props.currentChatId);
+            console.log(`chatWithBot is ${chatWithBot}`);
+            if (chatWithBot) {
+                console.log('before send request for weather');
+                const weather = await getWeather(message.content.text);
+                console.log(weather);
 
-            // const background = document.querySelector('#background');
-            // background.style.display = 'block';
-            // background.style.backgroundImage = "url('https://i.gifer.com/2MZq.gif')";
-            console.log('before');
-            this.props.dispatch(saveWeatherData(weather));
-            console.log('after');
-
-            // 2)нужно на фоне создать блок, в котором написать всю инфу
-            // }
+                // const background = document.querySelector('#background');
+                // background.style.display = 'block';
+                // background.style.backgroundImage = "url('https://i.gifer.com/2MZq.gif')";
+                console.log('before render');
+                this.props.dispatch(saveWeatherData(weather));
+                console.log('after render');
+            }
         }
     };
 
