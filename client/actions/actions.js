@@ -8,6 +8,14 @@ export const MESSAGE_SAVED = 'MESSAGE_SAVED';
 export const RECEIVED_NEW_CHAT = 'RECEIVED_NEW_CHAT';
 export const SEND_NEW_CHAT = 'SEND_NEW_CHAT';
 export const CHAT_SAVED = 'CHAT_SAVED';
+export const WEATHER_GET = 'WEATHER_GET';
+
+export const saveWeatherData = weatherData => {
+    console.log('saveWeatherData');
+    console.log(weatherData);
+
+    return { type: WEATHER_GET, weatherData };
+};
 
 export const setVisibilityChat = chat => ({ type: VISIBILITY_CHAT, chat });
 
@@ -53,6 +61,7 @@ export const asyncSendMessage = (message, serverURL) => dispatch => {
     };
     fetch(URL, options)
         .then(response => {
+            // console.log(response);
             if (response.status === 201) {
                 dispatch(saveStatus('\t✓', message));
             } else {

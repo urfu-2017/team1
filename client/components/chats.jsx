@@ -24,7 +24,7 @@ export default class Chats extends Component {
         addNewChatFromSocket: PropTypes.func,
         asyncCreateChat: PropTypes.func,
         addChatFromContacts: PropTypes.func
-    }
+    };
 
     static defaultProps = {
         allChats: [],
@@ -40,7 +40,7 @@ export default class Chats extends Component {
         addNewChatFromSocket: {},
         asyncCreateChat: {},
         addChatFromContacts: {}
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -53,7 +53,7 @@ export default class Chats extends Component {
         this.socket = io(serverURL);
         const socketNamespace = `${newChatsSocketPrefix}-${this.props.user.id}`;
         this.socket.on(socketNamespace, data => {
-            console.log('got new chat from socket');
+            // console.log('got new chat from socket');
             const currentUserId = this.props.user.id;
             this.props.addNewChatFromSocket(data.chat, currentUserId);
         });
@@ -63,6 +63,13 @@ export default class Chats extends Component {
         const { serverURL, newChatsSocketPrefix } = this.props.meta;
         this.socket.off( `${newChatsSocketPrefix}-${this.props.user.id}`);
         this.socket.close();
+    }
+
+    hideBackground() {
+        const background = document.querySelector('#background');
+        if (background) {
+            background.style.display = 'none';
+        }
     }
 
     getChatsList() {
@@ -76,7 +83,10 @@ export default class Chats extends Component {
                 meta={meta}
                 user={user}
                 contacts={contacts}
-                onClick={() => { onClickChat(chat); }}
+                onClick={() => {
+                    onClickChat(chat);
+                    this.hideBackground();
+                }}
             />
         ));
     }
