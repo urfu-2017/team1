@@ -13,6 +13,7 @@ export const Header = styled.header`
 export const SearchInput = styled.input`
     height: 40px;
     width: 80%;
+    visibility: hidden;
 `;
 
 export const ChatsList = styled.section`
