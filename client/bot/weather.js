@@ -1,7 +1,8 @@
 const dateFormatOptions = {
     month: 'long',
     day: 'numeric',
-    hour: '2-digit'
+    hour: '2-digit',
+    minute: '2-digit'
 };
 const kelvinToDegree = 273.15;
 const secondsToMilliseconds = 1000;
