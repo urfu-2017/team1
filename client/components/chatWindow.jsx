@@ -12,13 +12,9 @@ export default class ChatWindow extends Component {
         messages: PropTypes.arrayOf(PropTypes.object),
         currentChatId: PropTypes.string,
         currentUserId: PropTypes.string,
-<<<<<<< HEAD
-        serverURL: PropTypes.string
-=======
         serverURL: PropTypes.string,
         background: PropTypes.string,
         allChats: PropTypes.arrayOf(PropTypes.object)
->>>>>>> 78555161b5fd04efaae26a7eb738531e903f51ef
     };
 
 
@@ -32,12 +28,8 @@ export default class ChatWindow extends Component {
         const { messages, title, currentChatId, currentUserId, serverURL, allChats } = this.props;
 
         return currentChatId ?
-<<<<<<< HEAD
             <ChatWindowWrapper >
                 <Background />
-=======
-            <ChatWindowWrapper>
->>>>>>> 78555161b5fd04efaae26a7eb738531e903f51ef
                 <Messages
                     messages={messages}
                     title={title.replace('!_!_!', ' and ')}

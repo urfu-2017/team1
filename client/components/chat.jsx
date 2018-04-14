@@ -53,12 +53,7 @@ class Chat extends Component {
                 // console.log('сообщение от самого себя');
                 // console.log(sender);
             }
-<<<<<<< HEAD
-            // console.log(sender);
-=======
-            console.log(sender);
             const cursorInBottom = cursorIsPressedFromBelow();
->>>>>>> 78555161b5fd04efaae26a7eb738531e903f51ef
             this.props.dispatch(addMessageFromSocket(data.message, currentUserId, sender));
             if (cursorInBottom) {
                 moveCursorDown();

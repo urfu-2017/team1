@@ -145,7 +145,6 @@ handlers.startChatWithUser = async (req, res) => {
         currentUser.update({}),
         otherUser.update({})
     );
-<<<<<<< HEAD
     if (outcome !== null) {
         // console.log('emitting');
         for (let id of [currentUser.id, otherUser.id]) {
@@ -157,8 +156,6 @@ handlers.startChatWithUser = async (req, res) => {
     } else {
         res.sendStatus(500);
     }
-=======
->>>>>>> 78555161b5fd04efaae26a7eb738531e903f51ef
 };
 
 

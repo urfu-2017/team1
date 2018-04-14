@@ -24,11 +24,7 @@ export default class Chats extends Component {
         addNewChatFromSocket: PropTypes.func,
         asyncCreateChat: PropTypes.func,
         addChatFromContacts: PropTypes.func
-<<<<<<< HEAD
     };
-=======
-    }
->>>>>>> 78555161b5fd04efaae26a7eb738531e903f51ef
 
     static defaultProps = {
         allChats: [],
@@ -43,13 +39,8 @@ export default class Chats extends Component {
         meta: {},
         addNewChatFromSocket: {},
         asyncCreateChat: {},
-<<<<<<< HEAD
-        addChatFromContacts: {},
-    };
-=======
         addChatFromContacts: {}
-    }
->>>>>>> 78555161b5fd04efaae26a7eb738531e903f51ef
+    };
 
     constructor(props) {
         super(props);

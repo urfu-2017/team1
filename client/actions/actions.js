@@ -61,10 +61,7 @@ export const asyncSendMessage = (message, serverURL) => dispatch => {
     };
     fetch(URL, options)
         .then(response => {
-<<<<<<< HEAD
             // console.log(response);
-=======
->>>>>>> 78555161b5fd04efaae26a7eb738531e903f51ef
             if (response.status === 201) {
                 dispatch(saveStatus('\t✓', message));
             } else {
@@ -91,19 +88,8 @@ export const asyncCreateChat = (chat, contactId, callback) => dispatch => {
         credentials: 'same-origin'
     };
     fetch(URL, options)
-<<<<<<< HEAD
-        .then(response => {
-            // console.log(response);
-            if (response.status === 201) {
-                dispatch(saveChat('\t✓', chat));
-            } else {
-                dispatch(saveChat('\t⨯', chat));
-            }
-        });
-=======
         .then(response => response.json())
         .then(response => console.log('|||||||||') || console.log(response) || dispatch(callback(response)));
->>>>>>> 78555161b5fd04efaae26a7eb738531e903f51ef
 };
 
 export const addChatFromContacts = chat => ({ type: SEND_NEW_CHAT, chat });
