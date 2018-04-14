@@ -1,7 +1,8 @@
 FROM node:8
 
 COPY server /server
-COPY pages /pages
+COPY client /client
+COPY public /public
 COPY package.json /
 COPY env.production /.env
 
