@@ -55,12 +55,10 @@ class Chat extends Component {
             }
             console.log(sender);
             const cursorInBottom = cursorIsPressedFromBelow();
-            this.props.dispatch(addMessageFromSocket(data.message, currentUserId));
+            this.props.dispatch(addMessageFromSocket(data.message, currentUserId, sender));
             if (cursorInBottom) {
                 moveCursorDown();
             }
-
-            this.props.dispatch(addMessageFromSocket(data.message, currentUserId, sender));
         });
     }
 
