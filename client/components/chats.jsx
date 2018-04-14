@@ -99,7 +99,7 @@ export default class Chats extends Component {
                     onClickChat(chat);
                 }}
             >
-                <img src={contact.img} alt="Изображение аватарки" className="contact__image" />
+                <img src={contact.avatar} alt="Изображение аватарки" className="contact__image" />
                 <p>{contact.name}</p>
             </Contact>
         ));
