@@ -11,7 +11,7 @@ export default class Message extends Component {
         creationTime: PropTypes.string
     };
 
-    static defaultProps = { fromMe: '', message: '', creationTime: '' };
+    static defaultProps = { fromMe: '', message: '', creationTime: '' }
 
     constructor(props) {
         super(props);
@@ -22,7 +22,7 @@ export default class Message extends Component {
         return (
             <MessageWrapper fromMe={fromMe}>
                 <Text fromMe={fromMe} dangerouslySetInnerHTML={{ __html:  emoji.emojify(marked(message),
-                    (res) => res ) }} />
+                     (res) => res ) }} />
                 <Time>{creationTime}</Time>
             </MessageWrapper>
         );

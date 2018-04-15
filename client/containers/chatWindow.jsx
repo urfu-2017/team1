@@ -7,7 +7,6 @@ const mapStateToProps = state => ({
     currentChatId: state.currentInfo.currentChat.id,
     currentUserId: state.currentInfo.currentUser.id,
     serverURL: state.meta.serverURL,
-    weatherData: state.currentInfo.weatherData,
     allChats: state.allChats
 });
 

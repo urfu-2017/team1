@@ -80,7 +80,7 @@ export default class Messages extends Component {
         }
     };
 
-    getSectionRef = node => { this.node = node; };
+    getSectionRef = node => { this.node = node; }
 
     getMessagesList() {
         const { messages, currentUserId } = this.props;

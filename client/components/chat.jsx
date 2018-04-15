@@ -43,16 +43,17 @@ class Chat extends Component {
         });
         this.socket.on(`${chatSocketPrefix}-${chatId}`, data => {
             const { contacts, user } = this.props;
-            // console.log('Got something');
-            // console.log(data);
-            // console.log(contacts);
+            console.log('Got something');
+            console.log(data);
+            console.log(contacts);
             const { currentUserId } = this.props;
             let sender = contacts.find(x => x.id === data.message.senderId);
             if (!sender) {
                 sender = user;
-                // console.log('сообщение от самого себя');
-                // console.log(sender);
+                console.log('сообщение от самого себя');
+                console.log(sender);
             }
+            console.log(sender);
             const cursorInBottom = cursorIsPressedFromBelow();
             this.props.dispatch(addMessageFromSocket(data.message, currentUserId, sender));
             if (cursorInBottom) {
