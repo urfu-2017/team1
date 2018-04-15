@@ -9,7 +9,7 @@ export const MessageWrapper = styled.article`
     }
     p * {
         margin: 0;
-        width: 85%;
+        width: 100%;
         line-height: initial;
         background-size: contain;
     }
@@ -18,7 +18,7 @@ export const MessageWrapper = styled.article`
 export const Text = styled.p`
     float: ${props => (props.fromMe ? 'right' : 'left')};
     max-width: 70%;
-    white-space: pre;
+    white-space: pre-wrap;
     width: fit-content;
     word-wrap: break-word;
     height:auto;
