@@ -1,9 +1,0 @@
-/node_modules
-/.next
-*/.next
-*.log
-.vscode
-.idea
-.env
-.env.dev
-env.production
