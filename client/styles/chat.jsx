@@ -1,14 +1,29 @@
 import styled from 'styled-components';
 
 export const ChatWrapper = styled.article`
-    max-width: 86%;
-    height: 50px;
+    background-color: ${props => (props.select ? '#b7c5f5' : '#f2f3dE')};
     margin: 4px 0;
     padding: 0 25px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background-color: ${props => (props.select ? '#b7c5f5' : '#f2f3dE')};
+    display:flex;
+    flex-direction: row;
+    .chat-avatar {
+        width: 50px;
+        height: 50px;
+    }
+    .chat-avatar__img {
+        margin-top: 4px;
+        -webkit-border-radius: 50% 50%;
+        -moz-border-radius: 50% 50%;
+        border-radius: 50% 50%;
+    }
+    .chat-description {
+        max-width: 86%;
+        height: 50px;
+        padding: 0 25px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 `;
 
 export const ChatHeader = styled.p`

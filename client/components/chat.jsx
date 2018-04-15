@@ -73,13 +73,18 @@ class Chat extends Component {
         const chatName = currentUserId === chat.creatorId ? names[0] : names[1];
         return (
             <ChatWrapper onClick={onClick} select={select}>
-                <ChatHeader>{chatName}</ChatHeader>
-                {chat.lastMessage && chat.lastMessage.content && chat.lastMessage.sender &&
-                <LastMessage>
-                    <Sender>{chat.lastMessage.sender.name}:</Sender>
-                    <span>{chat.lastMessage.content.text}</span>
-                </LastMessage>
-                }
+                <div className='chat-avatar'>
+                    <img src={chat.picture} width='50' height='50' alt='аватар' className='chat-avatar__img'/>
+                </div>
+                <div className='chat-description'>
+                    <ChatHeader>{chatName}</ChatHeader>
+                    {chat.lastMessage && chat.lastMessage.content && chat.lastMessage.sender &&
+                    <LastMessage>
+                        <Sender>{chat.lastMessage.sender.name}:</Sender>
+                        <span>{chat.lastMessage.content.text}</span>
+                    </LastMessage>
+                    }
+                </div>
             </ChatWrapper>
         );
     }
