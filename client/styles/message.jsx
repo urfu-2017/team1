@@ -17,7 +17,7 @@ export const MessageWrapper = styled.article`
 
 export const Text = styled.p`
     float: ${props => (props.fromMe ? 'right' : 'left')};
-    max-width: 70%;
+    max-width: 51%;
     white-space: pre-wrap;
     width: fit-content;
     word-wrap: break-word;

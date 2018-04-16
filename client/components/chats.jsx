@@ -99,7 +99,7 @@ export default class Chats extends Component {
                     asyncCreateChat(chat, contact.id, onClickChat);
                 }}
             >
-                <img src={contact.avatar} alt="Изображение аватарки" className="contact__image" />
+                <img src={contact.avatar} alt="ава" className="contact__image" />
                 <p>{contact.name}</p>
             </Contact>
         ));
