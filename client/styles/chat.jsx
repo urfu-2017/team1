@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const ChatWrapper = styled.article`
     background-color: ${props => (props.select ? '#b7c5f5' : '#f2f3dE')};
     margin: 4px 0;
-    padding: 0 25px;
+    padding: 4px 25px;
     display:flex;
     flex-direction: row;
     .chat-avatar {
@@ -11,7 +11,7 @@ export const ChatWrapper = styled.article`
         height: 50px;
     }
     .chat-avatar__img {
-        margin-top: 4px;
+        margin-bottom: 4px;
         -webkit-border-radius: 50% 50%;
         -moz-border-radius: 50% 50%;
         border-radius: 50% 50%;
