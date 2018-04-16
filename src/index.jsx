@@ -1,15 +1,20 @@
 import React from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import App from './components/app.jsx';
 import { ApolloProvider } from 'react-apollo';
-import { Router, Route, Link, browserHistory } from 'react-router';
-import makeApolloClient from './lib/makeApolloClient';
+import { BrowserRouter as Router, Route, browserHistory } from 'react-router-dom';
+import makeApolloClient from './lib/make-apollo-client';
 import config from './config';
+
+
+
+
 
 const client = makeApolloClient(config.scapholdUrl);
 
-const root = (
+
+const getRoot = (App) => (
     <AppContainer>
         <ApolloProvider client={client}>
             <Router history={browserHistory}>
@@ -20,20 +25,14 @@ const root = (
     </AppContainer>
 );
 
-render(root, document.querySelector('#app'));
+ReactDOM.render(getRoot(App), document.querySelector('#app'));
+
 
 if (module.hot) {
     module.hot.accept('./components/app.jsx', () => {
         const App = require('./components/app.jsx').default;
-        render(
-            <AppContainer>
-                <ApolloProvider client={client}>
-                    <Router history={browserHistory}>
-                        <Route path="/" component={App}>
-                        </Route>
-                    </Router>
-                </ApolloProvider>
-            </AppContainer>,
+        ReactDOM.render(
+            getRoot(App),
             document.querySelector('#app')
         );
     });
