@@ -3,6 +3,7 @@
 const passport = require('passport');
 const { saveNewMessage } = require('./controllers/message');
 const { saveChat } = require('./controllers/chat');
+const { MetadataController } = require('./controllers/metadata');
 
 module.exports = (app, io) => {
     app.get('/auth/github', passport.authenticate('github'));
@@ -13,6 +14,8 @@ module.exports = (app, io) => {
             res.redirect('/index');
         }
     );
+
+    app.post('/metadata', MetadataController.post);
 
     io.on('connection', socket => {
         app.post('/message', saveNewMessage(socket));
