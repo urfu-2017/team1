@@ -8,9 +8,6 @@ import makeApolloClient from './lib/make-apollo-client';
 import config from './config';
 
 
-
-
-
 const client = makeApolloClient(config.scapholdUrl);
 
 
@@ -28,12 +25,14 @@ const getRoot = (App) => (
 ReactDOM.render(getRoot(App), document.querySelector('#app'));
 
 
-if (module.hot) {
-    module.hot.accept('./components/app.jsx', () => {
-        const App = require('./components/app.jsx').default;
-        ReactDOM.render(
-            getRoot(App),
-            document.querySelector('#app')
-        );
-    });
-}
+// Это пока не нужно
+
+// if (module.hot) {
+//     module.hot.accept('./components/app.jsx', () => {
+//         const App = require('./components/app.jsx').default;
+//         ReactDOM.render(
+//             getRoot(App),
+//             document.querySelector('#app')
+//         );
+//     });
+// }
