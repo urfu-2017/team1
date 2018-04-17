@@ -8,6 +8,7 @@ const passport = require('passport');
 const passportSocketIo = require('passport.socketio');
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const mongoose = require('mongoose');
 
 const app = express();
 const bodyParser = require('body-parser');
@@ -18,11 +19,13 @@ const server = require('http')
     .Server(app);
 const io = require('socket.io')(server);
 const authMiddleware = require('./middleware/auth');
-const setUpMiddleware = require('./middleware/userSetUp');
-const metaInfoSetUpMiddleware = require('./middleware/metaInfoSetUp');
+// const setUpMiddleware = require('./middleware/userSetUp');
+// const metaInfoSetUpMiddleware = require('./middleware/metaInfoSetUp');
 const routes = require('./routes');
 const session = require('express-session');
 const memoryStore = require('session-memory-store')(session)();
+
+mongoose.connect('mongodb://localhost/messenger');
 
 app.use(cookieParser());
 app.use(require('body-parser')
@@ -41,8 +44,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(authMiddleware());
-app.use(setUpMiddleware());
-app.use(metaInfoSetUpMiddleware(process.env.URL));
+// app.use(setUpMiddleware());
+// app.use(metaInfoSetUpMiddleware(process.env.URL));
 
 const nextApp = next({
     dir: './client',
@@ -62,13 +65,6 @@ io.use(passportSocketIo.authorize({
     cookieParser
 }));
 
-
-// io.on('connection', socket => {
-//     // console.log(socket.request.user);
-//     setInterval(myFunc, 1000, socket);
-// });
-
-
 nextApp.prepare()
     .then(() => {
         routes(app, io);
@@ -77,47 +73,3 @@ nextApp.prepare()
             .get('*', handleRequest);
         server.listen(port, () => console.info(`> Ready on http://localhost:${port}`)); // eslint-disable-line no-console, max-len
     });
-
-// function myFunc(socket) {
-//     socket.emit('now-ID_1', {
-//         message: {
-//             content: {
-//                 text: `Первый!!${Math.random()}!1!!!!`
-//             },
-//             chatId: 'ID_1',
-//             senderId: 'sender_1'
-//         }
-//     });
-
-//     socket.emit('now-ID_2', {
-//         message: {
-//             content: {
-//                 text: `Второй!!${Math.random()}!1!!!!`
-//             },
-//             chatId: 'ID_2',
-//             senderId: 'sender_2'
-//         }
-//     });
-
-//     socket.emit('user1', {
-//         chat: {
-//             title: 'Chat1',
-//             picture: 'picture1',
-//             usersIds: [],
-//             id: `${Math.random()}-8812-4f37-9221-0176447b9ee1`,
-//             messages: [],
-//             lastMessage: {
-//                 content: {
-//                     text: 'message text',
-//                     attachments: [],
-//                     pictures: []
-//                 },
-//                 sender: {
-//                     name: 'user1',
-//                     avatar: 'path-to-avatar.jpeg',
-//                     id: 'ALPHANUMERIC_ID'
-//                 }
-//             }
-//         }
-//     });
-// }

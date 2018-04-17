@@ -18,7 +18,7 @@ passport.use(new GitHubStrategy(
     (async (accessToken, refreshToken, profile, cb) => {
         const githubId = profile.id;
         const name = profile.displayName || profile.username;
-        let user = await User.findByGithubID(githubId);
+        let user = await User.findByGithubId(githubId);
         const avatarPath = `images/avatars/github/${githubId}.png`;
         const fsAvatarPath = `../../public/${avatarPath}`;
         if (!fs.existsSync(fsAvatarPath)) {
@@ -38,7 +38,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
-    const user = await User.findByID(id);
+    const user = await User.findById(id);
     done(null, user);
 });
 
