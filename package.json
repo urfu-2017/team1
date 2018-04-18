@@ -1,32 +1,34 @@
 {
   "scripts": {
-    "build": "webpack --config ./webpack.production.config.js --progress --profile --colors",
-    "dev": "webpack-dev-server --config ./webpack.config.js --mode development",
-    "lint": "eslint --ext js --ext jsx src || exit 0"
+    "dev": "node src/server",
+    "start": "next start",
+    "build": "next build",
+    "lint:js": "eslint --fix .",
+    "lint": "npm-run-all lint:*",
+    "test": "mocha tests/"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.12",
     "apollo-client": "^2.2.8",
-    "apollo-link": "latest",
+    "apollo-link": "^1.2.2",
     "apollo-link-http": "^1.5.4",
     "apollo-link-state": "^0.4.1",
     "apollo-link-ws": "^1.0.8",
-    "auth0-lock": "^11.5.2",
-    "bootstrap": "^4.1.0",
+    "apollo-utilities": "^1.0.11",
+    "express": "^4.16.3",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.8.0",
-    "install": "^0.11.0",
+    "isomorphic-unfetch": "^2.0.0",
     "json-loader": "^0.5.7",
-    "node-sass": "^4.8.3",
+    "next": "^5.1.0",
     "prop-types": "^15.6.1",
     "react": "^16.3.1",
     "react-apollo": "^2.1.3",
     "react-dom": "^16.3.1",
     "react-router-dom": "^4.2.2",
-    "sass-loader": "^7.0.1",
     "styled-components": "^3.2.5",
     "subscriptions-transport-ws": "^0.9.7",
-    "apollo-utilities": "latest"
+    "webpack": "^4.6.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -35,17 +37,18 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
-    "css-loader": "^0.28.11",
-    "extract-text-webpack-plugin": "^3.0.2",
-    "file-loader": "^1.1.11",
-    "html-webpack-plugin": "^3.2.0",
-    "postcss-loader": "^2.1.4",
-    "react-hot-loader": "^4.0.1",
     "style-loader": "^0.20.3",
-    "url-loader": "^1.0.1",
-    "webpack": "^4.5.0",
-    "webpack-cleanup-plugin": "^0.5.1",
-    "webpack-cli": "^2.0.14",
-    "webpack-dev-server": "^3.1.3"
+    "url-loader": "^1.0.1"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "react",
+      "stage-2",
+      "next/babel"
+    ],
+    "plugins": [
+      "transform-decorators-legacy"
+    ]
   }
 }

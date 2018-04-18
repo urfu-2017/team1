@@ -1,3 +1,8 @@
 node-modules
-.idea
 .env*
+.idea
+.next
+*/.next
+*.log
+.vscode
+.idea
