@@ -16,8 +16,10 @@ export const MenuRoot = styled.section`
         width: 64px;
         height: 64px;
     }
-    .contacts {
-        padding: 20px 10px;
+    .menu__item
+    {
+        margin: 0;
+        padding: 15px 0 15px 20px;
         cursor: default;
         &:hover {
            background: #b7c5f5;;

@@ -140,11 +140,10 @@ const initialState = [
 export default function createChatReducer(chatProps) {
     const newInitialState = Object.assign([], chatProps);
     return (state = newInitialState, action) => {
+        console.log(action);
         switch (action.type) {
         case RECEIVED_NEW_MESSAGE: {
             const { message, sender } = action.info;
-            //console.log(action.info.currentUserId);
-            //console.log(message.senderId);
             const neededChat = state.find(x => x.id === message.chatId);
             neededChat.lastMessage = message;
             neededChat.lastMessage.sender = sender;
@@ -154,12 +153,9 @@ export default function createChatReducer(chatProps) {
                 return Object.assign([], state);
             }
             neededChat.messages = [...neededChat.messages, message];
-            
             return Object.assign([], state);
         }
         case SEND_NEW_MESSAGE: {
-            // action.message.content.text += '(отправлено)';
-           
             const neededChat = state.find(x => x.id === action.message.chatId);
             if (!neededChat.messages) {
                 neededChat.messages = [];
@@ -184,7 +180,7 @@ export default function createChatReducer(chatProps) {
             // if (action.info.currentUserId === chat.creatorId) {
             //     return Object.assign([], state);
             // }
-            let newState = [...state, chat];
+            const newState = [...state, chat];
             return Object.assign([], newState);
         }
         case SEND_NEW_CHAT: {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { MessagesList, Header } from '../styles/messages';
+import { MessagesList, Header, Button } from '../styles/messages';
 
 import Message from './message';
 
@@ -15,7 +15,7 @@ class ScrollButton extends React.Component {
 
     scrollStep() {
         const messagesBlock = document.getElementById('messages');
-        const scrollHeight = messagesBlock.scrollHeight
+        const { scrollHeight } = messagesBlock;
         if (messagesBlock.pageYOffset !== scrollHeight) {
             console.info('window.pageYOffset', window.pageYOffset);
             console.info('scrollHeight', scrollHeight);
@@ -30,25 +30,9 @@ class ScrollButton extends React.Component {
     }
 
     render() {
-        const buttonStyle = {
-            backgroundColor: 'white',
-            position: 'absolute',
-            padding: '0',
-            marginRight: '128px',
-            marginBottom: '10px',
-            bottom: '50px',
-            width: '30px',
-            height: '30px',
-            borderRadius: '50%',
-            borderColor: '#b7c5f5',
-            color: '#b7c5f5',
-            right: '30px',
-            cursor: 'pointer'
-        };
         return (
-            <input
+            <Button
                 type="button"
-                style={buttonStyle}
                 title="Жмяк вниз"
                 value="&#11167;"
                 className="scroll"
@@ -57,7 +41,6 @@ class ScrollButton extends React.Component {
         );
     }
 }
-
 
 export default class Messages extends Component {
     static propTypes = {
@@ -72,16 +55,16 @@ export default class Messages extends Component {
         this.node.scrollTop = this.node.scrollHeight;
     }
 
-    componentWillUpdate = function () {
+    componentWillUpdate() {
         this.shouldScrollBottom = this.node.scrollTop +
             this.node.offsetHeight === this.node.scrollHeight;
-    };
+    }
 
-    componentDidUpdate = function () {
+    componentDidUpdate() {
         if (this.shouldScrollBottom) {
             this.node.scrollTop = this.node.scrollHeight;
         }
-    };
+    }
 
     getSectionRef = node => { this.node = node; }
 
@@ -104,7 +87,7 @@ export default class Messages extends Component {
             <React.Fragment>
                 <Header> {title} </Header>
                 <MessagesList id="messages" ref={this.getSectionRef}>
-                    <ScrollButton scrollStepInPx="50" delayInMs="16.66"/>
+                    <ScrollButton scrollStepInPx="50" delayInMs="16.66" />
                     {this.getMessagesList()}
                 </MessagesList>
             </React.Fragment>
