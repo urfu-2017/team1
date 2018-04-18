@@ -6,8 +6,12 @@ import config from '../config';
 
 const client = makeApolloClient(config.scapholdUrl);
 
-export default Component => (
+export default (Component, state) => {
+    console.log('+++++');
+    console.log(state);
+    console.log('+++++');
+    return (
     <ApolloProvider client={client}>
         <Component />
     </ApolloProvider>
-);
+    )}
