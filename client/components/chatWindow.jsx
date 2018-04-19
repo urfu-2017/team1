@@ -3,22 +3,26 @@ import PropTypes from 'prop-types';
 import ChatWindowWrapper from '../styles/chatWindow';
 
 import Messages from '../components/messages';
-import ChatWindowInput from '../containers/chatInput';
+import ChatWindowInput from './chatWindowInput';
 
 export default class ChatWindow extends Component {
     static propTypes = {
         title: PropTypes.string,
         messages: PropTypes.arrayOf(PropTypes.object),
         currentChatId: PropTypes.string,
-        currentUserId: PropTypes.string
+        currentUserId: PropTypes.string,
+        serverURL: PropTypes.string,
+        allChats: PropTypes.arrayOf(PropTypes.object)
     };
 
 
-    static defaultProps = { 
+    static defaultProps = {
         title: '',
         messages: [],
         currentChatId: '',
         currentUserId: '',
+        serverURL: '',
+        allChats: []
     };
 
     constructor(props) {
@@ -26,11 +30,13 @@ export default class ChatWindow extends Component {
         this.state = {};
     }
     render() {
-        const { 
-            title,
+        const {
             messages,
+            title,
             currentChatId,
             currentUserId,
+            serverURL,
+            allChats
         } = this.props;
 
         return currentChatId ?
@@ -43,6 +49,8 @@ export default class ChatWindow extends Component {
                 <ChatWindowInput
                     currentChatId={currentChatId}
                     currentUserId={currentUserId}
+                    serverURL={serverURL}
+                    allChats={allChats}
                 />
             </ChatWindowWrapper > : <ChatWindowWrapper />;
     }

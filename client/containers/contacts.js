@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Contacts from '../components/contacts'
+import Contacts from '../components/contacts';
 
 import {
     selectChat,
