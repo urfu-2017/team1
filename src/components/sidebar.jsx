@@ -4,7 +4,7 @@ import MenuIcon from 'react-icons/lib/fa/list';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import Chat from './chat';
-// import Paranja from './paranja';
+import Paranja from './paranja';
 import { Header, SearchInput, ChatsList } from '../styles/chats';
 
 
@@ -16,8 +16,6 @@ export default class SideBar extends React.Component {
         contacts: PropTypes.arrayOf(PropTypes.object),
         user: PropTypes.shape(),
         meta: PropTypes.shape(),
-        isOpenParanja: PropTypes.bool,
-        showParangja: PropTypes.func,
         addNewChatFromSocket: PropTypes.func
     };
 
@@ -25,13 +23,21 @@ export default class SideBar extends React.Component {
         user: {},
         meta: {},
         allChats: [],
-        onClickChat: () => {},
+        onClickChat: () => {
+        },
         selectedChatId: null,
         contacts: [],
-        isOpenParanja: false,
-        showParangja: () => {},
-        addNewChatFromSocket: () => {}
+        addNewChatFromSocket: () => {
+        }
     };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            paranjaOpened: false
+        };
+    }
 
     getChatsList() {
         const { allChats, onClickChat, selectedChatId, user, meta, contacts } = this.props;
@@ -44,30 +50,32 @@ export default class SideBar extends React.Component {
                 meta={meta}
                 user={user}
                 contacts={contacts}
-                onClick={() => { onClickChat(chat); }}
+                onClick={() => {
+                    onClickChat(chat);
+                }}
             />
         ));
     }
 
-    render() {
-        const { user, isOpenParanja, showParangja } = this.props;
+    toggleParanja = () =>
+        this.setState((prev) => ({ paranjaOpened: !prev.paranjaOpened }));
 
+    render() {
         return (
             <React.Fragment>
-                {/*<Paranja*/}
-                    {/*user={user}*/}
-                    {/*isOpenParanja={isOpenParanja}*/}
-                    {/*showParangja={showParangja}*/}
-                {/*/>*/}
-                <ChatsList>
+                {
+                    this.state.paranjaOpened &&
+                    <Paranja user={({})} toggleParanja={this.toggleParanja} />
+                }
+                <ChatsList onclick={this.toggleParanja}>
                     <Header>
-                        {/*<div className="header__menu-icon">*/}
-                            {/*<MenuIcon onClick={() => { showParangja(true); }} />*/}
-                        {/*</div>*/}
-                        <SearchInput placeholder="Поиск" type="search" />
+                        <div className="header__menu-icon">
+                            <MenuIcon onClick={this.toggleParanja}/>
+                        </div>
+                        <SearchInput placeholder="Поиск" type="search"/>
                     </Header>
                     <Scrollbars universal>
-                        { this.getChatsList() }
+                        {this.getChatsList()}
                     </Scrollbars>
                 </ChatsList>
             </React.Fragment>

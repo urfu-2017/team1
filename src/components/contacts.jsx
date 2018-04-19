@@ -11,6 +11,7 @@ import {
     ContactsWrapper
 } from '../styles/contacts';
 
+
 const getNewChat = (user, contact) => ({
     title: `${contact.name}`,
     picture: 'picture1',
@@ -40,6 +41,7 @@ export default class Contacts extends Component {
         super(props);
         this.state = {};
     }
+
     getContactsList() {
         const { contacts, onClickChat, user, asyncCreateChat, addChatFromContacts } = this.props;
         return contacts.map(contact => (
@@ -47,7 +49,6 @@ export default class Contacts extends Component {
                 key={contact.name + Math.random()}
                 onClick={() => {
                     const chat = getNewChat(user, contact);
-                    // addChatFromContacts(chat);
                     asyncCreateChat(chat, contact.id, onClickChat);
                 }}
             >

@@ -1,12 +1,7 @@
 {
-  "ui": {
-    "isParanjaOpened": false,
-    "selectedChatId": null
-  },
+  "paranjaOpened": false,
+  "selectedChatId": null,
   "some_key": "some_value",
-  "meta": {
-
-  },
   "openedChat": {
     "title": "Foo",
     "messages": [],
