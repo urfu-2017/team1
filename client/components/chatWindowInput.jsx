@@ -15,7 +15,13 @@ class ChatWindowInput extends Component {
         allChats: PropTypes.arrayOf(PropTypes.object)
     }
 
-    static defaultProps = { dispatch: {}, currentChatId: '', currentUserId: '', serverURL: '', allChats: [] }
+    static defaultProps = { 
+        dispatch: {},
+        currentChatId: '',
+        currentUserId: '',
+        serverURL: '',
+        allChats: []
+    }
 
     constructor(props) {
         super(props);
@@ -42,11 +48,11 @@ class ChatWindowInput extends Component {
             if (cursorInBottom) {
                 moveCursorDown();
             }
-            
+
             this.props.dispatch(asyncSendMessage(message, serverURL));
             // @lms: этот хак сделан для обновления чата, который пришел через сокет
             // todo: удалить и сделать нормально
-            let chat = this.props.allChats.find(x => x.id === currentChatId);
+            const chat = this.props.allChats.find(x => x.id === currentChatId);
             this.props.dispatch(selectChat(currentChatId));
             this.props.dispatch(setVisibilityChat(chat));
 
@@ -64,7 +70,7 @@ class ChatWindowInput extends Component {
                     type="text"
                     placeholder="Введите сообщение"
                     value={this.state.message}
-                    required 
+                    required
                 />
             </Textarea>
         );
@@ -72,4 +78,3 @@ class ChatWindowInput extends Component {
 }
 
 export default connect()(ChatWindowInput);
-
