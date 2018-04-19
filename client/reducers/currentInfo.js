@@ -1,7 +1,8 @@
 import {
     SELECT_CHAT,
     VISIBILITY_CHAT,
-    VISIBILITY_PARANJA
+    VISIBILITY_PARANJA,
+    VISIBILITY_CHAT_EDITOR
 } from '../actions/actions';
 
 const initialStateStub = {
@@ -11,6 +12,7 @@ const initialStateStub = {
         id: 'USER_ID'
     },
     currentChat: {},
+    isOpenChatEditor: false,
     isOpenParanja: false,
     sessionInfoAndSecurityTokens: {
         HereBeDragons: '¯\\_(ツ)_/¯'
@@ -22,6 +24,9 @@ export default function createMetaReducer(currentUser) {
     const initialState = Object.assign({}, initialStateStub);
     return (state = initialState, action) => {
         switch (action.type) {
+        case VISIBILITY_CHAT_EDITOR:
+            state.isOpenChatEditor = action.visibility;
+            return Object.assign({}, state);
         case VISIBILITY_CHAT:
             state.currentChat = action.chat;
             return Object.assign({}, state);

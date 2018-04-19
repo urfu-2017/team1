@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import ChatWindow from '../components/chatWindow';
+import { setVisibilityAddUser } from '../actions/actions';
 
 const mapStateToProps = state => ({
     messages: state.currentInfo.currentChat.messages,
@@ -9,5 +10,15 @@ const mapStateToProps = state => ({
     serverURL: state.meta.serverURL,
     allChats: state.allChats
 });
+const mapDispatchToProps = dispatch => (
+    {
+        visibilityAddUser: visibility => {
+            dispatch(setVisibilityAddUser(visibility));
+        }
+    }
+);
 
-export default connect(mapStateToProps)(ChatWindow);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ChatWindow);

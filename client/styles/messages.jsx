@@ -12,6 +12,7 @@ export const MessagesList = styled.section`
 export const Header = styled.section`
     height: 45px;
     width: 100%;
+    cursor: default;
     display: flex;
     align-items: center;
     justify-content: center;

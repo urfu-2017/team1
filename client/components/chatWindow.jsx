@@ -12,6 +12,7 @@ export default class ChatWindow extends Component {
         currentChatId: PropTypes.string,
         currentUserId: PropTypes.string,
         serverURL: PropTypes.string,
+        visibilityAddUser: PropTypes.bool,
         allChats: PropTypes.arrayOf(PropTypes.object)
     };
 
@@ -20,6 +21,7 @@ export default class ChatWindow extends Component {
         title: '',
         messages: [],
         currentChatId: '',
+        visibilityAddUser: false,
         currentUserId: '',
         serverURL: '',
         allChats: []
@@ -33,18 +35,20 @@ export default class ChatWindow extends Component {
         const {
             messages,
             title,
+            visibilityAddUser,
             currentChatId,
             currentUserId,
             serverURL,
             allChats
         } = this.props;
-
+        
         return currentChatId ?
             <ChatWindowWrapper>
                 <Messages
                     messages={messages}
                     title={title.replace('!_!_!', ' and ')}
                     currentUserId={currentUserId}
+                    visibilityAddUser={visibilityAddUser}
                 />
                 <ChatWindowInput
                     currentChatId={currentChatId}

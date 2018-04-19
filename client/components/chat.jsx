@@ -9,13 +9,13 @@ import { addMessageFromSocket, cursorIsPressedFromBelow, moveCursorDown } from '
 
 class Chat extends Component {
     static propTypes = {
-        chat: PropTypes.object,
+        chat: PropTypes.shape(),
         select: PropTypes.bool,
         onClick: PropTypes.func,
         dispatch: PropTypes.func,
         currentUserId: PropTypes.string,
-        meta: PropTypes.object,
-        user: PropTypes.object,
+        meta: PropTypes.shape(),
+        user: PropTypes.shape(),
         contacts: PropTypes.arrayOf(PropTypes.object)
     };
 
@@ -74,10 +74,16 @@ class Chat extends Component {
         const chatName = currentUserId === chat.creatorId ? names[0] : names[1];
         return (
             <ChatWrapper onClick={onClick} select={select}>
-                <div className='chat-avatar'>
-                    <img src={chat.picture} width='50' height='50' alt='аватар' className='chat-avatar__img'/>
+                <div className="chat-avatar">
+                    <img 
+                        src={chat.picture}
+                        width="50"
+                        height="50"
+                        alt="аватар" 
+                        className="chat-avatar__img"
+                    />
                 </div>
-                <div className='chat-description'>
+                <div className="chat-description">
                     <ChatHeader>{chatName}</ChatHeader>
                     {chat.lastMessage && chat.lastMessage.content && chat.lastMessage.sender &&
                     <LastMessage>

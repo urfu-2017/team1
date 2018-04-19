@@ -45,11 +45,17 @@ class ScrollButton extends React.Component {
 export default class Messages extends Component {
     static propTypes = {
         title: PropTypes.string,
-        messages: PropTypes.arrayOf(PropTypes.object),
-        currentUserId: PropTypes.string
+        currentUserId: PropTypes.string,
+        visibilityAddUser: PropTypes.bool,
+        messages: PropTypes.arrayOf(PropTypes.object)
     };
 
-    static defaultProps = { title: '', messages: [], currentUserId: '' };
+    static defaultProps = {
+        title: '',
+        messages: [],
+        currentUserId: '',
+        visibilityAddUser: false
+    };
 
     componentDidMount() {
         this.node.scrollTop = this.node.scrollHeight;
@@ -82,10 +88,14 @@ export default class Messages extends Component {
     }
 
     render() {
-        const { title } = this.props;
+        const { title, visibilityAddUser } = this.props;
+
         return (
             <React.Fragment>
-                <Header> {title} </Header>
+                <Header
+                    onClick={() => { visibilityAddUser(true); }}
+                > {title}
+                </Header>
                 <MessagesList id="messages" ref={this.getSectionRef}>
                     <ScrollButton scrollStepInPx="50" delayInMs="16.66" />
                     {this.getMessagesList()}

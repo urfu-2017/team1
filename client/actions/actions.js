@@ -6,8 +6,10 @@ export const MESSAGE_SAVED = 'MESSAGE_SAVED';
 export const RECEIVED_NEW_CHAT = 'RECEIVED_NEW_CHAT';
 export const SEND_NEW_CHAT = 'SEND_NEW_CHAT';
 export const CHAT_SAVED = 'CHAT_SAVED';
-
+export const VISIBILITY_CHAT_EDITOR = 'VISIBILITY_CHAT_EDITOR';
 export const VISIBILITY_PARANJA = 'VISIBILITY_PARANJA';
+
+export const setVisibilityAddUser = visibility => ({ type: VISIBILITY_CHAT_EDITOR, visibility });
 
 export const setVisibilityParanja = visibility => ({ type: VISIBILITY_PARANJA, visibility });
 

@@ -5,19 +5,19 @@ import MenuIcon from 'react-icons/lib/fa/list';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import Chat from './chat';
-import Paranja from './paranja';
+import Paranja from '../containers/paranja';
 import { Header, SearchInput, ChatsList } from '../styles/chats';
 
 export default class Chats extends Component {
     static propTypes = {
         allChats: PropTypes.arrayOf(PropTypes.object),
         onClickChat: PropTypes.func,
+        showParangja: PropTypes.func,
         selectedChatId: PropTypes.string,
         contacts: PropTypes.arrayOf(PropTypes.object),
         user: PropTypes.shape(),
         meta: PropTypes.shape(),
-        isOpenParanja: PropTypes.bool,
-        showParangja: PropTypes.func,
+        currentChat: PropTypes.shape(),
         addNewChatFromSocket: PropTypes.func
     }
 
@@ -25,12 +25,12 @@ export default class Chats extends Component {
         user: {},
         meta: {},
         allChats: [],
+        contacts: [],
+        currentChat: {},
+        showParangja: () => {},
         onClickChat: () => {},
         selectedChatId: null,
-        contacts: [],
-        isOpenParanja: false,
-        showParangja: () => {},
-        addNewChatFromSocket: () => {}
+        addNewChatFromSocket: () => {},
     }
 
     constructor(props) {
@@ -60,27 +60,32 @@ export default class Chats extends Component {
         const { allChats, onClickChat, selectedChatId, user, meta, contacts } = this.props;
         return allChats.map(chat => (
             <Chat
-                key={Math.random()}
-                select={selectedChatId === chat.id}
-                chat={chat}
-                currentUserId={user.id}
                 meta={meta}
                 user={user}
+                chat={chat}
+                key={Math.random()}
                 contacts={contacts}
+                currentUserId={user.id}
+                select={selectedChatId === chat.id}
                 onClick={() => { onClickChat(chat); }}
             />
         ));
     }
 
     render() {
-        const { user, isOpenParanja, showParangja } = this.props;
+        const {
+            user,
+            contacts,
+            currentChat,
+            showParangja
+        } = this.props;
 
         return (
             <React.Fragment>
                 <Paranja
                     user={user}
-                    isOpenParanja={isOpenParanja}
-                    showParangja={showParangja}
+                    contacts={contacts}
+                    currentChat={currentChat}
                 />
                 <ChatsList>
                     <Header>

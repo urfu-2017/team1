@@ -41,13 +41,12 @@ export default class Contacts extends Component {
         this.state = {};
     }
     getContactsList() {
-        const { contacts, onClickChat, user, asyncCreateChat, addChatFromContacts } = this.props;
+        const { contacts, onClickChat, user, asyncCreateChat } = this.props;
         return contacts.map(contact => (
             <Contact
                 key={contact.name + Math.random()}
                 onClick={() => {
                     const chat = getNewChat(user, contact);
-                    // addChatFromContacts(chat);
                     asyncCreateChat(chat, contact.id, onClickChat);
                 }}
             >
