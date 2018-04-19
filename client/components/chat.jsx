@@ -43,17 +43,17 @@ class Chat extends Component {
         });
         this.socket.on(`${chatSocketPrefix}-${chatId}`, data => {
             const { contacts, user } = this.props;
-            console.log('Got something');
-            console.log(data);
-            console.log(contacts);
+            // console.log('Got something');
+            // console.log(data);
+            // console.log(contacts);
             const { currentUserId } = this.props;
             let sender = contacts.find(x => x.id === data.message.senderId);
             if (!sender) {
                 sender = user;
-                console.log('сообщение от самого себя');
-                console.log(sender);
+                // console.log('сообщение от самого себя');
+                // console.log(sender);
             }
-            console.log(sender);
+            // console.log(sender);
             const cursorInBottom = cursorIsPressedFromBelow();
             this.props.dispatch(addMessageFromSocket(data.message, currentUserId, sender));
             if (cursorInBottom) {
@@ -74,10 +74,10 @@ class Chat extends Component {
         const chatName = currentUserId === chat.creatorId ? names[0] : names[1];
         return (
             <ChatWrapper onClick={onClick} select={select}>
-                <div className='chat-avatar'>
-                    <img src={chat.picture} width='50' height='50' alt='аватар' className='chat-avatar__img'/>
+                <div className="chat-avatar">
+                    <img src={chat.picture} width="50" height="50" alt="аватар" className="chat-avatar__img" />
                 </div>
-                <div className='chat-description'>
+                <div className="chat-description">
                     <ChatHeader>{chatName}</ChatHeader>
                     {chat.lastMessage && chat.lastMessage.content && chat.lastMessage.sender &&
                     <LastMessage>

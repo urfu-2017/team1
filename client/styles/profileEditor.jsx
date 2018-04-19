@@ -34,13 +34,18 @@ export const DowlandImage = styled.div`
     .text {
         font-size: 20px;
     }
-`
+`;
 
 export const DowlandButton = styled.input`
+    width: 225px;
     padding: 7px;
     border-radius: 5px;
     background: #e4e0dc;
 `;
 
 export const CreateButton = DowlandButton.extend`
+    width: 85px;
+    padding: 7px;
+    border-radius: 5px;
+    background: #e4e0dc;
 `;

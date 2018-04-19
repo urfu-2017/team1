@@ -39,6 +39,8 @@ const getRouter = io => {
 
     router.get('/open-the-pod-bay-door-hal', handlers.invalidateCache);
 
+    router.post('/avatar', handlers.sendToCloudServer);
+
     // во всех случаях, если пользователь не имеет доступа к чату, возвращается 401
     // для упрощения работы со стороны клиента, все тела запросов (кроме createMessage, createChat) пустые
     // всё равно потом переходить на graphql

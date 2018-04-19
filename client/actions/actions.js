@@ -77,7 +77,24 @@ export const asyncCreateChat = (chat, contactId, callback) => dispatch => {
     };
     fetch(URL, options)
         .then(response => response.json())
-        .then(response => console.log('|||||||||') || console.log(response) || dispatch(callback(response)));
+        // .then(response => console.log('|||||||||') || console.log(response) || dispatch(callback(response)));
+        .then(response => dispatch(callback(response)));
 };
 
 export const addChatFromContacts = chat => ({ type: SEND_NEW_CHAT, chat });
+
+export const sendToCloudServer = dataUrl => {
+    const URL = 'api/rest/avatar';
+    const options = {
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(dataUrl),
+        credentials: 'same-origin'
+    };
+
+    return fetch(URL, options)
+        .then(response => response.json());
+};

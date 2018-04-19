@@ -17,8 +17,8 @@ class ScrollButton extends React.Component {
         const messagesBlock = document.getElementById('messages');
         const { scrollHeight } = messagesBlock;
         if (messagesBlock.pageYOffset !== scrollHeight) {
-            console.info('window.pageYOffset', window.pageYOffset);
-            console.info('scrollHeight', scrollHeight);
+            // console.info('window.pageYOffset', window.pageYOffset);
+            // console.info('scrollHeight', scrollHeight);
             clearInterval(this.state.intervalId);
         }
         messagesBlock.scroll(0.0, scrollHeight - this.props.scrollStepInPx);

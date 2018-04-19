@@ -1,8 +1,4 @@
-import {
-    SELECT_CHAT,
-    VISIBILITY_CHAT,
-    VISIBILITY_PARANJA
-} from '../actions/actions';
+import { SELECT_CHAT, VISIBILITY_CHAT, VISIBILITY_PARANJA } from '../actions/actions';
 
 const initialStateStub = {
     currentUser: {
