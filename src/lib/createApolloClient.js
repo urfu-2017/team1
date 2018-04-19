@@ -1,11 +1,11 @@
-import {ApolloClient} from 'apollo-client';
-import {ApolloLink} from 'apollo-link';
-import {withClientState} from 'apollo-link-state';
-import {HttpLink} from 'apollo-link-http';
-import {WebSocketLink} from 'apollo-link-ws';
-import {InMemoryCache} from 'apollo-cache-inmemory';
-import {getMainDefinition} from 'apollo-utilities';
-import {SubscriptionClient, addGraphQLSubscriptions} from 'subscriptions-transport-ws';
+import { ApolloClient } from 'apollo-client';
+import { ApolloLink } from 'apollo-link';
+import { withClientState } from 'apollo-link-state';
+import { HttpLink } from 'apollo-link-http';
+import { WebSocketLink } from 'apollo-link-ws';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { getMainDefinition } from 'apollo-utilities';
+import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 import fetch from 'isomorphic-unfetch';
 
 import resolvers from '../resolvers/index';
@@ -27,10 +27,11 @@ function create(apiUrl) {
     const httpLink = new HttpLink({ uri: httpUrl });
 
     const cache = new InMemoryCache({
-        dataIdFromObject: ({ __typename, contentId, }) =>
-            (contentId ? `${__typename}:${contentId}` : null),
-    }).restore(initialState || {});
+        dataIdFromObject: ({ __typename, contentId }) =>
+            (contentId ? `${__typename}:${contentId}` : null)
+    });
 
+    cache.restore(initialState || {});
     const stateLink = withClientState({
         cache,
         resolvers,
@@ -51,6 +52,7 @@ function create(apiUrl) {
         return forward(operation);
     });
 
+
     let link = httpLink;
 
     if (!isOnServer) {
@@ -58,7 +60,7 @@ function create(apiUrl) {
         const wsLink = new WebSocketLink({
             uri: websocketUrl,
             options: {
-                reconnect: true, //auto-reconnect
+                reconnect: true //auto-reconnect
                 // // carry login state (should use secure websockets (wss) when using this)
                 // connectionParams: {
                 //     authToken: localStorage.getItem('scaphold_user_token')
@@ -80,12 +82,13 @@ function create(apiUrl) {
         ]);
     }
 
+
     return new ApolloClient({
         connectToDevTools: isOnServer,
         ssrMode: isOnServer, // Disables forceFetch on the server (so queries are only run once)
-        link: ApolloLink.from([stateLink, link,]),
+        link: ApolloLink.from([stateLink, link]),
         cache,
-        queryDeduplication: true,
+        queryDeduplication: true
     });
 }
 

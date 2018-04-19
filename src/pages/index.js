@@ -1,6 +1,18 @@
-import App from '../components/app.jsx';
-import createNextPage from '../lib/createNextPage';
 import React from 'react';
+import styled from 'styled-components';
+
+import createNextPage from '../lib/createNextPage';
+import ChatWindow from '../components/chatWindow';
+
+
+const Wrapper = styled.main`
+    height: 100%;
+    max-width: 1260px;
+    display: flex;
+    margin: 0 auto;
+    overflow: hidden;
+`;
+
 
 export default class KilogrammApp extends React.Component {
     constructor(props) {
@@ -10,11 +22,19 @@ export default class KilogrammApp extends React.Component {
 
     static async getInitialProps({ req }) {
         return {
-            initState: req.state,
+            initState: req.state
         };
     }
 
+    // TODO: there is probably a better solution
+    layout = () => (
+        <Wrapper>
+            {/*<SideBar/>*/}
+            <ChatWindow />
+        </Wrapper>
+    );
+
     render() {
-        return createNextPage(App, this.props.initState);
+        return createNextPage(this.layout, this.props.initState);
     }
 }

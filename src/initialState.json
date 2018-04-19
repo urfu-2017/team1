@@ -4,5 +4,17 @@
   "some_key": "some_value",
   "meta": {
 
+  },
+  "openedChat": {
+    "title": "Foo",
+    "messages": [],
+    "chatId": "1",
+    "allChats": [],
+    "currentUserId": "none",
+    "__typename": "OpenedChatType"
+  },
+  "currentUser": {
+    "userId": "unique_id_lol",
+    "name": "You-know-who"
   }
 }

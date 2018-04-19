@@ -4,14 +4,14 @@ import makeApolloClient from '../lib/createApolloClient';
 import config from '../config';
 
 
-const client = makeApolloClient(config.scapholdUrl);
 
 export default (Component, state) => {
+    const client = makeApolloClient(config.scapholdUrl);
     console.log('+++++');
     console.log(state);
     console.log('+++++');
     return (
-    <ApolloProvider client={client}>
-        <Component />
-    </ApolloProvider>
+        <ApolloProvider client={client}>
+            <Component />
+        </ApolloProvider>
     )}
