@@ -15,8 +15,6 @@ module.exports = (app, io) => {
         }
     );
 
-    app.post('/metadata', MetadataController.post);
-
     io.on('connection', socket => {
         app.post('/message', saveNewMessage(socket));
         //app.post('/chat', saveChat(socket));

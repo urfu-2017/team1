@@ -94,6 +94,7 @@ export default class Messages extends Component {
                 message={currentMessage.content.text}
                 creationTime={currentMessage.createAt}
                 fromMe={currentMessage.senderId === currentUserId}
+                metadata={currentMessage.metadata}
             />
         ));
     }

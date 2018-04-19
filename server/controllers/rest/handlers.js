@@ -4,6 +4,7 @@ const dbConnection = require('../../db-connection');
 const Message = require('../../model/message');
 const Chat = require('../../model/chat');
 const User = require('../../model/user');
+const { getMetadata } = require('../metadata');
 
 const handlers = {};
 let io = null;
@@ -84,13 +85,15 @@ handlers.createMessage = async (req, res) => {
         res.sendStatus(401);
         return;
     }
-    const message = Message.create(req.body.message.content, req.user.id, chatId);
+    const metadata = await getMetadata(req.body.message.content.text);
+    const message = Message.create(req.body.message.content, req.user.id, chatId, metadata);
     io.emit(`${req.chatSocketPrefix}-${chatId}`, {
         message
     });
     const outcome = await dbConnection.saveMessage(message, chatId);
     if (outcome !== null) {
-        res.sendStatus(201);
+        res.send(message);
+        res.sendStatus(200);
     } else {
         res.sendStatus(500);
     }

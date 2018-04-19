@@ -1,19 +1,21 @@
 'use strict';
 
 class Message {
-    constructor({ content, senderId, chatId, createdAt }) {
+    constructor({ content, senderId, chatId, createdAt, metadata }) {
         this.content = content;
         this.senderId = senderId;
         this.chatId = chatId;
         this.createdAt = createdAt;
+        this.metadata = metadata;
     }
 
-    static create(content, senderId, chatId) {
+    static create(content, senderId, chatId, metadata) {
         return new Message({
             content,
             senderId,
             createdAt: new Date().getTime(),
-            chatId
+            chatId,
+            metadata
         });
     }
 }
