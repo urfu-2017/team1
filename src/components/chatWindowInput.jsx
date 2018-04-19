@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import Textarea from '../styles/chatWindowInput';
-import { asyncSendMessage, addMessageFromChatInput, cursorIsPressedFromBelow, moveCursorDown, selectChat, setVisibilityChat }
-    from '../actions/actions';
+
 
 class ChatWindowInput extends Component {
     static propTypes = {
@@ -15,7 +13,7 @@ class ChatWindowInput extends Component {
         allChats: PropTypes.arrayOf(PropTypes.object)
     }
 
-    static defaultProps = { 
+    static defaultProps = {
         dispatch: {},
         currentChatId: '',
         currentUserId: '',

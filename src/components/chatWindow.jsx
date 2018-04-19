@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
 
 import ChatWindowWrapper from '../styles/chatWindow';
+import ChatWindowInput from '../styles/chatWindowInput';
+import Messages from './messages';
 import { OPENED_CHAT_ql } from '../graphqlQueries/openedChat';
 import { CURRENT_USER_ql } from '../graphqlQueries/currentUser';
 
@@ -22,27 +24,22 @@ export default class ChatWindow extends Component {
         if (this.props.openedChat.loading) return this.loadScreen;
 
         // TODO: props names selection seems to be pretty awful
-        const {
-            messages,
-            title,
-            chatId,
-            allChats
-        } = this.props.openedChat.openedChat;
+        const openedChat = this.props.openedChat;
 
-        // const { userId, name } = this.props.currentUser;
+        const currentUser = this.props.currentUser;
 
-        return chatId ?
+        return openedChat.id ?
             <ChatWindowWrapper>
-                {/*<Messages*/}
-                    {/*messages={messages}*/}
-                    {/*title={title}*/}
-                    {/*currentUserId={userId}*/}
-                {/*/>*/}
-                {/*<ChatWindowInput*/}
-                    {/*currentChatId={chatId}*/}
-                    {/*currentUserId={userId}*/}
-                    {/*allChats={allChats}*/}
-                {/*/>*/}
+                <Messages
+                    messages={openedChat.messages}
+                    title={openedChat.title}
+                    currentUserId={currentUser.id}
+                />
+                <ChatWindowInput
+                    currentChatId={openedChat.id}
+                    currentUserId={currentUser.id}
+                    allChats={openedChat.allChats}
+                />
             </ChatWindowWrapper > : <ChatWindowWrapper />;
     }
 }

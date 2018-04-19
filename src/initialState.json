@@ -1,5 +1,7 @@
 {
   "ui": {
+    "isParanjaOpened": false,
+    "selectedChatId": null
   },
   "some_key": "some_value",
   "meta": {
@@ -8,13 +10,14 @@
   "openedChat": {
     "title": "Foo",
     "messages": [],
-    "chatId": "1",
+    "id": "some_id",
     "allChats": [],
     "currentUserId": "none",
-    "__typename": "OpenedChatType"
+    "__typename": "ChatType"
   },
   "currentUser": {
-    "userId": "unique_id_lol",
-    "name": "You-know-who"
+    "id": "unique_id_lol",
+    "name": "You-know-who",
+    "__typename": "UserType"
   }
 }

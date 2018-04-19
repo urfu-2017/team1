@@ -1,13 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import io from 'socket.io-client';
-import { connect } from 'react-redux';
 
 import { ChatWrapper, ChatHeader, LastMessage, Sender } from '../styles/chat';
 
-import { addMessageFromSocket, cursorIsPressedFromBelow, moveCursorDown } from '../actions/actions';
 
-class Chat extends Component {
+class Chat extends React.Component {
     static propTypes = {
         chat: PropTypes.object,
         select: PropTypes.bool,
@@ -30,42 +27,37 @@ class Chat extends Component {
         contacts: []
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
+    // componentDidMount() {
+    //     const { serverURL, chatSocketPrefix } = this.props.meta;
+    //     const chatId = this.props.chat.id;
+    //     this.socket = io({
+    //         transports: ['websocket']
+    //     });
+    //     this.socket.on(`${chatSocketPrefix}-${chatId}`, data => {
+    //         const { contacts, user } = this.props;
+    //         console.log('Got something');
+    //         console.log(data);
+    //         console.log(contacts);
+    //         const { currentUserId } = this.props;
+    //         let sender = contacts.find(x => x.id === data.message.senderId);
+    //         if (!sender) {
+    //             sender = user;
+    //             console.log('сообщение от самого себя');
+    //             console.log(sender);
+    //         }
+    //         console.log(sender);
+    //         const cursorInBottom = cursorIsPressedFromBelow();
+    //         this.props.dispatch(addMessageFromSocket(data.message, currentUserId, sender));
+    //         if (cursorInBottom) {
+    //             moveCursorDown();
+    //         }
+    //     });
+    // }
 
-    componentDidMount() {
-        const { serverURL, chatSocketPrefix } = this.props.meta;
-        const chatId = this.props.chat.id;
-        this.socket = io({
-            transports: ['websocket']
-        });
-        this.socket.on(`${chatSocketPrefix}-${chatId}`, data => {
-            const { contacts, user } = this.props;
-            console.log('Got something');
-            console.log(data);
-            console.log(contacts);
-            const { currentUserId } = this.props;
-            let sender = contacts.find(x => x.id === data.message.senderId);
-            if (!sender) {
-                sender = user;
-                console.log('сообщение от самого себя');
-                console.log(sender);
-            }
-            console.log(sender);
-            const cursorInBottom = cursorIsPressedFromBelow();
-            this.props.dispatch(addMessageFromSocket(data.message, currentUserId, sender));
-            if (cursorInBottom) {
-                moveCursorDown();
-            }
-        });
-    }
-
-    componentWillUnmount() {
-        this.socket.off('now');
-        this.socket.close();
-    }
+    // componentWillUnmount() {
+    //     this.socket.off('now');
+    //     this.socket.close();
+    // }
 
     render() {
         const { onClick, chat, select } = this.props;
@@ -91,4 +83,4 @@ class Chat extends Component {
     }
 }
 
-export default connect()(Chat);
+export default Chat;

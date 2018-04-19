@@ -13,7 +13,7 @@ export default class Message extends React.Component {
         creationTime: PropTypes.string
     };
 
-    static defaultProps = { fromMe: '', message: '', creationTime: '' }
+    static defaultProps = { fromMe: '', message: '', creationTime: '' };
 
     render() {
         const { message, creationTime, fromMe } = this.props;

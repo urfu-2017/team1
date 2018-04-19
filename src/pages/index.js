@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import createNextPage from '../lib/createNextPage';
 import ChatWindow from '../components/chatWindow';
+import SideBar from '../components/sidebar';
 
 
 const Wrapper = styled.main`
@@ -29,7 +30,7 @@ export default class KilogrammApp extends React.Component {
     // TODO: there is probably a better solution
     layout = () => (
         <Wrapper>
-            {/*<SideBar/>*/}
+            <SideBar />
             <ChatWindow />
         </Wrapper>
     );
