@@ -14,6 +14,7 @@ const Wrapper = styled.main`
     overflow: hidden;
 `;
 
+import initialState from '../initialState';
 
 export default class KilogrammApp extends React.Component {
     constructor(props) {
@@ -23,7 +24,8 @@ export default class KilogrammApp extends React.Component {
 
     static async getInitialProps({ req }) {
         return {
-            initState: req.state
+            initState: initialState,
+            scapholdUrl: req.scapholdUrl
         };
     }
 
@@ -36,6 +38,6 @@ export default class KilogrammApp extends React.Component {
     );
 
     render() {
-        return createNextPage(this.layout, this.props.initState);
+        return createNextPage(this.layout, this.props.initState, this.props.scapholdUrl);
     }
 }

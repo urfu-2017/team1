@@ -5,10 +5,10 @@ import config from '../config';
 
 
 
-export default (Component, state) => {
-    const client = makeApolloClient(config.scapholdUrl);
+export default (Component, state, scapholdUrl) => {
+    const client = makeApolloClient(scapholdUrl);
     console.log('+++++');
-    console.log(state);
+    console.log(scapholdUrl);
     console.log('+++++');
     return (
         <ApolloProvider client={client}>

@@ -60,10 +60,12 @@ class Chat extends React.Component {
     // }
 
     render() {
+
+        
         const { onClick, chat, select } = this.props;
         const { currentUserId } = this.props;
         const names = chat.title.split('!_!_!');
-        const chatName = currentUserId === chat.creatorId ? names[0] : names[1];
+        const chatName = chat.title;
         return (
             <ChatWrapper onClick={onClick} select={select}>
                 <div className='chat-avatar'>

@@ -12,10 +12,9 @@ function main() {
         app.getRequestHandler()(req, res, parse(req.url, true));
 
     server.use((req,res,nextMiddleware) => {
-        req.state = {};
-        req.state.ui = {};
-        req.state.some_key = "some_value";
-        req.state.meta = {};
+
+        req.scapholdUrl = 'us-west-2.api.scaphold.io/graphql/kilogram-test';
+
         nextMiddleware();
     });   
 

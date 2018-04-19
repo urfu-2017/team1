@@ -7,7 +7,14 @@ import Chat from './chat';
 import Paranja from './paranja';
 import { Header, SearchInput, ChatsList } from '../styles/chats';
 
+import { Query, compose, graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 
+import { ALL_CHATS_ql } from '../graphqlQueries/allChats';
+
+@compose(
+    graphql(ALL_CHATS_ql, { name: 'chatsQl' })
+)
 export default class SideBar extends React.Component {
     static propTypes = {
         allChats: PropTypes.arrayOf(PropTypes.object),
@@ -40,7 +47,10 @@ export default class SideBar extends React.Component {
     }
 
     getChatsList() {
-        const { allChats, onClickChat, selectedChatId, user, meta, contacts } = this.props;
+        const { onClickChat, selectedChatId, user, meta, contacts } = this.props;
+
+        const allChats = this.props.chatsQl.allChats;
+
         return allChats.map(chat => (
             <Chat
                 key={Math.random()}
