@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { Picker } from 'emoji-mart';
-// import 'emoji-mart/css/emoji-mart.css';
 import { Emoji, emojiIndex } from 'emoji-mart';
 
 import Textarea from '../styles/chatWindowInput';
+
 import {
     asyncSendMessage, addMessageFromChatInput, cursorIsPressedFromBelow, moveCursorDown,
     selectChat, setVisibilityChat
@@ -27,8 +26,7 @@ class ChatWindowInput extends Component {
 
         this.state = {
             message: '',
-            emoji: false,
-            emojiSymbol: ''
+            emoji: false
         };
     }
 
@@ -64,7 +62,7 @@ class ChatWindowInput extends Component {
         }
     };
 
-    emojiesVisible = () => {
+    openEmojies = () => {
         this.setState({ emoji: true });
     }
 
@@ -72,144 +70,45 @@ class ChatWindowInput extends Component {
         this.setState({ emoji: false });
     }
 
-    addSmileIntoText = () => {
-        this.setState({ message: `${this.state.message}😃` });
+    findEmoji = id => {
+        return emojiIndex.search(id).map(o => o.native);
     }
 
-    addSantaIntoText = () => {
-        this.setState({ message: `${this.state.message}🎅` });
-    }
-
-    addGiftIntoText = () => {
-        this.setState({ message: `${this.state.message}🎁` });
-    }
-
-    addFingerIntoText = () => {
-        this.setState({ message: `${this.state.message}🖕` });
-    }
-
-    addOkIntoText = () => {
-        this.setState({ message: `${this.state.message}👌` });
-    }
-
-    addMinusIntoText = () => {
-        this.setState({ message: `${this.state.message}👎` });
-    }
-
-    addPlusIntoText = () => {
-        this.setState({ message: `${this.state.message}👍` });
-    }
-
-    addFlowerIntoText = () => {
-        this.setState({ message: `${this.state.message}🌸` });
-    }
-
-    addFoodIntoText = () => {
-        this.setState({ message: `${this.state.message}🍏` });
-    }
-
-    addKissIntoText = () => {
-        this.setState({ message: `${this.state.message}💋` });
-    }
-
-    addLoveIntoText = () => {
-        this.setState({ message: `${this.state.message}💖` });
+    addEmojiIntoText = emoji => {
+        this.setState({ message: `${this.state.message}${this.findEmoji(emoji.id)}` });
     }
 
     render() {
         let picker = '';
         if (this.state.emoji) {
             picker = (
-                <div
-                    style={{
-                        position: 'absolute',
-                        bottom: '60px',
-                        right: '30px',
-                        background: '#b7c5f5',
-                        padding: '5px',
-                        borderRadius: '5px',
-                        border: '1px solid #b7c5f5',
-                        cursor: 'pointer'
-                    }}
-                >
-                    <Emoji
-                        onClick={this.addLoveIntoText}
-                        emoji={{ id: 'sparkling_heart' }}
-                        size={16}
-                        style={{ padding: '5px' }}
-                    />
+                <div className="picker__style">
+                    <span>
+                        Выберите Emoji
+                    </span>
+                    <div
+                        className="closeEmojiButton__style"
+                        onClick={this.closeEmojies}
+                        title="Скрыть"
+                    >
+                        &#x274C;
+                    </div>
+                    <hr />
+                    {
+                        ['+1', '-1', 'kissing_heart', 'sparkling_heart', 'gift_heart', 'santa',
+                            'yum', 'upside_down_face', 'ok_hand', 'cherry_blossom', 'star-struck',
+                            'green_apple'].map(id => {
+                            return (
+                                <Emoji
+                                    className="emoji__style"
+                                    onClick={this.addEmojiIntoText.bind(id)}
+                                    emoji={{ id }}
+                                    size={25}
+                                />
+                            );
+                        })
+                    }
 
-                    <Emoji
-                        onClick={this.addKissIntoText}
-                        emoji={{ id: 'kiss' }}
-                        size={16}
-                        style={{ padding: '5px', cursor: 'pointer' }}
-                    />
-
-                    <Emoji
-                        onClick={this.addFoodIntoText}
-                        emoji={{ id: 'green_apple' }}
-                        size={16}
-                        style={{ padding: '5px', cursor: 'pointer' }}
-                    />
-
-                    <Emoji
-                        onClick={this.addFlowerIntoText}
-                        emoji={{ id: 'cherry_blossom' }}
-                        size={16}
-                        style={{ padding: '5px', cursor: 'pointer' }}
-                    />
-
-                    <Emoji
-                        onClick={this.addPlusIntoText}
-                        emoji={{ id: '+1' }}
-                        size={16}
-                        style={{ padding: '5px', cursor: 'pointer' }}
-                    />
-
-                    <Emoji
-                        onClick={this.addMinusIntoText}
-                        emoji={{ id: '-1' }}
-                        size={16}
-                        style={{ padding: '5px', cursor: 'pointer' }}
-                    />
-
-                    <Emoji
-                        onClick={this.addOkIntoText}
-                        emoji={{ id: 'ok_hand' }}
-                        size={16}
-                        style={{ padding: '5px', cursor: 'pointer' }}
-                    />
-
-                    <Emoji
-                        onClick={this.addFingerIntoText}
-                        emoji={{ id: 'middle_finger' }}
-                        size={16}
-                        style={{ padding: '5px', cursor: 'pointer' }}
-                    />
-
-                    <Emoji
-                        onClick={this.addGiftIntoText}
-                        emoji={{ id: 'gift' }}
-                        size={16}
-                        style={{ padding: '5px', cursor: 'pointer' }}
-                    />
-
-                    <Emoji
-                        onClick={this.addSantaIntoText}
-                        emoji={{ id: 'santa', skin: 3 }}
-                        size={16}
-                        style={{ padding: '5px', cursor: 'pointer' }}
-                    />
-
-                    <Emoji
-                        onClick={this.addSmileIntoText}
-                        emoji={{ id: 'smiley', skin: 3 }}
-                        size={16}
-                        style={{ padding: '5px', cursor: 'pointer' }}
-                    />
-
-                    <div onClick={this.closeEmojies} title='Скрыть' style={{ cursor: 'pointer'}}>&#x274C;</div>
                 </div>
             );
         } else {
@@ -217,20 +116,24 @@ class ChatWindowInput extends Component {
         }
         return (
             <Textarea>
-                <textarea
-                    className="textarea__style"
-                    onKeyPress={this.handleSubmit}
-                    onChange={this.handleChange}
-                    type="text"
-                    placeholder="Введите сообщение"
-                    value={this.state.message}
-                    required
-                />
-                <div onClick={this.emojiesVisible}
-                    title='Emoji'
-                    style={{ cursor: 'pointer', display: 'inline-block', fontSize: '25px', verticalAlign: 'top' }}>&#x263A;
+                <div className="inputField__style">
+                    <textarea
+                        className="textarea__style"
+                        onKeyPress={this.handleSubmit}
+                        onChange={this.handleChange}
+                        type="text"
+                        placeholder="Введите сообщение"
+                        value={this.state.message}
+                        required
+                    />
+                    <div onClick={this.openEmojies}
+                        className="openEmojiButton__style"
+                        title="Emoji"
+                    >
+                        &#x263A;
+                    </div>
+                    {picker}
                 </div>
-                {picker}
             </Textarea>
         );
     }
