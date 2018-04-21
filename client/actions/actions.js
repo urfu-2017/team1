@@ -1,15 +1,21 @@
 export const VISIBILITY_CHAT = 'VISIBILITY_CHAT';
+export const SELECT_CHAT = 'SELECT_CHAT';
+
 export const RECEIVED_NEW_MESSAGE = 'RECEIVED_NEW_MESSAGE';
 export const SEND_NEW_MESSAGE = 'SEND_NEW_MESSAGE';
-export const SELECT_CHAT = 'SELECT_CHAT';
 export const MESSAGE_SAVED = 'MESSAGE_SAVED';
+
 export const RECEIVED_NEW_CHAT = 'RECEIVED_NEW_CHAT';
 export const SEND_NEW_CHAT = 'SEND_NEW_CHAT';
 export const CHAT_SAVED = 'CHAT_SAVED';
+
 export const VISIBILITY_CHAT_EDITOR = 'VISIBILITY_CHAT_EDITOR';
 export const VISIBILITY_PARANJA = 'VISIBILITY_PARANJA';
+export const ADD_USER_CHAT = 'ADD_USER_CHAT';
 
 export const setVisibilityAddUser = visibility => ({ type: VISIBILITY_CHAT_EDITOR, visibility });
+
+export const addUserInChat = contact => ({ type: ADD_USER_CHAT, contact });
 
 export const setVisibilityParanja = visibility => ({ type: VISIBILITY_PARANJA, visibility });
 

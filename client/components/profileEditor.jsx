@@ -8,7 +8,7 @@ export default class ProfileEditor extends Component {
     }
     render() {
         return (
-            <Editor >
+            <Editor>
                 <h1 className="header">Загрузить аватар</h1>
                 <DowlandImage>
                     <p className="text">Загрузить фото</p>
@@ -17,7 +17,7 @@ export default class ProfileEditor extends Component {
                     <DowlandButton type="button" value="Загрузить" />
                     <CreateButton type="button" value="Сохранить" />
                 </div>
-            </Editor >
+            </Editor>
         );
     }
 }

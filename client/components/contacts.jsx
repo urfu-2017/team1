@@ -23,31 +23,50 @@ const getNewChat = (user, contact) => ({
 export default class Contacts extends Component {
     static propTypes = {
         user: PropTypes.shape(),
-        header: PropTypes.string,
+        event: PropTypes.string,
+        addUserInChat: PropTypes.func,
         onClickChat: PropTypes.func,
         asyncCreateChat: PropTypes.func,
+        visibilityAddUser: PropTypes.func,
         contacts: PropTypes.arrayOf(PropTypes.object)
     };
 
     static defaultProps = {
         user: {},
-        header: '',
+        event: '',
         contacts: [],
+        addUserInChat: () => {},
         onClickChat: () => {},
-        asyncCreateChat: () => {}
+        asyncCreateChat: () => {},
+        visibilityAddUser: () => {}
     };
     constructor(props) {
         super(props);
         this.state = {};
     }
     getContactsList() {
-        const { contacts, onClickChat, user, asyncCreateChat } = this.props;
+        const {
+            user,
+            event,
+            contacts,
+            onClickChat,
+            addUserInChat,
+            asyncCreateChat,
+            visibilityAddUser
+        } = this.props;
+
         return contacts.map(contact => (
             <Contact
                 key={contact.name + Math.random()}
                 onClick={() => {
-                    const chat = getNewChat(user, contact);
-                    asyncCreateChat(chat, contact.id, onClickChat);
+                    if (event === 'addUserInChat') {
+                        addUserInChat(contact);
+                        visibilityAddUser(true);
+                    }
+                    if (event === 'addNewChat') {
+                        const chat = getNewChat(user, contact);
+                        asyncCreateChat(chat, contact.id, onClickChat);
+                    }
                 }}
             >
                 <img src={contact.avatar} alt="ава" className="contact__image" />
@@ -57,10 +76,9 @@ export default class Contacts extends Component {
     }
 
     render() {
-        const { header } = this.props;
         return (
             <ContactsWrapper>
-                <h1 className="header"> { header } </h1>
+                <h1 className="header">Контакты</h1>
                 <Search
                     type="search"
                     placeholder="Поиск"

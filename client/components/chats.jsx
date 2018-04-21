@@ -12,7 +12,7 @@ export default class Chats extends Component {
     static propTypes = {
         allChats: PropTypes.arrayOf(PropTypes.object),
         onClickChat: PropTypes.func,
-        showParangja: PropTypes.func,
+        showParanja: PropTypes.func,
         selectedChatId: PropTypes.string,
         contacts: PropTypes.arrayOf(PropTypes.object),
         user: PropTypes.shape(),
@@ -27,10 +27,10 @@ export default class Chats extends Component {
         allChats: [],
         contacts: [],
         currentChat: {},
-        showParangja: () => {},
+        showParanja: () => {},
         onClickChat: () => {},
         selectedChatId: null,
-        addNewChatFromSocket: () => {},
+        addNewChatFromSocket: () => {}
     }
 
     constructor(props) {
@@ -77,7 +77,7 @@ export default class Chats extends Component {
             user,
             contacts,
             currentChat,
-            showParangja
+            showParanja
         } = this.props;
 
         return (
@@ -90,7 +90,7 @@ export default class Chats extends Component {
                 <ChatsList>
                     <Header>
                         <div className="header__menu-icon">
-                            <MenuIcon onClick={() => { showParangja(true); }} />
+                            <MenuIcon onClick={() => { showParanja(true); }} />
                         </div>
                         <SearchInput placeholder="Поиск" type="search" />
                     </Header>

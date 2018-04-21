@@ -46,7 +46,7 @@ export default class Messages extends Component {
     static propTypes = {
         title: PropTypes.string,
         currentUserId: PropTypes.string,
-        visibilityAddUser: PropTypes.bool,
+        visibilityAddUser: PropTypes.func,
         messages: PropTypes.arrayOf(PropTypes.object)
     };
 
@@ -54,7 +54,7 @@ export default class Messages extends Component {
         title: '',
         messages: [],
         currentUserId: '',
-        visibilityAddUser: false
+        visibilityAddUser: () => {}
     };
 
     componentDidMount() {

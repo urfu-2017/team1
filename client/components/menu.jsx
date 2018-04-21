@@ -6,15 +6,13 @@ export default class Menu extends Component {
     static propTypes = {
         user: PropTypes.shape(),
         showContacts: PropTypes.func,
-        setHeader: PropTypes.func,
         showEditor: PropTypes.func
     }
 
     static defaultProps = {
         user: {},
         showContacts: () => {},
-        showEditor: () => {},
-        setHeader: () => {}
+        showEditor: () => {}
     }
 
     constructor(props) {
@@ -23,7 +21,7 @@ export default class Menu extends Component {
     }
 
     render() {
-        const { user, showContacts, showEditor, setHeader } = this.props;
+        const { user, setEvent, showContacts, showEditor } = this.props;
         return (
             <MenuRoot>
                 <div className="profile">
@@ -38,18 +36,10 @@ export default class Menu extends Component {
                     <p
                         role="presentation"
                         className="menu__item"
-                        onClick={() => { showContacts(true); setHeader(' Контакты'); }}
+                        onClick={() => { showContacts(true); setEvent('addNewChat'); }}
                     >
                         Контакты
                     </p>
-                    {/* <p
-                        // ref={this.getRef}
-                        role="presentation"
-                        className="menu__item"
-                        onClick={() => { showContacts(true); setHeader('Создание чата'); }}
-                    >
-                        Новый чат
-                    </p> */}
                     <p
                         role="presentation"
                         className="menu__item"

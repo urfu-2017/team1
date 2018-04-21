@@ -4,6 +4,7 @@ import {
     SEND_NEW_MESSAGE,
     MESSAGE_SAVED,
     SEND_NEW_CHAT,
+    ADD_USER_CHAT,
     CHAT_SAVED
 } from '../actions/actions';
 
@@ -63,10 +64,10 @@ import {
 //     }
 // }
 
+
 export default function createChatReducer(chatProps) {
     const newInitialState = Object.assign([], chatProps);
     return (state = newInitialState, action) => {
-        console.log(action);
         switch (action.type) {
         case RECEIVED_NEW_MESSAGE: {
             const { message, sender } = action.info;
@@ -122,6 +123,12 @@ export default function createChatReducer(chatProps) {
 
             return Object.assign([], state);
         }
+
+        case ADD_USER_CHAT: {
+            console.log('Надо реализовать');
+            return Object.assign([], state);
+        }
+
         default: return state;
         }
     };

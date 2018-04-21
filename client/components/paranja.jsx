@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Menu from './menu';
 
@@ -8,14 +8,14 @@ import ChatEditor from './chatEditor';
 
 import { ParanjaWrapper } from '../styles/paranja';
 
-export default class Paranja extends Component {
+export default class Paranja extends React.Component {
     static propTypes = {
         contacts: PropTypes.arrayOf(PropTypes.object),
         currentChat: PropTypes.shape(),
         visibilityAddUser: PropTypes.func,
-        isOpenChatEditor: PropTypes.func,
+        isOpenChatEditor: PropTypes.bool,
         isOpenParanja: PropTypes.bool,
-        showParangja: PropTypes.func,
+        showParanja: PropTypes.func,
         user: PropTypes.shape()
     };
 
@@ -24,20 +24,21 @@ export default class Paranja extends Component {
         contacts: [],
         currentChat: {},
         isOpenParanja: false,
-        showParangja: () => {},
-        isOpenChatEditor: () => {},
+        showParanja: () => {},
+        isOpenChatEditor: false,
         visibilityAddUser: () => {}
     };
     constructor(props) {
         super(props);
         this.state = {
+            event: '',
             visible: false,
             isOpenEditor: false,
             isOpenContacts: false
         };
     }
 
-    setHeader = header => { this.setState({ header }); }
+    setEvent = event => { this.setState({ event }); }
     handleCancel = e => { this.setState({ visible: false }); }
     showEditor = isOpen => { this.setState({ isOpenEditor: isOpen }); }
     showContacts = isOpen => { this.setState({ isOpenContacts: isOpen }); }
@@ -47,20 +48,20 @@ export default class Paranja extends Component {
             user,
             contacts,
             currentChat,
-            showParangja,
+            showParanja,
             isOpenParanja,
             isOpenChatEditor,
             visibilityAddUser
         } = this.props;
 
         return (
-            <Fragment>
+            <React.Fragment>
                 { isOpenParanja && (
-                    <ParanjaWrapper onClick={() => { showParangja(false); }} >
+                    <ParanjaWrapper onClick={() => { showParanja(false); }} >
                         { !this.state.visible && (
                             <Menu
                                 user={user}
-                                setHeader={this.setHeader}
+                                setEvent={this.setEvent}
                                 showEditor={this.showEditor}
                                 showContacts={this.showContacts}
                             />)
@@ -68,27 +69,34 @@ export default class Paranja extends Component {
                     </ParanjaWrapper>
                 )}
                 { this.state.isOpenContacts && (
-                    <ParanjaWrapper onClick={() => { showParangja(false); this.showContacts(false); }}>
+                    <ParanjaWrapper onClick={() => { showParanja(false); this.showContacts(false); }}>
                         <Contacts
-                            header={this.state.header}
+                            event={this.state.event}
+                            setContact={this.setContact}
+                            visibilityAddUser={visibilityAddUser}
                         />
                     </ParanjaWrapper>)
                 }
                 { this.state.isOpenEditor && (
-                    <ParanjaWrapper onClick={() => { showParangja(false); this.showEditor(false); }}>
+                    <ParanjaWrapper onClick={() => { showParanja(false); this.showEditor(false); }}>
                         <ProfileEditor />
                     </ParanjaWrapper>)
                 }
                 { isOpenChatEditor && (
-                    <ParanjaWrapper onClick={() => { showParangja(false); visibilityAddUser(false); }}>
+                    <ParanjaWrapper onClick={() => {
+                        showParanja(false);
+                        visibilityAddUser(false);
+                    }}
+                    >
                         <ChatEditor
                             contacts={contacts}
+                            setEvent={this.setEvent}
                             currentChat={currentChat}
                             showContacts={this.showContacts}
                         />
                     </ParanjaWrapper>)
                 }
-            </Fragment>
+            </React.Fragment>
         );
     }
 }

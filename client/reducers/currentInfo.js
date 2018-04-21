@@ -1,5 +1,6 @@
 import {
     SELECT_CHAT,
+    ADD_USER_CHAT,
     VISIBILITY_CHAT,
     VISIBILITY_PARANJA,
     VISIBILITY_CHAT_EDITOR
@@ -12,6 +13,7 @@ const initialStateStub = {
         id: 'USER_ID'
     },
     currentChat: {},
+    chatsMembers: [],
     isOpenChatEditor: false,
     isOpenParanja: false,
     sessionInfoAndSecurityTokens: {

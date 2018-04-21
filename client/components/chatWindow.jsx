@@ -12,19 +12,19 @@ export default class ChatWindow extends Component {
         currentChatId: PropTypes.string,
         currentUserId: PropTypes.string,
         serverURL: PropTypes.string,
-        visibilityAddUser: PropTypes.bool,
+        visibilityAddUser: PropTypes.func,
         allChats: PropTypes.arrayOf(PropTypes.object)
     };
 
 
     static defaultProps = {
         title: '',
+        allChats: [],
         messages: [],
-        currentChatId: '',
-        visibilityAddUser: false,
-        currentUserId: '',
         serverURL: '',
-        allChats: []
+        currentChatId: '',
+        currentUserId: '',
+        visibilityAddUser: () => {}
     };
 
     constructor(props) {
@@ -41,7 +41,7 @@ export default class ChatWindow extends Component {
             serverURL,
             allChats
         } = this.props;
-        
+
         return currentChatId ?
             <ChatWindowWrapper>
                 <Messages

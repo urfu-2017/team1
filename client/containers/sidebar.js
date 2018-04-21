@@ -30,7 +30,7 @@ const mapDispatchToProps = dispatch => (
         visibilityAddUser: visibility => {
             dispatch(setVisibilityAddUser(visibility));
         },
-        showParangja: visibility => {
+        showParanja: visibility => {
             dispatch(setVisibilityParanja(visibility));
         }
     }

@@ -3,6 +3,7 @@ import Contacts from '../components/contacts';
 
 import {
     selectChat,
+    addUserInChat,
     asyncCreateChat,
     setVisibilityChat,
     addChatFromContacts
@@ -24,6 +25,9 @@ const mapDispatchToProps = dispatch => (
         },
         addChatFromContacts: chat => {
             dispatch(addChatFromContacts(chat));
+        },
+        addUserInChat: contact => {
+            dispatch(addUserInChat(contact));
         }
     }
 );
