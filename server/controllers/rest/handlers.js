@@ -230,8 +230,8 @@ cloudinary.config(secretConfig);
 
 handlers.sendToCloudServer = (req, res) => {
     const { pictureInBase64 } = req.body;
-
     cloudinary.uploader.upload(pictureInBase64, metaData => {
+        // save to db
         res.send(metaData);
     });
 };

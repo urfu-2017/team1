@@ -57,8 +57,10 @@ export default class Paranja extends Component {
                     </ParanjaWrapper>)
                 }
                 { this.state.isOpenEditor && (
-                    <ParanjaWrapper onClick={() => { isOpenParanja(false); this.showEditor(false); }}>
-                        <ProfileEditor />
+                    <ParanjaWrapper>
+                        <ProfileEditor
+                            user={user}
+                        />
                     </ParanjaWrapper>)
                 }
             </Fragment>

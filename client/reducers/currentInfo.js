@@ -1,4 +1,4 @@
-import { SELECT_CHAT, VISIBILITY_CHAT, VISIBILITY_PARANJA } from '../actions/actions';
+import { SELECT_CHAT, VISIBILITY_CHAT, VISIBILITY_PARANJA, SAVED_AVATAR } from '../actions/actions';
 
 const initialStateStub = {
     currentUser: {
@@ -18,6 +18,10 @@ export default function createMetaReducer(currentUser) {
     const initialState = Object.assign({}, initialStateStub);
     return (state = initialState, action) => {
         switch (action.type) {
+        case SAVED_AVATAR:
+            state.currentUser.avatar = action.avatar;
+            console.log(state.currentUser);
+            return Object.assign({}, state);
         case VISIBILITY_CHAT:
             state.currentChat = action.chat;
             return Object.assign({}, state);

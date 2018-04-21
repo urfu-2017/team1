@@ -1,64 +1,93 @@
 import React, { Component } from 'react';
-import { Editor, DowlandImage, DowlandButton, CreateButton } from '../styles/profileEditor';
-import { sendToCloudServer } from '../actions/actions';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-export default class ProfileEditor extends Component {
+import { Editor, DowlandImage, DowlandButton, CreateButton } from '../styles/profileEditor';
+import { sendToCloudServer, setAvatar } from '../actions/actions';
+
+class ProfileEditor extends Component {
+    static propTypes = {
+        user: PropTypes.object,
+        dispatch: PropTypes.func
+    };
+
+    static defaultProps = {
+        dispatch: {},
+        user: {}
+    };
+
     constructor(props) {
         super(props);
         this.state = {};
     }
 
-    addFirstFile = files => {
-        state.file = files[0];
+    getFirstFile = e => {
+        const inputUpload = document.getElementById('upload');
+
+        return inputUpload.files[0];
+    }
+
+    dragover = e => {
+        e.preventDefault();
+        e.stopPropagation();
     };
 
-    allowDrop = ev => {
-        console.log('allowDrop');
-        ev.preventDefault();
-    };
-
-    drop = ev => {
-        console.log('drop');
-        ev.preventDefault();
-        this.addFirstFile(ev.dataTransfer.files);
+    drop = e => {
+        e.preventDefault();
+        e.stopPropagation();
+        const inputUpload = document.getElementById('upload');
+        inputUpload.files = e.dataTransfer.files;
     };
 
     saveAvatar = () => {
-        console.log('saveAvatar');
         const reader = new FileReader();
         reader.onloadend = async () => {
             const dataUrl = reader.result;
+            console.log('before await');
             const metaData = await sendToCloudServer(dataUrl);
-            console.log(metaData.secure_url);
+            const urlToAvatar = metaData.secure_url;
+            console.log(urlToAvatar);
+            this.props.dispatch(setAvatar(urlToAvatar));
         };
-        reader.readAsDataURL(state.file);
+        const avatar = this.getFirstFile();
+        if (!avatar) {
+            console.log('не подгружен файл');
+            return;
+        }
+        reader.readAsDataURL(avatar);
     };
 
 
     render() {
+        const { user } = this.props;
+        console.log('user');
+        console.log(user);
+
         return (
-            <Editor >
+            <Editor>
                 <h1 className="header">Загрузить аватар</h1>
-                <DowlandImage>
-                    <p className="text">Загрузить фото</p>
+                <DowlandImage
                     ondrop={this.drop}
-                    ondragover={this.allowDrop}
+                    ondragover={this.dragover}
+                >
+                    <p className="text">Загрузить фото</p>
                 </DowlandImage>
                 <div className="buttons">
                     <DowlandButton
+                        id="upload"
                         type="file"
                         accept="image/*"
-                        value="Загрузить"
-                        onchange={this.addFirstFile}
                     />
                     <CreateButton
                         id="saveAvatar"
                         type="button"
                         value="Сохранить"
-                        onclick={this.saveAvatar}
+                        onClick={this.saveAvatar}
                     />
                 </div>
             </Editor >
         );
     }
 }
+
+export default connect()(ProfileEditor);

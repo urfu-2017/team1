@@ -40,7 +40,7 @@ app.use('/static', express.static(path.resolve(__dirname, '../public')));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(authMiddleware());
+// app.use(authMiddleware());
 app.use(setUpMiddleware());
 app.use(metaInfoSetUpMiddleware(process.env.URL));
 
