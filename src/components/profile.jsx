@@ -2,7 +2,7 @@ import React from 'react';
 import { Editor, DownloadImage, DownloadButton, CreateButton } from '../styles/profile';
 
 
-export default class Profile extends React.Component {
+export default class Profile extends React.PureComponent {
     render() {
         return (
             <Editor >

@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MenuIcon from 'react-icons/lib/fa/list';
-import { Scrollbars } from 'react-custom-scrollbars';
-import { graphql } from 'react-apollo';
+import {Scrollbars} from 'react-custom-scrollbars';
+import {graphql} from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { withCurrentUser } from '../../lib/currentUserContext';
+import {withCurrentUser} from '../../lib/currentUserContext';
+import {withCurrentChatId} from '../../lib/currentChatContext';
 import ChatPreview from './chatPreview';
 import Paranja from './paranja';
-import { Header, SearchInput, ChatsList } from '../../styles/chats';
+import {Header, SearchInput, ChatsList} from '../../styles/chats';
 
 
 // TODO: retrieve last messages and sort by modification order
@@ -28,7 +29,9 @@ query GetUserChats($userId: ID!) {
 }
 `;
 
-
+// Первым декоратором получаем объект текущего пользователя, который нам дал сервер
+// Вторым - с помощью этого объекта просим у api все чаты текущего пользователя
+// TODO: prop alias
 @withCurrentUser
 @graphql(GET_CURRENT_USER_CHATS_ql,
     {
@@ -37,28 +40,19 @@ query GetUserChats($userId: ID!) {
                 userId: props.currentUser.id
             }
         }),
-        name: 'chats'
+        name: 'chats'  // Теперь результат находится в this.props.chats
     })
+@withCurrentChatId
 export default class SideBar extends React.Component {
     static propTypes = {
         currentUser: PropTypes.object,
-        selectedChatId: PropTypes.string,
-        allChats: PropTypes.arrayOf(PropTypes.object),
-        onClickChat: PropTypes.func,
-        contacts: PropTypes.arrayOf(PropTypes.object),
-        user: PropTypes.shape(),
         meta: PropTypes.shape(),
-        mainComponentChanger: PropTypes.func
+        mainComponentChanger: PropTypes.func,
+        selectedChatId: PropTypes.string
     };
 
     static defaultProps = {
-        user: {},
-        meta: {},
-        allChats: [],
-        onClickChat: () => {
-        },
-        selectedChatId: null,
-        contacts: []
+        meta: {}
     };
 
     constructor(props) {
@@ -70,23 +64,21 @@ export default class SideBar extends React.Component {
     }
 
     getChatsList() {
-        const { allChats, onClickChat, selectedChatId, user, meta, contacts, mainComponentChanger }
-            = this.props;
-        return this.props.chats.getUser.chats.edges.map(chat => chat.node).map(chat => (
-            <ChatPreview
-                title={chat.name}
-                key={Math.random()}
-                select={selectedChatId === chat.id}
-                currentUserId={user.id}
-                meta={meta}
-                user={user}
-                contacts={contacts}
-                onClick={() => {
-                    mainComponentChanger('ChatWindow');
-                    onClickChat(chat);
-                }}
-            />
-        ));
+        const { currentUser, meta, selectedChatId, selectChat } = this.props;
+        // TODO: prop alias
+        return this.props.chats.getUser.chats.edges
+            .map(edge => edge.node)
+            .map(chat => (
+                <ChatPreview
+                    key={chat.id}
+                    chat={chat}
+                    select={selectedChatId === chat.id}
+                    currentUserId={currentUser.id /* TODO: redundant */}
+                    meta={meta}
+                    user={currentUser}
+                    selectChat={selectChat}
+                />
+            ));
     }
 
     toggleParanja = () =>

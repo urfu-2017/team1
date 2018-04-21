@@ -8,4 +8,4 @@ export const withCurrentUser = Decorated => {
             { currentUser => <Decorated {...props} currentUser={currentUser} />}
         </Consumer>
     )
-}
+};

@@ -6,14 +6,13 @@ import { ChatWrapper, ChatHeader, LastMessage, Sender } from '../../styles/chat'
 
 class ChatPreview extends React.Component {
     static propTypes = {
+        selectChat: PropTypes.func,
         chat: PropTypes.object,
         select: PropTypes.bool,
-        onClick: PropTypes.func,
         dispatch: PropTypes.func,
         currentUserId: PropTypes.string,
         meta: PropTypes.object,
         user: PropTypes.object,
-        contacts: PropTypes.arrayOf(PropTypes.object)
     };
 
     static defaultProps = {
@@ -24,19 +23,32 @@ class ChatPreview extends React.Component {
         currentUserId: null,
         meta: {},
         user: {},
-        contacts: []
+    };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isSelected: false
+        }
+    }
+
+    // Не создаём новую функцию при каждом рендере
+    selectThisChat = () => {
+        this.props.selectChat(this.props.chat.id);
+        this.setState({ isSelected: true });
     };
 
     render() {
-        const { onClick, select, picture, title, lastMessage } = this.props;
+        const { select, lastMessage, chat } = this.props;
         return (
-            <ChatWrapper onClick={onClick} select={select}>
+            <ChatWrapper onClick={this.selectThisChat} select={select}>
                 <div className='chat-avatar'>
-                    <img src={picture} width='50' height='50'
+                    <img src={chat.picture} width='50' height='50'
                          className='chat-avatar__img'/>
                 </div>
                 <div className='chat-description'>
-                    <ChatHeader>{title}</ChatHeader>
+                    <ChatHeader>{chat.name}</ChatHeader>
                     {lastMessage && lastMessage.content && lastMessage.sender &&
                     <LastMessage>
                         <Sender>{lastMessage.sender.name}:</Sender>
