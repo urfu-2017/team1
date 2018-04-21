@@ -5,6 +5,8 @@ const Message = require('../../model/message');
 const Chat = require('../../model/chat');
 const User = require('../../model/user');
 
+const cloudinary = require('cloudinary');
+
 const handlers = {};
 let io = null;
 
@@ -136,7 +138,7 @@ handlers.startChatWithUser = async (req, res) => {
     otherUser.chatsIds.push(chat.id);
     res.json(chat);
     for (let id of [currentUser.id, otherUser.id]) {
-        console.log(`${req.newChatsSocketPrefix}-${id}`);
+        // console.log(`${req.newChatsSocketPrefix}-${id}`);
         io.emit(`${req.newChatsSocketPrefix}-${id}`, { chat });
     }
     const outcome = await awaitAllWithOutcome(
@@ -217,6 +219,28 @@ handlers.invalidateCache = () => {
     dbConnection._cache = new Map();
 };
 
+
+const secretConfig = {
+    cloud_name: 'team1-kilogram',
+    api_key: '732617494545747',
+    api_secret: 'Vt5dARvgKbxJs-9-_KmRQI5zzZA'
+};
+
+cloudinary.config(secretConfig);
+
+handlers.sendToCloudServer = (req, res) => {
+    const { pictureInBase64 } = req.body;
+    console.log(pictureInBase64.substr(0, 20));
+    cloudinary.uploader.upload(pictureInBase64, metaData => {
+        res.send(metaData);
+        console.log(metaData);
+        // TODO
+        // Добавить, когда бд будет работающей
+        // const { user } = req;
+        // user.avatar = metaData.secure_url;
+        // dbConnection.updateUser(user);
+    });
+};
 
 module.exports = sock => {
     io = sock;

@@ -7,80 +7,6 @@ import {
     CHAT_SAVED
 } from '../actions/actions';
 
-const initialState = [
-    {
-        title: 'First Chat Title',
-        picture: 'path-to-chat-pic.jpeg',
-        id: 'ID_1',
-        lastMessage: {
-            content: {
-                text: 'message text',
-                attachments: [],
-                pictures: []
-            },
-            // todo fix this to senderId
-            sender: {
-                name: 'user1',
-                avatar: 'path-to-avatar.jpeg',
-                id: 'ALPHANUMERIC_ID'
-            }
-        },
-        messages: [
-            {
-                content: {
-                    text: 'message text',
-                    attachments: [],
-                    pictures: []
-                },
-                senderId: 'ALPHANUMERIC_ID'
-            },
-            {
-                content: {
-                    text: 'message text',
-                    attachments: [],
-                    pictures: []
-                },
-                senderId: 'ALPHANUMERIC_ID'
-            },
-            {
-                content: {
-                    text: 'message text',
-                    attachments: [],
-                    pictures: []
-                },
-                senderId: 'ALPHANUMERIC_ID'
-            }
-        ]
-    },
-    {
-        title: 'Second Chat Title',
-        picture: 'path-to-chat-pic.jpeg',
-        id: 'ID_2',
-        lastMessage: {
-            content: {
-                text: 'message text',
-                attachments: [],
-                pictures: []
-            },
-            sender: {
-                name: 'user1',
-                avatar: 'path-to-avatar.jpeg',
-                id: 'ALPHANUMERIC_ID'
-            }
-        },
-        messages: [
-            // {
-            //     content: {
-            //         text: 'my message kek',
-            //         attachments: [],
-            //         pictures: []
-            //     },
-            //     senderId: 'USER_ID'
-            // }
-        ]
-    }
-];
-
 // export default function chats(state = initialState, action) {
 //     switch (action.type) {
 //     case RECEIVED_NEW_MESSAGE: {
@@ -140,11 +66,10 @@ const initialState = [
 export default function createChatReducer(chatProps) {
     const newInitialState = Object.assign([], chatProps);
     return (state = newInitialState, action) => {
+        // console.log(action);
         switch (action.type) {
         case RECEIVED_NEW_MESSAGE: {
             const { message, sender } = action.info;
-            //console.log(action.info.currentUserId);
-            //console.log(message.senderId);
             const neededChat = state.find(x => x.id === message.chatId);
             neededChat.lastMessage = message;
             neededChat.lastMessage.sender = sender;
@@ -154,12 +79,9 @@ export default function createChatReducer(chatProps) {
                 return Object.assign([], state);
             }
             neededChat.messages = [...neededChat.messages, message];
-            
             return Object.assign([], state);
         }
         case SEND_NEW_MESSAGE: {
-            // action.message.content.text += '(отправлено)';
-           
             const neededChat = state.find(x => x.id === action.message.chatId);
             if (!neededChat.messages) {
                 neededChat.messages = [];
@@ -177,14 +99,14 @@ export default function createChatReducer(chatProps) {
             return Object.assign([], state);
         }
         case RECEIVED_NEW_CHAT: {
-            console.log(RECEIVED_NEW_CHAT);
+            // console.log(RECEIVED_NEW_CHAT);
             const { chat, currentUserId } = action.info;
-            console.log(chat);
+            // console.log(chat);
             // TODO:
             // if (action.info.currentUserId === chat.creatorId) {
             //     return Object.assign([], state);
             // }
-            let newState = [...state, chat];
+            const newState = [...state, chat];
             return Object.assign([], newState);
         }
         case SEND_NEW_CHAT: {

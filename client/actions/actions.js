@@ -2,12 +2,18 @@ export const VISIBILITY_CHAT = 'VISIBILITY_CHAT';
 export const RECEIVED_NEW_MESSAGE = 'RECEIVED_NEW_MESSAGE';
 export const SEND_NEW_MESSAGE = 'SEND_NEW_MESSAGE';
 export const SELECT_CHAT = 'SELECT_CHAT';
-export const VISIBILITY_MENU = 'VISIBILITY_MENU';
-export const VISIBILITY_CONTACTS = 'VISIBILITY_CONTACTS';
 export const MESSAGE_SAVED = 'MESSAGE_SAVED';
 export const RECEIVED_NEW_CHAT = 'RECEIVED_NEW_CHAT';
 export const SEND_NEW_CHAT = 'SEND_NEW_CHAT';
 export const CHAT_SAVED = 'CHAT_SAVED';
+export const SAVED_AVATAR = 'SAVED_AVATAR';
+
+
+export const setAvatar = avatar => ({ type: SAVED_AVATAR, avatar });
+
+export const VISIBILITY_PARANJA = 'VISIBILITY_PARANJA';
+
+export const setVisibilityParanja = visibility => ({ type: VISIBILITY_PARANJA, visibility });
 
 export const setVisibilityChat = chat => ({ type: VISIBILITY_CHAT, chat });
 
@@ -31,11 +37,6 @@ export const moveCursorDown = () => {
 export const addMessageFromChatInput = message => ({ type: SEND_NEW_MESSAGE, message });
 
 export const selectChat = id => ({ type: SELECT_CHAT, id });
-
-export const setVisibilityMenu = visibility => ({ type: VISIBILITY_MENU, visibility });
-
-export const setVisibilityContacts = visibility => ({ type: VISIBILITY_CONTACTS, visibility });
-
 
 const saveStatus = (status, userMessage) =>
     ({ type: MESSAGE_SAVED, info: { status, userMessage } });
@@ -80,7 +81,24 @@ export const asyncCreateChat = (chat, contactId, callback) => dispatch => {
     };
     fetch(URL, options)
         .then(response => response.json())
-        .then(response => console.log('|||||||||') || console.log(response) || dispatch(callback(response)));
+        // .then(response => console.log('|||||||||') || console.log(response) || dispatch(callback(response)));
+        .then(response => dispatch(callback(response)));
 };
 
 export const addChatFromContacts = chat => ({ type: SEND_NEW_CHAT, chat });
+
+export const sendToCloudServer = dataUrl => {
+    const data = { pictureInBase64: dataUrl };
+    const URL = 'api/rest/avatar';
+    const options = {
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(data),
+        credentials: 'same-origin'
+    };
+    return fetch(URL, options)
+        .then(response => response.json());
+};

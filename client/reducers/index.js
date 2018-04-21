@@ -6,6 +6,8 @@ import createUsersReducer from './users';
 import createCurrentInfo from './currentInfo';
 
 export default function makeReducer(initialProps) {
+    // console.log(initialProps);
+
     return combineReducers({
         allChats: createChatReducer(initialProps.chats),
         currentInfo: createCurrentInfo(initialProps.user),
