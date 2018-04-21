@@ -49,3 +49,10 @@ export const CreateButton = DowlandButton.extend`
     border-radius: 5px;
     background: #e4e0dc;
 `;
+
+export const Exit = styled.div`
+    position: absolute;
+    right: 5px;
+    top: 0;
+    font-size: 30px;
+`;

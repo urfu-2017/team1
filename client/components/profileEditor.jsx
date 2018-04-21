@@ -2,17 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { Editor, DowlandImage, DowlandButton, CreateButton } from '../styles/profileEditor';
+import { Editor, DowlandImage, DowlandButton, CreateButton, Exit } from '../styles/profileEditor';
 import { sendToCloudServer, setAvatar } from '../actions/actions';
 
 class ProfileEditor extends Component {
     static propTypes = {
-        user: PropTypes.object,
-        dispatch: PropTypes.func
+        dispatch: PropTypes.func,
+        showParangja: PropTypes.func,
+        showEditor: PropTypes.func,
+        user: PropTypes.object
     };
 
     static defaultProps = {
-        dispatch: {},
+        dispatch: () => {},
+        showParangja: () => {},
+        showEditor: () => {},
         user: {}
     };
 
@@ -59,12 +63,11 @@ class ProfileEditor extends Component {
 
 
     render() {
-        const { user } = this.props;
-        console.log('user');
-        console.log(user);
-
         return (
             <Editor>
+                <Exit onClick={() => { this.props.showParangja(false); this.props.showEditor(false); }}>
+                    &#10006;
+                </Exit>
                 <h1 className="header">Загрузить аватар</h1>
                 <DowlandImage
                     ondrop={this.drop}
