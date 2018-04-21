@@ -25,16 +25,16 @@ export default class Message extends Component {
             <MessageWrapper fromMe={fromMe}>
                 <div className="messageBlock">
                     {/* <div className="massageBlock__time">{creationTime}</div> */}
-                    <div className="messageBlock__text" 
-                        fromMe={fromMe} dangerouslySetInnerHTML={{ __html:  emoji.emojify(marked(message),
-                        (res) => res ) }}>
-                    </div>
-                    { ogdata && Object.keys(ogdata).length !== 0 && 
+                    <div
+                        className="messageBlock__text"
+                        fromMe={fromMe}
+                        dangerouslySetInnerHTML={{ __html: emoji.emojify(marked(message), res => res) }}
+                    />
+                    { ogdata && Object.keys(ogdata).length !== 0 &&
                     <div className="metadata">
-                        <a href={ogdata.url} className="metadata__conteiner">
-                            <img className="metadata__conteiner__img" 
-                                src={ogdata.image.url}></img>
-                            <div className="metadata__conteiner__title">{ogdata.title}</div> 
+                        <a href={ogdata.url} className="metadata-container">
+                            <img className="metadata-container__img" src={ogdata.image.url} alt="{ogdata.title}" />
+                            <div className="metadata-container__title">{ogdata.title}</div>
                         </a>
                     </div>}
                 </div>

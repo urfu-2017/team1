@@ -3,14 +3,15 @@ const scrape = require('html-metadata');
 
 async function getMetadata(message) {
     const urls = Array.from(getUrls(message));
-    let url = '';
-    if (urls !== []) {
-        url = urls[0];
+    let metadata = {};
+
+    const url = urls && urls[0];
+    if (url) {
+        metadata = await scrape(url);
     }
 
-    const metadata = await scrape(url);
     return {
-        'ogdata': metadata.openGraph
+        ogdata: metadata && metadata.openGraph
     };
 }
 

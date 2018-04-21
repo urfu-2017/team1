@@ -36,14 +36,14 @@ export const MessageWrapper = styled.article`
         border: 2px solid #b2ebff;
         background-color: #ffffff;
     }
-    .metadata__conteiner {
+    .metadata-container {
         padding: 8px;
         display: flex;
         color: #42648b;
         align-items: center;
         text-decoration: none; 
     }
-    .metadata__conteiner__img {
+    .metadata-container__img {
         flex-basis: 100%;
         padding-right: 8px;
         max-width: 178px;
