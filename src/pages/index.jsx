@@ -28,8 +28,9 @@ export default class KilogrammApp extends React.Component {
 
     static async getInitialProps({ req }) {
         return {
-            initState: initialState,
-            scapholdUrl: req.scapholdUrl
+            initialState: req.state,
+            currentUser: req.user,
+            dbApiUrl: req.dbApiUrl
         };
     }
 
@@ -57,6 +58,6 @@ export default class KilogrammApp extends React.Component {
     };
 
     render() {
-        return createNextPage(this.layout, this.props.initState);
+        return createNextPage(this.layout, { state: this.props.initialState, user: this.props.currentUser }, this.props.dbApiUrl);
     }
 }

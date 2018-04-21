@@ -4,6 +4,6 @@ require('dotenv').config();
 
 const Scaphold = require('./db/scaphold');
 
-const connection = new Scaphold('https://us-west-2.api.scaphold.io/graphql/kilogram_team1');
+const connection = new Scaphold('https://' + process.env.API_URL);
 
 module.exports = connection;

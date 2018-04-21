@@ -42,7 +42,7 @@ function main(isProduction, port) {
         .use(passport.session())
         .use(authMiddleware())
         .use((req, res, next) => {
-            req.scapholdUrl = process.env.API_URL;
+            req.dbApiUrl = process.env.API_URL;
             next();
         })
         .use(routes);

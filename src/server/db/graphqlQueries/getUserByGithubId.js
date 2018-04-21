@@ -1,19 +1,19 @@
 const gql = require('graphql-tag');
 
 
-module.exports = (githubId) => gql`
-query {
+module.exports = gql`
+query ($where: UserWhereArgs) {
     viewer {
-      allUsers (where: {githubId: {eq: ${githubId}}}) {
-        edges {
-                  node {
-                      id
-                      username
-                      avatar
-                      githubId
-                  }
-              }
-      }
+        allUsers (where: $where) {
+            edges {
+                node {
+                    id
+                    username
+                    avatarUrl
+                    githubId
+                }
+            }
+        }
     }
-  }
-`
+}
+`;

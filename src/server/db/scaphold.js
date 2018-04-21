@@ -21,7 +21,14 @@ class Scaphold {
     }
 
     async findUserByGithubID(githubId) {
-        const user = await this.client.query({query: getUserByGihubId(githubId)})
+        const user = await this.client.query({
+                query: getUserByGihubId,
+                variables: {
+                    where: {
+                        githubId: { eq: githubId }
+                    }
+                }
+            })
             .then(data => {
                 return data.data.viewer.allUsers.edges[0];
             }
@@ -35,7 +42,10 @@ class Scaphold {
     }
 
     async findUserByID(id) {
-        const user = await this.client.query({query: getUserByid(id)})
+        const user = await this.client.query({
+                query: getUserByid,
+                variables: { id }
+            })
             .then(data => {
                 return data.data.getUser;
             }
@@ -51,9 +61,9 @@ class Scaphold {
             variables: {
                     user: {
                         username: name,
-                        password: 'passowrd',
+                        password: 'password',
                         githubId: githubId,
-                        avatar: avatar
+                        avatarUrl: avatar
                     }
                 }
 
