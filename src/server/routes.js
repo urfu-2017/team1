@@ -1,14 +1,18 @@
 'use strict';
 
 const passport = require('passport');
+const express = require('express');
 
-module.exports = (app) => {
-    app.get('/auth/github', passport.authenticate('github'));
-    app.get(
-        '/auth/github/callback',
-        passport.authenticate('github', { failureRedirect: '/auth' }),
-        (req, res) => {
-            res.redirect('/index');
-        }
-    );
-};
+
+const router = express.Router();
+router.get('/auth/github', passport.authenticate('github'));
+router.get(
+    '/auth/github/callback',
+    passport.authenticate('github', { failureRedirect: '/auth' }),
+    (req, res) => {
+        res.redirect('/index');
+    }
+);
+
+
+module.exports = router;

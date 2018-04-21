@@ -11,6 +11,7 @@ const { CREATE_USER_ql } = require('./graphqlQueries/createUser');
 const getUserByGihubId = require('./graphqlQueries/getUserByGithubId');
 const getUserByid =  require('./graphqlQueries/getUser');
 
+
 class Scaphold {
     constructor(scapholdUri) {
         this.client = new ApolloClient({
@@ -55,7 +56,7 @@ class Scaphold {
                         avatar: avatar
                     }
                 }
-            
+
         })
             .then(data => {
                 return data;
@@ -66,4 +67,4 @@ class Scaphold {
     }
 }
 
-module.exports = Scaphold
+module.exports = Scaphold;
