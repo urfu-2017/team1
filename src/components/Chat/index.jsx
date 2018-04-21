@@ -22,7 +22,8 @@ import {withCurrentUser} from '../../lib/currentUserContext';
         variables: {
             chatId: props.localState.currentChatId
         }
-    })
+    }),
+    pollInterval: 500  // TODO: remove poll and implement subscriptions
     // props: GetChat.map
 })
 export default class Chat extends React.Component {
@@ -52,7 +53,7 @@ export default class Chat extends React.Component {
         return chat.getChat.id ?
             <ChatWindowWrapper>
                 <Messages
-                    messages={chat.getChat.messages.edges.map(e => e.node)}
+                    messages={chat.getChat.messages.edges.map(e => e.node).reverse()}
                     title={chat.getChat.name}
                     currentUserId={currentUser.id}
                 />

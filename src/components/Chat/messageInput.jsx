@@ -1,22 +1,30 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import {graphql, compose} from 'react-apollo';
 
+import {withCurrentUser} from '../../lib/currentUserContext';
+import {CreateMessage} from '../../graphqlQueries/messages';
+import {GET_CURRENT_CHAT_ID_ql} from '../../graphqlQueries/localState';
 import Textarea from '../../styles/chatWindowInput';
 
 
-export default class MessageInput extends Component {
+@withCurrentUser
+@compose(
+    graphql(GET_CURRENT_CHAT_ID_ql, { name: 'localState' }),
+    graphql(CreateMessage.query, {
+        props: CreateMessage.map,
+        refetchQueries: ['GetChat']
+    })
+)
+export default class MessageInput extends React.PureComponent {
     static propTypes = {
         currentChatId: PropTypes.string,
         currentUserId: PropTypes.string,
-        serverURL: PropTypes.string,
-        allChats: PropTypes.arrayOf(PropTypes.object)
     };
 
     static defaultProps = {
         currentChatId: '',
         currentUserId: '',
-        serverURL: '',
-        allChats: []
     };
 
     constructor(props) {
@@ -24,33 +32,30 @@ export default class MessageInput extends Component {
         this.state = { message: '' };
     }
 
-    handleChange = event => { this.setState({ message: event.target.value }); };
+    handleChange = event => this.setState({ message: event.target.value });
 
     handleSubmit = event => {
+        if (this.state.message.length === 0) {
+            return;
+        }  // TODO: review later
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
-            const { currentChatId, currentUserId, serverURL } = this.props;
+            const currentChatId = this.props.localState.currentChatId;
+            const currentUserId = this.props.currentUser.id;
             const message = {
-                content: {
-                    text: this.state.message
-                },
+                text: this.state.message,
                 chatId: currentChatId,
-                senderId: currentUserId,
-                userMessageId: Math.random()
+                senderId: currentUserId
             };
-            const cursorInBottom = cursorIsPressedFromBelow();
-            this.props.dispatch(addMessageFromChatInput(message));
 
-            if (cursorInBottom) {
-                moveCursorDown();
-            }
+            // Что это? О_о
+            // const cursorInBottom = cursorIsPressedFromBelow();
 
-            // this.props.dispatch(asyncSendMessage(message, serverURL));
-            // // @lms: этот хак сделан для обновления чата, который пришел через сокет
-            // // todo: удалить и сделать нормально
-            // const chat = this.props.allChats.find(x => x.id === currentChatId);
-            // this.props.dispatch(selectChat(currentChatId));
-            // this.props.dispatch(setVisibilityChat(chat));
+            this.props.createMessage(message);
+
+            // if (cursorInBottom) {
+            //     moveCursorDown();
+            // }
 
             this.setState({ message: '' });
         }
@@ -63,8 +68,7 @@ export default class MessageInput extends Component {
                     className="textarea__style"
                     onKeyPress={this.handleSubmit}
                     onChange={this.handleChange}
-                    type="text"
-                    placeholder="Введите сообщение"
+                    placeholder="Сообщение..."
                     value={this.state.message}
                     required
                 />
