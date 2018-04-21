@@ -21,9 +21,9 @@ export default class Menu extends React.Component {
                     <img
                         alt="Изображение аватарки"
                         className="profile__avatar"
-                        src={currentUser.avatar}
+                        src={currentUser.avatarUrl}
                     />
-                    <div className="profile__name">{currentUser.name}</div>
+                    <div className="profile__name">{currentUser.username}</div>
                 </div>
                 <main>
                     <p

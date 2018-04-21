@@ -1,16 +1,12 @@
+import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 
-import makeApolloClient from '../lib/createApolloClient';
-import config from '../config';
-
+import createApolloClient from '../lib/createApolloClient';
 
 
 export default (Component, state, scapholdUrl) => {
-    const client = makeApolloClient(scapholdUrl);
-    console.log('+++++');
-    console.log(state);
-    console.log(scapholdUrl);
-    console.log('+++++');
+    const client = createApolloClient(scapholdUrl);
+
     return (
         <ApolloProvider client={client}>
             <Component />

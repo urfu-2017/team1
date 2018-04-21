@@ -5,6 +5,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import { withCurrentUser } from '../../lib/currentUserContext';
 import ChatPreview from './chatPreview';
 import Paranja from './paranja';
 import { Header, SearchInput, ChatsList } from '../../styles/chats';
@@ -20,7 +21,6 @@ query GetUserChats($userId: ID!) {
         node {
           id
           name
-          
         }
       }
     }
@@ -29,11 +29,12 @@ query GetUserChats($userId: ID!) {
 `;
 
 
+@withCurrentUser
 @graphql(GET_CURRENT_USER_CHATS_ql,
     {
         options: props => ({
             variables: {
-                userId: 'VXNlcjox'
+                userId: props.currentUser.id
             }
         }),
         name: 'chats'
@@ -92,13 +93,13 @@ export default class SideBar extends React.Component {
         this.setState((prev) => ({ paranjaOpened: !prev.paranjaOpened }));
 
     render() {
-        const chats = this.props.chats;
+        const { chats, currentUser } = this.props;
         return (
             <React.Fragment>
                 {
                     this.state.paranjaOpened &&
                     <Paranja
-                        user={({})}
+                        currentUser={currentUser}
                         toggleParanja={this.toggleParanja}
                         mainComponentChanger={this.props.mainComponentChanger}
                     />

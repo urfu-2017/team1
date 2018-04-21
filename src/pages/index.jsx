@@ -6,7 +6,7 @@ import Chat from '../components/SideBar/chatPreview';
 import SideBar from '../components/SideBar/index';
 import Contacts from '../components/contacts';
 import Profile from '../components/profile';
-import initialState from '../initialState';
+import { Provider as CurrentUserProvider } from '../lib/currentUserContext';
 
 
 const Wrapper = styled.main`
@@ -51,8 +51,10 @@ export default class KilogrammApp extends React.Component {
         const MainComponent = this.components[this.state.mainComponentName];
         return (
             <Wrapper>
-                <SideBar mainComponentChanger={this.changeMainComponent} />
-                {/*<MainComponent currentUser={this.props.currentUser} />*/}
+                <CurrentUserProvider value={this.props.currentUser} >
+                    <SideBar mainComponentChanger={this.changeMainComponent} />
+                    {/*<MainComponent currentUser={this.props.currentUser} />*/}
+                </CurrentUserProvider>
             </Wrapper>
         );
     };
