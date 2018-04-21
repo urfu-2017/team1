@@ -32,9 +32,7 @@ export default class Chat extends React.Component {
     };
 
     static defaultProps = {
-        chat: {
-            loading: true
-        }
+        chat: {}
     };
 
     loadScreen = (
@@ -49,16 +47,17 @@ export default class Chat extends React.Component {
             return <p>Error ;(</p>;
         }
 
-        const { chat, currentUser } = this.props;
-        return chat.getChat.id ?
+        const chat = this.props.chat && this.props.chat.getChat || null;
+        const { currentUser } = this.props;
+        return chat ?
             <ChatWindowWrapper>
                 <Messages
-                    messages={chat.getChat.messages.edges.map(e => e.node).reverse()}
-                    title={chat.getChat.name}
+                    messages={chat.messages.edges.map(e => e.node).reverse()}
+                    title={chat.name}
                     currentUserId={currentUser.id}
                 />
                 <MessageInput
-                    currentChatId={chat.getChat.id}
+                    currentChatId={chat.id}
                     currentUserId={currentUser.id}
                 />
             </ChatWindowWrapper> : <ChatWindowWrapper/>;
