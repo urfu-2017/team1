@@ -81,70 +81,12 @@ const initialState = [
     }
 ];
 
-// export default function chats(state = initialState, action) {
-//     switch (action.type) {
-//     case RECEIVED_NEW_MESSAGE: {
-//         const { message } = action.info;
-//         // console.log(action.info.currentUserId);
-//         // console.log(message.senderId);
-//         if (action.info.currentUserId === message.senderId) {
-//             return Object.assign([], state);
-//         }
-//         const neededChat = state.find(x => x.id === message.chatId);
-//         neededChat.messages = [...neededChat.messages, message];
-//         return Object.assign([], state);
-//     }
-//     case SEND_NEW_MESSAGE: {
-//         action.message.content.text += '(отправлено)';
-//         const neededChat = state.find(x => x.id === action.message.chatId);
-//         neededChat.messages = [...neededChat.messages, action.message];
-//         return Object.assign([], state);
-//     }
-//     case MESSAGE_SAVED: {
-//         const { userMessage } = action.info;
-//         const neededChat = state.find(x => x.id === userMessage.chatId);
-//         const neededMessage = neededChat.messages.find(m => m.userMessageId === userMessage.userMessageId);
-//         neededMessage.content.text += action.info.status;
-//         neededChat.messages = Object.assign([], neededChat.messages);
-
-//         return Object.assign([], state);
-//     }
-//     case RECEIVED_NEW_CHAT: {
-//         console.log(RECEIVED_NEW_CHAT);
-//         const { chat, currentUserId } = action.info;
-//         console.log(currentUserId);
-//         console.log(chat.creatorId);
-//         if (action.info.currentUserId === chat.creatorId) {
-//             return Object.assign([], state);
-//         }
-
-//         return [chat, ...state];
-//     }
-//     case SEND_NEW_CHAT: {
-//         const { chat } = action;
-//         chat.title += '(создан)';
-
-//         return [chat, ...state];
-//     }
-//     case CHAT_SAVED: {
-//         const { userChat } = action.info;
-//         const neededChat = state.find(x => x.userChatId === userChat.userChatId);
-//         neededChat.title += action.info.status;
-
-//         return Object.assign([], state);
-//     }
-//     default: return state;
-//     }
-// }
-
 export default function createChatReducer(chatProps) {
     const newInitialState = Object.assign([], chatProps);
     return (state = newInitialState, action) => {
         switch (action.type) {
         case RECEIVED_NEW_MESSAGE: {
             const { message, sender } = action.info;
-            //console.log(action.info.currentUserId);
-            //console.log(message.senderId);
             const neededChat = state.find(x => x.id === message.chatId);
             neededChat.lastMessage = message;
             neededChat.lastMessage.sender = sender;

@@ -53,11 +53,18 @@ export const asyncSendMessage = (message, serverURL) => dispatch => {
     };
     fetch(URL, options)
         .then(response => {
-            if (response.status === 201) {
-                dispatch(saveStatus('\t✓', message));
+            if (response.status === 200) {
+                return response.json();
             } else {
-                dispatch(saveStatus('\t⨯', message));
+                throw new Error('Ooops');
             }
+        })
+        .then(updatedMessage => {
+            message.metadata = updatedMessage.metadata;
+            dispatch(saveStatus('\t✓', message));
+        })
+        .catch(() => {
+            dispatch(saveStatus('\t⨯', message));
         });
 };
 

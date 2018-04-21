@@ -62,13 +62,6 @@ io.use(passportSocketIo.authorize({
     cookieParser
 }));
 
-
-// io.on('connection', socket => {
-//     // console.log(socket.request.user);
-//     setInterval(myFunc, 1000, socket);
-// });
-
-
 nextApp.prepare()
     .then(() => {
         routes(app, io);
@@ -77,47 +70,3 @@ nextApp.prepare()
             .get('*', handleRequest);
         server.listen(port, () => console.info(`> Ready on http://localhost:${port}`)); // eslint-disable-line no-console, max-len
     });
-
-// function myFunc(socket) {
-//     socket.emit('now-ID_1', {
-//         message: {
-//             content: {
-//                 text: `Первый!!${Math.random()}!1!!!!`
-//             },
-//             chatId: 'ID_1',
-//             senderId: 'sender_1'
-//         }
-//     });
-
-//     socket.emit('now-ID_2', {
-//         message: {
-//             content: {
-//                 text: `Второй!!${Math.random()}!1!!!!`
-//             },
-//             chatId: 'ID_2',
-//             senderId: 'sender_2'
-//         }
-//     });
-
-//     socket.emit('user1', {
-//         chat: {
-//             title: 'Chat1',
-//             picture: 'picture1',
-//             usersIds: [],
-//             id: `${Math.random()}-8812-4f37-9221-0176447b9ee1`,
-//             messages: [],
-//             lastMessage: {
-//                 content: {
-//                     text: 'message text',
-//                     attachments: [],
-//                     pictures: []
-//                 },
-//                 sender: {
-//                     name: 'user1',
-//                     avatar: 'path-to-avatar.jpeg',
-//                     id: 'ALPHANUMERIC_ID'
-//                 }
-//             }
-//         }
-//     });
-// }
