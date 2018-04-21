@@ -1,54 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {graphql, compose} from 'react-apollo';
 
-import { ChatWrapper, ChatHeader, LastMessage, Sender } from '../../styles/chat';
+import {ChatWrapper, ChatHeader, LastMessage, Sender} from '../../styles/chat';
+import {GET_CURRENT_CHAT_ID_ql, UpdateCurrentChatId} from '../../graphqlQueries/localState';
 
 
-class ChatPreview extends React.Component {
+@compose(
+    graphql(GET_CURRENT_CHAT_ID_ql, { name: 'localState' }),
+    graphql(UpdateCurrentChatId.query, {
+        props: UpdateCurrentChatId.map
+    })
+)
+export default class ChatPreview extends React.PureComponent {
     static propTypes = {
-        selectChat: PropTypes.func,
-        chat: PropTypes.object,
-        select: PropTypes.bool,
-        dispatch: PropTypes.func,
-        currentUserId: PropTypes.string,
-        meta: PropTypes.object,
-        user: PropTypes.object,
+        chat: PropTypes.object
     };
 
     static defaultProps = {
-        chat: {},
-        select: false,
-        onClick: {},
-        dispatch: {},
-        currentUserId: null,
-        meta: {},
-        user: {},
+        chat: {}
     };
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            isSelected: false
-        }
-    }
 
     // Не создаём новую функцию при каждом рендере
     selectThisChat = () => {
-        this.props.selectChat(this.props.chat.id);
-        this.setState({ isSelected: true });
+        this.props.updateCurrentChatId(this.props.chat.id);
     };
 
+    isSelected = () => this.props.chat.id === this.props.localState.currentChatId;
+
     render() {
-        const { select, lastMessage, chat } = this.props;
+        const { lastMessage, chat } = this.props;
         return (
-            <ChatWrapper onClick={this.selectThisChat} select={select}>
+            <ChatWrapper onClick={this.selectThisChat} select={this.isSelected()}>
                 <div className='chat-avatar'>
                     <img src={chat.picture} width='50' height='50'
                          className='chat-avatar__img'/>
                 </div>
                 <div className='chat-description'>
                     <ChatHeader>{chat.name}</ChatHeader>
+                    {/* TODO: lastMessage */}
                     {lastMessage && lastMessage.content && lastMessage.sender &&
                     <LastMessage>
                         <Sender>{lastMessage.sender.name}:</Sender>
@@ -60,5 +50,3 @@ class ChatPreview extends React.Component {
         );
     }
 }
-
-export default ChatPreview;

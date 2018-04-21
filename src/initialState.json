@@ -1,5 +1,9 @@
 {
   "paranjaOpened": false,
+  "currentChatId": {
+    "id": "",
+    "__typename": "CurrentChatIdType"
+  },
   "selectedChatId": null,
   "some_key": "some_value",
   "openedChat": {

@@ -5,14 +5,15 @@ import PropTypes from 'prop-types';
 import ChatWindowWrapper from '../../styles/chatWindow';
 import MessageInput from './messageInput';
 import Messages from './messages';
-import { OPENED_CHAT_ql } from '../../graphqlQueries/openedChat';
-import { CURRENT_USER_ql } from '../../graphqlQueries/currentUser';
+import { GET_CURRENT_CHAT_ID_ql } from '../../graphqlQueries/localState';
+import {withCurrentUser} from '../../lib/currentUserContext';
 
 
-// TODO: make centralized state provider and get rid of duplicating queries
+// TODO: try to make centralized state provider and get rid of duplicating queries
+@withCurrentUser
 @compose(
-    graphql(OPENED_CHAT_ql, { name: 'openedChat' }),
-    graphql(CURRENT_USER_ql, { name: 'currentUser' })
+    graphql(GET_CURRENT_CHAT_ID_ql, { name: 'currentChatId' }),
+    graphql(GET_CHAT_ql)
 )
 export default class ChatWindow extends React.Component {
     propTypes = {
