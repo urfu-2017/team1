@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Textarea from '../styles/chatWindowInput';
+import Textarea from '../../styles/chatWindowInput';
 
 
-class ChatWindowInput extends Component {
+export default class MessageInput extends Component {
     static propTypes = {
-        dispatch: PropTypes.func,
         currentChatId: PropTypes.string,
         currentUserId: PropTypes.string,
         serverURL: PropTypes.string,
         allChats: PropTypes.arrayOf(PropTypes.object)
-    }
+    };
 
     static defaultProps = {
-        dispatch: {},
         currentChatId: '',
         currentUserId: '',
         serverURL: '',
         allChats: []
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -74,5 +72,3 @@ class ChatWindowInput extends Component {
         );
     }
 }
-
-export default connect()(ChatWindowInput);

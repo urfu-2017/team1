@@ -2,28 +2,52 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MenuIcon from 'react-icons/lib/fa/list';
 import { Scrollbars } from 'react-custom-scrollbars';
-
-import Chat from './chat';
-import Paranja from './paranja';
-import { Header, SearchInput, ChatsList } from '../styles/chats';
-
-import { Query, compose, graphql } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { ALL_CHATS_ql } from '../graphqlQueries/allChats';
+import ChatPreview from './chatPreview';
+import Paranja from './paranja';
+import { Header, SearchInput, ChatsList } from '../../styles/chats';
 
-@compose(
-    graphql(ALL_CHATS_ql, { name: 'chatsQl' })
-)
+
+// TODO: retrieve last messages and sort by modification order
+const GET_CURRENT_USER_CHATS_ql = gql`
+query GetUserChats($userId: ID!) {
+  getUser(id: $userId) {
+    id
+    chats {
+      edges {
+        node {
+          id
+          name
+          
+        }
+      }
+    }
+  }
+}
+`;
+
+
+@graphql(GET_CURRENT_USER_CHATS_ql,
+    {
+        options: props => ({
+            variables: {
+                userId: 'VXNlcjox'
+            }
+        }),
+        name: 'chats'
+    })
 export default class SideBar extends React.Component {
     static propTypes = {
+        currentUser: PropTypes.object,
+        selectedChatId: PropTypes.string,
         allChats: PropTypes.arrayOf(PropTypes.object),
         onClickChat: PropTypes.func,
-        selectedChatId: PropTypes.string,
         contacts: PropTypes.arrayOf(PropTypes.object),
         user: PropTypes.shape(),
         meta: PropTypes.shape(),
-        addNewChatFromSocket: PropTypes.func
+        mainComponentChanger: PropTypes.func
     };
 
     static defaultProps = {
@@ -33,9 +57,7 @@ export default class SideBar extends React.Component {
         onClickChat: () => {
         },
         selectedChatId: null,
-        contacts: [],
-        addNewChatFromSocket: () => {
-        }
+        contacts: []
     };
 
     constructor(props) {
@@ -47,20 +69,19 @@ export default class SideBar extends React.Component {
     }
 
     getChatsList() {
-        const { onClickChat, selectedChatId, user, meta, contacts } = this.props;
-
-        const allChats = this.props.chatsQl.allChats;
-
-        return allChats.map(chat => (
-            <Chat
+        const { allChats, onClickChat, selectedChatId, user, meta, contacts, mainComponentChanger }
+            = this.props;
+        return this.props.chats.getUser.chats.edges.map(chat => chat.node).map(chat => (
+            <ChatPreview
+                title={chat.name}
                 key={Math.random()}
                 select={selectedChatId === chat.id}
-                chat={chat}
                 currentUserId={user.id}
                 meta={meta}
                 user={user}
                 contacts={contacts}
                 onClick={() => {
+                    mainComponentChanger('ChatWindow');
                     onClickChat(chat);
                 }}
             />
@@ -71,13 +92,18 @@ export default class SideBar extends React.Component {
         this.setState((prev) => ({ paranjaOpened: !prev.paranjaOpened }));
 
     render() {
+        const chats = this.props.chats;
         return (
             <React.Fragment>
                 {
                     this.state.paranjaOpened &&
-                    <Paranja user={({})} toggleParanja={this.toggleParanja} />
+                    <Paranja
+                        user={({})}
+                        toggleParanja={this.toggleParanja}
+                        mainComponentChanger={this.props.mainComponentChanger}
+                    />
                 }
-                <ChatsList onclick={this.toggleParanja}>
+                <ChatsList>
                     <Header>
                         <div className="header__menu-icon">
                             <MenuIcon onClick={this.toggleParanja}/>
@@ -85,7 +111,7 @@ export default class SideBar extends React.Component {
                         <SearchInput placeholder="Поиск" type="search"/>
                     </Header>
                     <Scrollbars universal>
-                        {this.getChatsList()}
+                        {!chats.loading && !chats.error && this.getChatsList()}
                     </Scrollbars>
                 </ChatsList>
             </React.Fragment>

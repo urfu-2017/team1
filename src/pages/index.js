@@ -2,8 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 import createNextPage from '../lib/createNextPage';
-import ChatWindow from '../components/chatWindow';
-import SideBar from '../components/sidebar';
+import Chat from '../components/SideBar/chatPreview';
+import SideBar from '../components/SideBar/index';
+import Contacts from '../components/contacts';
+import Profile from '../components/profile';
+import initialState from '../initialState';
 
 
 const Wrapper = styled.main`
@@ -14,12 +17,13 @@ const Wrapper = styled.main`
     overflow: hidden;
 `;
 
-import initialState from '../initialState';
 
 export default class KilogrammApp extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            mainComponentName: 'ChatWindow'
+        };
     }
 
     static async getInitialProps({ req }) {
@@ -29,15 +33,30 @@ export default class KilogrammApp extends React.Component {
         };
     }
 
+    components = {
+        Chat,
+        Contacts,
+        Profile
+    };
+
+    changeMainComponent = mainComponentName => event => {
+        event.preventDefault();
+        this.setState({ mainComponentName })
+    };
+
     // TODO: there is probably a better solution
-    layout = () => (
-        <Wrapper>
-            <SideBar />
-            <ChatWindow />
-        </Wrapper>
-    );
+    layout = () => {
+        // Динамически выбираем, какой комопнент будет отображён в основном окне
+        const MainComponent = this.components[this.state.mainComponentName];
+        return (
+            <Wrapper>
+                <SideBar mainComponentChanger={this.changeMainComponent} />
+                {/*<MainComponent currentUser={this.props.currentUser} />*/}
+            </Wrapper>
+        );
+    };
 
     render() {
-        return createNextPage(this.layout, this.props.initState, this.props.scapholdUrl);
+        return createNextPage(this.layout, this.props.initState);
     }
 }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Scrollbars } from 'react-custom-scrollbars';
 
@@ -21,7 +21,8 @@ const getNewChat = (user, contact) => ({
     userChatId: `${Math.random()}`
 });
 
-export default class Contacts extends Component {
+
+export default class Contacts extends React.Component {
     static propTypes = {
         user: PropTypes.shape(),
         header: PropTypes.string,
@@ -37,6 +38,7 @@ export default class Contacts extends Component {
         onClickChat: () => {},
         asyncCreateChat: () => {}
     };
+
     constructor(props) {
         super(props);
         this.state = {};

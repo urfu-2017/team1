@@ -1,47 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MessagesList, Header, Button } from '../styles/messages';
+import { MessagesList, Header, Button } from '../../styles/messages';
 
 import Message from './message';
+import ScrollButton from './scrollButton';
 
-
-class ScrollButton extends React.Component {
-    constructor() {
-        super();
-
-        this.state = {
-            intervalId: 0
-        };
-    }
-
-    scrollStep() {
-        const messagesBlock = document.getElementById('messages');
-        const { scrollHeight } = messagesBlock;
-        if (messagesBlock.pageYOffset !== scrollHeight) {
-            console.info('window.pageYOffset', window.pageYOffset);
-            console.info('scrollHeight', scrollHeight);
-            clearInterval(this.state.intervalId);
-        }
-        messagesBlock.scroll(0.0, scrollHeight - this.props.scrollStepInPx);
-    }
-
-    scrollToBottom() {
-        let intervalId = setInterval(this.scrollStep.bind(this), this.props.delayInMs);
-        this.setState({ intervalId });
-    }
-
-    render() {
-        return (
-            <Button
-                type="button"
-                title="Жмяк вниз"
-                value="&#11167;"
-                className="scroll"
-                onClick={() => { this.scrollToBottom(); }}
-            />
-        );
-    }
-}
 
 export default class Messages extends React.Component {
     static propTypes = {
@@ -77,7 +40,7 @@ export default class Messages extends React.Component {
                 key={index}
                 message={currentMessage.content.text}
                 creationTime={currentMessage.createAt}
-                fromMe={currentMessage.senderId === currentUserId}
+                isFromSelf={currentMessage.senderId === currentUserId}
             />
         ));
     }

@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { graphql, compose } from 'react-apollo';
+import PropTypes from 'prop-types';
 
-import ChatWindowWrapper from '../styles/chatWindow';
-import ChatWindowInput from '../styles/chatWindowInput';
+import ChatWindowWrapper from '../../styles/chatWindow';
+import MessageInput from './messageInput';
 import Messages from './messages';
-import { OPENED_CHAT_ql } from '../graphqlQueries/openedChat';
-import { CURRENT_USER_ql } from '../graphqlQueries/currentUser';
+import { OPENED_CHAT_ql } from '../../graphqlQueries/openedChat';
+import { CURRENT_USER_ql } from '../../graphqlQueries/currentUser';
 
 
 // TODO: make centralized state provider and get rid of duplicating queries
@@ -13,7 +14,11 @@ import { CURRENT_USER_ql } from '../graphqlQueries/currentUser';
     graphql(OPENED_CHAT_ql, { name: 'openedChat' }),
     graphql(CURRENT_USER_ql, { name: 'currentUser' })
 )
-export default class ChatWindow extends Component {
+export default class ChatWindow extends React.Component {
+    propTypes = {
+        currentUser: PropTypes.object
+    };
+
     loadScreen = (
         <div>Loading...</div>
     );
@@ -35,7 +40,7 @@ export default class ChatWindow extends Component {
                     title={openedChat.title}
                     currentUserId={currentUser.id}
                 />
-                <ChatWindowInput
+                <MessageInput
                     currentChatId={openedChat.id}
                     currentUserId={currentUser.id}
                     allChats={openedChat.allChats}

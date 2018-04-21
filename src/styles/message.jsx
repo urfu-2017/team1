@@ -16,14 +16,14 @@ export const MessageWrapper = styled.article`
 `;
 
 export const Text = styled.p`
-    float: ${props => (props.fromMe ? 'right' : 'left')};
+    float: ${props => (props.isFromSelf ? 'right' : 'left')};
     max-width: 51%;
     white-space: pre-wrap;
     width: fit-content;
     word-wrap: break-word;
     height:auto;
     min-height: 25px;
-    background-color: ${props => (props.fromMe ? '#92d7ef' : '#a2eae0')};
+    background-color: ${props => (props.isFromSelf ? '#92d7ef' : '#a2eae0')};
     border-radius: 5px;
     padding: 6px 4px 6px 6px;
 `;
