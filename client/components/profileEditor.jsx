@@ -45,13 +45,28 @@ class ProfileEditor extends Component {
 
     saveAvatar = () => {
         const reader = new FileReader();
-        reader.onloadend = async () => {
+        this.readPictureFromInput(reader, async () => {
             const dataUrl = reader.result;
             console.log('before await');
             const metaData = await sendToCloudServer(dataUrl);
             const urlToAvatar = metaData.secure_url;
             console.log(urlToAvatar);
             this.props.dispatch(setAvatar(urlToAvatar));
+        });
+    };
+
+    drawBackground = () => {
+        const reader = new FileReader();
+        this.readPictureFromInput(reader, () => {
+            const dataUrl = reader.result;
+            const area = document.getElementById('area-for-drop');
+            area.style.backgroundImage = `url(${dataUrl})`;
+        });
+    }
+
+    readPictureFromInput = (reader, cb) => {
+        reader.onloadend = async () => {
+            cb();
         };
         const avatar = this.getFirstFile();
         if (!avatar) {
@@ -59,7 +74,7 @@ class ProfileEditor extends Component {
             return;
         }
         reader.readAsDataURL(avatar);
-    };
+    }
 
 
     render() {
@@ -70,8 +85,9 @@ class ProfileEditor extends Component {
                 </Exit>
                 <h1 className="header">Загрузить аватар</h1>
                 <DowlandImage
-                    ondrop={this.drop}
-                    ondragover={this.dragover}
+                    onDrop={this.drop}
+                    onDragOver={this.dragover}
+                    id="area-for-drop"
                 >
                     <p className="text">Загрузить фото</p>
                 </DowlandImage>
@@ -80,6 +96,7 @@ class ProfileEditor extends Component {
                         id="upload"
                         type="file"
                         accept="image/*"
+                        onChange={this.drawBackground}
                     />
                     <CreateButton
                         id="saveAvatar"

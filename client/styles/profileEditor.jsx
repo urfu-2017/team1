@@ -25,7 +25,9 @@ export const Editor = styled.article`
 `;
 
 export const DowlandImage = styled.div`
-    width: 85%;
+    background-size: cover;
+    opacity: 0.3;
+    width: 200px;
     height: 200px;
     display: flex;
     align-items: center;
@@ -33,6 +35,7 @@ export const DowlandImage = styled.div`
     border: 1px dashed;
     .text {
         font-size: 20px;
+        background: #fff;
     }
 `;
 
