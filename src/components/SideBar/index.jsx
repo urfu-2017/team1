@@ -28,12 +28,10 @@ import {Header, SearchInput, ChatsList} from '../../styles/chats';
 export default class SideBar extends React.Component {
     static propTypes = {
         currentUser: PropTypes.object,
-        meta: PropTypes.shape(),
         mainComponentChanger: PropTypes.func
     };
 
     static defaultProps = {
-        meta: {}
     };
 
     constructor(props) {
@@ -45,15 +43,15 @@ export default class SideBar extends React.Component {
     }
 
     getChatsList() {
-        const { currentUser, meta, chats } = this.props;
+        const { currentUser, chats } = this.props;
         // TODO: props mapper (see above)
         return chats.getUser.chats.edges.map(edge => edge.node)
             .map(chat => (
                 <ChatPreview
                     key={chat.id}
                     chat={chat}
-                    meta={meta}
                     user={currentUser}
+                    mainComponentChanger={this.props.mainComponentChanger('Chat')}
                 />
             ));
     }

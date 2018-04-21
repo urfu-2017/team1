@@ -45,12 +45,12 @@ export default class MessageInput extends Component {
                 moveCursorDown();
             }
 
-            this.props.dispatch(asyncSendMessage(message, serverURL));
-            // @lms: этот хак сделан для обновления чата, который пришел через сокет
-            // todo: удалить и сделать нормально
-            const chat = this.props.allChats.find(x => x.id === currentChatId);
-            this.props.dispatch(selectChat(currentChatId));
-            this.props.dispatch(setVisibilityChat(chat));
+            // this.props.dispatch(asyncSendMessage(message, serverURL));
+            // // @lms: этот хак сделан для обновления чата, который пришел через сокет
+            // // todo: удалить и сделать нормально
+            // const chat = this.props.allChats.find(x => x.id === currentChatId);
+            // this.props.dispatch(selectChat(currentChatId));
+            // this.props.dispatch(setVisibilityChat(chat));
 
             this.setState({ message: '' });
         }

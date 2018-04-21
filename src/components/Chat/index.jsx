@@ -1,51 +1,65 @@
 import React from 'react';
-import { graphql, compose } from 'react-apollo';
+import {graphql, compose} from 'react-apollo';
 import PropTypes from 'prop-types';
 
 import ChatWindowWrapper from '../../styles/chatWindow';
 import MessageInput from './messageInput';
 import Messages from './messages';
-import { GET_CURRENT_CHAT_ID_ql } from '../../graphqlQueries/localState';
+import {GET_CURRENT_CHAT_ID_ql} from '../../graphqlQueries/localState';
+import {GetChat} from '../../graphqlQueries/chats';
 import {withCurrentUser} from '../../lib/currentUserContext';
 
 
-// TODO: try to make centralized state provider and get rid of duplicating queries
+// Не в compose, потому что тогда в localState не будет значения
 @withCurrentUser
-@compose(
-    graphql(GET_CURRENT_CHAT_ID_ql, { name: 'currentChatId' }),
-    graphql(GET_CHAT_ql)
-)
-export default class ChatWindow extends React.Component {
+@graphql(GET_CURRENT_CHAT_ID_ql, { name: 'localState' })
+@graphql(GetChat.query, {
+    name: 'chat',
+    // не запрашиваем, если не открыт никакой чат, или localState ещё не успел выполниться
+    // чёрт знает, почему не работает .loading
+    skip: props => !props.localState.currentChatId || typeof props.localState.currentChatId !== 'string',
+    options: props => ({
+        variables: {
+            chatId: props.localState.currentChatId
+        }
+    })
+    // props: GetChat.map
+})
+export default class Chat extends React.Component {
     propTypes = {
         currentUser: PropTypes.object
+    };
+
+    static defaultProps = {
+        chat: {
+            loading: true
+        }
     };
 
     loadScreen = (
         <div>Loading...</div>
     );
 
-    stillLoading = () => this.props.currentUser.loading || this.props.openedChat.loading;
-
     render() {
-        if (this.props.openedChat.loading) return this.loadScreen;
+        if (this.props.chat.loading) {
+            return this.loadScreen;
+        }
+        if (this.props.chat.error) {
+            return <p>Error ;(</p>;
+        }
 
-        // TODO: props names selection seems to be pretty awful
-        const openedChat = this.props.openedChat;
-
-        const currentUser = this.props.currentUser;
-
-        return openedChat.id ?
+        const { chat, currentUser } = this.props;
+        return chat.getChat.id ?
             <ChatWindowWrapper>
                 <Messages
-                    messages={openedChat.messages}
-                    title={openedChat.title}
+                    messages={chat.getChat.messages.edges.map(e => e.node)}
+                    title={chat.getChat.name}
                     currentUserId={currentUser.id}
                 />
                 <MessageInput
-                    currentChatId={openedChat.id}
+                    currentChatId={chat.getChat.id}
                     currentUserId={currentUser.id}
-                    allChats={openedChat.allChats}
                 />
-            </ChatWindowWrapper > : <ChatWindowWrapper />;
+            </ChatWindowWrapper> : <ChatWindowWrapper/>;
     }
 }

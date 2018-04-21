@@ -4,11 +4,11 @@ import { ApolloProvider } from 'react-apollo';
 import createApolloClient from '../lib/createApolloClient';
 
 
-export default (Component, scapholdUrl) => {
+export default (scapholdUrl, Component, props) => {
     const client = createApolloClient(scapholdUrl);
 
     return (
         <ApolloProvider client={client}>
-            <Component />
+            <Component {...props} />
         </ApolloProvider>
     )}

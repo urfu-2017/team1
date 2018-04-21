@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MessagesList, Header, Button } from '../../styles/messages';
+import { MessagesList, Header } from '../../styles/messages';
 
 import Message from './message';
 import ScrollButton from './scrollButton';
@@ -35,12 +35,12 @@ export default class Messages extends React.Component {
     getMessagesList() {
         const { messages, currentUserId } = this.props;
 
-        return messages.map((currentMessage, index) => (
+        return messages.map(currentMessage => (
             <Message
-                key={index}
-                message={currentMessage.content.text}
-                creationTime={currentMessage.createAt}
-                isFromSelf={currentMessage.senderId === currentUserId}
+                key={currentMessage.id}
+                message={currentMessage.text}
+                creationTime={currentMessage.createdAt}
+                isFromSelf={currentMessage.sender.id === currentUserId}
             />
         ));
     }

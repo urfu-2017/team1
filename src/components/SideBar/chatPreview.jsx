@@ -14,7 +14,8 @@ import {GET_CURRENT_CHAT_ID_ql, UpdateCurrentChatId} from '../../graphqlQueries/
 )
 export default class ChatPreview extends React.PureComponent {
     static propTypes = {
-        chat: PropTypes.object
+        chat: PropTypes.object,
+        updateCurrentChatId: PropTypes.func  // присваивается вторым вызовом `graphql()`
     };
 
     static defaultProps = {
@@ -24,6 +25,7 @@ export default class ChatPreview extends React.PureComponent {
     // Не создаём новую функцию при каждом рендере
     selectThisChat = () => {
         this.props.updateCurrentChatId(this.props.chat.id);
+        this.props.mainComponentChanger();
     };
 
     isSelected = () => this.props.chat.id === this.props.localState.currentChatId;
