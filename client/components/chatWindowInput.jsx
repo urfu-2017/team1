@@ -28,6 +28,24 @@ class ChatWindowInput extends Component {
             message: '',
             emoji: false
         };
+
+        this.getEmojiesPopup = this.getEmojiesPopup.bind(this);
+    }
+
+    getEmojiesPopup = () => {
+        const emojies = ['+1', '-1', 'kissing_heart', 'sparkling_heart', 'gift_heart', 'santa',
+            'yum', 'upside_down_face', 'ok_hand', 'cherry_blossom', 'star-struck',
+            'green_apple'];
+        return emojies.map(id => {
+            return (
+                <Emoji
+                    className="emoji__style"
+                    onClick={this.addEmojiIntoText.bind(id)}
+                    emoji={{ id }}
+                    size={25}
+                />
+            );
+        });
     }
 
     handleChange = event => { this.setState({ message: event.target.value }); };
@@ -62,21 +80,14 @@ class ChatWindowInput extends Component {
         }
     };
 
-    openEmojies = () => {
-        this.setState({ emoji: true });
-    }
+    openEmojies = () => this.setState({ emoji: true });
 
-    closeEmojies = () => {
-        this.setState({ emoji: false });
-    }
+    closeEmojies = () => this.setState({ emoji: false });
 
-    findEmoji = id => {
-        return emojiIndex.search(id).map(o => o.native);
-    }
+    findEmoji = id => emojiIndex.search(id).map(o => o.native);
 
-    addEmojiIntoText = emoji => {
+    addEmojiIntoText = emoji =>
         this.setState({ message: `${this.state.message}${this.findEmoji(emoji.id)}` });
-    }
 
     render() {
         let picker = '';
@@ -94,21 +105,9 @@ class ChatWindowInput extends Component {
                         &#x274C;
                     </div>
                     <hr />
-                    {
-                        ['+1', '-1', 'kissing_heart', 'sparkling_heart', 'gift_heart', 'santa',
-                            'yum', 'upside_down_face', 'ok_hand', 'cherry_blossom', 'star-struck',
-                            'green_apple'].map(id => {
-                            return (
-                                <Emoji
-                                    className="emoji__style"
-                                    onClick={this.addEmojiIntoText.bind(id)}
-                                    emoji={{ id }}
-                                    size={25}
-                                />
-                            );
-                        })
-                    }
-
+                    <div>
+                        {this.getEmojiesPopup()}
+                    </div>
                 </div>
             );
         } else {
@@ -140,4 +139,3 @@ class ChatWindowInput extends Component {
 }
 
 export default connect()(ChatWindowInput);
-
