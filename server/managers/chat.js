@@ -2,9 +2,11 @@
 
 const uuid = require('uuid/v4');
 const { Chat } = require('../schemas/chat');
+const { User } = require('../schemas/user');
 
 class ChatManager {
-    static async create(users, avatar) {
+    static async create(userIds, avatar) {
+        const users = await User.find({ _id: userIds });
         const contacts = users.map(user => {
             return {
                 userId: user._id,
@@ -20,6 +22,19 @@ class ChatManager {
         const chat = await Chat.findById(chatId);
         chat.messages.push(message);
         return await chat.save();
+    }
+
+    static async findP2PChat(sourceUserId, targetUserId) {
+        return await Chat.find({
+            $and: [
+                { 'contacts.userId': sourceUserId },
+                { 'contacts.userId': targetUserId }
+            ]
+        }).where({ contacts: { $size: 2 } });
+    }
+
+    static async findChatsByUserId(userId) {
+        return await Chat.find({ 'contacts.userId': userId });
     }
 }
 

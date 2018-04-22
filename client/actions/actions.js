@@ -8,6 +8,7 @@ export const MESSAGE_SAVED = 'MESSAGE_SAVED';
 export const RECEIVED_NEW_CHAT = 'RECEIVED_NEW_CHAT';
 export const SEND_NEW_CHAT = 'SEND_NEW_CHAT';
 export const CHAT_SAVED = 'CHAT_SAVED';
+export const UPDATE_CHAT_LIST = 'UPDATE_CHAT_LIST';
 
 export const setVisibilityChat = chat => ({ type: VISIBILITY_CHAT, chat });
 
@@ -36,6 +37,7 @@ export const setVisibilityMenu = visibility => ({ type: VISIBILITY_MENU, visibil
 
 export const setVisibilityContacts = visibility => ({ type: VISIBILITY_CONTACTS, visibility });
 
+export const updateChatList = chats => ({ type: UPDATE_CHAT_LIST, chats });
 
 const saveStatus = (status, userMessage) =>
     ({ type: MESSAGE_SAVED, info: { status, userMessage } });
@@ -75,8 +77,8 @@ const saveChat = (status, userChat) =>
     ({ type: CHAT_SAVED, info: { status, userChat } });
 
 export const asyncCreateChat = (sourceUserId, targetUserId, callback) => dispatch => {
-    const URL = '/api/v1/chat/';
-    const body = JSON.stringify({ sourceUserId, targetUserId });
+    const URL = '/api/v1/chats/p2p';
+    const body = JSON.stringify({ targetUserId });
     const options = {
         headers: {
             Accept: 'application/json',
@@ -89,6 +91,21 @@ export const asyncCreateChat = (sourceUserId, targetUserId, callback) => dispatc
     fetch(URL, options)
         .then(response => response.json())
         .then(response => dispatch(callback(response)));
+};
+
+export const fetchChats = user => dispatch => {
+    const URL = '/api/v1/chats';
+    const options = {
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        credentials: 'same-origin'
+    };
+    fetch(URL, options)
+        .then(response => response.json())
+        .then(response => dispatch(updateChatList(response.chats)));
 };
 
 export const addChatFromContacts = chat => ({ type: SEND_NEW_CHAT, chat });

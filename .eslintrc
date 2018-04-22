@@ -26,5 +26,8 @@
         "no-unused-vars": ["error", {"args": "none"}],
         // Все равно этому никто не следует :)
         "no-underscore-dangle": "off"
+    },
+    "globals": {
+        "fetch": false
     }
 }
