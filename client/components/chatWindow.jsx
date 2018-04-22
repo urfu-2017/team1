@@ -5,6 +5,8 @@ import ChatWindowWrapper from '../styles/chatWindow';
 import Messages from '../components/messages';
 import ChatWindowInput from './chatWindowInput';
 
+import { getChatName } from '../utils/chats';
+
 export default class ChatWindow extends Component {
     static propTypes = {
         user: PropTypes.shape(),
@@ -24,9 +26,9 @@ export default class ChatWindow extends Component {
         return chat._id ?
             <ChatWindowWrapper>
                 <Messages
-                    messages={chat.messages}
-                    title={chat.name}
-                    currentUserId={user._id}
+                    title={getChatName(chat, user)}
+                    user={user}
+                    chat={chat}
                 />
                 <ChatWindowInput
                     chat={chat}

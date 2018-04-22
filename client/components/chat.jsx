@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { ChatWrapper, ChatHeader, LastMessage, Sender } from '../styles/chat';
 
 import { addMessageFromSocket, cursorIsPressedFromBelow, moveCursorDown } from '../actions/actions';
+import { getChatName } from '../utils/chats';
 
 class Chat extends Component {
     static propTypes = {
@@ -37,7 +38,7 @@ class Chat extends Component {
 
     render() {
         const { onClick, chat, select, user } = this.props;
-        const chatName = chat.name || chat.contacts.filter(contact => contact.userId !== user._id)[0].name;
+        const chatName = getChatName(chat, user);
         return (
             <ChatWrapper onClick={onClick} select={select}>
                 <div className="chat-avatar">

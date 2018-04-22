@@ -17,8 +17,6 @@ class ScrollButton extends React.Component {
         const messagesBlock = document.getElementById('messages');
         const scrollHeight = messagesBlock.scrollHeight
         if (messagesBlock.pageYOffset !== scrollHeight) {
-            console.info('window.pageYOffset', window.pageYOffset);
-            console.info('scrollHeight', scrollHeight);
             clearInterval(this.state.intervalId);
         }
         messagesBlock.scroll(0.0, scrollHeight - this.props.scrollStepInPx);
@@ -62,22 +60,22 @@ class ScrollButton extends React.Component {
 export default class Messages extends Component {
     static propTypes = {
         title: PropTypes.string,
-        messages: PropTypes.arrayOf(PropTypes.object),
-        currentUserId: PropTypes.string
+        chat: PropTypes.shape(),
+        user: PropTypes.shape()
     };
 
-    static defaultProps = { title: '', messages: [], currentUserId: '' };
+    static defaultProps = { title: '', chat: {}, user: {} };
 
     componentDidMount() {
         this.node.scrollTop = this.node.scrollHeight;
     }
 
-    componentWillUpdate = function () {
+    componentWillUpdate = () => {
         this.shouldScrollBottom = this.node.scrollTop +
             this.node.offsetHeight === this.node.scrollHeight;
     };
 
-    componentDidUpdate = function () {
+    componentDidUpdate = () => {
         if (this.shouldScrollBottom) {
             this.node.scrollTop = this.node.scrollHeight;
         }
@@ -86,15 +84,15 @@ export default class Messages extends Component {
     getSectionRef = node => { this.node = node; }
 
     getMessagesList() {
-        const { messages, currentUserId } = this.props;
+        const { chat, user } = this.props;
 
-        return messages.map((currentMessage, index) => (
+        return chat.messages.map(message => (
             <Message
-                key={index}
-                message={currentMessage.content.text}
-                creationTime={currentMessage.createAt}
-                fromMe={currentMessage.senderId === currentUserId}
-                metadata={currentMessage.metadata}
+                key={message._id}
+                message={message.message}
+                creationTime={message.createAt}
+                fromMe={message.sender._id === user._id}
+                metadata={message.metadata}
             />
         ));
     }
@@ -103,9 +101,9 @@ export default class Messages extends Component {
         const { title } = this.props;
         return (
             <React.Fragment>
-                <Header> {title} </Header>
+                <Header>{title}</Header>
                 <MessagesList id="messages" ref={this.getSectionRef}>
-                    <ScrollButton scrollStepInPx="50" delayInMs="16.66"/>
+                    <ScrollButton scrollStepInPx="50" delayInMs="16.66" />
                     {this.getMessagesList()}
                 </MessagesList>
             </React.Fragment>
