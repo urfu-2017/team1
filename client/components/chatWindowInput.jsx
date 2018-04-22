@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Textarea from '../styles/chatWindowInput';
-import { sendMessage, addMessageFromChatInput, cursorIsPressedFromBelow, moveCursorDown, selectChat, setVisibilityChat }
+import { sendMessage, addMessageFromChatInput, cursorIsPressedFromBelow, moveCursorDown }
     from '../actions/actions';
 
 class ChatWindowInput extends Component {
@@ -39,7 +39,7 @@ class ChatWindowInput extends Component {
             if (cursorInBottom) {
                 moveCursorDown();
             }
-            
+
             this.props.dispatch(sendMessage(chat, message));
 
             this.setState({ message: '' });

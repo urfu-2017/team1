@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
 import makeReducer from '../reducers/index';
-import { fetchChats } from '../actions/actions'
+import { fetchChats } from '../actions/actions';
 import SideBar from '../containers/sidebar';
 import ChatWindow from '../containers/chatWindow';
 
