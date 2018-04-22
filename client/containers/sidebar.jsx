@@ -21,7 +21,7 @@ const mapDispatchToProps = dispatch => (
             dispatch(setVisibilityContacts(visibility));
         },
         onClickChat: chat => {
-            dispatch(selectChat(chat.id));
+            dispatch(selectChat(chat._id));
             dispatch(setVisibilityChat(chat));
         },
         onClick: visibility => {

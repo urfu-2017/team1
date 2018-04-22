@@ -7,13 +7,11 @@ const { User } = require('../schemas/user');
 class ChatManager {
     static async create(userIds, avatar) {
         const users = await User.find({ _id: userIds });
-        const contacts = users.map(user => {
-            return {
-                userId: user._id,
-                name: user.name,
-                avatar: user.avatar
-            };
-        });
+        const contacts = users.map(user => ({
+            userId: user._id,
+            name: user.name,
+            avatar: user.avatar
+        }));
         const chat = new Chat({ contacts, avatar, link: uuid() });
         return await chat.save();
     }

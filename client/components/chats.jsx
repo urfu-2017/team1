@@ -48,29 +48,14 @@ export default class Chats extends Component {
 
     componentDidMount() {
         this.props.fetchChats();
-        // const { serverURL, newChatsSocketPrefix } = this.props.meta;
-
-        // this.socket = io(serverURL);
-        // const socketNamespace = `${newChatsSocketPrefix}-${this.props.user.id}`;
-        // this.socket.on(socketNamespace, data => {
-        //     console.log('got new chat from socket');
-        //     const currentUserId = this.props.user.id;
-        //     this.props.addNewChatFromSocket(data.chat, currentUserId);
-        // });
-    }
-
-    componentWillUnmount() {
-        // const { serverURL, newChatsSocketPrefix } = this.props.meta;
-        // this.socket.off( `${newChatsSocketPrefix}-${this.props.user.id}`);
-        // this.socket.close();
     }
 
     getChatsList() {
         const { chats, onClickChat, selectedChatId, user, meta, contacts } = this.props;
         return chats.map(chat => (
             <Chat
-                key={Math.random()}
-                select={selectedChatId === chat.id}
+                key={chat._id}
+                select={selectedChatId === chat._id}
                 chat={chat}
                 currentUserId={user.id}
                 meta={meta}
