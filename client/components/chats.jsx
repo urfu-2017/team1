@@ -50,19 +50,19 @@ export default class Chats extends Component {
     componentDidMount() {
         const { serverURL, newChatsSocketPrefix } = this.props.meta;
 
-        this.socket = io(serverURL);
-        const socketNamespace = `${newChatsSocketPrefix}-${this.props.user.id}`;
-        this.socket.on(socketNamespace, data => {
-            console.log('got new chat from socket');
-            const currentUserId = this.props.user.id;
-            this.props.addNewChatFromSocket(data.chat, currentUserId);
-        });
+        // this.socket = io(serverURL);
+        // const socketNamespace = `${newChatsSocketPrefix}-${this.props.user.id}`;
+        // this.socket.on(socketNamespace, data => {
+        //     console.log('got new chat from socket');
+        //     const currentUserId = this.props.user.id;
+        //     this.props.addNewChatFromSocket(data.chat, currentUserId);
+        // });
     }
 
     componentWillUnmount() {
-        const { serverURL, newChatsSocketPrefix } = this.props.meta;
-        this.socket.off( `${newChatsSocketPrefix}-${this.props.user.id}`);
-        this.socket.close();
+        // const { serverURL, newChatsSocketPrefix } = this.props.meta;
+        // this.socket.off( `${newChatsSocketPrefix}-${this.props.user.id}`);
+        // this.socket.close();
     }
 
     getChatsList() {
@@ -82,8 +82,8 @@ export default class Chats extends Component {
     }
 
     getContactsList() {
-        const { contacts, onClickChat, user, asyncCreateChat, addChatFromContacts } = this.props;
-        return contacts.map(contact => (
+        const { onClickChat, user, asyncCreateChat, addChatFromContacts } = this.props;
+        return user.contacts.map(contact => (
             <Contact
                 key={contact.name + Math.random()}
                 onClick={() => {

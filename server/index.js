@@ -14,7 +14,6 @@ const app = express();
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
-const restRoutes = require('./controllers/rest/routes');
 const server = require('http')
     .Server(app);
 const io = require('socket.io')(server);
@@ -65,7 +64,6 @@ nextApp.prepare()
     .then(() => {
         routes(app, io);
         app
-            .use('/api/rest', restRoutes(io))
             .get('*', handleRequest);
         server.listen(port, () => console.info(`> Ready on http://localhost:${port}`)); // eslint-disable-line no-console, max-len
     });

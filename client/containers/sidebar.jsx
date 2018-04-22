@@ -10,7 +10,7 @@ const mapStateToProps = (state, props) => ({
     openContacts: state.currentInfo.openContacts,
     user: state.currentInfo.currentUser,
     contacts: state.contacts,
-    meta: state.meta,
+    meta: state.meta
 });
 
 const mapDispatchToProps = dispatch => (
