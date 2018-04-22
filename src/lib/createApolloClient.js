@@ -56,7 +56,7 @@ function create(httpUrl, wsUrl) {
             uri: wsUrl,
             options: {
                 reconnect: true,
-                timeout: 30000
+                // timeout: 30000
             }
         });
 

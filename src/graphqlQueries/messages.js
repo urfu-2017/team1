@@ -38,10 +38,9 @@ subscription SubscribeToNewMessages($filter: MessageSubscriptionFilter!) {
       sender {
         id
       }
-      chat {
-        id
-      }
       createdAt
+      modified
+      modifiedAt
     }
   }
 }
@@ -49,7 +48,7 @@ subscription SubscribeToNewMessages($filter: MessageSubscriptionFilter!) {
 
 const subscribeNewMessages_vars = (chatId) => ({
     filter: {
-        mutation_in: "[CREATED]",
+        // mutation_in: "[CREATED]",
         node: {
             chat: {
                 id: chatId

@@ -8,6 +8,7 @@ import Messages from './messages';
 import {GET_CURRENT_CHAT_ID_ql} from '../../graphqlQueries/localState';
 import {GetChat} from '../../graphqlQueries/chats';
 import {withCurrentUser} from '../../lib/currentUserContext';
+import {SubscribeNewMessages} from '../../graphqlQueries/messages';
 
 
 // Не в compose, потому что тогда в localState не будет значения
@@ -23,7 +24,7 @@ import {withCurrentUser} from '../../lib/currentUserContext';
             chatId: props.localState.currentChatId
         }
     }),
-    pollInterval: 500  // TODO: remove poll and implement subscriptions
+    // pollInterval: 500  // TODO: remove poll and implement subscriptions
     // props: GetChat.map
 })
 export default class Chat extends React.Component {
@@ -39,6 +40,42 @@ export default class Chat extends React.Component {
         <div>Loading...</div>
     );
 
+    get chat() {
+        return this.props.chat && this.props.chat.Chat || null;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.localState.currentChatId && !nextProps.chat.loading) {
+            console.log('CONT');
+            if (this.unsubscribe) {
+                if (this.props.stopSub !== nextProps.stopSub) {
+                    console.log("UNSUBS");
+                    this.unsubscribe();
+                } else {
+                    console.log('RETURNS');
+                    return;
+                }
+            }
+            console.log('SUBS');
+            if (!this.chat) {
+                return;
+            }
+            this.unsubscribe = nextProps.chat.subscribeToMore({
+                document: SubscribeNewMessages.query,
+                variables: SubscribeNewMessages.vars(this.chat.id),
+                updateQuery: (previousResult, { subscriptionData, variables }) => {
+                    if (!previousResult.Chat) {
+                        return previousResult;
+                    }
+                    const messages = [...previousResult.Chat.messages]
+                        .concat([subscriptionData.data.Message.node]);
+                    const updatedResult = { Chat: { ...previousResult.Chat, messages } };
+                    return updatedResult;
+                }
+            });
+        }
+    }
+
     render() {
         if (this.props.chat.loading) {
             return this.loadScreen;
@@ -47,18 +84,17 @@ export default class Chat extends React.Component {
             return <p>Error ;(</p>;
         }
 
-        const chat = this.props.chat && this.props.chat.Chat || null;
         const { currentUser } = this.props;
-        return chat ?
+        return this.chat ?
             <ChatWindowWrapper>
                 <Messages
-                    messages={chat.messages}
-                    title={chat.title}
+                    messages={this.chat.messages}
+                    title={this.chat.title}
                     currentUserId={currentUser.id}
-                    id={chat.id}
+                    id={this.chat.id}
                 />
                 <MessageInput
-                    currentChatId={chat.id}
+                    currentChatId={this.chat.id}
                     currentUserId={currentUser.id}
                 />
             </ChatWindowWrapper> : <ChatWindowWrapper/>;

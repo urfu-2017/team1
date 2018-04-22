@@ -6,7 +6,7 @@ import App from '../components/app';
 
 export default class Index extends React.Component {
     static async getInitialProps({ req }) {
-        if (!req) return;  // there is probably a bug in next.js
+        if (!req) return {};  // there is probably a bug in next.js
         return {
             initialState: req.state,
             currentUser: req.user,

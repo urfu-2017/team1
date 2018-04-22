@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MessagesList, Header } from '../../styles/messages';
+import {MessagesList, Header} from '../../styles/messages';
 
 import Message from './message';
 import ScrollButton from './scrollButton';
@@ -40,7 +40,7 @@ export default class Messages extends React.Component {
                 key={currentMessage.id}
                 message={currentMessage.text}
                 creationTime={currentMessage.createdAt}
-                isFromSelf={currentMessage.senderId === currentUserId}
+                isFromSelf={currentMessage.sender.id === currentUserId}
             />
         ));
     }
@@ -53,7 +53,7 @@ export default class Messages extends React.Component {
                     {title}
                 </Header>
                 <MessagesList id="messages" ref={this.getSectionRef}>
-                    <ScrollButton scrollStepInPx="50" delayInMs="16.66" />
+                    <ScrollButton scrollStepInPx="50" delayInMs="16.66"/>
                     {this.getMessagesList()}
                 </MessagesList>
             </React.Fragment>
