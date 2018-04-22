@@ -19,8 +19,6 @@ const server = require('http')
     .Server(app);
 const io = require('socket.io')(server);
 const authMiddleware = require('./middleware/auth');
-// const setUpMiddleware = require('./middleware/userSetUp');
-// const metaInfoSetUpMiddleware = require('./middleware/metaInfoSetUp');
 const routes = require('./routes');
 const session = require('express-session');
 const memoryStore = require('session-memory-store')(session)();
@@ -44,8 +42,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(authMiddleware());
-// app.use(setUpMiddleware());
-// app.use(metaInfoSetUpMiddleware(process.env.URL));
 
 const nextApp = next({
     dir: './client',

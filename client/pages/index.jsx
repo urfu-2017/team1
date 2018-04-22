@@ -9,9 +9,6 @@ import thunk from 'redux-thunk';
 import makeReducer from '../reducers/index';
 import SideBar from '../containers/sidebar';
 import ChatWindow from '../containers/chatWindow';
-import io from 'socket.io-client';
-import { addMessageFromSocket } from '../actions/actions';
-
 
 const Wrapper = styled.main`
     height: 100%;
@@ -28,6 +25,7 @@ export default class KilogrammApp extends React.Component {
             serverURL: req.serverURL,
             chatSocketPrefix: req.chatSocketPrefix,
             newChatsSocketPrefix: req.newChatsSocketPrefix,
+            contacts: req.user.contacts,
             users: req.users,
             chats: req.chats
         };

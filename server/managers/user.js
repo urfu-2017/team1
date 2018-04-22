@@ -1,6 +1,7 @@
 'use strict';
 
 const { User } = require('../schemas/user');
+const { Contact } = require('../schemas/contact');
 
 class UserManager {
     static async create(name, githubId, avatar = null) {
@@ -24,7 +25,8 @@ class UserManager {
         return await User.remove();
     }
 
-    static async addContactToUser(user, contact) { 
+    static async addContactToUser(user, addedUser) {
+        const contact = new Contact({ userId: addedUser._id, name: addedUser.name, avatar: addedUser.avatar });
         user.contacts.push(contact);
         return await user.save();
     }

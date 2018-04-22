@@ -1,8 +1,6 @@
 'use strict';
 
 const passport = require('passport');
-const { saveNewMessage } = require('./controllers/message');
-const { saveChat } = require('./controllers/chat');
 
 module.exports = (app, io) => {
     app.get('/auth/github', passport.authenticate('github'));
@@ -13,9 +11,4 @@ module.exports = (app, io) => {
             res.redirect('/index');
         }
     );
-
-    io.on('connection', socket => {
-        app.post('/message', saveNewMessage(socket));
-        //app.post('/chat', saveChat(socket));
-    });
 };
