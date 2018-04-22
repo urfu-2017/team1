@@ -22,18 +22,7 @@ const Wrapper = styled.main`
 `;
 
 export default class KilogrammApp extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-        this.store = createStore(makeReducer(props), applyMiddleware(thunk));
-    }
-
     static async getInitialProps({ req }) {
-        console.log('=========================');
-        console.log(req.user);
-        console.log(req.chats);
-        console.log(req.users);
-        console.log('=========================');     
         return {
             user: req.user,
             serverURL: req.serverURL,
@@ -42,6 +31,12 @@ export default class KilogrammApp extends React.Component {
             users: req.users,
             chats: req.chats
         };
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {};
+        this.store = createStore(makeReducer(props), applyMiddleware(thunk));
     }
 
     render() {

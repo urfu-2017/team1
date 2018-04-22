@@ -3,7 +3,7 @@
 const dbConnection = require('../../db-connection');
 const Message = require('../../model/message');
 const Chat = require('../../model/chat');
-const User = require('../../model/user');
+const { User } = require('../../schemas/user');
 const { getMetadata } = require('../metadata');
 
 const handlers = {};

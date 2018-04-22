@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const passport = require('passport');
-const User = require('../model/user');
+const User = require('../managers/user');
 const GitHubStrategy = require('passport-github').Strategy;
 
 const { getPathToGeneratedPicture } = require('../lib/avatar-generation');
