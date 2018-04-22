@@ -23,6 +23,11 @@ class UserManager {
     static async removeAll() {
         return await User.remove();
     }
+
+    static async addContactToUser(user, contact) { 
+        user.contacts.push(contact);
+        return await user.save();
+    }
 }
 
 module.exports = UserManager;

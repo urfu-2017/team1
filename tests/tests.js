@@ -5,9 +5,6 @@ const mongoose = require('mongoose');
 const { assert } = chai;
 
 const User = require('../server/managers/user');
-const { Contact } = require('../server/schemas/contact');
-const { Chat } = require('../server/schemas/chat');
-// const { Message } = require('../server/schemas/message');
 
 mongoose.connect('mongodb://localhost/messenger-test');
 
@@ -15,17 +12,13 @@ describe('Тесты мессенджера', function () { // eslint-disable-li
     this.timeout(10000);
 
     before(async () => {
-        await Contact.remove();
-        await Chat.remove();
-        // await Message.remove();
         await User.removeAll();
     });
-    // 22619508 это мой ID-шник :P
-    const githubId = '22619508';
-    // const githubId2 = '22619509';
 
     describe('Цикл создания и получения пользователя', () => {
         let user;
+        // 22619508 это мой ID-шник :P
+        const githubId = '22619508';
         const userName = 'Тестовый пользователь';
         const avatarPath = 'test2.jpg';
         it('Создание пользователя', async () => {
@@ -51,10 +44,6 @@ describe('Тесты мессенджера', function () { // eslint-disable-li
             assert.isNull(missingUser);
         });
     });
-
-    // describe('Добавления пользователя в контакты', async () => {
-    // let user = await User.findById({ githubId });
-    // });
 
     after(() => {
         mongoose.disconnect();
