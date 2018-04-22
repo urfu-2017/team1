@@ -1,6 +1,7 @@
 'use strict';
 
 const fs = require('fs');
+const path = require('path');
 
 const passport = require('passport');
 const User = require('../model/user');
@@ -20,14 +21,14 @@ passport.use(new GitHubStrategy(
         const name = profile.displayName || profile.username;
         let user = await User.findByGithubId(githubId);
         const avatarPath = `images/avatars/github/${githubId}.png`;
-        const fsAvatarPath = `../../public/${avatarPath}`;
+        const fsAvatarPath = path.resolve('..', '..', 'public', avatarPath);
         if (!fs.existsSync(fsAvatarPath)) {
             getPathToGeneratedPicture(fsAvatarPath, githubId);
         }
         if (!user) {
-            user = await User.create(name, `/static/${avatarPath}`, githubId);
+            user = await User.create(name, githubId, `/static/${avatarPath}`);
         } else {
-            await user.update({ name });
+            await User.update(user._id, { name });
         }
         cb(null, user);
     })
