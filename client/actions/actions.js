@@ -93,7 +93,7 @@ export const asyncCreateChat = (sourceUserId, targetUserId, callback) => dispatc
         .then(response => dispatch(callback(response)));
 };
 
-export const fetchChats = user => dispatch => {
+export const fetchChats = () => dispatch => {
     const URL = '/api/v1/chats';
     const options = {
         headers: {
@@ -105,7 +105,7 @@ export const fetchChats = user => dispatch => {
     };
     fetch(URL, options)
         .then(response => response.json())
-        .then(response => dispatch(updateChatList(response.chats)));
+        .then(response => dispatch(updateChatList(response)));
 };
 
 export const addChatFromContacts = chat => ({ type: SEND_NEW_CHAT, chat });

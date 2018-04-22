@@ -7,7 +7,7 @@ const mapStateToProps = state => ({
     currentChatId: state.currentInfo.currentChat.id,
     currentUserId: state.currentInfo.currentUser.id,
     serverURL: state.meta.serverURL,
-    allChats: state.allChats
+    chats: state.chats
 });
 
 export default connect(mapStateToProps)(ChatWindow);

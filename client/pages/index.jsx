@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
 import makeReducer from '../reducers/index';
+import { fetchChats } from '../actions/actions'
 import SideBar from '../containers/sidebar';
 import ChatWindow from '../containers/chatWindow';
 
@@ -26,8 +27,7 @@ export default class KilogrammApp extends React.Component {
             chatSocketPrefix: req.chatSocketPrefix,
             newChatsSocketPrefix: req.newChatsSocketPrefix,
             contacts: req.user.contacts,
-            users: req.users,
-            chats: req.chats
+            users: req.users
         };
     }
 

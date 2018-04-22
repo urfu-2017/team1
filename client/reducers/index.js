@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 
-import createChatReducer from './chats';
+import chatReducer from './chats';
 import createMetaReducer from './meta';
 import createCurrentInfo from './currentInfo';
 
 export default function makeReducer(initialProps) {
     return combineReducers({
-        allChats: createChatReducer(initialProps.chats),
+        chats: chatReducer,
         currentInfo: createCurrentInfo(initialProps.user),
         meta: createMetaReducer({
             serverURL: initialProps.serverURL,

@@ -68,16 +68,14 @@ class Chat extends Component {
     }
 
     render() {
-        const { onClick, chat, select } = this.props;
-        const { currentUserId } = this.props;
-        const names = chat.title.split('!_!_!');
-        const chatName = currentUserId === chat.creatorId ? names[0] : names[1];
+        const { onClick, chat, select, user } = this.props;
+        const chatName = chat.name || chat.contacts.filter(contact => contact.userId !== user._id)[0].name;
         return (
             <ChatWrapper onClick={onClick} select={select}>
-                <div className='chat-avatar'>
-                    <img src={chat.picture} width='50' height='50' alt='аватар' className='chat-avatar__img'/>
+                <div className="chat-avatar">
+                    <img src={chat.picture} width="50" height="50" alt={chatName} className="chat-avatar__img" />
                 </div>
-                <div className='chat-description'>
+                <div className="chat-description">
                     <ChatHeader>{chatName}</ChatHeader>
                     {chat.lastMessage && chat.lastMessage.content && chat.lastMessage.sender &&
                     <LastMessage>

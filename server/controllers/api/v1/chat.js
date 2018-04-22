@@ -7,7 +7,7 @@ class ChatController {
     static async get(req, res) {
         const userId = req.user.id;
         const chats = await ChatManager.findChatsByUserId(userId);
-        req.status(200).send(chats);
+        res.status(200).send(chats);
     }
 
     static async p2pPost(req, res) {

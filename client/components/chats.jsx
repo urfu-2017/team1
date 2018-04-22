@@ -13,7 +13,7 @@ export default class Chats extends Component {
     static propTypes = {
         openMenu: PropTypes.bool,
         openContacts: PropTypes.bool,
-        allChats: PropTypes.arrayOf(PropTypes.object),
+        chats: PropTypes.arrayOf(PropTypes.object),
         onClickChat: PropTypes.func,
         onClickContacts: PropTypes.func,
         onClick: PropTypes.func,
@@ -22,11 +22,12 @@ export default class Chats extends Component {
         user: PropTypes.object,
         meta: PropTypes.object,
         addNewChatFromSocket: PropTypes.func,
-        asyncCreateChat: PropTypes.func
+        asyncCreateChat: PropTypes.func,
+        fetchChats: PropTypes.func
     }
 
     static defaultProps = {
-        allChats: [],
+        chats: [],
         onClickChat: '',
         onClickContacts: '',
         onClick: '',
@@ -46,7 +47,8 @@ export default class Chats extends Component {
     }
 
     componentDidMount() {
-        const { serverURL, newChatsSocketPrefix } = this.props.meta;
+        this.props.fetchChats();
+        // const { serverURL, newChatsSocketPrefix } = this.props.meta;
 
         // this.socket = io(serverURL);
         // const socketNamespace = `${newChatsSocketPrefix}-${this.props.user.id}`;
@@ -64,8 +66,8 @@ export default class Chats extends Component {
     }
 
     getChatsList() {
-        const { allChats, onClickChat, selectedChatId, user, meta, contacts } = this.props;
-        return allChats.map(chat => (
+        const { chats, onClickChat, selectedChatId, user, meta, contacts } = this.props;
+        return chats.map(chat => (
             <Chat
                 key={Math.random()}
                 select={selectedChatId === chat.id}

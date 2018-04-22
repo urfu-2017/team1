@@ -12,10 +12,10 @@ class ChatWindowInput extends Component {
         currentChatId: PropTypes.string,
         currentUserId: PropTypes.string,
         serverURL: PropTypes.string,
-        allChats: PropTypes.arrayOf(PropTypes.object)
+        chats: PropTypes.arrayOf(PropTypes.object)
     }
 
-    static defaultProps = { dispatch: {}, currentChatId: '', currentUserId: '', serverURL: '', allChats: [] }
+    static defaultProps = { dispatch: {}, currentChatId: '', currentUserId: '', serverURL: '', chats: [] }
 
     constructor(props) {
         super(props);

@@ -1,10 +1,12 @@
 import { connect } from 'react-redux';
 import Chats from '../components/chats';
 
-import { setVisibilityChat, setVisibilityMenu, selectChat, setVisibilityContacts, addNewChatFromSocket, asyncCreateChat, addChatFromContacts } from '../actions/actions';
+import { setVisibilityChat, setVisibilityMenu, 
+    selectChat, setVisibilityContacts, addNewChatFromSocket, 
+    asyncCreateChat, addChatFromContacts, fetchChats } from '../actions/actions';
 
 const mapStateToProps = (state, props) => ({
-    allChats: state.allChats,
+    chats: state.chats,
     selectedChatId: state.currentInfo.selectedChatId,
     openMenu: state.currentInfo.openMenu,
     openContacts: state.currentInfo.openContacts,
@@ -33,6 +35,9 @@ const mapDispatchToProps = dispatch => (
         },
         addChatFromContacts: chat => {
             dispatch(addChatFromContacts(chat));
+        },
+        fetchChats: () => {
+            dispatch(fetchChats());
         }
     }
 );
