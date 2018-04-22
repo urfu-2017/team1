@@ -16,8 +16,7 @@ class ChatManager {
         return await chat.save();
     }
 
-    static async addMessageToChat(chatId, message) {
-        const chat = await Chat.findById(chatId);
+    static async addMessageToChat(chat, message) {
         chat.messages.push(message);
         return await chat.save();
     }
@@ -33,6 +32,10 @@ class ChatManager {
 
     static async findChatsByUserId(userId) {
         return await Chat.find({ 'contacts.userId': userId });
+    }
+
+    static async findChatById(id) {
+        return await Chat.findById(id);
     }
 }
 

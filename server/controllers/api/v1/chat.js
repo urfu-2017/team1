@@ -1,6 +1,7 @@
 'use strict';
 
 const ChatManager = require('../../../managers/chat');
+const { Message } = require('../../../schemas/message');
 
 
 class ChatController {
@@ -18,6 +19,24 @@ class ChatController {
             res.status(200).send(chat);
         } else {
             res.status(200).send(p2pChats[0]);
+        }
+    }
+
+    static async sendMessageToChat(req, res) {
+        const { user } = req;
+        const chatId = req.params.id;
+        const chat = await ChatManager.findChatById(chatId);
+        if (!chat) {
+            res.status(404).send({});
+            return;
+        }
+
+        if (chat.contacts.find(contact => contact.userId === user._id) != null) {
+            res.status(400).send({ error: 'Слыш, ты рамсы попутал? Тебе сюда нельзя' });
+        } else {
+            const message = new Message(req.body.message);
+            await ChatManager.addMessageToChat(chat, message);
+            res.status(200).send(message);
         }
     }
 }

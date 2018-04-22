@@ -42,8 +42,8 @@ export const updateChatList = chats => ({ type: UPDATE_CHAT_LIST, chats });
 const saveStatus = (status, userMessage) =>
     ({ type: MESSAGE_SAVED, info: { status, userMessage } });
 
-export const asyncSendMessage = (message, serverURL) => dispatch => {
-    const URL = `api/rest/chats/${message.chatId}/messages`;
+export const sendMessage = (chat, message) => dispatch => {
+    const URL = `api/v1/chats/${chat._id}`;
     const options = {
         headers: {
             Accept: 'application/json',
@@ -100,7 +100,7 @@ export const fetchChats = () => dispatch => {
             Accept: 'application/json',
             'Content-Type': 'application/json'
         },
-        method: 'POST',
+        method: 'GET',
         credentials: 'same-origin'
     };
     fetch(URL, options)

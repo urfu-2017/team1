@@ -14,7 +14,6 @@ class Chat extends Component {
         select: PropTypes.bool,
         onClick: PropTypes.func,
         dispatch: PropTypes.func,
-        currentUserId: PropTypes.string,
         meta: PropTypes.object,
         user: PropTypes.object,
         contacts: PropTypes.arrayOf(PropTypes.object)
@@ -25,7 +24,6 @@ class Chat extends Component {
         select: false,
         onClick: {},
         dispatch: {},
-        currentUserId: null,
         meta: {},
         user: {},
         contacts: []

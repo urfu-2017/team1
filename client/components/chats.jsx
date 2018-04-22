@@ -57,7 +57,6 @@ export default class Chats extends Component {
                 key={chat._id}
                 select={selectedChatId === chat._id}
                 chat={chat}
-                currentUserId={user.id}
                 meta={meta}
                 user={user}
                 contacts={contacts}

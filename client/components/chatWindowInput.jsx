@@ -3,19 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Textarea from '../styles/chatWindowInput';
-import { asyncSendMessage, addMessageFromChatInput, cursorIsPressedFromBelow, moveCursorDown, selectChat, setVisibilityChat }
+import { sendMessage, addMessageFromChatInput, cursorIsPressedFromBelow, moveCursorDown, selectChat, setVisibilityChat }
     from '../actions/actions';
 
 class ChatWindowInput extends Component {
     static propTypes = {
         dispatch: PropTypes.func,
-        currentChatId: PropTypes.string,
-        currentUserId: PropTypes.string,
-        serverURL: PropTypes.string,
-        chats: PropTypes.arrayOf(PropTypes.object)
+        chat: PropTypes.shape(),
+        user: PropTypes.shape()
     }
 
-    static defaultProps = { dispatch: {}, currentChatId: '', currentUserId: '', serverURL: '', chats: [] }
+    static defaultProps = { dispatch: {}, chat: {}, user: {} }
 
     constructor(props) {
         super(props);
@@ -25,16 +23,15 @@ class ChatWindowInput extends Component {
     handleChange = event => { this.setState({ message: event.target.value }); };
 
     handleSubmit = event => {
-        if (event.key === 'Enter' && !event.shiftKey) {
+        if (event.which === 13 && !event.shiftKey) {
             event.preventDefault();
-            const { currentChatId, currentUserId, serverURL } = this.props;
+            const { chat, user } = this.props;
             const message = {
-                content: {
-                    text: this.state.message
-                },
-                chatId: currentChatId,
-                senderId: currentUserId,
-                userMessageId: Math.random()
+                message: this.state.message,
+                sender: {
+                    name: user.name,
+                    avatar: user.avatar
+                }
             };
             const cursorInBottom = cursorIsPressedFromBelow();
             this.props.dispatch(addMessageFromChatInput(message));
@@ -43,12 +40,7 @@ class ChatWindowInput extends Component {
                 moveCursorDown();
             }
             
-            this.props.dispatch(asyncSendMessage(message, serverURL));
-            // @lms: этот хак сделан для обновления чата, который пришел через сокет
-            // todo: удалить и сделать нормально
-            let chat = this.props.allChats.find(x => x.id === currentChatId);
-            this.props.dispatch(selectChat(currentChatId));
-            this.props.dispatch(setVisibilityChat(chat));
+            this.props.dispatch(sendMessage(chat, message));
 
             this.setState({ message: '' });
         }
