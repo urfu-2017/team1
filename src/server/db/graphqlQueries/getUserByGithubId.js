@@ -2,18 +2,16 @@ const gql = require('graphql-tag');
 
 
 module.exports = gql`
-query ($where: UserWhereArgs) {
-    viewer {
-        allUsers (where: $where) {
-            edges {
-                node {
-                    id
-                    username
-                    avatarUrl
-                    githubId
-                }
-            }
-        }
+query GetUser($githubId: Int!) {
+  User(githubId: $githubId) {
+    id
+    name
+    githubId
+    avatarUrl
+    createdAt
+    chats {
+      id
     }
+  }
 }
 `;

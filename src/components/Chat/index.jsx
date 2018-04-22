@@ -47,14 +47,15 @@ export default class Chat extends React.Component {
             return <p>Error ;(</p>;
         }
 
-        const chat = this.props.chat && this.props.chat.getChat || null;
+        const chat = this.props.chat && this.props.chat.Chat || null;
         const { currentUser } = this.props;
         return chat ?
             <ChatWindowWrapper>
                 <Messages
-                    messages={chat.messages.edges.map(e => e.node).reverse()}
-                    title={chat.name}
+                    messages={chat.messages}
+                    title={chat.title}
                     currentUserId={currentUser.id}
+                    id={chat.id}
                 />
                 <MessageInput
                     currentChatId={chat.id}

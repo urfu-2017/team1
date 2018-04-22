@@ -45,7 +45,8 @@ export default class MessageInput extends React.PureComponent {
             const message = {
                 text: this.state.message,
                 chatId: currentChatId,
-                senderId: currentUserId
+                senderId: currentUserId,
+                pictures: []
             };
 
             // Что это? О_о

@@ -21,16 +21,13 @@ class Scaphold {
     }
 
     async findUserByGithubID(githubId) {
+        githubId = parseInt(githubId, 10);
         const user = await this.client.query({
                 query: getUserByGihubId,
-                variables: {
-                    where: {
-                        githubId: { eq: githubId }
-                    }
-                }
+                variables: { githubId }
             })
             .then(data => {
-                return data.data.viewer.allUsers.edges[0];
+                return data;
             }
             )
             .catch(error => console.error(error));
@@ -38,7 +35,7 @@ class Scaphold {
         if (!user) {
             return null;
         }
-        return user.node;
+        return user.data.User;
     }
 
     async findUserByID(id) {
@@ -47,7 +44,7 @@ class Scaphold {
                 variables: { id }
             })
             .then(data => {
-                return data.data.getUser;
+                return data.data.User;
             }
             )
             .catch(error => console.error(error));
@@ -56,15 +53,13 @@ class Scaphold {
     }
 
     async createUser(name, avatar, githubId) {
+        githubId = parseInt(githubId, 10);
         const user = await this.client.mutate({
             mutation: CREATE_USER_ql,
             variables: {
-                    user: {
-                        username: name,
-                        password: 'password',
-                        githubId: githubId,
-                        avatarUrl: avatar
-                    }
+                    name: name,
+                    githubId: githubId,
+                    avatarUrl: avatar
                 }
 
         })
@@ -73,7 +68,7 @@ class Scaphold {
             })
             .catch(error => console.error(error));
 
-        return user.data.createUser.changedUser;
+        return user.data.createUser;
     }
 }
 

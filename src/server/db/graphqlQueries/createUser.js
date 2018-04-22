@@ -2,14 +2,13 @@ const gql = require('graphql-tag');
 
 
 module.exports.CREATE_USER_ql = gql`
-mutation CreateUser($user: CreateUserInput!) {
-    createUser(input: $user) {
-        changedUser {
-            id
-            username
-            avatarUrl
-            githubId
-        }
-    }
+mutation CreateUser($name: String!, $githubId: Int!, $avatarUrl: String!) {
+  createUser(name: $name, githubId: $githubId, avatarUrl: $avatarUrl) {
+    id
+    name
+    githubId
+    createdAt
+    avatarUrl
+  }
 }
 `;

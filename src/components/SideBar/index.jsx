@@ -44,8 +44,7 @@ export default class SideBar extends React.Component {
 
     getChatsList() {
         const { currentUser, chats } = this.props;
-        // TODO: props mapper (see above)
-        return chats.getUser.chats.edges.map(edge => edge.node)
+        return chats.User.chats
             .map(chat => (
                 <ChatPreview
                     key={chat.id}

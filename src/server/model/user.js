@@ -1,13 +1,12 @@
 'use strict';
 
-const uuid = require('uuid/v4');
 const dbConnection = require('../db-connection');
 
 class User {
-    constructor({ id, username, avatar, githubId }) {
+    constructor({ id, name, avatarUrl, githubId }) {
         this.id = id;
-        this.username = username;
-        this.avatar = avatar;
+        this.name = name;
+        this.avatarUrl = avatarUrl;
         this.githubId = githubId;
     }
 
@@ -18,24 +17,24 @@ class User {
     static serialize() {
         return {
             id: this.id,
-            username: this.username,
-            avatar: this.avatar,
+            name: this.name,
+            avatarUrl: this.avatarUrl,
             githubId: this.githubId
         };
     }
 
-    static async create(username, avatar, githubId) {
-        const user = await dbConnection.createUser(username, avatar, githubId);
+    static async create(username, avatarUrl, githubId) {
+        const user = await dbConnection.createUser(username, avatarUrl, githubId);
         console.log('Create user');
         console.log('%%%%%%%%%%%%%%%%');
         console.log(user);
         console.log('%%%%%%%%%%%%%%%%');
-        
+
         return this.deserialize(user);
     }
 
     static async findByID(id) {
-        
+
         const data = await dbConnection.findUserByID(id);
         console.log('find user by id');
         console.log(data);
@@ -50,7 +49,7 @@ class User {
     }
 
     async update(data) {
-        //todo: 
+        //todo:
         //Object.assign(this, data);
         //return await dbConnection.updateUser(this);
     }

@@ -5,7 +5,6 @@ import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { getMainDefinition } from 'apollo-utilities';
-import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 import fetch from 'isomorphic-unfetch';
 
 import resolvers from '../resolvers/index';
@@ -20,10 +19,7 @@ if (isOnServer) {
 }
 
 
-function create(apiUrl) {
-    const httpUrl = `https://${apiUrl}`;
-    const websocketUrl = `wss://${apiUrl}`;
-
+function create(httpUrl, wsUrl) {
     const httpLink = new HttpLink({ uri: httpUrl });
 
     const cache = new InMemoryCache({
@@ -56,15 +52,11 @@ function create(apiUrl) {
     let link = httpLink;
 
     if (!isOnServer) {
-        // TODO: fix socket connection
         const wsLink = new WebSocketLink({
-            uri: websocketUrl,
+            uri: wsUrl,
             options: {
-                reconnect: true //auto-reconnect
-                // // carry login state (should use secure websockets (wss) when using this)
-                // connectionParams: {
-                //     authToken: localStorage.getItem('scaphold_user_token')
-                // }
+                reconnect: true,
+                timeout: 30000
             }
         });
 
@@ -93,16 +85,16 @@ function create(apiUrl) {
 }
 
 
-export default function initApollo(initialState) {
+export default function initApollo(httpUrl, wsUrl, initialState) {
     // Make sure to create a new client for every server-side request so that data
     // isn't shared between connections (which would be bad)
     if (isOnServer) {
-        return create(initialState);
+        return create(httpUrl, wsUrl);
     }
 
     // Reuse client on the client-side
     if (!apolloClient) {
-        apolloClient = create(initialState);
+        apolloClient = create(httpUrl, wsUrl);
     }
     return apolloClient;
 }

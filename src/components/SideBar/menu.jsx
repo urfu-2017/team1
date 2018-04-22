@@ -23,7 +23,7 @@ export default class Menu extends React.Component {
                         className="profile__avatar"
                         src={currentUser.avatarUrl}
                     />
-                    <div className="profile__name">{currentUser.username}</div>
+                    <div className="profile__name">{currentUser.name}</div>
                 </div>
                 <main>
                     <p

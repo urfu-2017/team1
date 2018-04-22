@@ -40,7 +40,7 @@ export default class Messages extends React.Component {
                 key={currentMessage.id}
                 message={currentMessage.text}
                 creationTime={currentMessage.createdAt}
-                isFromSelf={currentMessage.sender.id === currentUserId}
+                isFromSelf={currentMessage.senderId === currentUserId}
             />
         ));
     }

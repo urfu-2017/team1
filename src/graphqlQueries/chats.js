@@ -1,28 +1,20 @@
 import gql from 'graphql-tag';
 
 
-const _mapEdgesToNodes = collection => collection.edges.map(e => e.node);
-
-
-// { userId }
 const GET_USER_CHATS_ql = gql`
 query GetUserChats($userId: ID!) {
-  getUser(id: $userId) {
+  User(id: $userId) {
     id
     chats {
-      edges {
-        node {
-          id
-          name
-        }
-      }
+      id
+      title
     }
   }
 }
 `;
 
 const getUserChats_map = ({ data }) => {
-    if (!data.getUser) {
+    if (!data.User) {
         return {
             loading: data.loading
         };
@@ -30,7 +22,7 @@ const getUserChats_map = ({ data }) => {
 
     return {
         loading: data.loading,
-        chats: _mapEdgesToNodes(data.getUser.chats)
+        ...data.User
     };
 };
 
@@ -42,7 +34,6 @@ export const GetUserChats = {
 
 
 
-// { userId, chatId }
 export const ADD_CHAT_MEMBER_ql = gql`
 mutation AddChatMember($ids: AddToChatMembersConnectionInput!) {
   addToChatMembersConnection(input: $ids) {
@@ -73,44 +64,33 @@ mutation AddChatMember($ids: AddToChatMembersConnectionInput!) {
 
 const GET_CHAT_ql = gql`
 query GetChat($chatId: ID!) {
-    getChat(id: $chatId) {
-        name
-        private
-        modifiedAt
-        createdAt
+  Chat(id: $chatId) {
+    id
+    title
+    private
+    modifiedAt
+    createdAt
+    members {
+      id
+      name
+      avatarUrl
+    }
+    messages {
+      id
+      text
+      sender {
         id
-        
-        owner {
-            id
-        }
-        
-        members {
-            edges {
-                node {
-                    id
-                    username
-                    avatarUrl
-                }
-            }
-        }
-    
-        messages {
-            edges {
-                node {
-                    id
-                    text
-                    sender {
-                        id
-                    }
-                }
-            }
-        }
-    }    
+      }
+      createdAt
+      modifiedAt
+      modified
+    }
+  }
 }
 `;
 
 const getChat_map = ({ data }) => {
-    if (!data.getChat) {
+    if (!data.Chat) {
         return {
             loading: data.loading
         };
@@ -119,13 +99,7 @@ const getChat_map = ({ data }) => {
     return {
         loading: data.loading,
         error: data.error,
-        messages: _mapEdgesToNodes(data.getChat.messages),
-        members: _mapEdgesToNodes(data.getChat.members),
-        name: data.name,
-        owner: data.owner,
-        'private': data.private,
-        modifiedAt: data.modifiedAt,
-        createdAt: data.createdAt
+        ...data.Chat
     };
 };
 
@@ -134,3 +108,29 @@ export const GetChat = {
     query: GET_CHAT_ql,
     map: getChat_map
 };
+
+
+const CREATE_CHAT_ql = gql`
+mutation CreateChat($title: String!, $ownerId: ID!, $picture: String) {
+  createChat(title: $title, ownerId: $ownerId, picture: $picture) {
+    id
+    createdAt
+    picture
+    modifiedAt
+  }
+}
+`;
+
+
+const ADD_USER_TO_CHAT_ql = gql`
+mutation AddUserToChat($chatId: ID!, $userId: ID!) {
+  addToChatOnUser(chatsChatId: $chatId, membersUserId: $userId) {
+    membersUser {
+      id
+      chats {
+        id
+      }
+    }
+  }
+}
+`;

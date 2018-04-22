@@ -4,6 +4,6 @@ require('dotenv').config();
 
 const Scaphold = require('./db/scaphold');
 
-const connection = new Scaphold('https://' + process.env.API_URL);
+const connection = new Scaphold(process.env.HTTP_API_URL);
 
 module.exports = connection;

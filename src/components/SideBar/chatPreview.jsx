@@ -39,7 +39,7 @@ export default class ChatPreview extends React.PureComponent {
                          className='chat-avatar__img'/>
                 </div>
                 <div className='chat-description'>
-                    <ChatHeader>{chat.name}</ChatHeader>
+                    <ChatHeader>{chat.title}</ChatHeader>
                     {/* TODO: lastMessage */}
                     {lastMessage && lastMessage.content && lastMessage.sender &&
                     <LastMessage>

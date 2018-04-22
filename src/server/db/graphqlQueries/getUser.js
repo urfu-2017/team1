@@ -2,12 +2,16 @@ const gql = require('graphql-tag');
 
 
 module.exports = gql`
-query ($id: ID!) {
-    getUser (id: $id) {
-        id
-        username
-        avatarUrl
-        githubId
+query GetUser($id: ID!) {
+  User(id:$id) {
+    id
+    name
+    githubId
+    avatarUrl
+    createdAt
+    chats {
+      id
     }
+  }
 }
 `;
