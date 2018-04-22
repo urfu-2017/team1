@@ -1,6 +1,7 @@
 'use strict';
 
 const passport = require('passport');
+const apiRouter = require('./controllers/api/routes');
 
 module.exports = (app, io) => {
     app.get('/auth/github', passport.authenticate('github'));
@@ -11,4 +12,6 @@ module.exports = (app, io) => {
             res.redirect('/index');
         }
     );
+
+    app.use('/api', apiRouter);
 };

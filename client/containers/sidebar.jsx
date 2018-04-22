@@ -28,8 +28,8 @@ const mapDispatchToProps = dispatch => (
         addNewChatFromSocket: (chat, currentUserId) => {
             dispatch(addNewChatFromSocket(chat, currentUserId));
         },
-        asyncCreateChat: (chat, serverURL, onClickChat) => {
-            dispatch(asyncCreateChat(chat, serverURL, onClickChat));
+        asyncCreateChat: (sourceUserId, targetUserId, onClickChat) => {
+            dispatch(asyncCreateChat(sourceUserId, targetUserId, onClickChat));
         },
         addChatFromContacts: chat => {
             dispatch(addChatFromContacts(chat));

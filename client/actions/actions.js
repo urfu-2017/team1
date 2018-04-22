@@ -74,20 +74,21 @@ export const addNewChatFromSocket = (chat, currentUserId) =>
 const saveChat = (status, userChat) =>
     ({ type: CHAT_SAVED, info: { status, userChat } });
 
-export const asyncCreateChat = (chat, contactId, callback) => dispatch => {
-    const URL = `api/rest/users/${contactId}/start-chat`;
+export const asyncCreateChat = (sourceUserId, targetUserId, callback) => dispatch => {
+    const URL = '/api/v1/chat/';
+    const body = JSON.stringify({ sourceUserId, targetUserId });
     const options = {
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
         },
         method: 'POST',
-        body: JSON.stringify({ chat }),
+        body,
         credentials: 'same-origin'
     };
     fetch(URL, options)
         .then(response => response.json())
-        .then(response => console.log('|||||||||') || console.log(response) || dispatch(callback(response)));
+        .then(response => dispatch(callback(response)));
 };
 
 export const addChatFromContacts = chat => ({ type: SEND_NEW_CHAT, chat });
