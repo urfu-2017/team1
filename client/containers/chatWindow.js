@@ -6,9 +6,7 @@ const mapStateToProps = state => ({
     messages: state.currentInfo.currentChat.messages,
     title: state.currentInfo.currentChat.title,
     currentChatId: state.currentInfo.currentChat.id,
-    currentUserId: state.currentInfo.currentUser.id,
-    serverURL: state.meta.serverURL,
-    allChats: state.allChats
+    currentUserId: state.currentInfo.currentUser.id
 });
 const mapDispatchToProps = dispatch => (
     {

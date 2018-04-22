@@ -13,8 +13,6 @@ const initialStateStub = {
         id: 'USER_ID'
     },
     currentChat: {},
-    chatsMembers: [],
-    isOpenChatEditor: false,
     isOpenParanja: false,
     sessionInfoAndSecurityTokens: {
         HereBeDragons: '¯\\_(ツ)_/¯'

@@ -44,14 +44,13 @@ export default class Chats extends Component {
         this.socket = io(serverURL);
         const socketNamespace = `${newChatsSocketPrefix}-${this.props.user.id}`;
         this.socket.on(socketNamespace, data => {
-            console.log('got new chat from socket');
             const currentUserId = this.props.user.id;
             this.props.addNewChatFromSocket(data.chat, currentUserId);
         });
     }
 
     componentWillUnmount() {
-        const { serverURL, newChatsSocketPrefix } = this.props.meta;
+        const { newChatsSocketPrefix } = this.props.meta;
         this.socket.off(`${newChatsSocketPrefix}-${this.props.user.id}`);
         this.socket.close();
     }

@@ -68,6 +68,7 @@ import {
 export default function createChatReducer(chatProps) {
     const newInitialState = Object.assign([], chatProps);
     return (state = newInitialState, action) => {
+        console.log(action);
         switch (action.type) {
         case RECEIVED_NEW_MESSAGE: {
             const { message, sender } = action.info;

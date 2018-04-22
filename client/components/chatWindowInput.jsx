@@ -3,20 +3,26 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Textarea from '../styles/chatWindowInput';
-import { asyncSendMessage, addMessageFromChatInput, cursorIsPressedFromBelow, moveCursorDown, selectChat, setVisibilityChat }
+import { cursorIsPressedFromBelow, moveCursorDown }
     from '../actions/actions';
 
 class ChatWindowInput extends Component {
     static propTypes = {
-        dispatch: PropTypes.func,
+        asyncSendMessage: PropTypes.func,
         currentChatId: PropTypes.string,
         currentUserId: PropTypes.string,
+        selectChat: PropTypes.func,
         serverURL: PropTypes.string,
-        allChats: PropTypes.arrayOf(PropTypes.object)
+        setVisibilityChat: PropTypes.func,
+        allChats: PropTypes.arrayOf(PropTypes.object),
+        addMessageFromChatInput: PropTypes.func
     }
 
-    static defaultProps = { 
-        dispatch: {},
+    static defaultProps = {
+        addMessageFromChatInput: () => {},
+        setVisibilityChat: () => {},
+        asyncSendMessage: () => {},
+        selectChat: () => {},
         currentChatId: '',
         currentUserId: '',
         serverURL: '',
@@ -43,18 +49,24 @@ class ChatWindowInput extends Component {
                 userMessageId: Math.random()
             };
             const cursorInBottom = cursorIsPressedFromBelow();
-            this.props.dispatch(addMessageFromChatInput(message));
+            const {
+                selectChat,
+                asyncSendMessage,
+                setVisibilityChat,
+                addMessageFromChatInput
+            } = this.props;
+            addMessageFromChatInput(message);
 
             if (cursorInBottom) {
                 moveCursorDown();
             }
 
-            this.props.dispatch(asyncSendMessage(message, serverURL));
+            asyncSendMessage(message, serverURL);
             // @lms: этот хак сделан для обновления чата, который пришел через сокет
             // todo: удалить и сделать нормально
             const chat = this.props.allChats.find(x => x.id === currentChatId);
-            this.props.dispatch(selectChat(currentChatId));
-            this.props.dispatch(setVisibilityChat(chat));
+            selectChat(currentChatId);
+            setVisibilityChat(chat);
 
             this.setState({ message: '' });
         }
