@@ -44,7 +44,7 @@ passport.deserializeUser(async (id, done) => {
     done(null, user);
 });
 
-module.exports = () => (req, res, next) => {
+module.exports = (req, res, next) => {
     console.log(req.url);
     if (req.user || req.url.startsWith('/auth') || req.url.startsWith('/static')) {
         next();

@@ -2,8 +2,8 @@
 
 require('dotenv').config();
 
-const Scaphold = require('./db/scaphold');
+const GraphqlApi = require('./db/graphqlApi');
 
-const connection = new Scaphold(process.env.HTTP_API_URL);
+const connection = new GraphqlApi(process.env.HTTP_API_URL);
 
 module.exports = connection;

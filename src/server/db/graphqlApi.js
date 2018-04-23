@@ -8,14 +8,15 @@ const { createHttpLink } = require('apollo-link-http');
 const { InMemoryCache } = require('apollo-cache-inmemory');
 
 const { CREATE_USER_ql } = require('./graphqlQueries/createUser');
+const AddUserToChat = require('./graphqlQueries/addUserToChat');
 const getUserByGihubId = require('./graphqlQueries/getUserByGithubId');
 const getUserByid =  require('./graphqlQueries/getUser');
 
 
-class Scaphold {
-    constructor(scapholdUri) {
+class GraphqlApi {
+    constructor(uri) {
         this.client = new ApolloClient({
-            link: createHttpLink({ uri: scapholdUri, fetch: fetch }),
+            link: createHttpLink({ uri, fetch: fetch }),
             cache: new InMemoryCache()
         });
     }
@@ -66,10 +67,30 @@ class Scaphold {
             .then(data => {
                 return data;
             })
+            // .then()
             .catch(error => console.error(error));
+
+        // TODO: remove
+        const userId = user.data.createUser.id;
+        const chatId1 = 'cjgaqh7iqyrty0138157c5e2g';
+        const chatId2 = 'cjgaq285jyx2n0162k41m5d77';
+        this.client.mutate({
+            mutation: AddUserToChat,
+            variables: {
+                userId,
+                chatId: chatId1
+            }
+        });
+        this.client.mutate({
+            mutation: AddUserToChat,
+            variables: {
+                userId,
+                chatId: chatId2
+            }
+        });
 
         return user.data.createUser;
     }
 }
 
-module.exports = Scaphold;
+module.exports = GraphqlApi;

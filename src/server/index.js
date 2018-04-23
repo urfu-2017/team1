@@ -20,14 +20,23 @@ const fetch = require('node-fetch');
 const { createHttpLink } = require('apollo-link-http');
 const { InMemoryCache } = require('apollo-cache-inmemory');
 
-const Scaphold = require('./db/scaphold');
+const DynamicConfig = require('./dynamicConfig');
+const GraphqlApi = require('./db/graphqlApi');
 const authMiddleware = require('./middleware/auth');
+const proxyMiddleware = require('./middleware/proxy');
 
 
 function main(isProduction, port) {
     const server = new Express();
+    const proxyEnabled = process.env.PROXY_DEFAULT === 'true';
+    const dynamicConfig = new DynamicConfig({}, proxyEnabled);
 
     server.use(cookieParser())
+        .use(`/${process.env.PROXY_SECRET}/proxy`, proxyMiddleware)
+        .use(`/${process.env.PROXY_SECRET}/open-the-pod-bay-doors-hal`,
+            dynamicConfig.toggleProxyMiddleware(true))
+        .use(`/${process.env.PROXY_SECRET}/im-sorry-dave-im-afraid-i-cant-do-that`,
+            dynamicConfig.toggleProxyMiddleware(false))
         .use(bodyParser.urlencoded({ extended: true }))
         .use(
             session({
@@ -40,14 +49,13 @@ function main(isProduction, port) {
         .use('/static', Express.static(path.resolve(__dirname, '../public')))
         .use(passport.initialize())
         .use(passport.session())
-        .use(authMiddleware())
+        .use(authMiddleware)
         .use((req, res, next) => {
-            req.state = {};
-            req.httpUrl = process.env.HTTP_API_URL;
-            req.wsUrl = process.env.WS_API_URL;
+            dynamicConfig.configureReq(req);
             next();
         })
         .use(routes);
+
 
     const app = next({ dir: './src', dev: !isProduction });
     const render = pageName => (req, res) => app.render(req, res, `/${pageName}`);

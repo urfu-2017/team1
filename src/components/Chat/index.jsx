@@ -1,6 +1,9 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import {graphql, compose} from 'react-apollo';
 import PropTypes from 'prop-types';
+
+const OverlayLoader = dynamic(import('react-loading-indicator-overlay/lib/OverlayLoader'), { ssr: false });
 
 import ChatWindowWrapper from '../../styles/chatWindow';
 import MessageInput from './messageInput';
@@ -24,11 +27,10 @@ import {SubscribeNewMessages} from '../../graphqlQueries/messages';
             chatId: props.localState.currentChatId
         }
     }),
-    // pollInterval: 500  // TODO: remove poll and implement subscriptions
     // props: GetChat.map
 })
 export default class Chat extends React.Component {
-    propTypes = {
+    static propTypes = {
         currentUser: PropTypes.object
     };
 
@@ -36,56 +38,61 @@ export default class Chat extends React.Component {
         chat: {}
     };
 
-    loadScreen = (
-        <div>Loading...</div>
-    );
-
     get chat() {
         return this.props.chat && this.props.chat.Chat || null;
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.localState.currentChatId && !nextProps.chat.loading) {
-            console.log('CONT');
-            if (this.unsubscribe) {
-                if (this.props.stopSub !== nextProps.stopSub) {
-                    console.log("UNSUBS");
-                    this.unsubscribe();
-                } else {
-                    console.log('RETURNS');
-                    return;
-                }
-            }
-            console.log('SUBS');
-            if (!this.chat) {
-                return;
-            }
-            this.unsubscribe = nextProps.chat.subscribeToMore({
+    subscriptions = {};
+
+    static subscriptionDataHandler = (previousResult, { subscriptionData, variables }) => {
+        if (!previousResult.Chat) {
+            return previousResult;
+        }
+        const messages = [...previousResult.Chat.messages]
+            .concat([subscriptionData.data.Message.node]);
+        return { Chat: { ...previousResult.Chat, messages } };
+    };
+
+    subscribe = () => {
+        if (!this.subscriptions[this.chat.id]) {
+            this.subscriptions[this.chat.id] = this.props.chat.subscribeToMore({
                 document: SubscribeNewMessages.query,
                 variables: SubscribeNewMessages.vars(this.chat.id),
-                updateQuery: (previousResult, { subscriptionData, variables }) => {
-                    if (!previousResult.Chat) {
-                        return previousResult;
-                    }
-                    const messages = [...previousResult.Chat.messages]
-                        .concat([subscriptionData.data.Message.node]);
-                    const updatedResult = { Chat: { ...previousResult.Chat, messages } };
-                    return updatedResult;
-                }
+                updateQuery: Chat.subscriptionDataHandler
             });
         }
-    }
+    };
+
+    loadScreen = () => (
+        (typeof window === 'undefined') ? null :
+            <ChatWindowWrapper>
+                <div style={{ height: '50%' }} />
+                <OverlayLoader
+                    displayName={'foo'}
+                    color={'#7e9cda'}
+                    loader="GridLoader"
+                    active={true}
+                    backgroundColor={'black'}
+                    opacity="0"
+                />
+            </ChatWindowWrapper>
+    );
 
     render() {
         if (this.props.chat.loading) {
-            return this.loadScreen;
+            return this.loadScreen();
         }
         if (this.props.chat.error) {
             return <p>Error ;(</p>;
         }
 
+        if (!this.chat) {
+            return <ChatWindowWrapper/>;
+        }
+
+        this.subscribe();  // TODO: separate general chat info and messages between components
         const { currentUser } = this.props;
-        return this.chat ?
+        return (
             <ChatWindowWrapper>
                 <Messages
                     messages={this.chat.messages}
@@ -97,6 +104,7 @@ export default class Chat extends React.Component {
                     currentChatId={this.chat.id}
                     currentUserId={currentUser.id}
                 />
-            </ChatWindowWrapper> : <ChatWindowWrapper/>;
+            </ChatWindowWrapper>
+        );
     }
 }
