@@ -4,34 +4,6 @@ const dbConnection = require('../db-connection');
 
 
 module.exports = () => async (req, res, next) => {
-    const User = require('../model/user');
-    const Chat = require('../model/chat');
-    const Message = require('../model/message');
-
-    const selfUser = new User({ name: 'test user', id: '1' });
-    const otherUser = new User({ name: 'friend one', id: '2' });
-    const chat = new Chat({ title: 'test chat', usersIds: [selfUser.id, otherUser.id], id: '3' });
-    const chatMessages = [];
-    for (let i = 0; i < 3; i++) {
-        const message = new Message(
-            {
-                content: `test message ${i}`,
-                senderId: selfUser.id,
-                chatId: chat.id,
-                createdAt: new Date() - i
-            }
-        );
-        chatMessages.push(message);
-    }
-    chat.messages = chatMessages;
-    chat.lastMessage = chatMessages[chatMessages.length - 1];
-
-    req.user = selfUser;
-    req.chats = [chat];
-    req.users = [selfUser, otherUser];
-    next();
-    return;
-
     if (!req.user) {
         next();
         return;

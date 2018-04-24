@@ -24,9 +24,10 @@ export const Editor = styled.article`
     }
 `;
 
-export const DowlandImage = styled.div`
+export const DownloadImage = styled.div`
+    position: relative;
+    background: #fff;
     background-size: cover;
-    opacity: 0.3;
     width: 200px;
     height: 200px;
     display: flex;
@@ -37,16 +38,29 @@ export const DowlandImage = styled.div`
         font-size: 20px;
         background: #fff;
     }
+    .spinner {
+        display: none;
+        width: 100px;
+        height: 100px;
+        background-size: 100px;
+        background-image: url(https://i0.wp.com/www.dynamocoop.be/wp-content/uploads/2015/10/spin.gif);
+        position: absolute;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        margin: auto;
+    }
 `;
 
-export const DowlandButton = styled.input`
+export const DownloadButton = styled.input`
     width: 225px;
     padding: 7px;
     border-radius: 5px;
     background: #e4e0dc;
 `;
 
-export const CreateButton = DowlandButton.extend`
+export const CreateButton = DownloadButton.extend`
     width: 85px;
     padding: 7px;
     border-radius: 5px;

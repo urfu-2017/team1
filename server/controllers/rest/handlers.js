@@ -6,6 +6,8 @@ const Chat = require('../../model/chat');
 const User = require('../../model/user');
 
 const cloudinary = require('cloudinary');
+require('dotenv')
+    .config();
 
 const handlers = {};
 let io = null;
@@ -220,25 +222,21 @@ handlers.invalidateCache = () => {
 };
 
 
-const secretConfig = {
-    cloud_name: 'team1-kilogram',
-    api_key: '732617494545747',
-    api_secret: 'Vt5dARvgKbxJs-9-_KmRQI5zzZA'
+const cloundinaryConfig = {
+    cloud_name: process.env.CLOUND_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET
 };
 
-cloudinary.config(secretConfig);
+cloudinary.config(cloundinaryConfig);
 
 handlers.sendToCloudServer = (req, res) => {
     const { pictureInBase64 } = req.body;
-    console.log(pictureInBase64.substr(0, 20));
     cloudinary.uploader.upload(pictureInBase64, metaData => {
         res.send(metaData);
-        console.log(metaData);
-        // TODO
-        // Добавить, когда бд будет работающей
-        // const { user } = req;
-        // user.avatar = metaData.secure_url;
-        // dbConnection.updateUser(user);
+        const { user } = req;
+        user.avatar = metaData.secure_url;
+        dbConnection.updateUser(user);
     });
 };
 

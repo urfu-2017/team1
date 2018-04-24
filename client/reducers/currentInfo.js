@@ -20,7 +20,6 @@ export default function createMetaReducer(currentUser) {
         switch (action.type) {
         case SAVED_AVATAR:
             state.currentUser.avatar = action.avatar;
-            console.log(state.currentUser);
             return Object.assign({}, state);
         case VISIBILITY_CHAT:
             state.currentChat = action.chat;
