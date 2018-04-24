@@ -19,6 +19,7 @@ import {Header, SearchInput, ChatsList} from '../../styles/chats';
 @graphql(GetUserChats.query, {
     // props: GetUserChats.map,  // маппер почему-то не работает
     name: 'chats',
+    skip: props => !props.currentUser,
     options: props => ({
         variables: {
             userId: props.currentUser.id
