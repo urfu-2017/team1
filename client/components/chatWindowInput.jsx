@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Emoji, emojiIndex } from 'emoji-mart';
 
 import Textarea from '../styles/chatWindowInput';
-import { asyncSendMessage, addMessageFromChatInput, cursorIsPressedFromBelow, moveCursorDown, selectChat, setVisibilityChat }
-    from '../actions/actions';
+
+import {
+    asyncSendMessage, addMessageFromChatInput, cursorIsPressedFromBelow, moveCursorDown,
+    selectChat, setVisibilityChat
+} from '../actions/actions';
 
 class ChatWindowInput extends Component {
     static propTypes = {
@@ -19,7 +23,29 @@ class ChatWindowInput extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { message: '' };
+
+        this.state = {
+            message: '',
+            emoji: false
+        };
+
+        this.getEmojiesPopup = this.getEmojiesPopup.bind(this);
+    }
+
+    getEmojiesPopup = () => {
+        const emojies = ['+1', '-1', 'kissing_heart', 'sparkling_heart', 'gift_heart', 'santa',
+            'yum', 'upside_down_face', 'ok_hand', 'cherry_blossom', 'star-struck',
+            'green_apple'];
+        return emojies.map(id => {
+            return (
+                <Emoji
+                    className="emoji__style"
+                    onClick={this.addEmojiIntoText.bind(id)}
+                    emoji={{ id }}
+                    size={25}
+                />
+            );
+        });
     }
 
     handleChange = event => { this.setState({ message: event.target.value }); };
@@ -42,11 +68,11 @@ class ChatWindowInput extends Component {
             if (cursorInBottom) {
                 moveCursorDown();
             }
-            
+
             this.props.dispatch(asyncSendMessage(message, serverURL));
             // @lms: этот хак сделан для обновления чата, который пришел через сокет
             // todo: удалить и сделать нормально
-            let chat = this.props.allChats.find(x => x.id === currentChatId);
+            const chat = this.props.allChats.find(x => x.id === currentChatId);
             this.props.dispatch(selectChat(currentChatId));
             this.props.dispatch(setVisibilityChat(chat));
 
@@ -54,22 +80,62 @@ class ChatWindowInput extends Component {
         }
     };
 
+    openEmojies = () => this.setState({ emoji: true });
+
+    closeEmojies = () => this.setState({ emoji: false });
+
+    findEmoji = id => emojiIndex.search(id).map(o => o.native);
+
+    addEmojiIntoText = emoji =>
+        this.setState({ message: `${this.state.message}${this.findEmoji(emoji.id)}` });
+
     render() {
+        let picker = '';
+        if (this.state.emoji) {
+            picker = (
+                <div className="picker__style">
+                    <span>
+                        Выберите Emoji
+                    </span>
+                    <div
+                        className="closeEmojiButton__style"
+                        onClick={this.closeEmojies}
+                        title="Скрыть"
+                    >
+                        &#x274C;
+                    </div>
+                    <hr />
+                    <div>
+                        {this.getEmojiesPopup()}
+                    </div>
+                </div>
+            );
+        } else {
+            picker = '';
+        }
         return (
             <Textarea>
-                <textarea
-                    className="textarea__style"
-                    onKeyPress={this.handleSubmit}
-                    onChange={this.handleChange}
-                    type="text"
-                    placeholder="Введите сообщение"
-                    value={this.state.message}
-                    required 
-                />
+                <div className="inputField__style">
+                    <textarea
+                        className="textarea__style"
+                        onKeyPress={this.handleSubmit}
+                        onChange={this.handleChange}
+                        type="text"
+                        placeholder="Введите сообщение"
+                        value={this.state.message}
+                        required
+                    />
+                    <div onClick={this.openEmojies}
+                        className="openEmojiButton__style"
+                        title="Emoji"
+                    >
+                        &#x263A;
+                    </div>
+                    {picker}
+                </div>
             </Textarea>
         );
     }
 }
 
 export default connect()(ChatWindowInput);
-
