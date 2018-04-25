@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import io from 'socket.io-client';
 import PropTypes from 'prop-types';
 import { MessagesList, Header } from '../styles/messages';
 
@@ -61,13 +62,39 @@ export default class Messages extends Component {
     static propTypes = {
         title: PropTypes.string,
         chat: PropTypes.shape(),
-        user: PropTypes.shape()
+        user: PropTypes.shape(),
+        onReceiveMessage: PropTypes.func
     };
 
-    static defaultProps = { title: '', chat: {}, user: {} };
+    static defaultProps = { title: '', chat: {}, user: {}, onReceiveMessage: () => {} };
+
+    constructor() {
+        super();
+
+        this.socket = io('http://localhost:3000', {
+            transports: ['websocket']
+        });
+    }
 
     componentDidMount() {
         this.node.scrollTop = this.node.scrollHeight;
+
+        const roomName = this.props.chat._id;
+
+        this.socket.on('connect', () => {
+            this.socket.emit('room', roomName);
+        });
+
+        this.socket.on('message', data => {
+            const { message } = data;
+            const { onReceiveMessage, chat, user } = this.props;
+
+            if (message.sender.userId !== user._id) {
+                onReceiveMessage(chat, message);
+            }
+        });
+
+        this.socket.connect();
     }
 
     componentWillUpdate = () => {
@@ -80,6 +107,10 @@ export default class Messages extends Component {
             this.node.scrollTop = this.node.scrollHeight;
         }
     };
+
+    componentWillUnmount() {
+        this.socket.disconnect();
+    }
 
     getSectionRef = node => { this.node = node; }
 

@@ -30,6 +30,7 @@ class ChatWindowInput extends Component {
             const message = {
                 _id: `${Math.random()}_new_message`,
                 sender: {
+                    userId: user._id,
                     name: user.name,
                     avatar: user.avatar
                 },

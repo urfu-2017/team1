@@ -14,13 +14,14 @@ const app = express();
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
-const server = require('http')
-    .Server(app);
+const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const authMiddleware = require('./middleware/auth');
 const routes = require('./routes');
 const session = require('express-session');
 const memoryStore = require('session-memory-store')(session)();
+
+const { socketHandlers } = require('./socket');
 
 mongoose.connect('mongodb://localhost/messenger');
 
@@ -41,6 +42,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(authMiddleware());
+
+// Прокидываем io во внутрь всех контроллеров
+app.use((req, res, next) => { // eslint-disable-line no-shadow
+    req.ioServer = io;
+    next();
+});
 
 const nextApp = next({
     dir: './client',
@@ -63,6 +70,7 @@ io.use(passportSocketIo.authorize({
 nextApp.prepare()
     .then(() => {
         routes(app, io);
+        socketHandlers(io);
         app
             .get('*', handleRequest);
         server.listen(port, () => console.info(`> Ready on http://localhost:${port}`)); // eslint-disable-line no-console, max-len

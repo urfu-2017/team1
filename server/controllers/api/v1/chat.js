@@ -34,8 +34,19 @@ class ChatController {
         if (chat.contacts.find(contact => contact.userId === user._id) != null) {
             res.status(400).send({ error: 'Слыш, ты рамсы попутал? Тебе сюда нельзя' });
         } else {
-            const message = new Message(req.body.message);
+            // Защищаем от инъекций отправителя
+            const sender = {
+                userId: user._id,
+                name: user.name,
+                avatar: user.avatar
+            };
+            const message = new Message(Object.assign({}, req.body.message, { sender }));
             await ChatManager.addMessageToChat(chat, message);
+
+            req.ioServer.in(chat._id).emit('message', {
+                message
+            });
+
             res.status(200).send(message);
         }
     }

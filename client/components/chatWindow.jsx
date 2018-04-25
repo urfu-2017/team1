@@ -36,6 +36,7 @@ export default class ChatWindow extends Component {
                     title={getChatName(chat, user)}
                     user={user}
                     chat={chat}
+                    onReceiveMessage={addMessageFromChatInput}
                 />
                 <ChatWindowInput
                     sendMessage={sendMessage}
