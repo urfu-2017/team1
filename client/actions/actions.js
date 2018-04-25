@@ -29,7 +29,7 @@ export const moveCursorDown = () => {
 };
 
 
-export const addMessageFromChatInput = message => ({ type: SEND_NEW_MESSAGE, message });
+export const addMessageFromChatInput = (chat, message) => ({ type: SEND_NEW_MESSAGE, chat, message });
 
 export const selectChat = id => ({ type: SELECT_CHAT, id });
 

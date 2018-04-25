@@ -15,7 +15,7 @@ class ScrollButton extends React.Component {
 
     scrollStep() {
         const messagesBlock = document.getElementById('messages');
-        const scrollHeight = messagesBlock.scrollHeight
+        const { scrollHeight } = messagesBlock;
         if (messagesBlock.pageYOffset !== scrollHeight) {
             clearInterval(this.state.intervalId);
         }
@@ -90,7 +90,7 @@ export default class Messages extends Component {
             <Message
                 key={message._id}
                 message={message.message}
-                creationTime={message.createAt}
+                creationTime={message.createdAt}
                 fromMe={message.sender._id === user._id}
                 metadata={message.metadata}
             />

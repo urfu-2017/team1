@@ -9,11 +9,18 @@ import { getChatName } from '../utils/chats';
 
 export default class ChatWindow extends Component {
     static propTypes = {
+        sendMessage: PropTypes.func,
+        addMessageFromChatInput: PropTypes.func,
         user: PropTypes.shape(),
         chat: PropTypes.shape()
     };
 
-    static defaultProps = { chat: {}, user: {} };
+    static defaultProps = {
+        sendMessage: () => {},
+        addMessageFromChatInput: () => {},
+        chat: {},
+        user: {}
+    };
 
     constructor(props) {
         super(props);
@@ -21,7 +28,7 @@ export default class ChatWindow extends Component {
     }
 
     render() {
-        const { chat, user } = this.props;
+        const { chat, user, sendMessage, addMessageFromChatInput } = this.props;
 
         return chat._id ?
             <ChatWindowWrapper>
@@ -31,6 +38,8 @@ export default class ChatWindow extends Component {
                     chat={chat}
                 />
                 <ChatWindowInput
+                    sendMessage={sendMessage}
+                    addMessageFromChatInput={addMessageFromChatInput}
                     chat={chat}
                     user={user}
                 />

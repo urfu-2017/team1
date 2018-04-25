@@ -8,12 +8,13 @@ import { sendMessage, addMessageFromChatInput, cursorIsPressedFromBelow, moveCur
 
 class ChatWindowInput extends Component {
     static propTypes = {
-        dispatch: PropTypes.func,
+        addMessageFromChatInput: PropTypes.func,
+        sendMessage: PropTypes.func,
         chat: PropTypes.shape(),
         user: PropTypes.shape()
     }
 
-    static defaultProps = { dispatch: {}, chat: {}, user: {} }
+    static defaultProps = { addMessageFromChatInput, sendMessage, chat: {}, user: {} }
 
     constructor(props) {
         super(props);
@@ -27,20 +28,24 @@ class ChatWindowInput extends Component {
             event.preventDefault();
             const { chat, user } = this.props;
             const message = {
-                message: this.state.message,
+                _id: `${Math.random()}_new_message`,
                 sender: {
                     name: user.name,
                     avatar: user.avatar
-                }
+                },
+                message: this.state.message,
+                createdAt: '',
+                fromMe: true,
+                metadata: {}
             };
             const cursorInBottom = cursorIsPressedFromBelow();
-            this.props.dispatch(addMessageFromChatInput(message));
+            this.props.addMessageFromChatInput(chat, message);
 
             if (cursorInBottom) {
                 moveCursorDown();
             }
 
-            this.props.dispatch(sendMessage(chat, message));
+            this.props.sendMessage(chat, message);
 
             this.setState({ message: '' });
         }
