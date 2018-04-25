@@ -92,6 +92,7 @@ export default class Chat extends React.Component {
 
         this.subscribe();  // TODO: separate general chat info and messages between components
         const { currentUser } = this.props;
+        if (!currentUser) return <div />;
         return (
             <ChatWindowWrapper>
                 <Messages

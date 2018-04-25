@@ -9,7 +9,7 @@ export default class Auth extends React.Component {
                 <div className="inner">
                     Авторизоваться через:
                     <a href="/auth/github/">
-                        <div className="inner__image"></div>
+                        <div className="inner__image" />
                     </a>
                 </div>
             </div>

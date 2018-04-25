@@ -4,11 +4,14 @@ import MenuIcon from 'react-icons/lib/fa/list';
 import {Scrollbars} from 'react-custom-scrollbars';
 import {graphql} from 'react-apollo';
 
+const OverlayLoader = dynamic(import('react-loading-indicator-overlay/lib/OverlayLoader'), { ssr: false });
+
 import {withCurrentUser} from '../../lib/currentUserContext';
-import { GetUserChats } from '../../graphqlQueries/chats'
+import {GetUserChats} from '../../graphqlQueries/chats';
 import ChatPreview from './chatPreview';
 import Paranja from './paranja';
 import {Header, SearchInput, ChatsList} from '../../styles/chats';
+import dynamic from 'next/dynamic';
 
 
 // TODO: retrieve last messages and sort by modification order
@@ -32,8 +35,7 @@ export default class SideBar extends React.Component {
         mainComponentChanger: PropTypes.func
     };
 
-    static defaultProps = {
-    };
+    static defaultProps = {};
 
     constructor(props) {
         super(props);
@@ -59,6 +61,22 @@ export default class SideBar extends React.Component {
     toggleParanja = () =>
         this.setState((prev) => ({ paranjaOpened: !prev.paranjaOpened }));
 
+    loadScreen = () => (
+        (typeof window === 'undefined') ? null :
+            <React.Fragment>
+                <div style={{ height: '10%' }} />
+                { OverlayLoader.nodeName !== 'P' &&
+                <OverlayLoader
+                    displayName={'foo'}
+                    color={'#7e9cda'}
+                    loader="GridLoader"
+                    active={true}
+                    backgroundColor={'black'}
+                    opacity="0"
+                /> }
+            </React.Fragment>
+    );
+
     render() {
         const { chats, currentUser } = this.props;
         return (
@@ -79,10 +97,10 @@ export default class SideBar extends React.Component {
                         <SearchInput placeholder="Поиск" type="search"/>
                     </Header>
                     <Scrollbars universal>
-                    { chats.loading ?
-                        <p>Загружаем чаты...</p> :
-                        !chats.error && this.getChatsList()
-                    }
+                        { chats && chats.loading ?
+                            this.loadScreen() :
+                            chats && !chats.error && this.getChatsList()
+                        }
                     </Scrollbars>
                 </ChatsList>
             </React.Fragment>

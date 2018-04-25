@@ -19,11 +19,15 @@ class DynamicConfig {
     }
 
     enableProxy() {
-        const url = process.env.URL.startsWith('http://') ?
-            process.env.URL.slice('http://'.length) :
-            process.env.URL;
-        this.httpUrl = `http://${url}/${process.env.PROXY_SECRET}/proxy/http`;
-        this.wsUrl = `ws://${url}/${process.env.PROXY_SECRET}/proxy/ws`;
+        // TODO: hmmmm
+        const url = process.env.URL.startsWith('https://') ?
+                    process.env.URL.slice('https://'.length) :
+                        process.env.URL.startsWith('http://') ?
+                        process.env.URL.slice('http://'.length) :
+                        process.env.URL;
+        this.httpUrl = `https://${url}/${process.env.PROXY_SECRET}/proxy/http`;
+        // this.wsUrl = `wss://${url}/${process.env.PROXY_SECRET}/proxy/ws`;
+        this.wsUrl = process.env.WS_PROXY_URL;
     }
 
     disableProxy() {

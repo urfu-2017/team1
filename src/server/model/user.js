@@ -25,10 +25,10 @@ class User {
 
     static async create(username, avatarUrl, githubId) {
         const user = await dbConnection.createUser(username, avatarUrl, githubId);
-        console.log('Create user');
-        console.log('%%%%%%%%%%%%%%%%');
-        console.log(user);
-        console.log('%%%%%%%%%%%%%%%%');
+        // console.log('Create user');
+        // console.log('%%%%%%%%%%%%%%%%');
+        // console.log(user);
+        // console.log('%%%%%%%%%%%%%%%%');
 
         return this.deserialize(user);
     }
@@ -36,15 +36,15 @@ class User {
     static async findByID(id) {
 
         const data = await dbConnection.findUserByID(id);
-        console.log('find user by id');
-        console.log(data);
+        // console.log('find user by id');
+        // console.log(data);
         return data && this.deserialize(data);
     }
 
     static async findByGithubID(githubId) {
         const user = await dbConnection.findUserByGithubID(githubId);
-        console.log('Get user by github id');
-        console.log(user);
+        // console.log('Get user by github id');
+        // console.log(user);
         return user && this.deserialize(user);
     }
 
