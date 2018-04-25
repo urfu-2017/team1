@@ -23,7 +23,7 @@ export default function createMetaReducer(currentUser) {
             state.currentChat = action.chat;
             return Object.assign({}, state);
         case SEND_NEW_MESSAGE: {
-            action.chat.messages.push(action.messages);
+            action.chat.messages.push(action.message);
             state.currentChat = Object.assign({}, action.chat);
             return Object.assign({}, state);
         }
