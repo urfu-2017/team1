@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Emoji, emojiIndex } from 'emoji-mart';
 
 import Textarea from '../styles/chatWindowInput';
-import { sendMessage, addMessageFromChatInput, cursorIsPressedFromBelow, moveCursorDown }
+import { cursorIsPressedFromBelow, moveCursorDown }
     from '../actions/actions';
 
 class ChatWindowInput extends Component {
@@ -14,16 +15,38 @@ class ChatWindowInput extends Component {
         user: PropTypes.shape()
     }
 
-    static defaultProps = { addMessageFromChatInput, sendMessage, chat: {}, user: {} }
-
     constructor(props) {
         super(props);
-        this.state = { message: '' };
+
+        this.state = {
+            message: '',
+            emoji: false
+        };
+
+        this.getEmojiesPopup = this.getEmojiesPopup.bind(this);
+    }
+
+    getEmojiesPopup = () => {
+        const emojies = ['+1', '-1', 'kissing_heart', 'sparkling_heart', 'gift_heart', 'santa',
+            'yum', 'upside_down_face', 'ok_hand', 'cherry_blossom', 'star-struck',
+            'green_apple'];
+        return emojies.map(id => {
+            return (
+                <Emoji
+                    className="emoji__style"
+                    onClick={this.addEmojiIntoText.bind(id)}
+                    emoji={{ id }}
+                    size={25}
+                />
+            );
+        });
     }
 
     handleChange = event => { this.setState({ message: event.target.value }); };
 
     handleSubmit = event => {
+        const { addMessageFromChatInput, sendMessage } = this.props;
+
         if (event.which === 13 && !event.shiftKey) {
             event.preventDefault();
             const { chat, user } = this.props;
@@ -40,34 +63,73 @@ class ChatWindowInput extends Component {
                 metadata: {}
             };
             const cursorInBottom = cursorIsPressedFromBelow();
-            this.props.addMessageFromChatInput(chat, message);
-
+            addMessageFromChatInput(chat, message);
             if (cursorInBottom) {
                 moveCursorDown();
             }
+            sendMessage(chat, message);
 
-            this.props.sendMessage(chat, message);
 
             this.setState({ message: '' });
         }
     };
 
+    openEmojies = () => this.setState({ emoji: true });
+
+    closeEmojies = () => this.setState({ emoji: false });
+
+    findEmoji = id => emojiIndex.search(id).map(o => o.native);
+
+    addEmojiIntoText = emoji =>
+        this.setState({ message: `${this.state.message}${this.findEmoji(emoji.id)}` });
+
     render() {
+        let picker = '';
+        if (this.state.emoji) {
+            picker = (
+                <div className="picker__style">
+                    <span>
+                        Выберите Emoji
+                    </span>
+                    <div
+                        className="closeEmojiButton__style"
+                        onClick={this.closeEmojies}
+                        title="Скрыть"
+                    >
+                        &#x274C;
+                    </div>
+                    <hr />
+                    <div>
+                        {this.getEmojiesPopup()}
+                    </div>
+                </div>
+            );
+        } else {
+            picker = '';
+        }
         return (
             <Textarea>
-                <textarea
-                    className="textarea__style"
-                    onKeyPress={this.handleSubmit}
-                    onChange={this.handleChange}
-                    type="text"
-                    placeholder="Введите сообщение"
-                    value={this.state.message}
-                    required 
-                />
+                <div className="inputField__style">
+                    <textarea
+                        className="textarea__style"
+                        onKeyPress={this.handleSubmit}
+                        onChange={this.handleChange}
+                        type="text"
+                        placeholder="Введите сообщение"
+                        value={this.state.message}
+                        required
+                    />
+                    <div onClick={this.openEmojies}
+                        className="openEmojiButton__style"
+                        title="Emoji"
+                    >
+                        &#x263A;
+                    </div>
+                    {picker}
+                </div>
             </Textarea>
         );
     }
 }
 
-export default connect()(ChatWindowInput);
-
+export default ChatWindowInput;
