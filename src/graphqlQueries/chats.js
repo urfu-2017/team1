@@ -8,6 +8,7 @@ query GetUserChats($userId: ID!) {
     chats {
       id
       title
+      picture
     }
   }
 }
@@ -33,41 +34,13 @@ export const GetUserChats = {
 };
 
 
-
-export const ADD_CHAT_MEMBER_ql = gql`
-mutation AddChatMember($ids: AddToChatMembersConnectionInput!) {
-  addToChatMembersConnection(input: $ids) {
-    changedChatMembers {
-      user {
-        chats {
-          edges {
-            node {
-              id
-            }
-          }
-        }
-      }
-      chat {
-        members {
-          edges {
-            node {
-              id
-            }
-          }
-        }
-      }
-    }
-  }
-}
-`;
-
-
 const GET_CHAT_ql = gql`
 query GetChat($chatId: ID!) {
   Chat(id: $chatId) {
     id
     title
     private
+    picture
     modifiedAt
     createdAt
     members {
@@ -110,19 +83,33 @@ export const GetChat = {
 };
 
 
-const CREATE_CHAT_ql = gql`
-mutation CreateChat($title: String!, $ownerId: ID!, $picture: String) {
-  createChat(title: $title, ownerId: $ownerId, picture: $picture) {
+export const CREATE_CHAT_ql = gql`
+mutation CreateChat($title: String!, $ownerId: ID!, $picture: String, $user1: ID!, $user2: ID!) {
+  createChat(title: $title, ownerId: $ownerId, picture: $picture, membersIds: [$user1, $user2]) {
     id
     createdAt
     picture
-    modifiedAt
+    modifiedAt,
+    members {
+      id
+    }
+  }
+  currentUser: updateUser(id: $user1, chatsUpdatedDummy: true) {
+    id,
+    chats {
+      id
+      title
+      picture
+    }
+  }
+  contact: updateUser(id: $user2, chatsUpdatedDummy: true) {
+    id
   }
 }
 `;
 
 
-const ADD_USER_TO_CHAT_ql = gql`
+const ADD_CHAT_MEMBER_ql = gql`
 mutation AddUserToChat($chatId: ID!, $userId: ID!) {
   addToChatOnUser(chatsChatId: $chatId, membersUserId: $userId) {
     membersUser {

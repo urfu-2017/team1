@@ -3,46 +3,5 @@
   "currentChatId": {
     "id": "",
     "__typename": "CurrentChatIdType"
-  },
-  "selectedChatId": null,
-  "some_key": "some_value",
-  "openedChat": {
-    "title": "Foo",
-    "messages": [],
-    "id": "some_id",
-    "allChats": [],
-    "currentUserId": "none",
-    "__typename": "ChatType"
-  },
-  "currentUser": {
-    "id": "unique_id_lol",
-    "name": "You-know-who",
-    "__typename": "UserType"
-  },
-  "allChats" : [
-    {
-        "title": "First Chat Title",
-        "__typename": "ChatType",
-        "id": "ID_1",
-        "lastMessage": {
-            "__typename": "MessageType",
-            "content": {
-              "__typename": "ContentType",
-                "text": "message text"
-            },
-            "sender": {
-              "__typename": "SenderType",
-                "name": "user",
-                "avatar": "path-to-avatar.jpeg"
-            }
-        },
-        "messages": [
-            {
-              "content": {
-                "text": "message text"
-              }
-            }
-        ]
-    }
-  ]
+  }
 }

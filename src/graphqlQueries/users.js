@@ -1,23 +1,34 @@
-import { gql } from 'graphql-tag';
+import gql from 'graphql-tag';
 
 
-export const CREATE_USER_ql = gql`
-mutation CreateUser($user: CreateUserInput!) {
-  createUser(input: $user) {
-    changedUser {
+// TODO: dummy implementation
+export const GET_USER_CONTACTS_ql = gql`
+query GetUserContacts {
+    allUsers {
+        id
+        name
+        avatarUrl
+        createdAt
+    }
+}
+`;
+
+
+export const SUBSCRIBE_USER_CHATS_UPDATES_ql = gql`
+subscription SubscribeToNewChats($filter: UserSubscriptionFilter!) {
+  User(filter: $filter) {
+    mutation
+    node {
       id
-      username
-      createdAt
-      contacts {
-        edges {
-          node {
-            username
-          }
+      chats {
+        id
+        title
+        picture
+        owner {
+          id
         }
       }
     }
   }
 }
 `;
-
-

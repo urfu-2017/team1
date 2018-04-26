@@ -1,5 +1,7 @@
 import gql from 'graphql-tag';
 
+import {GetChat} from './chats';
+
 
 const CREATE_MESSAGE_ql = gql`
 mutation CreateMessage($text: String!, $chatId: ID!, $senderId: ID!, $pictures: [String!]) {
@@ -18,8 +20,15 @@ mutation CreateMessage($text: String!, $chatId: ID!, $senderId: ID!, $pictures: 
 }
 `;
 
+
 const createMessage_map = ({ mutate }) => ({
-    createMessage: message => mutate({ variables: { ...message } })
+    createMessage: message => mutate({
+        variables: { ...message },
+        refetchQueries: [{
+            query: GetChat.query,
+            variables: { chatId: message.chatId },
+        }]
+    })
 });
 
 export const CreateMessage = {

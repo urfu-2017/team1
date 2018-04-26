@@ -8,10 +8,13 @@ const OverlayLoader = dynamic(import('react-loading-indicator-overlay/lib/Overla
 
 import {withCurrentUser} from '../../lib/currentUserContext';
 import {GetUserChats} from '../../graphqlQueries/chats';
+import {SUBSCRIBE_USER_CHATS_UPDATES_ql} from '../../graphqlQueries/users';
 import ChatPreview from './chatPreview';
 import Paranja from './paranja';
 import {Header, SearchInput, ChatsList} from '../../styles/chats';
 import dynamic from 'next/dynamic';
+import {SubscribeNewMessages} from '../../graphqlQueries/messages';
+import Chat from '../Chat';
 
 
 // TODO: retrieve last messages and sort by modification order
@@ -64,8 +67,8 @@ export default class SideBar extends React.Component {
     loadScreen = () => (
         (typeof window === 'undefined') ? null :
             <React.Fragment>
-                <div style={{ height: '10%' }} />
-                { OverlayLoader.nodeName !== 'P' &&
+                <div style={{ height: '10%' }}/>
+                {OverlayLoader.nodeName !== 'P' &&
                 <OverlayLoader
                     displayName={'foo'}
                     color={'#7e9cda'}
@@ -73,12 +76,34 @@ export default class SideBar extends React.Component {
                     active={true}
                     backgroundColor={'black'}
                     opacity="0"
-                /> }
+                />}
             </React.Fragment>
     );
 
+    subscription = null;
+
+    static subscriptionDataHandler = (previousResult, { subscriptionData, variables }) => {
+        if (!previousResult.User) {
+            return previousResult;
+        }
+        return { User: subscriptionData.data.User.node };
+    };
+
+    subscribe = () => {
+        if (!this.subscription) {
+            this.subscription = this.props.chats.subscribeToMore({
+                document: SUBSCRIBE_USER_CHATS_UPDATES_ql,
+                variables: { filter: { node: { id: this.props.currentUser.id } } },
+                updateQuery: SideBar.subscriptionDataHandler
+            });
+        }
+    };
+
     render() {
         const { chats, currentUser } = this.props;
+        if (chats && !chats.loading) {
+            this.subscribe();
+        }
         return (
             <React.Fragment>
                 {
@@ -97,7 +122,7 @@ export default class SideBar extends React.Component {
                         <SearchInput placeholder="Поиск" type="search"/>
                     </Header>
                     <Scrollbars universal>
-                        { chats && chats.loading ?
+                        {chats && chats.loading ?
                             this.loadScreen() :
                             chats && !chats.error && this.getChatsList()
                         }

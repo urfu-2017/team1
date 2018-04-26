@@ -25,7 +25,7 @@ class DynamicConfig {
                         process.env.URL.startsWith('http://') ?
                         process.env.URL.slice('http://'.length) :
                         process.env.URL;
-        this.httpUrl = `https://${url}/${process.env.PROXY_SECRET}/proxy/http`;
+        this.httpUrl = `http://${url}/${process.env.PROXY_SECRET}/proxy/http`;
         // this.wsUrl = `wss://${url}/${process.env.PROXY_SECRET}/proxy/ws`;
         this.wsUrl = process.env.WS_PROXY_URL;
     }
@@ -35,7 +35,7 @@ class DynamicConfig {
         this.wsUrl = process.env.WS_API_URL;
     }
 
-    toggleProxyMiddleware(value) {
+    proxySwitcher(value) {
         if (value)
             return (req, res) => this.enableProxy() || res.send('Proxy enabled');
         return (req, res) => this.disableProxy() || res.send('Proxy disabled');

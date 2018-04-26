@@ -50,7 +50,7 @@ export default class App extends React.Component {
             <Wrapper>
                 <CurrentUserProvider value={this.props.currentUser}>
                     <SideBar mainComponentChanger={this.changeMainComponent}/>
-                    <MainComponent/>
+                    <MainComponent mainComponentChanger={this.changeMainComponent}/>
                 </CurrentUserProvider>
             </Wrapper>
         );

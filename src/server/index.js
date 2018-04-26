@@ -5,7 +5,6 @@ require('dotenv').config();
 const next = require('next');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
 const routes = require('./routes');
 const session = require('express-session');
 const memoryStore = require('session-memory-store')(session)();
@@ -24,6 +23,7 @@ const DynamicConfig = require('./dynamicConfig');
 const GraphqlApi = require('./db/graphqlApi');
 const authMiddleware = require('./middleware/auth');
 const proxyMiddleware = require('./middleware/proxy');
+const requestInterceptor = require('./lib/requestsInterceptor');
 
 
 function main(isProduction, port) {
@@ -32,12 +32,13 @@ function main(isProduction, port) {
     const dynamicConfig = new DynamicConfig({}, proxyEnabled);
 
     server.use(cookieParser())
-        .use(`/${process.env.PROXY_SECRET}/proxy`, proxyMiddleware)
-        .use(`/${process.env.PROXY_SECRET}/open-the-pod-bay-doors-hal`,
-            dynamicConfig.toggleProxyMiddleware(true))
-        .use(`/${process.env.PROXY_SECRET}/im-sorry-dave-im-afraid-i-cant-do-that`,
-            dynamicConfig.toggleProxyMiddleware(false))
-        .use(bodyParser.urlencoded({ extended: true }))
+        .use(Express.urlencoded({ extended: true }))
+        .use(Express.json())
+        .use(`/${process.env.PROXY_SECRET}/proxy`, proxyMiddleware(requestInterceptor))
+        .use(`/${process.env.PROXY_SECRET_SWITCH}/open-the-pod-bay-doors-hal`,
+            dynamicConfig.proxySwitcher(true))
+        .use(`/${process.env.PROXY_SECRET_SWITCH}/im-sorry-dave-im-afraid-i-cant-do-that`,
+            dynamicConfig.proxySwitcher(false))
         .use(
             session({
                 store: memoryStore,

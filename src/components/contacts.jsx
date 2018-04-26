@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Scrollbars } from 'react-custom-scrollbars';
+import {graphql, compose, Mutation} from 'react-apollo';
+import {Scrollbars} from 'react-custom-scrollbars';
 
+import {withCurrentUser} from '../lib/currentUserContext';
+import {GET_USER_CONTACTS_ql} from '../graphqlQueries/users';
+import {CREATE_CHAT_ql, GetUserChats} from '../graphqlQueries/chats';
 import {
     Search,
     Contact,
@@ -10,33 +14,36 @@ import {
     CreateButton,
     ContactsWrapper
 } from '../styles/contacts';
+import {UpdateCurrentChatId} from '../graphqlQueries/localState';
 
 
-const getNewChat = (user, contact) => ({
-    title: `${contact.name}`,
-    picture: 'picture1',
-    creatorId: user.id,
-    usersIds: [user.id, contact.id],
-    id: `${Math.random()}`,
-    userChatId: `${Math.random()}`
+const getNewChat = (currentUser, contact) => ({
+    title: `${contact.name} and ${currentUser.name}`,
+    picture: contact.avatarUrl,
+    ownerId: currentUser.id,
+    user1: currentUser.id,
+    user2: contact.id
 });
 
 
+@withCurrentUser
+@compose(
+    graphql(GET_USER_CONTACTS_ql, { name: 'contacts' }),
+    graphql(UpdateCurrentChatId.query, {
+        props: UpdateCurrentChatId.map
+    })
+)
 export default class Contacts extends React.Component {
     static propTypes = {
         user: PropTypes.shape(),
         header: PropTypes.string,
-        onClickChat: PropTypes.func,
-        asyncCreateChat: PropTypes.func,
         contacts: PropTypes.arrayOf(PropTypes.object)
     };
 
     static defaultProps = {
         user: {},
         header: '',
-        contacts: [],
-        onClickChat: () => {},
-        asyncCreateChat: () => {}
+        contacts: []
     };
 
     constructor(props) {
@@ -45,38 +52,64 @@ export default class Contacts extends React.Component {
     }
 
     getContactsList() {
-        const { contacts, onClickChat, user, asyncCreateChat, addChatFromContacts } = this.props;
-        return contacts.map(contact => (
-            <Contact
-                key={contact.name + Math.random()}
-                onClick={() => {
-                    const chat = getNewChat(user, contact);
-                    asyncCreateChat(chat, contact.id, onClickChat);
-                }}
+        const { contacts, currentUser } = this.props;
+        if (contacts.loading) {
+            return <div/>;
+        }
+        return (
+            <Mutation
+                mutation={CREATE_CHAT_ql}
+                update={
+                    (cache, { data: { currentUser, createChat } }) => {
+                        cache.writeQuery({
+                            query: GetUserChats.query,
+                            data: { User: { ...currentUser } },
+                            variables: { userId: currentUser.id }
+                        });
+                        this.props.updateCurrentChatId(createChat.id);
+                        this.props.mainComponentChanger('Chat')();
+                    }
+                }
             >
-                <img src={contact.avatar} alt="ава" className="contact__image" />
-                <p>{contact.name}</p>
-            </Contact>
-        ));
+                {createChat => {
+                    return contacts.allUsers
+                        .filter(contact => contact.id !== currentUser.id)
+                        .map(contact => this.getContactsItem(currentUser, contact, createChat));
+                }}
+            </Mutation>
+        );
     }
+
+    getContactsItem = (currentUser, contact, createChat) => (
+        <Contact
+            key={contact.id}
+            onClick={() => {
+                const chat = getNewChat(currentUser, contact);
+                createChat({ variables: { ...chat } });
+            }}
+        >
+            <img src={contact.avatarUrl} alt="ава" className="contact__image"/>
+            <p>{contact.name}</p>
+        </Contact>
+    );
 
     render() {
         const { header } = this.props;
         return (
             <ContactsWrapper>
-                <h1 className="header"> { header } </h1>
+                <h1 className="header"> {header} </h1>
                 <Search
                     type="search"
                     placeholder="Поиск"
                 />
                 <ContactsList>
                     <Scrollbars universal>
-                        { this.getContactsList() }
+                        {this.getContactsList()}
                     </Scrollbars>
                 </ContactsList>
                 <div className="buttons">
-                    <CreateButton type="button" value="Создать" />
-                    <CloseButton type="button" value="Закрыть" />
+                    <CreateButton type="button" value="Создать"/>
+                    <CloseButton type="button" value="Закрыть"/>
                 </div>
             </ContactsWrapper>
         );

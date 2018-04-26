@@ -25,7 +25,7 @@ passport.use(new GitHubStrategy(
             getPathToGeneratedPicture(fsAvatarPath, githubId);
         }
         if (!user) {
-            console.log(user)
+            console.log(user);
             user = await User.create(name, `/static/${avatarPath}`, githubId);
         } //else {
           //  await user.update({ name });
