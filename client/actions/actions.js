@@ -7,9 +7,8 @@ export const SELECT_CHAT = 'SELECT_CHAT';
 export const VISIBILITY_MENU = 'VISIBILITY_MENU';
 export const VISIBILITY_CONTACTS = 'VISIBILITY_CONTACTS';
 export const MESSAGE_SAVED = 'MESSAGE_SAVED';
-export const RECEIVED_NEW_CHAT = 'RECEIVED_NEW_CHAT';
 export const SEND_NEW_CHAT = 'SEND_NEW_CHAT';
-export const CHAT_SAVED = 'CHAT_SAVED';
+export const ADD_CHAT_TO_CHAT_LIST = 'ADD_CHAT_TO_CHAT_LIST';
 export const UPDATE_CHAT_LIST = 'UPDATE_CHAT_LIST';
 export const UPDATE_CONTACT_LIST = 'UPDATE_CONTACT_LIST';
 
@@ -31,7 +30,6 @@ export const moveCursorDown = () => {
     }, 0);
 };
 
-
 export const addMessageFromChatInput = (chat, message) => ({ type: SEND_NEW_MESSAGE, chat, message });
 
 export const selectChat = id => ({ type: SELECT_CHAT, id });
@@ -39,6 +37,8 @@ export const selectChat = id => ({ type: SELECT_CHAT, id });
 export const setVisibilityMenu = visibility => ({ type: VISIBILITY_MENU, visibility });
 
 export const setVisibilityContacts = visibility => ({ type: VISIBILITY_CONTACTS, visibility });
+
+export const addChatToChatList = chat => ({ type: ADD_CHAT_TO_CHAT_LIST, chat });
 
 export const updateChatList = chats => ({ type: UPDATE_CHAT_LIST, chats });
 
@@ -66,17 +66,14 @@ export const sendMessage = (chat, message) => dispatch => {
         });
 };
 
-export const addNewChatFromSocket = (chat, currentUserId) =>
-    ({ type: RECEIVED_NEW_CHAT, info: { chat, currentUserId } });
-
-const saveChat = (status, userChat) =>
-    ({ type: CHAT_SAVED, info: { status, userChat } });
-
 export const asyncCreateChat = (sourceUserId, targetUserId, callback) => dispatch => {
     const body = JSON.stringify({ targetUserId });
     fetch('/api/v1/chats/p2p', makeRequestOptions({ method: 'POST', body }))
         .then(response => response.json())
-        .then(response => dispatch(callback(response)));
+        .then(response => {
+            dispatch(addChatToChatList(response));
+            dispatch(callback(response));
+        });
 };
 
 export const fetchChats = () => dispatch => {
