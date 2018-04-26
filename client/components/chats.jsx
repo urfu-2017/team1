@@ -19,9 +19,7 @@ export default class Chats extends Component {
         onClick: PropTypes.func,
         selectedChatId: PropTypes.string,
         contacts: PropTypes.arrayOf(PropTypes.object),
-        user: PropTypes.object,
-        meta: PropTypes.object,
-        addNewChatFromSocket: PropTypes.func,
+        user: PropTypes.shape(),
         asyncCreateChat: PropTypes.func,
         fetchChats: PropTypes.func,
         fetchContacts: PropTypes.func
@@ -36,9 +34,7 @@ export default class Chats extends Component {
         openMenu: false,
         openContacts: false,
         contacts: [],
-        user: {},
-        meta: {},
-        addNewChatFromSocket: {}
+        user: {}
     }
 
     constructor(props) {
@@ -53,15 +49,13 @@ export default class Chats extends Component {
     }
 
     getChatsList() {
-        const { chats, onClickChat, selectedChatId, user, meta, contacts } = this.props;
+        const { chats, onClickChat, selectedChatId, user } = this.props;
         return chats.map(chat => (
             <Chat
                 key={chat._id}
                 select={selectedChatId === chat._id}
                 chat={chat}
-                meta={meta}
                 user={user}
-                contacts={contacts}
                 onClick={() => { onClickChat(chat); }}
             />
         ));

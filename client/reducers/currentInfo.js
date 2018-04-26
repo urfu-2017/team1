@@ -1,4 +1,5 @@
-import { VISIBILITY_CHAT, SELECT_CHAT, VISIBILITY_MENU, VISIBILITY_CONTACTS, SEND_NEW_MESSAGE } from '../actions/actions';
+import { VISIBILITY_CHAT, SELECT_CHAT, VISIBILITY_MENU, VISIBILITY_CONTACTS, 
+    MESSAGE_SAVED, SEND_NEW_MESSAGE } from '../actions/actions';
 
 const initialStateStub = {
     currentUser: {
@@ -25,6 +26,17 @@ export default function createMetaReducer(currentUser) {
         case SEND_NEW_MESSAGE: {
             action.chat.messages.push(action.message);
             state.currentChat = Object.assign({}, action.chat);
+            return Object.assign({}, state);
+        }
+        case MESSAGE_SAVED: {
+            const { chat, isSuccess, dumbMessage, message } = action;
+            for (const messageIndex in chat.messages) {
+                const m = chat.messages[messageIndex];
+                if (m._id === dumbMessage._id) {
+                    chat.messages[messageIndex] = message;
+                }
+            }
+            state.currentChat = Object.assign({}, chat);
             return Object.assign({}, state);
         }
         case SELECT_CHAT:

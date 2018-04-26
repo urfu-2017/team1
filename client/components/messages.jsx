@@ -120,7 +120,9 @@ export default class Messages extends Component {
                 key={message._id}
                 message={message.message}
                 creationTime={message.createdAt}
-                fromMe={message.sender._id === user._id}
+                fromMe={message.sender.userId === user._id}
+                isSuccess={message.isSuccess == null ? true : message.isSuccess}
+                isSended={message.isSended}
                 metadata={message.metadata}
             />
         ));

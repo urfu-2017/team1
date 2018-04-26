@@ -7,28 +7,34 @@ import emoji from 'node-emoji';
 export default class Message extends Component {
     static propTypes = {
         fromMe: PropTypes.bool,
+        isSended: PropTypes.bool,
+        isSuccess: PropTypes.bool,
         message: PropTypes.string,
         creationTime: PropTypes.string,
-        metadata: PropTypes.object
+        metadata: PropTypes.shape()
     };
 
-    static defaultProps = { fromMe: '', message: '', creationTime: '', metadata: {}}
+    static defaultProps = { isSended: true, fromMe: '', message: '', creationTime: '', metadata: {} }
 
     constructor(props) {
         super(props);
         this.state = {};
     }
     render() {
-        const { message, creationTime, fromMe, metadata } = this.props;
-        const ogdata = metadata.ogdata;
+        const { message, creationTime, fromMe, metadata, isSuccess, isSended } = this.props;
+        const { ogdata } = metadata;
+        let transformedMessage = message;
+
+        if (isSended !== false) {
+            transformedMessage = `${transformedMessage}\t${isSuccess ? '✓' : '⨯'}`;
+        }
         return (
-            <MessageWrapper fromMe={fromMe}>
-                <div className="messageBlock">
+            <MessageWrapper>
+                <div className={`messageBlock ${(fromMe ? 'from_me' : 'from_they')}`}>
                     {/* <div className="massageBlock__time">{creationTime}</div> */}
                     <div
                         className="messageBlock__text"
-                        fromMe={fromMe}
-                        dangerouslySetInnerHTML={{ __html: emoji.emojify(marked(message), res => res) }}
+                        dangerouslySetInnerHTML={{ __html: emoji.emojify(marked(transformedMessage), res => res) }}
                     />
                     { ogdata && Object.keys(ogdata).length !== 0 &&
                     <div className="metadata">

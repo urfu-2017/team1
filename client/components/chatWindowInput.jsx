@@ -57,6 +57,7 @@ class ChatWindowInput extends Component {
                     name: user.name,
                     avatar: user.avatar
                 },
+                isSended: false,
                 message: this.state.message,
                 createdAt: '',
                 fromMe: true,
@@ -68,7 +69,6 @@ class ChatWindowInput extends Component {
                 moveCursorDown();
             }
             sendMessage(chat, message);
-
 
             this.setState({ message: '' });
         }

@@ -6,27 +6,20 @@ import { connect } from 'react-redux';
 import { ChatWrapper, ChatHeader, LastMessage, Sender } from '../styles/chat';
 
 import { addMessageFromSocket, cursorIsPressedFromBelow, moveCursorDown } from '../actions/actions';
-import { getChatName } from '../utils/chats';
+import { getChatName, getChatAvatar } from '../utils/chats';
 
 class Chat extends Component {
     static propTypes = {
-        chat: PropTypes.object,
+        chat: PropTypes.shape(),
+        user: PropTypes.shape(),
         select: PropTypes.bool,
-        onClick: PropTypes.func,
-        dispatch: PropTypes.func,
-        meta: PropTypes.object,
-        user: PropTypes.object,
-        contacts: PropTypes.arrayOf(PropTypes.object)
+        onClick: PropTypes.func
     };
 
     static defaultProps = {
         chat: {},
         select: false,
-        onClick: {},
-        dispatch: {},
-        meta: {},
-        user: {},
-        contacts: []
+        user: {}
     };
 
     constructor(props) {
@@ -36,11 +29,14 @@ class Chat extends Component {
 
     render() {
         const { onClick, chat, select, user } = this.props;
+
         const chatName = getChatName(chat, user);
+        const chatAvatar = getChatAvatar(chat, user);
+
         return (
             <ChatWrapper onClick={onClick} select={select}>
                 <div className="chat-avatar">
-                    <img src={chat.avatar} width="50" height="50" alt={chatName} className="chat-avatar__img" />
+                    <img src={chatAvatar} width="50" height="50" alt={chatName} className="chat-avatar__img" />
                 </div>
                 <div className="chat-description">
                     <ChatHeader>{chatName}</ChatHeader>
@@ -56,4 +52,4 @@ class Chat extends Component {
     }
 }
 
-export default connect()(Chat);
+export default Chat;

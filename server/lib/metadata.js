@@ -9,7 +9,6 @@ async function getMetadata(message) {
     if (url) {
         metadata = await scrape(url);
     }
-
     return {
         ogdata: metadata && metadata.openGraph
     };

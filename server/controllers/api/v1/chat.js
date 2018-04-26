@@ -43,7 +43,7 @@ class ChatController {
                 avatar: user.avatar
             };
             let messageData = req.body.message;
-            messageData = Object.assign({}, messageData, { metadata: getMetadata(messageData.message) });
+            messageData = Object.assign({}, messageData, { metadata: await getMetadata(messageData.message) });
             const message = new Message(Object.assign({}, messageData, { sender }));
             await ChatManager.addMessageToChat(chat, message);
 

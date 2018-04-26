@@ -19,8 +19,14 @@ export const MessageWrapper = styled.article`
         border-radius: 5px;
         min-height: 25px;
         height:auto;
-        float: ${props => (props.fromMe ? 'right' : 'left')};
-        background-color: ${props => (props.fromMe ? '#92d7ef' : '#a2eae0')};
+    }
+    .from_me {
+        float: right;
+        background-color: #92d7ef;
+    }
+    .from_they {
+        float: left;
+        background-color: #a2eae0;
     }
     .messageBlock__text {
         width: fit-content;

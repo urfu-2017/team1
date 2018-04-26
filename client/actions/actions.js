@@ -44,21 +44,13 @@ export const updateChatList = chats => ({ type: UPDATE_CHAT_LIST, chats });
 
 export const updateContacts = contacts => ({ type: UPDATE_CONTACT_LIST, contacts });
 
-const saveStatus = (status, userMessage) =>
-    ({ type: MESSAGE_SAVED, info: { status, userMessage } });
+export const saveMessage = (chat, isSuccess, dumbMessage, message) =>
+    ({ type: MESSAGE_SAVED, chat, isSuccess, dumbMessage, message });
 
 export const sendMessage = (chat, message) => dispatch => {
     const URL = `api/v1/chats/${chat._id}`;
-    const options = {
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify({ message }),
-        credentials: 'same-origin'
-    };
-    fetch(URL, options)
+    const body = JSON.stringify({ message });
+    fetch(URL, makeRequestOptions({ body, method: 'POST' }))
         .then(response => {
             if (response.status === 200) {
                 return response.json();
@@ -67,11 +59,10 @@ export const sendMessage = (chat, message) => dispatch => {
             }
         })
         .then(updatedMessage => {
-            message.metadata = updatedMessage.metadata;
-            dispatch(saveStatus('\t✓', message));
+            dispatch(saveMessage(chat, true, message, updatedMessage));
         })
         .catch(() => {
-            dispatch(saveStatus('\t⨯', message));
+            dispatch(saveMessage(chat, false, message));
         });
 };
 
