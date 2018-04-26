@@ -25,8 +25,6 @@ export default class KilogrammApp extends React.Component {
         return {
             user: req.user,
             socketURL: req.serverURL,
-            chatSocketPrefix: req.chatSocketPrefix,
-            contacts: req.user.contacts,
             users: req.users
         };
     }

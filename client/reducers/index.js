@@ -2,12 +2,13 @@ import { combineReducers } from 'redux';
 
 import chatReducer from './chats';
 import createCurrentInfo from './currentInfo';
+import contactsReducer from './contacts';
 
 export default function makeReducer(initialProps) {
     return combineReducers({
         chats: chatReducer,
+        contacts: contactsReducer,
         currentInfo: createCurrentInfo(initialProps.user),
-        contacts: initialProps.contacts,
-        socket: initialProps.socket
+        socketURL: initialProps.socketURL
     });
 }

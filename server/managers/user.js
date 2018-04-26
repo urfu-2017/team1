@@ -35,6 +35,10 @@ class UserManager {
         return user;
     }
 
+    static async findUsersButExcludeUser(excludeUser) {
+        return await User.find({ _id: { $ne: excludeUser._id } });
+    }
+
     static async findUsersByName(name) {
         return await User.find({ name: { $regex: name } });
     }

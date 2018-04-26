@@ -3,7 +3,7 @@ import Chats from '../components/chats';
 
 import { setVisibilityChat, setVisibilityMenu, 
     selectChat, setVisibilityContacts, addNewChatFromSocket, 
-    asyncCreateChat, addChatFromContacts, fetchChats } from '../actions/actions';
+    asyncCreateChat, addChatFromContacts, fetchChats, fetchContacts } from '../actions/actions';
 
 const mapStateToProps = (state, props) => ({
     chats: state.chats,
@@ -38,6 +38,9 @@ const mapDispatchToProps = dispatch => (
         },
         fetchChats: () => {
             dispatch(fetchChats());
+        },
+        fetchContacts: () => {
+            dispatch(fetchContacts());
         }
     }
 );

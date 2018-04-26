@@ -15,7 +15,10 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
+
 const authMiddleware = require('./middleware/auth');
+const initialMiddleware = require('./middleware/initial');
+
 const routes = require('./routes');
 const session = require('express-session');
 const memoryStore = require('session-memory-store')(session)();
@@ -47,12 +50,7 @@ app.use(passport.session());
 
 app.use(authMiddleware());
 
-// Прокидываем io во внутрь всех контроллеров
-app.use((req, res, next) => { // eslint-disable-line no-shadow
-    req.ioServer = io;
-    req.serverURL = process.env.URL;
-    next();
-});
+app.use(initialMiddleware(io, process.env.URL));
 
 const nextApp = next({
     dir: './client',

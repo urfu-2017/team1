@@ -23,7 +23,8 @@ export default class Chats extends Component {
         meta: PropTypes.object,
         addNewChatFromSocket: PropTypes.func,
         asyncCreateChat: PropTypes.func,
-        fetchChats: PropTypes.func
+        fetchChats: PropTypes.func,
+        fetchContacts: PropTypes.func
     }
 
     static defaultProps = {
@@ -37,8 +38,7 @@ export default class Chats extends Component {
         contacts: [],
         user: {},
         meta: {},
-        addNewChatFromSocket: {},
-        asyncCreateChat: {}
+        addNewChatFromSocket: {}
     }
 
     constructor(props) {
@@ -47,7 +47,9 @@ export default class Chats extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchChats();
+        const { fetchChats, fetchContacts } = this.props;
+        fetchChats();
+        fetchContacts();
     }
 
     getChatsList() {
@@ -66,8 +68,8 @@ export default class Chats extends Component {
     }
 
     getContactsList() {
-        const { onClickChat, user, asyncCreateChat } = this.props;
-        return user.contacts.map(contact => (
+        const { onClickChat, contacts, user, asyncCreateChat } = this.props;
+        return contacts.map(contact => (
             <Contact
                 key={contact._id}
                 onClick={() => {
