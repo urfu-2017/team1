@@ -1,13 +1,14 @@
 import React from 'react';
 
 import styled from 'styled-components';
+import io from 'socket.io-client';
 
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
 import makeReducer from '../reducers/index';
-import { fetchChats } from '../actions/actions';
+
 import SideBar from '../containers/sidebar';
 import ChatWindow from '../containers/chatWindow';
 
@@ -23,9 +24,8 @@ export default class KilogrammApp extends React.Component {
     static async getInitialProps({ req }) {
         return {
             user: req.user,
-            serverURL: req.serverURL,
+            socketURL: req.serverURL,
             chatSocketPrefix: req.chatSocketPrefix,
-            newChatsSocketPrefix: req.newChatsSocketPrefix,
             contacts: req.user.contacts,
             users: req.users
         };
@@ -34,6 +34,7 @@ export default class KilogrammApp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
+
         this.store = createStore(makeReducer(props), applyMiddleware(thunk));
     }
 

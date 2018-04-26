@@ -4,7 +4,8 @@ import { addMessageFromChatInput, sendMessage } from '../actions/actions';
 
 const mapStateToProps = state => ({
     user: state.currentInfo.currentUser,
-    chat: state.currentInfo.currentChat
+    chat: state.currentInfo.currentChat,
+    socketURL: state.socketURL
 });
 
 const mapDispatchToProps = dispatch => ({

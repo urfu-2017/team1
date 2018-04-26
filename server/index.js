@@ -1,8 +1,7 @@
 const { parse } = require('url');
 const path = require('path');
 
-require('dotenv')
-    .config();
+require('dotenv').config();
 const next = require('next');
 const passport = require('passport');
 const passportSocketIo = require('passport.socketio');
@@ -23,7 +22,12 @@ const memoryStore = require('session-memory-store')(session)();
 
 const { socketHandlers } = require('./socket');
 
-mongoose.connect('mongodb://localhost/messenger');
+mongoose.connect(`mongodb://${process.env.MONGO_HOST}/${process.env.MONGO_DB}?authSource=admin`, {
+    auth: {
+        user: process.env.MONGO_USER,
+        password: process.env.MONGO_PASSWORD
+    }
+});
 
 app.use(cookieParser());
 app.use(require('body-parser')
@@ -46,6 +50,7 @@ app.use(authMiddleware());
 // Прокидываем io во внутрь всех контроллеров
 app.use((req, res, next) => { // eslint-disable-line no-shadow
     req.ioServer = io;
+    req.serverURL = process.env.URL;
     next();
 });
 

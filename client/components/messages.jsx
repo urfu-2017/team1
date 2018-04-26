@@ -63,23 +63,22 @@ export default class Messages extends Component {
         title: PropTypes.string,
         chat: PropTypes.shape(),
         user: PropTypes.shape(),
-        onReceiveMessage: PropTypes.func
+        onReceiveMessage: PropTypes.func,
+        socketURL: PropTypes.string
     };
 
-    static defaultProps = { title: '', chat: {}, user: {}, onReceiveMessage: () => {} };
-
-    constructor() {
-        super();
-
-        this.socket = io('http://localhost:3000', {
-            transports: ['websocket']
-        });
-    }
+    static defaultProps = { title: '', chat: {}, user: {} };
 
     componentDidMount() {
+        const { socketURL, chat, onReceiveMessage, user } = this.props;
+
         this.node.scrollTop = this.node.scrollHeight;
 
-        const roomName = this.props.chat._id;
+        this.socket = io(socketURL, {
+            transports: ['websocket']
+        });
+
+        const roomName = chat._id;
 
         this.socket.on('connect', () => {
             this.socket.emit('room', roomName);
@@ -87,7 +86,6 @@ export default class Messages extends Component {
 
         this.socket.on('message', data => {
             const { message } = data;
-            const { onReceiveMessage, chat, user } = this.props;
 
             if (message.sender.userId !== user._id) {
                 onReceiveMessage(chat, message);

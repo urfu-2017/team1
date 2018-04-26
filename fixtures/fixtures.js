@@ -1,10 +1,17 @@
 const UserManager = require('../server/managers/user');
 
+require('dotenv').config();
+
 const mongoose = require('mongoose');
 
-
 (async () => {
-    await mongoose.connect('mongodb://localhost/messenger');
+    await mongoose.connect(`mongodb://${process.env.MONGO_HOST}/${process.env.MONGO_DB}?authSource=admin`, {
+        auth: {
+            user: process.env.MONGO_USER,
+            password: process.env.MONGO_PASSWORD
+        }
+    });
+
     await mongoose.connection.db.dropDatabase();
 
     const user = await UserManager.create('Анастасия Бабушкина', '22619508');

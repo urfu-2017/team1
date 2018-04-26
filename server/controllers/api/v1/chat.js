@@ -3,6 +3,8 @@
 const ChatManager = require('../../../managers/chat');
 const { Message } = require('../../../schemas/message');
 
+const { getMetadata } = require('../../../lib/metadata');
+
 
 class ChatController {
     static async get(req, res) {
@@ -40,7 +42,9 @@ class ChatController {
                 name: user.name,
                 avatar: user.avatar
             };
-            const message = new Message(Object.assign({}, req.body.message, { sender }));
+            let messageData = req.body.message;
+            messageData = Object.assign({}, messageData, { metadata: getMetadata(messageData.message) });
+            const message = new Message(Object.assign({}, messageData, { sender }));
             await ChatManager.addMessageToChat(chat, message);
 
             req.ioServer.in(chat._id).emit('message', {
