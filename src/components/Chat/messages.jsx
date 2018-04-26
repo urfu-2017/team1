@@ -50,7 +50,7 @@ export default class Messages extends React.Component {
         return (
             <React.Fragment>
                 <Header>
-                    {title}
+                    <marquee>{title}</marquee>
                 </Header>
                 <MessagesList id="messages" ref={this.getSectionRef}>
                     <ScrollButton scrollStepInPx="50" delayInMs="16.66"/>

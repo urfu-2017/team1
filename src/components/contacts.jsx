@@ -59,7 +59,7 @@ export default class Contacts extends React.Component {
         if (contacts.loading) {
             // TODO: remove duplicating code
             return <React.Fragment>
-                <div style={{ height: '30%' }}/>
+                <div style={{ height: '30%' }} />
                 <OverlayLoader
                     color={'#7e9cda'}
                     loader="GridLoader"
