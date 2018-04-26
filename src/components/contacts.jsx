@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import {graphql, compose, Mutation} from 'react-apollo';
 import {Scrollbars} from 'react-custom-scrollbars';
 
+const OverlayLoader = dynamic(import('react-loading-indicator-overlay/lib/OverlayLoader'), { ssr: false });
+
 import {withCurrentUser} from '../lib/currentUserContext';
 import {GET_USER_CONTACTS_ql} from '../graphqlQueries/users';
 import {CREATE_CHAT_ql, GetUserChats} from '../graphqlQueries/chats';
@@ -15,6 +17,7 @@ import {
     ContactsWrapper
 } from '../styles/contacts';
 import {UpdateCurrentChatId} from '../graphqlQueries/localState';
+import dynamic from 'next/dynamic';
 
 
 const getNewChat = (currentUser, contact) => ({
@@ -54,7 +57,17 @@ export default class Contacts extends React.Component {
     getContactsList() {
         const { contacts, currentUser } = this.props;
         if (contacts.loading) {
-            return <div/>;
+            // TODO: remove duplicating code
+            return <React.Fragment>
+                <div style={{ height: '30%' }}/>
+                <OverlayLoader
+                    color={'#7e9cda'}
+                    loader="GridLoader"
+                    active={true}
+                    backgroundColor={'black'}
+                    opacity="0"
+                />
+            </React.Fragment>;
         }
         return (
             <Mutation
