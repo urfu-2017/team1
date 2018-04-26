@@ -10,7 +10,7 @@ const { InMemoryCache } = require('apollo-cache-inmemory');
 const { CREATE_USER_ql } = require('./graphqlQueries/createUser');
 const AddUserToChat = require('./graphqlQueries/addUserToChat');
 const getUserByGihubId = require('./graphqlQueries/getUserByGithubId');
-const getUserByid =  require('./graphqlQueries/getUser');
+const getUserByid = require('./graphqlQueries/getUser');
 
 
 class GraphqlApi {
@@ -24,14 +24,9 @@ class GraphqlApi {
     async findUserByGithubID(githubId) {
         githubId = parseInt(githubId, 10);
         const user = await this.client.query({
-                query: getUserByGihubId,
-                variables: { githubId }
-            })
-            .then(data => {
-                return data;
-            }
-            )
-            .catch(error => console.error(error));
+            query: getUserByGihubId,
+            variables: { githubId }
+        });
 
         if (!user) {
             return null;
@@ -41,14 +36,13 @@ class GraphqlApi {
 
     async findUserByID(id) {
         const user = await this.client.query({
-                query: getUserByid,
-                variables: { id }
-            })
+            query: getUserByid,
+            variables: { id }
+        })
             .then(data => {
-                return data.data.User;
-            }
-            )
-            .catch(error => console.error(error));
+                    return data.data.User;
+                }
+            );
 
         return user;
     }
@@ -58,17 +52,12 @@ class GraphqlApi {
         const user = await this.client.mutate({
             mutation: CREATE_USER_ql,
             variables: {
-                    name: name,
-                    githubId: githubId,
-                    avatarUrl: avatar
-                }
+                name: name,
+                githubId: githubId,
+                avatarUrl: avatar
+            }
 
-        })
-            .then(data => {
-                return data;
-            })
-            // .then()
-            .catch(error => console.error(error));
+        });
 
         // TODO: remove
         const userId = user.data.createUser.id;

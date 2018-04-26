@@ -18,7 +18,17 @@ passport.use(new GitHubStrategy(
     (async (accessToken, refreshToken, profile, cb) => {
         const githubId = profile.id;
         const name = profile.displayName || profile.username;
-        let user = await User.findByGithubID(githubId);  // TODO: если запрос не удался из-за сетевой ошибки, то что?
+        let user = null;
+        let failed = true;
+        // TODO: or not to do
+        for (let i = 0; i < 5; i++) {
+            try {
+                user = await User.findByGithubID(githubId);
+                failed = false;
+                break;
+            } catch (exc) { }
+        }
+        if (failed) throw new Error('Network error');
         const avatarPath = `images/avatars/github/${githubId}.png`;
         const fsAvatarPath = `../../public/${avatarPath}`;
         if (!fs.existsSync(fsAvatarPath)) {
