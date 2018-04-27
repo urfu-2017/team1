@@ -14,8 +14,10 @@ export const MessageWrapper = styled.article`
         line-height: initial;
         background-size: contain;
     }
-    .messageBlock {
-        max-width: 51%;
+    .mainMessageBlock {
+        display: flex;
+        align-items: flex-end;
+        max-width: 54%;
         border-radius: 5px;
         min-height: 25px;
         height:auto;
@@ -61,5 +63,6 @@ export const MessageWrapper = styled.article`
         padding: 5px;
         text-align: end;
         font-size: 13px;
+        white-space: nowrap;
     }
 `;
