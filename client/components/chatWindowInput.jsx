@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Emoji, emojiIndex } from 'emoji-mart';
@@ -58,7 +60,7 @@ class ChatWindowInput extends Component {
                 },
                 isSended: false,
                 message: this.state.message,
-                createdAt: '',
+                createdAt: moment().format(),
                 fromMe: true,
                 metadata: {}
             };

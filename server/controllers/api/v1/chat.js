@@ -44,8 +44,9 @@ class ChatController {
             };
             let messageData = req.body.message;
             messageData = Object.assign({}, messageData, { metadata: await getMetadata(messageData.message) });
-            const message = new Message(Object.assign({}, messageData, { sender }));
-            await ChatManager.addMessageToChat(chat, message);
+            let message = new Message(Object.assign({}, messageData, { sender }));
+            const savedChat = await ChatManager.addMessageToChat(chat, message);
+            message = savedChat.messages.find(m => m._id === message._id);
 
             req.ioServer.in(chat._id).emit('message', {
                 message
