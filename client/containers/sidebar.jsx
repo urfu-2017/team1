@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
 import Chats from '../components/chats';
 
-import { setVisibilityChat, setVisibilityMenu, 
-    selectChat, setVisibilityContacts, 
-    asyncCreateChat, addChatFromContacts, fetchChats, fetchContacts } from '../actions/actions';
+import { setVisibilityChat, selectChat, setVisibilityParanja, asyncCreateChat, 
+    addChatFromContacts, fetchChats, fetchContacts } from '../actions/actions';
 
 const mapStateToProps = (state, props) => ({
     chats: state.chats,

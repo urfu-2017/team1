@@ -6,9 +6,14 @@ export const SEND_NEW_MESSAGE = 'SEND_NEW_MESSAGE';
 export const SELECT_CHAT = 'SELECT_CHAT';
 export const MESSAGE_SAVED = 'MESSAGE_SAVED';
 export const SEND_NEW_CHAT = 'SEND_NEW_CHAT';
+
 export const ADD_CHAT_TO_CHAT_LIST = 'ADD_CHAT_TO_CHAT_LIST';
 export const UPDATE_CHAT_LIST = 'UPDATE_CHAT_LIST';
 export const UPDATE_CONTACT_LIST = 'UPDATE_CONTACT_LIST';
+export const SAVED_AVATAR = 'SAVED_AVATAR';
+
+export const setAvatar = avatar => ({ type: SAVED_AVATAR, avatar });
+
 
 export const VISIBILITY_PARANJA = 'VISIBILITY_PARANJA';
 
@@ -87,3 +92,19 @@ export const fetchContacts = () => dispatch => {
 };
 
 export const addChatFromContacts = chat => ({ type: SEND_NEW_CHAT, chat });
+
+export const sendToCloudServer = dataUrl => {
+    const data = { pictureInBase64: dataUrl };
+    const URL = 'api/rest/avatar';
+    const options = {
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(data),
+        credentials: 'same-origin'
+    };
+    return fetch(URL, options)
+        .then(response => response.json());
+};

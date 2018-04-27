@@ -25,7 +25,9 @@ export const Editor = styled.article`
 `;
 
 export const DowlandImage = styled.div`
-    width: 85%;
+    background-size: cover;
+    opacity: 0.3;
+    width: 200px;
     height: 200px;
     display: flex;
     align-items: center;
@@ -33,14 +35,27 @@ export const DowlandImage = styled.div`
     border: 1px dashed;
     .text {
         font-size: 20px;
+        background: #fff;
     }
-`
+`;
 
 export const DowlandButton = styled.input`
+    width: 225px;
     padding: 7px;
     border-radius: 5px;
     background: #e4e0dc;
 `;
 
 export const CreateButton = DowlandButton.extend`
+    width: 85px;
+    padding: 7px;
+    border-radius: 5px;
+    background: #e4e0dc;
+`;
+
+export const Exit = styled.div`
+    position: absolute;
+    right: 5px;
+    top: 0;
+    font-size: 30px;
 `;
