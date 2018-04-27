@@ -60,7 +60,7 @@ export default class Paranja extends Component {
                     <ParanjaWrapper>
                         <ProfileEditor
                             user={user}
-                            showParangja={showParangja}
+                            showParanja={showParanja}
                             showEditor={this.showEditor}
                         />
                     </ParanjaWrapper>)

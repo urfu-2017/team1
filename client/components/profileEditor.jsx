@@ -8,14 +8,14 @@ import { sendToCloudServer, setAvatar } from '../actions/actions';
 class ProfileEditor extends Component {
     static propTypes = {
         dispatch: PropTypes.func,
-        showParangja: PropTypes.func,
+        showParanja: PropTypes.func,
         showEditor: PropTypes.func,
         user: PropTypes.object
     };
 
     static defaultProps = {
         dispatch: () => {},
-        showParangja: () => {},
+        showParanja: () => {},
         showEditor: () => {},
         user: {}
     };
@@ -76,11 +76,10 @@ class ProfileEditor extends Component {
         reader.readAsDataURL(avatar);
     }
 
-
     render() {
         return (
             <Editor>
-                <Exit onClick={() => { this.props.showParangja(false); this.props.showEditor(false); }}>
+                <Exit onClick={() => { this.props.showParanja(false); this.props.showEditor(false); }}>
                     &#10006;
                 </Exit>
                 <h1 className="header">Загрузить аватар</h1>

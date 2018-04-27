@@ -4,7 +4,6 @@ import marked from 'marked';
 import emoji from 'node-emoji';
 
 import { MessageWrapper } from '../styles/message';
-import { MessageWrapper, Text, Time } from '../styles/message';
 
 export default class Message extends Component {
     static propTypes = {

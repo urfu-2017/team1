@@ -1,7 +1,6 @@
 const cloudinary = require('cloudinary');
 
-
-export default class UploadController {
+class UploadController {
     static async avatar(req, res) {
         const { imageData } = req.body;
         cloudinary.uploader.upload(imageData, async data => {
@@ -12,3 +11,5 @@ export default class UploadController {
         });
     }
 }
+
+module.exports = { UploadController };
