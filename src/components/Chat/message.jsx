@@ -1,31 +1,31 @@
 import React from 'react';
-
-import marked from 'marked';
-import emoji from 'node-emoji';
 import PropTypes from 'prop-types';
+import emoji from 'node-emoji';
+import marked from 'marked';
+
 import { MessageWrapper, Text, Time } from '../../styles/message';
 
 
-export default class Message extends React.Component {
+export default class Message extends React.PureComponent {
     static propTypes = {
         isFromSelf: PropTypes.bool,
-        message: PropTypes.string,
-        creationTime: PropTypes.string
+        message: PropTypes.object
     };
 
-    static defaultProps = { isFromSelf: false, message: '', creationTime: '' };
+    static defaultProps = { isFromSelf: false, message: {} };
 
-    formatMessage = message => emoji.emojify(marked(message), res => res);
+    static formatText = text => emoji.emojify(marked(text));
 
     render() {
-        const { message, creationTime, isFromSelf } = this.props;
+        const { message, isFromSelf } = this.props;
         return (
             <MessageWrapper>
                 <Text
                     isFromSelf={isFromSelf}
-                    dangerouslySetInnerHTML={{ __html: this.formatMessage(message) }}
+                    dangerouslySetInnerHTML={{ __html: Message.formatText(message.text) }}
                 />
-                <Time>{creationTime}</Time>
+                 {/*TODO: у сообщения есть также поле modifiedAt, равное null, если оно не менялось */}
+                <Time>{message.createdAt}</Time>
             </MessageWrapper>
         );
     }

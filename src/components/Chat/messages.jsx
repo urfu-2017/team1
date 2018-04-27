@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {MessagesList, Header} from '../../styles/messages';
+import {MessagesList} from '../../styles/messages';
 
 import Message from './message';
 import ScrollButton from './scrollButton';
@@ -8,7 +8,7 @@ import ScrollButton from './scrollButton';
 
 export default class Messages extends React.Component {
     static propTypes = {
-        title: PropTypes.string,
+        chatTitle: PropTypes.string,
         messages: PropTypes.arrayOf(PropTypes.object),
         currentUserId: PropTypes.string
     };
@@ -30,33 +30,25 @@ export default class Messages extends React.Component {
         }
     }
 
+    // Не создаём новую функцию при каждом рендере
     getSectionRef = node => (this.node = node);
 
-    getMessagesList() {
-        const { messages, currentUserId } = this.props;
-
-        return messages.map(currentMessage => (
-            <Message
-                key={currentMessage.id}
-                message={currentMessage.text}
-                creationTime={currentMessage.createdAt}
-                isFromSelf={currentMessage.sender.id === currentUserId}
-            />
-        ));
-    }
+    Message = message => (
+        <Message
+            key={message.id}
+            message={message}
+            isFromSelf={message.sender.id === this.props.currentUserId}
+        />
+    );
 
     render() {
-        const { title } = this.props;
+        const { messages } = this.props;
+
         return (
-            <React.Fragment>
-                <Header>
-                    <marquee>{title}</marquee>
-                </Header>
-                <MessagesList id="messages" ref={this.getSectionRef}>
-                    <ScrollButton scrollStepInPx="50" delayInMs="16.66"/>
-                    {this.getMessagesList()}
-                </MessagesList>
-            </React.Fragment>
+            <MessagesList id="messages" ref={this.getSectionRef}>
+                <ScrollButton scrollStepInPx="50" delayInMs="16.66"/>
+                {messages.map(this.Message)}
+            </MessagesList>
         );
     }
 }

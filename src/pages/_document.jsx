@@ -32,7 +32,7 @@ export default class MyDocument extends Document {
         return (
             <html lang='ru'>
                 <Head>
-                    <title>My page</title>
+                    <title>Team 1 Kilogram</title>
                     {this.props.styleTags}
                 </Head>
                 <body>

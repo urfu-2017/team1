@@ -1,11 +1,10 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
-import {graphql, compose} from 'react-apollo';
+import {graphql} from 'react-apollo';
 import PropTypes from 'prop-types';
 
-const OverlayLoader = dynamic(import('react-loading-indicator-overlay/lib/OverlayLoader'), { ssr: false });
-
+import LoadScreen from '../loadScreen';
 import ChatWindowWrapper from '../../styles/chatWindow';
+import {Header} from '../../styles/messages';
 import MessageInput from './messageInput';
 import Messages from './messages';
 import {GET_CURRENT_CHAT_ID_ql} from '../../graphqlQueries/localState';
@@ -38,10 +37,6 @@ export default class Chat extends React.Component {
         chat: {}
     };
 
-    get chat() {
-        return this.props.chat && this.props.chat.Chat || null;
-    }
-
     subscriptions = {};
 
     static subscriptionDataHandler = (previousResult, { subscriptionData, variables }) => {
@@ -63,48 +58,43 @@ export default class Chat extends React.Component {
         }
     };
 
-    loadScreen = () => (
-        (typeof window === 'undefined') ? null :
-            <ChatWindowWrapper>
-                <div style={{ height: '50%' }} />
-                <OverlayLoader
-                    displayName={'foo'}
-                    color={'#7e9cda'}
-                    loader="GridLoader"
-                    active={true}
-                    backgroundColor={'black'}
-                    opacity="0"
-                />
-            </ChatWindowWrapper>
-    );
+    get chat() {
+        return this.props.chat && this.props.chat.Chat || null;
+    }
 
     render() {
-        if (this.props.chat.loading) {
-            return this.loadScreen();
-        }
-        if (this.props.chat.error) {
-            return <p>Error ;(</p>;
-        }
-
-        if (!this.chat) {
-            return <ChatWindowWrapper/>;
-        }
-
-        this.subscribe();  // TODO: separate general chat info and messages between components
         const { currentUser } = this.props;
-        if (!currentUser) return <div />;
+        let Content = null;
+        if (!currentUser || !this.chat) {
+            Content = null;
+        } else if (this.props.chat.loading) {
+            Content = <LoadScreen offsetPercentage={50}/>;
+        } else if (this.props.chat.error) {
+            Content = <p>Error ;(</p>;
+        } else {
+            Content = (
+                <React.Fragment>
+                    <Header>
+                        {this.chat.title}
+                    </Header>
+                    <Messages
+                        messages={this.chat.messages}
+                        currentUserId={currentUser.id}
+                        id={this.chat.id}
+                    />
+                    <MessageInput
+                        currentChatId={this.chat.id}
+                        currentUserId={currentUser.id}
+                    />
+                </React.Fragment>
+            );
+            // TODO: separate general chat info and messages between components
+            this.subscribe();
+        }
+
         return (
             <ChatWindowWrapper>
-                <Messages
-                    messages={this.chat.messages}
-                    title={this.chat.title}
-                    currentUserId={currentUser.id}
-                    id={this.chat.id}
-                />
-                <MessageInput
-                    currentChatId={this.chat.id}
-                    currentUserId={currentUser.id}
-                />
+                <Content />
             </ChatWindowWrapper>
         );
     }
