@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import PropTypes from 'prop-types';
-import { MessagesList, Header } from '../styles/messages';
+import { MessagesList, Header, Button } from '../styles/messages';
 
 import Message from './message';
 
@@ -29,25 +29,9 @@ class ScrollButton extends React.Component {
     }
 
     render() {
-        const buttonStyle = {
-            backgroundColor: 'white',
-            position: 'absolute',
-            padding: '0',
-            marginRight: '128px',
-            marginBottom: '10px',
-            bottom: '50px',
-            width: '30px',
-            height: '30px',
-            borderRadius: '50%',
-            borderColor: '#b7c5f5',
-            color: '#b7c5f5',
-            right: '30px',
-            cursor: 'pointer'
-        };
         return (
-            <input
+            <Button
                 type="button"
-                style={buttonStyle}
                 title="Жмяк вниз"
                 value="&#11167;"
                 className="scroll"
@@ -56,7 +40,6 @@ class ScrollButton extends React.Component {
         );
     }
 }
-
 
 export default class Messages extends Component {
     static propTypes = {
@@ -95,16 +78,16 @@ export default class Messages extends Component {
         this.socket.connect();
     }
 
-    componentWillUpdate = () => {
+    componentWillUpdate() {
         this.shouldScrollBottom = this.node.scrollTop +
             this.node.offsetHeight === this.node.scrollHeight;
-    };
+    }
 
-    componentDidUpdate = () => {
+    componentDidUpdate() {
         if (this.shouldScrollBottom) {
             this.node.scrollTop = this.node.scrollHeight;
         }
-    };
+    }
 
     componentWillUnmount() {
         this.socket.disconnect();

@@ -4,10 +4,9 @@ import PropTypes from 'prop-types';
 import MenuIcon from 'react-icons/lib/fa/list';
 import { Scrollbars } from 'react-custom-scrollbars';
 
-import Menu from './menu';
-import { Header, SearchInput, ChatsList, Paranja, Contacts, Contact } from '../styles/chats';
 import Chat from './chat';
-
+import Paranja from './paranja';
+import { Header, SearchInput, ChatsList } from '../styles/chats';
 
 export default class Chats extends Component {
     static propTypes = {
@@ -15,8 +14,6 @@ export default class Chats extends Component {
         openContacts: PropTypes.bool,
         chats: PropTypes.arrayOf(PropTypes.object),
         onClickChat: PropTypes.func,
-        onClickContacts: PropTypes.func,
-        onClick: PropTypes.func,
         selectedChatId: PropTypes.string,
         contacts: PropTypes.arrayOf(PropTypes.object),
         user: PropTypes.shape(),
@@ -28,11 +25,8 @@ export default class Chats extends Component {
     static defaultProps = {
         chats: [],
         onClickChat: '',
-        onClickContacts: '',
         onClick: '',
         selectedChatId: null,
-        openMenu: false,
-        openContacts: false,
         contacts: [],
         user: {}
     }
@@ -61,45 +55,20 @@ export default class Chats extends Component {
         ));
     }
 
-    getContactsList() {
-        const { onClickChat, contacts, user, asyncCreateChat } = this.props;
-        return contacts.map(contact => (
-            <Contact
-                key={contact._id}
-                onClick={() => {
-                    asyncCreateChat(user._id, contact.userId, onClickChat);
-                }}
-            >
-                <img src={contact.avatar} alt={contact.name} className="contact__image" />
-                <p>{contact.name}</p>
-            </Contact>
-        ));
-    }
     render() {
-        const { onClick, openMenu, openContacts, onClickContacts, user } = this.props;
+        const { user, isOpenParanja, showParanja } = this.props;
 
         return (
             <React.Fragment>
-                { openMenu && (
-                    <Paranja onClick={() => { onClick(false); }}>
-                        { !openContacts && (<Menu user={user} onClick={onClickContacts} />)}
-                    </Paranja>
-                )}
-                { openContacts && (
-                    <Paranja onClick={() => { onClick(false); onClickContacts(false); }}>
-                        <Contacts
-                            onClick={() => { onClickContacts(true); }}
-                        >
-                            <section className="contacts__list">
-                                { this.getContactsList() }
-                            </section>
-                        </Contacts>
-                    </Paranja>
-                )}
+                <Paranja
+                    user={user}
+                    isOpenParanja={isOpenParanja}
+                    showParanja={showParanja}
+                />
                 <ChatsList>
                     <Header>
                         <div className="header__menu-icon">
-                            <MenuIcon onClick={() => { onClick(true); }} />
+                            <MenuIcon onClick={() => { showParanja(true); }} />
                         </div>
                         <SearchInput placeholder="Поиск" type="search" />
                     </Header>
@@ -107,7 +76,6 @@ export default class Chats extends Component {
                         { this.getChatsList() }
                     </Scrollbars>
                 </ChatsList>
-
             </React.Fragment>
         );
     }

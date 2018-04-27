@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Emoji, emojiIndex } from 'emoji-mart';
 
 import Textarea from '../styles/chatWindowInput';

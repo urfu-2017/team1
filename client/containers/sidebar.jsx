@@ -7,9 +7,9 @@ import { setVisibilityChat, setVisibilityMenu,
 
 const mapStateToProps = (state, props) => ({
     chats: state.chats,
+    isOpenParanja: state.currentInfo.isOpenParanja,
+
     selectedChatId: state.currentInfo.selectedChatId,
-    openMenu: state.currentInfo.openMenu,
-    openContacts: state.currentInfo.openContacts,
     user: state.currentInfo.currentUser,
     contacts: state.contacts,
     meta: state.meta
@@ -17,15 +17,12 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = dispatch => (
     {
-        onClickContacts: visibility => {
-            dispatch(setVisibilityContacts(visibility));
-        },
         onClickChat: chat => {
             dispatch(selectChat(chat._id));
             dispatch(setVisibilityChat(chat));
         },
-        onClick: visibility => {
-            dispatch(setVisibilityMenu(visibility));
+        showParanja: visibility => {
+            dispatch(setVisibilityParanja(visibility));
         },
         asyncCreateChat: (sourceUserId, targetUserId, onClickChat) => {
             dispatch(asyncCreateChat(sourceUserId, targetUserId, onClickChat));

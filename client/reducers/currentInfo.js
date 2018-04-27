@@ -1,5 +1,4 @@
-import { VISIBILITY_CHAT, SELECT_CHAT, VISIBILITY_MENU, VISIBILITY_CONTACTS, 
-    MESSAGE_SAVED, SEND_NEW_MESSAGE } from '../actions/actions';
+import { VISIBILITY_CHAT, SELECT_CHAT, VISIBILITY_PARANJA, MESSAGE_SAVED, SEND_NEW_MESSAGE } from '../actions/actions';
 
 const initialStateStub = {
     currentUser: {
@@ -8,8 +7,7 @@ const initialStateStub = {
         id: 'USER_ID'
     },
     currentChat: {},
-    openMenu: false,
-    openContacts: false,
+    isOpenParanja: false,
     sessionInfoAndSecurityTokens: {
         HereBeDragons: '¯\\_(ツ)_/¯'
     }
@@ -29,8 +27,8 @@ export default function createMetaReducer(currentUser) {
             return Object.assign({}, state);
         }
         case MESSAGE_SAVED: {
-            const { chat, isSuccess, dumbMessage, message } = action;
-            for (const messageIndex in chat.messages) {
+            const { chat, dumbMessage, message } = action;
+            for (const messageIndex in chat.messages) { // eslint-disable-line
                 const m = chat.messages[messageIndex];
                 if (m._id === dumbMessage._id) {
                     chat.messages[messageIndex] = message;
@@ -42,11 +40,8 @@ export default function createMetaReducer(currentUser) {
         case SELECT_CHAT:
             state.selectedChatId = action.id;
             return Object.assign({}, state);
-        case VISIBILITY_MENU:
-            state.openMenu = action.visibility;
-            return Object.assign({}, state);
-        case VISIBILITY_CONTACTS:
-            state.openContacts = action.visibility;
+        case VISIBILITY_PARANJA:
+            state.isOpenParanja = action.visibility;
             return Object.assign({}, state);
         default: return state;
         }

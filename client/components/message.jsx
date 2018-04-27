@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { MessageWrapper } from '../styles/message';
 import marked from 'marked';
 import emoji from 'node-emoji';
+
+import { MessageWrapper } from '../styles/message';
+import { MessageWrapper, Text, Time } from '../styles/message';
 
 export default class Message extends Component {
     static propTypes = {
@@ -21,7 +23,7 @@ export default class Message extends Component {
         this.state = {};
     }
     render() {
-        const { message, creationTime, fromMe, metadata, isSuccess, isSended } = this.props;
+        const { message, fromMe, metadata, isSuccess, isSended } = this.props;
         const { ogdata } = metadata;
         let transformedMessage = message;
 
