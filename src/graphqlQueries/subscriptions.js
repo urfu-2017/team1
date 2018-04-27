@@ -17,22 +17,21 @@ subscription SubscribeToMessages($filter: MessageSubscriptionFilter!) {
     mutation
     node {
       ...messageData
-      sender {
-        ...userData
-      }
     }
   }
 }
 
 ${fragments.messageData_ql}
-${fragments.userData_ql}
 `;
 
 export const SubscribeToMessages = mapper(SUBSCRIBE_TO_MESSAGES_ql,
-    chatId => ({
+    (chatId, currentUserId) => ({
         node: {
             chat: {
                 id: chatId
+            },
+            sender: {
+                id_not: currentUserId
             }
         }
     })

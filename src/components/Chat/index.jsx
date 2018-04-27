@@ -1,5 +1,5 @@
 import React from 'react';
-import {graphql} from 'react-apollo';
+import {graphql, compose} from 'react-apollo';
 import PropTypes from 'prop-types';
 
 import ChatWindowWrapper from '../../styles/chatWindow';
@@ -31,28 +31,22 @@ export default class Chat extends React.Component {
     static propTypes = {
         currentUser: PropTypes.object,
         localState: PropTypes.object,
-        id: PropTypes.string,
-        title: PropTypes.string,
-        picture: PropTypes.string,
-        createdAt: PropTypes.number,
         loading: PropTypes.bool,
-        error: PropTypes.bool,
+        error: PropTypes.object,
+        chat: PropTypes.object
     };
 
     static defaultProps = {
         currentUser: {},
         localState: {},
-        id: '',
-        title: '',
-        picture: '',
-        createdAt: NaN,
         loading: true,
-        error: false,
+        error: null,
+        chat: {}
     };
 
     render() {
-        const { localState, loading, error, id, title,
-            picture, createdAt, currentUser } = this.props;
+        const { localState, loading, error, chat, currentUser } = this.props;
+        // const {id, title, picture, createdAt, members} = chat;
         let content = null;
         if (!currentUser || !currentChatSet(localState)) {
             content = null;
@@ -62,10 +56,10 @@ export default class Chat extends React.Component {
             content = (
                 <React.Fragment>
                     <Header>
-                        {title || 'Загрузка...'}
+                        {chat.title || 'Загрузка...'}
                     </Header>
                     <Messages
-                        currentChatId={id || null}
+                        currentChatId={chat.id || null}
                         currentUserId={currentUser.id}/>
                 </React.Fragment>
             );

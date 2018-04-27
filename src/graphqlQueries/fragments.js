@@ -8,6 +8,9 @@ fragment messageData on Message {
   pictures
   createdAt
   modifiedAt
+  sender {
+    id
+  }
 }
 `;
 

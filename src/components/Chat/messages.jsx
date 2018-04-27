@@ -6,6 +6,7 @@ import LoadScreen from '../ui/loadScreen';
 import MessageInput from './messageInput';
 import ScrollButton from './scrollButton';
 import Message from './message';
+import {addNewMessage, updateMessage, deleteMessage} from './manageMessages';
 import {MessagesList} from '../../styles/messages';
 import {GetChatMessages} from '../../graphqlQueries/queries';
 import {SubscribeToMessages} from '../../graphqlQueries/subscriptions';
@@ -28,7 +29,7 @@ export default class Messages extends React.Component {
         currentUserId: PropTypes.string,
         currentChatId: PropTypes.string,
         loading: PropTypes.bool,
-        error: PropTypes.bool,
+        error: PropTypes.object,
         data: PropTypes.object
     };
 
@@ -37,7 +38,7 @@ export default class Messages extends React.Component {
         currentUserId: '',
         currentChatId: '',
         loading: true,
-        error: false,
+        error: null,
         data: {}
     };
 
@@ -91,7 +92,8 @@ export default class Messages extends React.Component {
                 </MessagesList>
                 <MessageInput
                     currentChatId={currentChatId}
-                    currentUserId={currentUserId}/>
+                    currentUserId={currentUserId}
+                    updateMessages={this.props.data.updateQuery} />
             </React.Fragment>
         );
     }
@@ -101,11 +103,11 @@ export default class Messages extends React.Component {
     subscriptions = {};
 
     subscribe = () => {
-        const { currentChatId, data } = this.props;
+        const { currentChatId, currentUserId, data } = this.props;
         if (!this.subscriptions[currentChatId]) {
             this.subscriptions[currentChatId] = data.subscribeToMore({
                 document: SubscribeToMessages.subscription,
-                variables: SubscribeToMessages.vars(currentChatId),
+                variables: SubscribeToMessages.vars(currentChatId, currentUserId),
                 updateQuery: Messages.subscriptionDataHandler
             });
         }
@@ -116,27 +118,16 @@ export default class Messages extends React.Component {
             return previousResult;
         }
         const { mutation, node } = subscriptionData.data.Message;
-        let messages = [...previousResult.Chat.messages];
         switch (mutation) {
             case 'CREATED':
-                messages = messages.concat([node]);
-                break;
+                return addNewMessage(node, previousResult);
             case 'UPDATED':
-                const index = messages.find(msg => msg.id === node.id);
-                if (index !== undefined) {
-                    messages[index] = node;
-                }
-                break;
+                return updateMessage(node, previousResult);
             case 'DELETED':
-                messages = messages.filter(msg => msg.id !== node.id);
-                break;
+                return deleteMessage(node, previousResult);
+            default:
+                return previousResult;
         }
-        return { Chat: { ...previousResult.Chat, messages } };
-    };
-
-    static addNewMessage = (message, target) => {
-        target.push(message);
-        return target;
     };
 
     static LoadScreen = <LoadScreen offsetPercentage={50} opacity={1} />;

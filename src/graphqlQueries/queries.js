@@ -3,15 +3,31 @@ import gql from 'graphql-tag';
 import * as fragments from './fragments';
 
 
-const mapper = (query, selector) => ({
+const mapper = (query, selector, name) => ({
     query,
-    map: (req) => ({
-        data: req.data,
-        loading: req.data.loading,
-        error: req.data.error,
-        ...selector(req.data)
-    })
+    map: (req) => {
+        const props = {
+            data: req.data,
+            loading: req.data.loading,
+            error: req.data.error
+        };
+        props[name] = selector(req.data);
+        return props;
+    }
 });
+
+
+const GET_USER_ql = gql`
+query GetUser($userId: ID!) {
+  User(id: $userId) {
+    ...userData
+  }
+}
+
+${fragments.userData_ql}
+`;
+
+export const GetUser = mapper(GET_USER_ql, data => data.User, 'user');
 
 
 // TODO: dummy implementation
@@ -53,56 +69,7 @@ query GetUserChats($userId: ID!) {
 ${fragments.chatData_ql}
 `;
 
-export const GetUserChats = mapper(GET_CHAT_INFO_ql, data => data.User);
-
-
-const GET_CHAT_ql = gql`
-    query GetChat($chatId: ID!) {
-        Chat(id: $chatId) {
-            id
-            title
-            private
-            picture
-            modifiedAt
-            createdAt
-            members {
-                id
-                name
-                avatarUrl
-            }
-            messages {
-                id
-                text
-                sender {
-                    id
-                }
-                createdAt
-                modifiedAt
-                modified
-            }
-        }
-    }
-`;
-
-const getChat_map = ({ data }) => {
-    if (!data.Chat) {
-        return {
-            loading: data.loading
-        };
-    }
-
-    return {
-        loading: data.loading,
-        error: data.error,
-        ...data.Chat
-    };
-};
-
-
-export const GetChat = {
-    query: GET_CHAT_ql,
-    map: getChat_map
-};
+export const GetUserChats = mapper(GET_USER_CHATS_ql, data => data.User, 'chats');
 
 
 const GET_CHAT_MESSAGES_ql = gql`
@@ -111,18 +78,15 @@ query GetChatMessages($chatId: ID!) {
     id
     messages {
       ...messageData
-      sender {
-        ...userData
-      }
     }
   }
 }
 
 ${fragments.messageData_ql}
-${fragments.userData_ql}
 `;
 
-export const GetChatMessages = mapper(GET_CHAT_MESSAGES_ql, data => data.Chat);
+export const GetChatMessages = mapper(GET_CHAT_MESSAGES_ql,
+        data => data.Chat && data.Chat.messages, 'messages');
 
 
 const GET_CHAT_INFO_ql = gql`
@@ -130,10 +94,14 @@ query GetChatInfo($chatId: ID!) {
   Chat(id: $chatId) {
     id
     ...chatData
+    members {
+      ...userData
+    }
   }
 }
 
 ${fragments.chatData_ql}
+${fragments.userData_ql}
 `;
 
-export const GetChatInfo = mapper(GET_CHAT_INFO_ql, data => data.Chat);
+export const GetChatInfo = mapper(GET_CHAT_INFO_ql, data => data.Chat, 'chat');
