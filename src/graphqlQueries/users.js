@@ -32,3 +32,5 @@ subscription SubscribeToNewChats($filter: UserSubscriptionFilter!) {
   }
 }
 `;
+
+

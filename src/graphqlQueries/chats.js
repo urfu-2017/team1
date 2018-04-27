@@ -2,16 +2,16 @@ import gql from 'graphql-tag';
 
 
 const GET_USER_CHATS_ql = gql`
-query GetUserChats($userId: ID!) {
-  User(id: $userId) {
-    id
-    chats {
-      id
-      title
-      picture
+    query GetUserChats($userId: ID!) {
+        User(id: $userId) {
+            id
+            chats {
+                id
+                title
+                picture
+            }
+        }
     }
-  }
-}
 `;
 
 const getUserChats_map = ({ data }) => {
@@ -35,31 +35,31 @@ export const GetUserChats = {
 
 
 const GET_CHAT_ql = gql`
-query GetChat($chatId: ID!) {
-  Chat(id: $chatId) {
-    id
-    title
-    private
-    picture
-    modifiedAt
-    createdAt
-    members {
-      id
-      name
-      avatarUrl
+    query GetChat($chatId: ID!) {
+        Chat(id: $chatId) {
+            id
+            title
+            private
+            picture
+            modifiedAt
+            createdAt
+            members {
+                id
+                name
+                avatarUrl
+            }
+            messages {
+                id
+                text
+                sender {
+                    id
+                }
+                createdAt
+                modifiedAt
+                modified
+            }
+        }
     }
-    messages {
-      id
-      text
-      sender {
-        id
-      }
-      createdAt
-      modifiedAt
-      modified
-    }
-  }
-}
 `;
 
 const getChat_map = ({ data }) => {
@@ -84,40 +84,40 @@ export const GetChat = {
 
 
 export const CREATE_CHAT_ql = gql`
-mutation CreateChat($title: String!, $ownerId: ID!, $picture: String, $user1: ID!, $user2: ID!) {
-  createChat(title: $title, ownerId: $ownerId, picture: $picture, membersIds: [$user1, $user2]) {
-    id
-    createdAt
-    picture
-    modifiedAt,
-    members {
-      id
+    mutation CreateChat($title: String!, $ownerId: ID!, $picture: String, $user1: ID!, $user2: ID!) {
+        createChat(title: $title, ownerId: $ownerId, picture: $picture, membersIds: [$user1, $user2]) {
+            id
+            createdAt
+            picture
+            modifiedAt,
+            members {
+                id
+            }
+        }
+        currentUser: updateUser(id: $user1, chatsUpdatedDummy: true) {
+            id,
+            chats {
+                id
+                title
+                picture
+            }
+        }
+        contact: updateUser(id: $user2, chatsUpdatedDummy: true) {
+            id
+        }
     }
-  }
-  currentUser: updateUser(id: $user1, chatsUpdatedDummy: true) {
-    id,
-    chats {
-      id
-      title
-      picture
-    }
-  }
-  contact: updateUser(id: $user2, chatsUpdatedDummy: true) {
-    id
-  }
-}
 `;
 
 
 const ADD_CHAT_MEMBER_ql = gql`
-mutation AddUserToChat($chatId: ID!, $userId: ID!) {
-  addToChatOnUser(chatsChatId: $chatId, membersUserId: $userId) {
-    membersUser {
-      id
-      chats {
-        id
-      }
+    mutation AddUserToChat($chatId: ID!, $userId: ID!) {
+        addToChatOnUser(chatsChatId: $chatId, membersUserId: $userId) {
+            membersUser {
+                id
+                chats {
+                    id
+                }
+            }
+        }
     }
-  }
-}
 `;

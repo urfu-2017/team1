@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApolloProvider } from 'react-apollo';
+import {ApolloProvider} from 'react-apollo';
 
 import createApolloClient from '../lib/createApolloClient';
 
@@ -11,4 +11,5 @@ export default (httpUrl, wsUrl, Component, props) => {
         <ApolloProvider client={client}>
             <Component {...props} />
         </ApolloProvider>
-    )}
+    );
+}

@@ -9,12 +9,13 @@ const OverlayLoader = dynamic(
 
 export default props => ((typeof window === 'undefined') ? null :
     <React.Fragment>
-        <div style={{ height: `${props.offsetPercentage}%` }}/>
+        <div style={{ height: `${props.offsetPercentage || 0}%` }}/>
         <OverlayLoader
-            color={'#7e9cda'}
+            color={props.color || '#7e9cda'}
             loader="GridLoader"
+            background={props.background || 'white'}
             active={true}
-            opacity="0"
+            opacity={props.opacity || 0}
         />
     </React.Fragment>
 );
