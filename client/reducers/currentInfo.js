@@ -1,5 +1,12 @@
-import { VISIBILITY_CHAT, SELECT_CHAT, VISIBILITY_PARANJA, 
-    MESSAGE_SAVED, SEND_NEW_MESSAGE, SAVED_AVATAR } from '../actions/actions';
+import {
+    VISIBILITY_CHAT,
+    SELECT_CHAT,
+    VISIBILITY_PARANJA,
+    MESSAGE_SAVED,
+    SEND_NEW_MESSAGE,
+    SAVED_AVATAR,
+    CHANGE_PROFILE_EDITOR_STATE
+} from '../actions/actions';
 
 const initialStateStub = {
     currentUser: {
@@ -9,9 +16,7 @@ const initialStateStub = {
     },
     currentChat: {},
     isOpenParanja: false,
-    sessionInfoAndSecurityTokens: {
-        HereBeDragons: '¯\\_(ツ)_/¯'
-    }
+    profileEditorState: false
 };
 
 export default function createMetaReducer(currentUser) {
@@ -21,7 +26,6 @@ export default function createMetaReducer(currentUser) {
         switch (action.type) {
         case SAVED_AVATAR:
             state.currentUser.avatar = action.avatar;
-            console.log(state.currentUser);
             return Object.assign({}, state);
         case VISIBILITY_CHAT:
             state.currentChat = action.chat;
@@ -29,6 +33,10 @@ export default function createMetaReducer(currentUser) {
         case SEND_NEW_MESSAGE: {
             action.chat.messages.push(action.message);
             state.currentChat = Object.assign({}, action.chat);
+            return Object.assign({}, state);
+        }
+        case CHANGE_PROFILE_EDITOR_STATE: {
+            state.profileEditorState = action.state;
             return Object.assign({}, state);
         }
         case MESSAGE_SAVED: {

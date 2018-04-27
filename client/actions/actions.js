@@ -12,8 +12,7 @@ export const UPDATE_CHAT_LIST = 'UPDATE_CHAT_LIST';
 export const UPDATE_CONTACT_LIST = 'UPDATE_CONTACT_LIST';
 export const SAVED_AVATAR = 'SAVED_AVATAR';
 
-export const setAvatar = avatar => ({ type: SAVED_AVATAR, avatar });
-
+export const CHANGE_PROFILE_EDITOR_STATE = 'CHANGE_PROFILE_EDITOR_STATE';
 
 export const VISIBILITY_PARANJA = 'VISIBILITY_PARANJA';
 
@@ -47,13 +46,15 @@ export const updateChatList = chats => ({ type: UPDATE_CHAT_LIST, chats });
 
 export const updateContacts = contacts => ({ type: UPDATE_CONTACT_LIST, contacts });
 
+export const setAvatar = avatar => ({ type: SAVED_AVATAR, avatar });
+
+export const setProfileEditorState = state => ({ type: CHANGE_PROFILE_EDITOR_STATE, state }); 
+
 export const saveMessage = (chat, isSuccess, dumbMessage, message) =>
     ({ type: MESSAGE_SAVED, chat, isSuccess, dumbMessage, message });
 
 export const sendMessage = (chat, message) => dispatch => {
-    const URL = `api/v1/chats/${chat._id}`;
-    const body = JSON.stringify({ message });
-    fetch(URL, makeRequestOptions({ body, method: 'POST' }))
+    fetch(`api/v1/chats/${chat._id}`, makeRequestOptions({ body: { message }, method: 'POST' }))
         .then(response => {
             if (response.status === 200) {
                 return response.json();
@@ -70,8 +71,7 @@ export const sendMessage = (chat, message) => dispatch => {
 };
 
 export const asyncCreateChat = (sourceUserId, targetUserId, callback) => dispatch => {
-    const body = JSON.stringify({ targetUserId });
-    fetch('/api/v1/chats/p2p', makeRequestOptions({ method: 'POST', body }))
+    fetch('/api/v1/chats/p2p', makeRequestOptions({ method: 'POST', body: { targetUserId } }))
         .then(response => response.json())
         .then(response => {
             dispatch(addChatToChatList(response));
@@ -93,18 +93,12 @@ export const fetchContacts = () => dispatch => {
 
 export const addChatFromContacts = chat => ({ type: SEND_NEW_CHAT, chat });
 
-export const sendToCloudServer = dataUrl => {
-    const data = { pictureInBase64: dataUrl };
-    const URL = 'api/rest/avatar';
-    const options = {
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        },
-        method: 'POST',
-        body: JSON.stringify(data),
-        credentials: 'same-origin'
-    };
-    return fetch(URL, options)
-        .then(response => response.json());
+export const changeAvatar = avatarData => dispatch => {
+    fetch('/api/v1/upload/avatar', makeRequestOptions({ method: 'POST', body: { avatarData } }))
+        .then(response => response.json())
+        .then(response => {
+            dispatch(setVisibilityParanja(false));
+            dispatch(setProfileEditorState(false));
+            dispatch(setAvatar(response.avatar));
+        });
 };

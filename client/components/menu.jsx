@@ -7,13 +7,12 @@ export default class Menu extends Component {
         user: PropTypes.shape(),
         showContacts: PropTypes.func,
         setHeader: PropTypes.func,
-        showEditor: PropTypes.func
+        setProfileEditorState: PropTypes.func
     }
 
     static defaultProps = {
         user: {},
         showContacts: () => {},
-        showEditor: () => {},
         setHeader: () => {}
     }
 
@@ -23,7 +22,7 @@ export default class Menu extends Component {
     }
 
     render() {
-        const { user, showContacts, showEditor, setHeader } = this.props;
+        const { user, showContacts, setProfileEditorState, setHeader } = this.props;
         return (
             <MenuRoot>
                 <div className="profile">
@@ -53,7 +52,7 @@ export default class Menu extends Component {
                     <p
                         role="presentation"
                         className="menu__item"
-                        onClick={() => { showEditor(true); }}
+                        onClick={() => { setProfileEditorState(true); }}
                     >
                         Редактирование профиля
                     </p>

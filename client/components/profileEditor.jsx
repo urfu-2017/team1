@@ -1,23 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 import { Editor, DowlandImage, DowlandButton, CreateButton, Exit } from '../styles/profileEditor';
-import { sendToCloudServer, setAvatar } from '../actions/actions';
+
 
 class ProfileEditor extends Component {
     static propTypes = {
-        dispatch: PropTypes.func,
         showParanja: PropTypes.func,
-        showEditor: PropTypes.func,
-        user: PropTypes.object
-    };
-
-    static defaultProps = {
-        dispatch: () => {},
-        showParanja: () => {},
-        showEditor: () => {},
-        user: {}
+        onChangeAvatar: PropTypes.func,
+        setProfileEditorState: PropTypes.func
     };
 
     constructor(props) {
@@ -44,19 +35,16 @@ class ProfileEditor extends Component {
     };
 
     saveAvatar = () => {
-        const reader = new FileReader();
+        const { onChangeAvatar } = this.props;
+        const reader = new window.FileReader();
+
         this.readPictureFromInput(reader, async () => {
-            const dataUrl = reader.result;
-            console.log('before await');
-            const metaData = await sendToCloudServer(dataUrl);
-            const urlToAvatar = metaData.secure_url;
-            console.log(urlToAvatar);
-            this.props.dispatch(setAvatar(urlToAvatar));
+            onChangeAvatar(reader.result);
         });
     };
 
     drawBackground = () => {
-        const reader = new FileReader();
+        const reader = new window.FileReader();
         this.readPictureFromInput(reader, () => {
             const dataUrl = reader.result;
             const area = document.getElementById('area-for-drop');
@@ -77,9 +65,10 @@ class ProfileEditor extends Component {
     }
 
     render() {
+        const { showParanja, setProfileEditorState } = this.props;
         return (
             <Editor>
-                <Exit onClick={() => { this.props.showParanja(false); this.props.showEditor(false); }}>
+                <Exit onClick={() => { showParanja(false); setProfileEditorState(false); }}>
                     &#10006;
                 </Exit>
                 <h1 className="header">Загрузить аватар</h1>
@@ -109,4 +98,4 @@ class ProfileEditor extends Component {
     }
 }
 
-export default connect()(ProfileEditor);
+export default ProfileEditor;

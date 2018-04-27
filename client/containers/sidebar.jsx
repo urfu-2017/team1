@@ -1,13 +1,21 @@
 import { connect } from 'react-redux';
 import Chats from '../components/chats';
 
-import { setVisibilityChat, selectChat, setVisibilityParanja, asyncCreateChat, 
-    addChatFromContacts, fetchChats, fetchContacts } from '../actions/actions';
+import {
+    setVisibilityChat,
+    selectChat,
+    setVisibilityParanja,
+    asyncCreateChat,
+    addChatFromContacts,
+    setProfileEditorState,
+    fetchChats,
+    fetchContacts
+} from '../actions/actions';
 
 const mapStateToProps = (state, props) => ({
     chats: state.chats,
     isOpenParanja: state.currentInfo.isOpenParanja,
-
+    profileEditorState: state.currentInfo.profileEditorState,
     selectedChatId: state.currentInfo.selectedChatId,
     user: state.currentInfo.currentUser,
     contacts: state.contacts,
@@ -22,6 +30,9 @@ const mapDispatchToProps = dispatch => (
         },
         showParanja: visibility => {
             dispatch(setVisibilityParanja(visibility));
+        },
+        setProfileEditorState: state => {
+            dispatch(setProfileEditorState(state));
         },
         asyncCreateChat: (sourceUserId, targetUserId, onClickChat) => {
             dispatch(asyncCreateChat(sourceUserId, targetUserId, onClickChat));

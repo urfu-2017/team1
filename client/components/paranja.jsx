@@ -3,37 +3,39 @@ import PropTypes from 'prop-types';
 import Menu from './menu';
 
 import Contacts from '../containers/contacts';
-import ProfileEditor from './profileEditor';
+import ProfileEditor from '../containers/profileEditor';
+
 import { ParanjaWrapper } from '../styles/paranja';
 
 export default class Paranja extends Component {
     static propTypes = {
         user: PropTypes.shape(),
         isOpenParanja: PropTypes.bool,
-        showParanja: PropTypes.func
+        showParanja: PropTypes.func,
+        profileEditorState: PropTypes.bool,
+        setProfileEditorState: PropTypes.func
     };
 
     static defaultProps = {
         user: {},
         isOpenParanja: false,
-        showParanja: () => {}
+        showParanja: () => {},
+        profileEditorState: false
     };
     constructor(props) {
         super(props);
         this.state = {
             visible: false,
-            isOpenEditor: false,
             isOpenContacts: false
         };
     }
 
     setHeader = header => { this.setState({ header }); }
     handleCancel = e => { this.setState({ visible: false }); }
-    showEditor = isOpen => { this.setState({ isOpenEditor: isOpen }); }
     showContacts = isOpen => { this.setState({ isOpenContacts: isOpen }); }
 
     render() {
-        const { user, isOpenParanja, showParanja } = this.props;
+        const { user, isOpenParanja, showParanja, profileEditorState, setProfileEditorState } = this.props;
 
         return (
             <Fragment>
@@ -45,6 +47,7 @@ export default class Paranja extends Component {
                                 setHeader={this.setHeader}
                                 showEditor={this.showEditor}
                                 showContacts={this.showContacts}
+                                setProfileEditorState={setProfileEditorState}
                             />)
                         }
                     </ParanjaWrapper>
@@ -56,12 +59,12 @@ export default class Paranja extends Component {
                         />
                     </ParanjaWrapper>)
                 }
-                { this.state.isOpenEditor && (
+                { profileEditorState && (
                     <ParanjaWrapper>
                         <ProfileEditor
                             user={user}
                             showParanja={showParanja}
-                            showEditor={this.showEditor}
+                            setProfileEditorState={setProfileEditorState}
                         />
                     </ParanjaWrapper>)
                 }

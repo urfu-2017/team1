@@ -54,6 +54,7 @@ export const CreateButton = DowlandButton.extend`
 `;
 
 export const Exit = styled.div`
+    cursor: pointer;
     position: absolute;
     right: 5px;
     top: 0;

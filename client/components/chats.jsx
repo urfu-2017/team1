@@ -10,14 +10,14 @@ import { Header, SearchInput, ChatsList } from '../styles/chats';
 
 export default class Chats extends Component {
     static propTypes = {
-        openMenu: PropTypes.bool,
-        openContacts: PropTypes.bool,
+        showParanja: PropTypes.func,
+        profileEditorState: PropTypes.bool,
+        setProfileEditorState: PropTypes.func,
+        isOpenParanja: PropTypes.bool,
         chats: PropTypes.arrayOf(PropTypes.object),
         onClickChat: PropTypes.func,
         selectedChatId: PropTypes.string,
-        contacts: PropTypes.arrayOf(PropTypes.object),
         user: PropTypes.shape(),
-        asyncCreateChat: PropTypes.func,
         fetchChats: PropTypes.func,
         fetchContacts: PropTypes.func
     }
@@ -25,9 +25,7 @@ export default class Chats extends Component {
     static defaultProps = {
         chats: [],
         onClickChat: '',
-        onClick: '',
         selectedChatId: null,
-        contacts: [],
         user: {}
     }
 
@@ -56,7 +54,7 @@ export default class Chats extends Component {
     }
 
     render() {
-        const { user, isOpenParanja, showParanja } = this.props;
+        const { user, isOpenParanja, showParanja, profileEditorState, setProfileEditorState } = this.props;
 
         return (
             <React.Fragment>
@@ -64,6 +62,8 @@ export default class Chats extends Component {
                     user={user}
                     isOpenParanja={isOpenParanja}
                     showParanja={showParanja}
+                    setProfileEditorState={setProfileEditorState}
+                    profileEditorState={profileEditorState}
                 />
                 <ChatsList>
                     <Header>

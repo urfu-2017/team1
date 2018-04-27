@@ -8,6 +8,7 @@ const passportSocketIo = require('passport.socketio');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
+const cloudinary = require('cloudinary');
 
 const app = express();
 const bodyParser = require('body-parser');
@@ -30,6 +31,12 @@ mongoose.connect(`mongodb://${process.env.MONGO_HOST}/${process.env.MONGO_DB}?au
         user: process.env.MONGO_USER,
         password: process.env.MONGO_PASSWORD
     }
+});
+
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET
 });
 
 app.use(cookieParser());
