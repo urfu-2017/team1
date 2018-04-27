@@ -79,8 +79,8 @@ export default class SideBar extends React.Component {
     };
 
     render() {
-        const { chats, currentUser } = this.props;
-        if (chats && !chats.loading) {
+        const { chats, currentUser, loading } = this.props;
+        if (chats && !loading) {
             this.subscribe();
         }
         return (

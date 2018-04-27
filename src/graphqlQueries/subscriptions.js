@@ -56,11 +56,11 @@ subscription SubscribeToUserChats($filter: UserSubscriptionFilter!) {
 ${fragments.chatData_ql}
 `;
 
-export const SubscribeToUserChats = mapper(SUBSCRIBE_TO_MESSAGES_ql,
+export const SubscribeToUserChats = mapper(SUBSCRIBE_TO_USER_CHATS_ql,
     userId => ({
         node: {
             id: userId
         },
-        updatedFields_contains: 'chatsUpdatedDummy'
+        // updatedFields_contains: 'chatsUpdatedDummy'
     })
 );
