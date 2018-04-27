@@ -2,7 +2,7 @@ import React from 'react';
 import {graphql} from 'react-apollo';
 import PropTypes from 'prop-types';
 
-import LoadScreen from '../loadScreen';
+import LoadScreen from '../ui/loadScreen';
 import ChatWindowWrapper from '../../styles/chatWindow';
 import {Header} from '../../styles/messages';
 import MessageInput from './messageInput';
@@ -62,15 +62,17 @@ export default class Chat extends React.Component {
         return this.props.chat && this.props.chat.Chat || null;
     }
 
+    static LoadScreen = <LoadScreen offsetPercentage={50}/>;
+
+    static ErrorScreen = <p>Error ;(</p>;
+
     render() {
         const { currentUser } = this.props;
         let Content = null;
-        if (!currentUser || !this.chat) {
-            Content = null;
-        } else if (this.props.chat.loading) {
-            Content = <LoadScreen offsetPercentage={50}/>;
+        if (!currentUser || !this.chat || this.props.chat.loading) {
+            Content = Chat.LoadScreen;
         } else if (this.props.chat.error) {
-            Content = <p>Error ;(</p>;
+            Content = Chat.ErrorScreen;
         } else {
             Content = (
                 <React.Fragment>
