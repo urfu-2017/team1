@@ -14,10 +14,13 @@ export const MessageWrapper = styled.article`
         line-height: initial;
         background-size: contain;
     }
-    .mainMessageBlock {
+    .headerMessageBlock {
         display: flex;
-        align-items: flex-end;
-        max-width: 54%;
+        align-items: center;
+        padding: 5px;
+    }
+    .messageBlock {
+        max-width: 51%;
         border-radius: 5px;
         min-height: 25px;
         height:auto;
@@ -59,10 +62,17 @@ export const MessageWrapper = styled.article`
         width: auto;
         height: 78px;
     }
-    .massageBlock__time {
+    .messageTime {
         padding: 5px;
         text-align: end;
         font-size: 13px;
         white-space: nowrap;
+    }
+    .nameSender {
+        padding: 0 5px;
+        font-weight: 800;
+    }
+    .addReactions {
+        font-size: 24px;
     }
 `;

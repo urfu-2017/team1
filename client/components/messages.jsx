@@ -107,6 +107,7 @@ export default class Messages extends Component {
                 isSuccess={message.isSuccess == null ? true : message.isSuccess}
                 isSended={message.isSended}
                 metadata={message.metadata}
+                sender={message.sender}
             />
         ));
     }
