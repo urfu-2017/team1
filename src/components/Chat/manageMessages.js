@@ -1,5 +1,9 @@
 export const addNewMessage = (message, target) => {
     let messages = [...target.Chat.messages];
+    // Если такое сообщение уже есть (т.е. получили своё же)
+    if (messages.find(msg => msg.id === message.id)) {
+        return target;
+    }
     messages.push(message);
     return { Chat: { ...target.Chat, messages } };
 };

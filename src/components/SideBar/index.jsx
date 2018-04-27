@@ -4,33 +4,28 @@ import MenuIcon from 'react-icons/lib/fa/list';
 import {Scrollbars} from 'react-custom-scrollbars';
 import {graphql} from 'react-apollo';
 
-const OverlayLoader = dynamic(import('react-loading-indicator-overlay/lib/OverlayLoader'), { ssr: false });
-
+import LoadScreen from '../ui/loadScreen';
 import {withCurrentUser} from '../../lib/currentUserContext';
-import {GetUserChats} from '../../graphqlQueries/chats';
-import {SUBSCRIBE_USER_CHATS_UPDATES_ql} from '../../graphqlQueries/users';
+import {GetUserChats} from '../../graphqlQueries/queries';
+import {SubscribeToUserChats} from '../../graphqlQueries/subscriptions';
 import ChatPreview from './chatPreview';
 import Paranja from './paranja';
 import {Header, SearchInput, ChatsList} from '../../styles/chats';
-import dynamic from 'next/dynamic';
-import {SubscribeNewMessages} from '../../graphqlQueries/messages';
 import Chat from '../Chat';
 
 
 // TODO: retrieve last messages and sort by modification order
 // Первым декоратором получаем объект текущего пользователя, который нам дал сервер
 // Вторым - с помощью этого объекта просим у api все чаты текущего пользователя
-// TODO: prop alias
 @withCurrentUser
 @graphql(GetUserChats.query, {
-    // props: GetUserChats.map,  // маппер почему-то не работает
-    name: 'chats',
     skip: props => !props.currentUser,
-    options: props => ({
+    options: ({ currentUser })  => ({
         variables: {
-            userId: props.currentUser.id
+            userId: currentUser.id
         }
-    })
+    }),
+    props: GetUserChats.map
 })
 export default class SideBar extends React.Component {
     static propTypes = {
@@ -50,7 +45,7 @@ export default class SideBar extends React.Component {
 
     getChatsList() {
         const { currentUser, chats } = this.props;
-        return chats.User.chats
+        return chats
             .map(chat => (
                 <ChatPreview
                     key={chat.id}
@@ -64,22 +59,6 @@ export default class SideBar extends React.Component {
     toggleParanja = () =>
         this.setState((prev) => ({ paranjaOpened: !prev.paranjaOpened }));
 
-    loadScreen = () => (
-        (typeof window === 'undefined') ? null :
-            <React.Fragment>
-                <div style={{ height: '10%' }}/>
-                {OverlayLoader.nodeName !== 'P' &&
-                <OverlayLoader
-                    displayName={'foo'}
-                    color={'#7e9cda'}
-                    loader="GridLoader"
-                    active={true}
-                    backgroundColor={'black'}
-                    opacity="0"
-                />}
-            </React.Fragment>
-    );
-
     subscription = null;
 
     static subscriptionDataHandler = (previousResult, { subscriptionData, variables }) => {
@@ -91,9 +70,9 @@ export default class SideBar extends React.Component {
 
     subscribe = () => {
         if (!this.subscription) {
-            this.subscription = this.props.chats.subscribeToMore({
-                document: SUBSCRIBE_USER_CHATS_UPDATES_ql,
-                variables: { filter: { node: { id: this.props.currentUser.id } } },
+            this.subscription = this.props.data.subscribeToMore({
+                document: SubscribeToUserChats.subscription,
+                variables: SubscribeToUserChats.vars(this.props.currentUser.id),
                 updateQuery: SideBar.subscriptionDataHandler
             });
         }
@@ -123,7 +102,7 @@ export default class SideBar extends React.Component {
                     </Header>
                     <Scrollbars universal>
                         {chats && chats.loading ?
-                            this.loadScreen() :
+                            SideBar.LoadScreen :
                             chats && !chats.error && this.getChatsList()
                         }
                     </Scrollbars>
@@ -131,4 +110,7 @@ export default class SideBar extends React.Component {
             </React.Fragment>
         );
     }
+
+    static LoadScreen = <LoadScreen offsetPercentage={10} opacity={0}/>;
+    static ErrorScreen = <p>Error :(</p>;
 }

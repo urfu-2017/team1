@@ -30,9 +30,37 @@ export const SubscribeToMessages = mapper(SUBSCRIBE_TO_MESSAGES_ql,
             chat: {
                 id: chatId
             },
-            sender: {
-                id_not: currentUserId
-            }
+            // Отключает получение сообщения отправителем, но...
+            // Что, если чат открыт в двух вкладках? Вариант - сделать как у Телеграм, но как?
+            // sender: {
+            //     id_not: currentUserId
+            // }
         }
+    })
+);
+
+
+const SUBSCRIBE_TO_USER_CHATS_ql = gql`
+subscription SubscribeToUserChats($filter: UserSubscriptionFilter!) {
+  User(filter: $filter) {
+    mutation
+    node {
+      id
+      chats {
+        ...chatData
+      }
+    }
+  }
+}
+
+${fragments.chatData_ql}
+`;
+
+export const SubscribeToUserChats = mapper(SUBSCRIBE_TO_MESSAGES_ql,
+    userId => ({
+        node: {
+            id: userId
+        },
+        updatedFields_contains: 'chatsUpdatedDummy'
     })
 );
