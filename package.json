@@ -15,6 +15,7 @@
     "html-metadata": "^1.7.0",
     "jsdom": "^11.8.0",
     "marked": "^0.3.19",
+    "moment": "^2.22.1",
     "mongoose": "^5.0.15",
     "next": "^5.0.0",
     "node-emoji": "^1.8.1",

@@ -29,6 +29,7 @@ export const MessageWrapper = styled.article`
         background-color: #a2eae0;
     }
     .messageBlock__text {
+        word-break: break-all;
         width: fit-content;
         word-wrap: break-word;
         padding: 6px 4px 6px 6px;
@@ -55,5 +56,10 @@ export const MessageWrapper = styled.article`
         max-width: 178px;
         width: auto;
         height: 78px;
+    }
+    .massageBlock__time {
+        padding: 5px;
+        text-align: end;
+        font-size: 13px;
     }
 `;

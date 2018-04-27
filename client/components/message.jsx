@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import marked from 'marked';
 import emoji from 'node-emoji';
+import moment from 'moment';
+
+
+moment.locale('ru');
 
 import { MessageWrapper } from '../styles/message';
 
@@ -32,7 +36,6 @@ export default class Message extends Component {
         return (
             <MessageWrapper>
                 <div className={`messageBlock ${(fromMe ? 'from_me' : 'from_they')}`}>
-                    {/* <div className="massageBlock__time">{creationTime}</div> */}
                     <div
                         className="messageBlock__text"
                         dangerouslySetInnerHTML={{ __html: emoji.emojify(marked(transformedMessage), res => res) }}
@@ -44,6 +47,7 @@ export default class Message extends Component {
                             <div className="metadata-container__title">{ogdata.title}</div>
                         </a>
                     </div>}
+                    <div className="massageBlock__time">{moment(creationTime).calendar()}</div>
                 </div>
             </MessageWrapper>
         );
