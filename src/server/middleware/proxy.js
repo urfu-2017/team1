@@ -49,7 +49,7 @@ module.exports = requestsInterceptor => {
     // Hence the own simple implementation
     const proxy = async (req, res) => {
         // TODO: use streams
-        let body = requestsInterceptor(req.body) || req.body;
+        let body = await requestsInterceptor(req.body) || req.body;
         const resp = await fetch(process.env.HTTP_API_URL, {
             body: JSON.stringify(body),
             method: 'POST',

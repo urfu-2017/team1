@@ -74,6 +74,7 @@ export default class MessageInput extends React.PureComponent {
                 id: this.props.currentUserId,
                 __typename: 'User'
             },
+            metadata: null,
             ...message,
             __typename: 'Message',
         }

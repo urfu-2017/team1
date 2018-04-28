@@ -8,6 +8,7 @@ fragment messageData on Message {
   pictures
   createdAt
   modifiedAt
+  metadata
   sender {
     id
   }

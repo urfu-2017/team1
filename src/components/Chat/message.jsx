@@ -35,19 +35,30 @@ export default class Message extends React.Component {
         const { loading, error, message, user, isFromSelf } = this.props;
         // небольшой костыль: optimistic response присваивает сообщениям
         // рандомный отрицательный id, чтобы не хранить лишнее поле
-        const delivered = isFromSelf && (message.id < 0 ? '  ' : ' ✓') || '';
+        const delivered = isFromSelf ? (message.id < 0 ? '  ' : ' ✓') : '';
         // TODO:
         if (this.formattedText === null) {
             this.formattedText = Message.formatText(message.text + delivered);
         }
+        const ogdata = message.metadata && message.metadata.ogdata || {};
         return (
-            <MessageWrapper>
-                <span>{user && user.name}</span>
-                <Text
-                    isFromSelf={isFromSelf}
-                    dangerouslySetInnerHTML={{ __html: this.formattedText }}/>
-                {/*TODO: у сообщения есть также поле modifiedAt, равное null, если оно не менялось */}
-                <Time>{message.createdAt}</Time>
+            <MessageWrapper isFromSelf={isFromSelf}>
+                <div className="messageBlock">
+                    {/*TODO: у сообщения есть также поле modifiedAt, равное null, если оно не менялось */}
+                    <div className="mrssageBlock__time">{message.createdAt}</div>
+                    <div
+                        className="messageBlock__text"
+                        isFromSelf={isFromSelf}
+                        dangerouslySetInnerHTML={{ __html: this.formattedText }}
+                    />
+                    { ogdata && Object.keys(ogdata).length !== 0 &&
+                    <div className="metadata">
+                        <a href={ogdata.url} className="metadata-container">
+                            <img className="metadata-container__img" src={ogdata.image.url} alt="{ogdata.title}" />
+                            <div className="metadata-container__title">{ogdata.title}</div>
+                        </a>
+                    </div>}
+                </div>
             </MessageWrapper>
         );
     }

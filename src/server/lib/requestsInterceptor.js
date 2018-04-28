@@ -1,9 +1,11 @@
 'use strict';
+const getMetadata = require('./metadata');
 
-module.exports = body => {
+
+module.exports = async body => {
     if (body.operationName !== 'CreateMessage') {
         return null;
     }
-    // body.variables.text += ' ✓';
+    body.variables.metadata = await getMetadata(body.variables.text);
     return body;
 };
