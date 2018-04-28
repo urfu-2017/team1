@@ -5,6 +5,7 @@ import Menu from './menu';
 import Contacts from '../containers/contacts';
 import ProfileEditor from './profileEditor';
 import ChatEditor from './chatEditor';
+import AlarmClock from './alarmСlock';
 
 import { ParanjaWrapper } from '../styles/paranja';
 
@@ -34,7 +35,8 @@ export default class Paranja extends React.Component {
             event: '',
             visible: false,
             isOpenEditor: false,
-            isOpenContacts: false
+            isOpenContacts: false,
+            isOpenAlarmClock: false
         };
     }
 
@@ -42,6 +44,7 @@ export default class Paranja extends React.Component {
     handleCancel = e => { this.setState({ visible: false }); }
     showEditor = isOpen => { this.setState({ isOpenEditor: isOpen }); }
     showContacts = isOpen => { this.setState({ isOpenContacts: isOpen }); }
+    showAlarmClock = isOpen => { this.setState({ isOpenAlarmClock: isOpen }); }
 
     render() {
         const {
@@ -64,6 +67,7 @@ export default class Paranja extends React.Component {
                                 setEvent={this.setEvent}
                                 showEditor={this.showEditor}
                                 showContacts={this.showContacts}
+                                showAlarmClock={this.showAlarmClock}
                             />)
                         }
                     </ParanjaWrapper>
@@ -96,6 +100,11 @@ export default class Paranja extends React.Component {
                         />
                     </ParanjaWrapper>)
                 }
+                { this.state.isOpenAlarmClock && (
+                    <ParanjaWrapper>
+                        <AlarmClock />
+                    </ParanjaWrapper>
+                )}
             </React.Fragment>
         );
     }

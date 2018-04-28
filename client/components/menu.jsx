@@ -5,12 +5,14 @@ import { MenuRoot } from '../styles/menu';
 export default class Menu extends Component {
     static propTypes = {
         user: PropTypes.shape(),
+        setEvent: PropTypes.func,
         showContacts: PropTypes.func,
         showEditor: PropTypes.func
     }
 
     static defaultProps = {
         user: {},
+        setEvent: () => {},
         showContacts: () => {},
         showEditor: () => {}
     }
@@ -21,7 +23,8 @@ export default class Menu extends Component {
     }
 
     render() {
-        const { user, setEvent, showContacts, showEditor } = this.props;
+        const { user, setEvent } = this.props;
+        const { showContacts, showEditor, showAlarmClock } = this.props;
         return (
             <MenuRoot>
                 <div className="profile">
@@ -46,6 +49,13 @@ export default class Menu extends Component {
                         onClick={() => { showEditor(true); }}
                     >
                         Редактирование профиля
+                    </p>
+                    <p
+                        role="presentation"
+                        className="menu__item"
+                        onClick={() => { showAlarmClock(true); }}
+                    >
+                        Будильник
                     </p>
                 </main>
             </MenuRoot>
