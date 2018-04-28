@@ -89,14 +89,28 @@ export const GetChatMessages = mapper(GET_CHAT_MESSAGES_ql,
         data => data.Chat && data.Chat.messages, 'messages');
 
 
+const GET_CHAT_MEMBERS_ql = gql`
+query GetChatMembers($chatId: ID!) {
+  Chat(id: $chatId) {
+    id
+    members {
+      ...userData
+    }
+  }
+}
+
+${fragments.userData_ql}
+`;
+
+export const GetChatMembers = mapper(GET_CHAT_MEMBERS_ql,
+        data => data.Chat && data.Chat.members, 'members');
+
+
 const GET_CHAT_INFO_ql = gql`
 query GetChatInfo($chatId: ID!) {
   Chat(id: $chatId) {
     id
     ...chatData
-    members {
-      id
-    }
   }
 }
 
@@ -104,3 +118,29 @@ ${fragments.chatData_ql}
 `;
 
 export const GetChatInfo = mapper(GET_CHAT_INFO_ql, data => data.Chat, 'chat');
+
+
+const GET_ALL_USERS_ql = gql`
+query GetAllUsers {
+    allUsers {
+        ...userData
+    }
+}
+
+${fragments.userData_ql}
+`;
+
+export const GetAllUsers = mapper(GET_ALL_USERS_ql, data => data.allUsers, 'allUsers');
+
+
+const GET_ALL_CHATS_ql = gql`
+query GetAllChats {
+    allChats {
+        ...chatData
+    }
+}
+
+${fragments.chatData_ql}
+`;
+
+export const GetAllChats = mapper(GET_ALL_CHATS_ql, data => data.allChats, 'allChats');

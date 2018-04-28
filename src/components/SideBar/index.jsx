@@ -15,7 +15,7 @@ import Chat from '../Chat';
 
 
 // TODO: retrieve last messages and sort by modification order
-// Первым декоратором получаем объект текущего пользователя, который нам дал сервер
+// Первым декоратором получаем объект текущего пользователя, которого нам дал сервер
 // Вторым - с помощью этого объекта просим у api все чаты текущего пользователя
 @withCurrentUser
 @graphql(GetUserChats.query, {

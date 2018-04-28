@@ -26,7 +26,8 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            mainComponentName: 'Chat'
+            mainComponentName: 'Chat',
+            mainComponentProps: null
         };
     }
 
@@ -36,9 +37,9 @@ export default class App extends React.Component {
         Profile
     };
 
-    changeMainComponent = mainComponentName => event => {
+    changeMainComponent = mainComponentName => (event, mainComponentProps) => {
         event && event.target && event.preventDefault();
-        this.setState({ mainComponentName });
+        this.setState({ mainComponentName, mainComponentProps });
         if (mainComponentName !== 'Chat')
             this.props.updateCurrentChatId(null);
     };
@@ -50,7 +51,8 @@ export default class App extends React.Component {
             <Wrapper>
                 <CurrentUserProvider value={this.props.currentUser}>
                     <SideBar mainComponentChanger={this.changeMainComponent}/>
-                    <MainComponent mainComponentChanger={this.changeMainComponent}/>
+                    <MainComponent {...this.state.mainComponentProps}
+                                   mainComponentChanger={this.changeMainComponent} />
                 </CurrentUserProvider>
             </Wrapper>
         );

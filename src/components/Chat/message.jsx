@@ -35,7 +35,7 @@ export default class Message extends React.Component {
         const { loading, error, message, user, isFromSelf } = this.props;
         // небольшой костыль: optimistic response присваивает сообщениям
         // рандомный отрицательный id, чтобы не хранить лишнее поле
-        const delivered = message.id < 0 ? '  ' : ' ✓';
+        const delivered = isFromSelf && (message.id < 0 ? '  ' : ' ✓') || '';
         // TODO:
         if (this.formattedText === null) {
             this.formattedText = Message.formatText(message.text + delivered);

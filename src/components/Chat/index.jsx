@@ -8,6 +8,7 @@ import Messages from './messages';
 import {GET_CURRENT_CHAT_ID_ql} from '../../graphqlQueries/localState';
 import {GetChatInfo} from '../../graphqlQueries/queries';
 import {withCurrentUser} from '../../lib/currentUserContext';
+import ChatEditor from './chatEditor';
 
 
 const currentChatSet = ({ currentChatId }) =>
@@ -19,14 +20,14 @@ const currentChatSet = ({ currentChatId }) =>
 @graphql(GET_CURRENT_CHAT_ID_ql, { name: 'localState' })
 @graphql(
     GetChatInfo.query, {
-    // не запрашиваем, если не открыт никакой чат, или localState ещё не успел выполниться
-    // чёрт знает, почему не работает .loading
-    skip: ({ localState }) => !currentChatSet(localState),
-    options: ({ localState: { currentChatId } }) => ({
-        variables: { chatId: currentChatId }
-    }),
-    props: GetChatInfo.map
-})
+        // не запрашиваем, если не открыт никакой чат, или localState ещё не успел выполниться
+        // чёрт знает, почему не работает .loading
+        skip: ({ localState }) => !currentChatSet(localState),
+        options: ({ localState: { currentChatId } }) => ({
+            variables: { chatId: currentChatId }
+        }),
+        props: GetChatInfo.map
+    })
 export default class Chat extends React.Component {
     static propTypes = {
         currentUser: PropTypes.object,
@@ -44,6 +45,30 @@ export default class Chat extends React.Component {
         chat: {}
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = { editorOpened: false };
+    }
+
+    componentWillReceiveProps(props) {
+        const { editorOpened } = props;
+        this.setState({ editorOpened });
+    }
+
+    getMainComponent(currentChat, currentUser) {
+        return this.state.editorOpened ?
+            <ChatEditor
+                currentChat={currentChat}
+                currentUser={currentUser}
+                toggleEditor={this.toggleEditor}/> :
+            <Messages
+                currentChatId={currentChat.id || null}
+                currentUserId={currentUser.id}/>;
+    }
+
+    toggleEditor = () => this.setState(prev => ({ editorOpened: !prev.editorOpened }));
+
     render() {
         const { localState, loading, error, chat, currentUser } = this.props;
         // const {id, title, picture, createdAt, members} = chat;
@@ -56,11 +81,11 @@ export default class Chat extends React.Component {
             content = (
                 <React.Fragment>
                     <Header>
-                        {chat.title || 'Загрузка...'}
+                        <span onClick={this.toggleEditor}>
+                            {chat.title ? '✎ ' + chat.title : 'Загрузка...'}
+                        </span>
                     </Header>
-                    <Messages
-                        currentChatId={chat.id || null}
-                        currentUserId={currentUser.id}/>
+                    {this.getMainComponent(chat, currentUser)}
                 </React.Fragment>
             );
         }

@@ -31,7 +31,7 @@ export default class MessageInput extends React.PureComponent {
     }
 
     handleSubmit = event => {
-        if (this.state.message.length === 0) {
+        if (this.state.message.trim().length === 0) {
             return;
         }  // TODO: review later
         if (event.key === 'Enter' && !event.shiftKey) {

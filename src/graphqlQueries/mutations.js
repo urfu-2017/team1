@@ -59,6 +59,25 @@ ${fragments.userData_ql}
 export const CreateChat = mapper(CREATE_CHAT_ql, 'createChat');
 
 
+const CREATE_GROUP_CHAT_ql = gql`
+mutation CreateGroupChat($title: String!, $ownerId: ID!, $picture: String, $userId: ID!) {
+  createChat(title: $title, ownerId: $ownerId, picture: $picture, membersIds: [$userId]) {
+    ...chatData
+  }
+  currentUser: updateUser(id: $userId, chatsUpdatedDummy: true) {
+    id
+    chats {
+      ...chatData
+    }
+  }
+}
+
+${fragments.chatData_ql}
+`;
+
+export const CreateGroupChat = mapper(CREATE_GROUP_CHAT_ql, 'createGroupChat');
+
+
 const ADD_USER_TO_CHAT_ql = gql`
 mutation AddUserToChat($chatId: ID!, $userId: ID!) {
   addToChatOnUser(chatsChatId: $chatId, membersUserId: $userId) {
@@ -74,3 +93,5 @@ mutation AddUserToChat($chatId: ID!, $userId: ID!) {
   }
 }
 `;
+
+export const AddUserToChat = mapper(ADD_USER_TO_CHAT_ql, 'addUserToChat');
