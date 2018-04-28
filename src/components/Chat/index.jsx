@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 import ChatWindowWrapper from '../../styles/chatWindow';
 import {Header} from '../../styles/messages';
 import Messages from './messages';
-import {GET_CURRENT_CHAT_ID_ql} from '../../graphqlQueries/localState';
 import {GetChatInfo} from '../../graphqlQueries/queries';
 import {withCurrentUser} from '../../lib/currentUserContext';
 import ChatEditor from './chatEditor';
+import withLocalState from '../../lib/withLocalState';
 
 
 const currentChatSet = ({ currentChatId }) =>
@@ -17,7 +17,7 @@ const currentChatSet = ({ currentChatId }) =>
 
 // Не в compose, потому что тогда в localState не будет значения
 @withCurrentUser
-@graphql(GET_CURRENT_CHAT_ID_ql, { name: 'localState' })
+@withLocalState
 @graphql(
     GetChatInfo.query, {
         // не запрашиваем, если не открыт никакой чат, или localState ещё не успел выполниться

@@ -1,7 +1,7 @@
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { withClientState } from 'apollo-link-state';
-import { HttpLink } from 'apollo-link-http';
+import { BatchHttpLink } from 'apollo-link-batch-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { getMainDefinition } from 'apollo-utilities';
@@ -20,11 +20,11 @@ if (isOnServer) {
 
 
 function create(httpUrl, wsUrl) {
-    const httpLink = new HttpLink({ uri: httpUrl });
+    const httpLink = new BatchHttpLink({ uri: httpUrl, batchInterval: 30 });
 
     const cache = new InMemoryCache({
-        dataIdFromObject: ({ __typename, contentId }) =>
-            (contentId ? `${__typename}:${contentId}` : null)
+        // dataIdFromObject: ({ __typename, contentId }) =>
+        //     (contentId ? `${__typename}:${contentId}` : null)
     });
 
     cache.restore(initialState || {});
@@ -35,7 +35,7 @@ function create(httpUrl, wsUrl) {
     });
 
     const middlewareAuthLink = new ApolloLink((operation, forward) => {
-        const token = localStorage.getItem('scaphold_user_token');
+        const token = localStorage.getItem('user_token');
         if (!token) {
             return forward(operation);
         }

@@ -32,29 +32,32 @@ export default class ChatEditor extends React.Component {
     clickHandler = (addUserToChat, currentUser, contact) => {
         const { currentChat, data } = this.props;
         addUserToChat({ variables: { chatId: currentChat.id, userId: contact.id } });
-        data.refetch();
+        setTimeout(data.refetch, 700);
         this.toggleUsersList();
     };
+
+    contactsFilter = (_, contact) => !this.props.members.find(u => u.id === contact.id);
 
     usersList = () => (
         <Mutation mutation={AddUserToChat.mutation}>{
             addUserToChat => <ContactsList
                 title="Добавить пользователя в чат"
-                clickHandler={(...args) => this.clickHandler(addUserToChat, ...args)}
-                contactsFilter={(_, contact) => !this.props.members.find(u => u.id === contact.id)}
+                clickHandler={this.clickHandler.bind(null, addUserToChat)}
+                contactsFilter={this.contactsFilter}
                 closeAction={this.toggleUsersList}
             />
         }</Mutation>
     );
 
-    toggleUsersList = () => this.setState(prev => ({ usersListOpened: !prev.usersListOpened }));
+    toggleUsersList = () => this.props.members &&
+        this.setState(prev => ({ usersListOpened: !prev.usersListOpened }));
 
     render() {
         const { currentChat, members } = this.props;
 
         return (
             <Editor>{
-                this.state.usersListOpened
+                this.state.usersListOpened && members
                     ? this.usersList()
                     : <React.Fragment>
                         <img className="image" src={currentChat.picture} alt="Изображение чата"/>

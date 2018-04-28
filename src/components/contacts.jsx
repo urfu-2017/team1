@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {graphql, Mutation} from 'react-apollo';
+import {Mutation} from 'react-apollo';
 
 import ContactsList from './contactsList';
 import {GetUserChats} from '../graphqlQueries/queries';
 import {CreateChat} from '../graphqlQueries/mutations';
-import {UpdateCurrentChatId} from '../graphqlQueries/localState';
+import withLocalState from '../lib/withLocalState';
 
 
 const getNewChat = (currentUser, contact) => ({
@@ -17,9 +17,7 @@ const getNewChat = (currentUser, contact) => ({
 });
 
 
-@graphql(UpdateCurrentChatId.query, {
-    props: UpdateCurrentChatId.map
-})
+@withLocalState
 export default class Contacts extends React.Component {
     static clickHandler = (createChat, currentUser, contact) => {
         const chat = getNewChat(currentUser, contact);

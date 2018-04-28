@@ -4,7 +4,7 @@ import {graphql} from 'react-apollo';
 
 import {withCurrentUser} from '../../lib/currentUserContext';
 import Textarea from '../../styles/chatWindowInput';
-import {addNewMessage} from './manageMessages';
+import {addNewMessage} from '../../lib/dataHandlers';
 import {CreateMessage} from '../../graphqlQueries/mutations';
 import {GetChatMessages} from '../../graphqlQueries/queries';
 

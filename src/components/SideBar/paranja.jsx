@@ -7,7 +7,7 @@ import { ParanjaWrapper } from '../../styles/paranja';
 
 export default class Paranja extends React.Component {
     static propTypes = {
-        currentUser: PropTypes.shape(),
+        currentUser: PropTypes.object,
         toggleParanja: PropTypes.func,
         mainComponentChanger: PropTypes.func
     };

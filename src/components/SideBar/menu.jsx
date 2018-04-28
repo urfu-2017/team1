@@ -1,12 +1,12 @@
 import React from 'react';
-import {graphql, Mutation} from 'react-apollo';
+import {Mutation} from 'react-apollo';
 import PropTypes from 'prop-types';
 
 import {MenuRoot} from '../../styles/menu';
 import Contacts from '../contacts';
 import {GetUserChats} from '../../graphqlQueries/queries';
 import {CreateGroupChat} from '../../graphqlQueries/mutations';
-import {UpdateCurrentChatId} from '../../graphqlQueries/localState';
+import withLocalState from '../../lib/withLocalState';
 
 
 const getNewChat = currentUser => ({
@@ -17,9 +17,7 @@ const getNewChat = currentUser => ({
 });
 
 
-@graphql(UpdateCurrentChatId.query, {
-    props: UpdateCurrentChatId.map
-})
+@withLocalState
 export default class Menu extends React.Component {
     static propTypes = {
         currentUser: PropTypes.shape(),

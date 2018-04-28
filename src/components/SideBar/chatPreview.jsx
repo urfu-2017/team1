@@ -1,17 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {graphql, compose} from 'react-apollo';
 
 import {ChatWrapper, ChatHeader, LastMessage, Sender} from '../../styles/chat';
-import {GET_CURRENT_CHAT_ID_ql, UpdateCurrentChatId} from '../../graphqlQueries/localState';
+import withLocalState from '../../lib/withLocalState';
 
 
-@compose(
-    graphql(GET_CURRENT_CHAT_ID_ql, { name: 'localState' }),
-    graphql(UpdateCurrentChatId.query, {
-        props: UpdateCurrentChatId.map
-    })
-)
+@withLocalState
 export default class ChatPreview extends React.PureComponent {
     static propTypes = {
         chat: PropTypes.object,

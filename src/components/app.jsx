@@ -6,8 +6,7 @@ import SideBar from './SideBar';
 import Contacts from './contacts';
 import Profile from './profile';
 import {Provider as CurrentUserProvider} from '../lib/currentUserContext';
-import {UpdateCurrentChatId} from '../graphqlQueries/localState';
-import {graphql} from 'react-apollo';
+import withLocalState from '../lib/withLocalState';
 
 
 const Wrapper = styled.main`
@@ -19,9 +18,7 @@ const Wrapper = styled.main`
 `;
 
 
-@graphql(UpdateCurrentChatId.query, {
-    props: UpdateCurrentChatId.map
-})
+@withLocalState
 export default class App extends React.Component {
     constructor(props) {
         super(props);

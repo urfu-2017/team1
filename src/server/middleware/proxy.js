@@ -48,8 +48,14 @@ module.exports = requestsInterceptor => {
     // Turns out that the most JS libs are just plain bad...
     // Hence the own simple implementation
     const proxy = async (req, res) => {
-        // TODO: use streams
-        let body = await requestsInterceptor(req.body) || req.body;
+        let body = null;
+        if (Array.isArray(req.body)) {
+            // enabling batched queries
+            body = await Promise.all(req.body.map(requestsInterceptor));
+            body.map((item, i) => item || req.body[i]);
+        } else {
+            body = await requestsInterceptor(req.body) || req.body;
+        }
         const resp = await fetch(process.env.HTTP_API_URL, {
             body: JSON.stringify(body),
             method: 'POST',

@@ -15,7 +15,7 @@ import {GetUser} from '../../graphqlQueries/queries';
         props: GetUser.map
     }
 )
-export default class Message extends React.Component {
+export default class Message extends React.PureComponent {
     static propTypes = {
         isFromSelf: PropTypes.bool,
         message: PropTypes.object,
