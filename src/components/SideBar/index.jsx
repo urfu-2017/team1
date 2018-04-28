@@ -57,7 +57,7 @@ export default class SideBar extends React.Component {
     }
 
     toggleParanja = () =>
-        this.setState((prev) => ({ paranjaOpened: !prev.paranjaOpened }));
+        this.setState(prev => ({ paranjaOpened: !prev.paranjaOpened }));
 
     subscription = null;
 
@@ -79,7 +79,7 @@ export default class SideBar extends React.Component {
     };
 
     render() {
-        const { chats, currentUser, loading } = this.props;
+        const { chats, currentUser, loading, error } = this.props;
         if (chats && !loading) {
             this.subscribe();
         }
@@ -101,9 +101,9 @@ export default class SideBar extends React.Component {
                         <SearchInput placeholder="Поиск" type="search"/>
                     </Header>
                     <Scrollbars universal>
-                        {chats && chats.loading ?
+                        { loading ?
                             SideBar.LoadScreen :
-                            chats && !chats.error && this.getChatsList()
+                            chats && !error && this.getChatsList()
                         }
                     </Scrollbars>
                 </ChatsList>

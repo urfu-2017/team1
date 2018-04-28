@@ -26,9 +26,9 @@ export default class Message extends React.Component {
 
     static defaultProps = { isFromSelf: false, message: {}, sender: {} };
 
-    // Кэшируем, чтобы не парсить при каждом рендере
     static formatText = text => emoji.emojify(marked(text));
 
+    // Кэшируем, чтобы не парсить при каждом рендере
     formattedText = null;
 
     render() {

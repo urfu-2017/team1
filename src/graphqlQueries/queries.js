@@ -95,13 +95,12 @@ query GetChatInfo($chatId: ID!) {
     id
     ...chatData
     members {
-      ...userData
+      id
     }
   }
 }
 
 ${fragments.chatData_ql}
-${fragments.userData_ql}
 `;
 
 export const GetChatInfo = mapper(GET_CHAT_INFO_ql, data => data.Chat, 'chat');
