@@ -24,6 +24,7 @@ export const MessageWrapper = styled.article`
         background-color: ${props => (props.isFromSelf ? '#92d7ef' : '#a2eae0')};
     }
     .messageBlock__text {
+        white-space: pre-wrap;
         width: fit-content;
         word-wrap: break-word;
         padding: 6px 4px 6px 6px;
