@@ -47,6 +47,7 @@ export default class Messages extends Component {
         chat: PropTypes.shape(),
         user: PropTypes.shape(),
         onReceiveMessage: PropTypes.func,
+        setReactionToMessage: PropTypes.func,
         socketURL: PropTypes.string
     };
 
@@ -96,11 +97,13 @@ export default class Messages extends Component {
     getSectionRef = node => { this.node = node; }
 
     getMessagesList() {
-        const { chat, user } = this.props;
+        const { chat, user, setReactionToMessage } = this.props;
 
         return chat.messages.map(message => (
             <Message
                 key={message._id}
+                messageId={message._id}
+                chat={chat}
                 message={message.message}
                 creationTime={message.createdAt}
                 fromMe={message.sender.userId === user._id}
@@ -108,6 +111,7 @@ export default class Messages extends Component {
                 isSended={message.isSended}
                 metadata={message.metadata}
                 sender={message.sender}
+                setReactionToMessage={setReactionToMessage}
             />
         ));
     }

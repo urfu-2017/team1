@@ -11,6 +11,7 @@ export default class ChatWindow extends Component {
     static propTypes = {
         sendMessage: PropTypes.func,
         addMessageFromChatInput: PropTypes.func,
+        setReactionToMessage: PropTypes.func,
         user: PropTypes.shape(),
         chat: PropTypes.shape(),
         socketURL: PropTypes.string
@@ -27,7 +28,7 @@ export default class ChatWindow extends Component {
     }
 
     render() {
-        const { chat, user, sendMessage, addMessageFromChatInput, socketURL } = this.props;
+        const { chat, user, sendMessage, addMessageFromChatInput, socketURL, setReactionToMessage } = this.props;
 
         return chat._id ?
             <ChatWindowWrapper>
@@ -36,6 +37,7 @@ export default class ChatWindow extends Component {
                     user={user}
                     chat={chat}
                     onReceiveMessage={addMessageFromChatInput}
+                    setReactionToMessage={setReactionToMessage}
                     socketURL={socketURL}
                 />
                 <ChatWindowInput

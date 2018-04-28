@@ -2,9 +2,9 @@
 
 const ChatManager = require('../../../managers/chat');
 const { Message } = require('../../../schemas/message');
+const { Reaction } = require('../../../schemas/reaction');
 
 const { getMetadata } = require('../../../lib/metadata');
-
 
 class ChatController {
     static async get(req, res) {
@@ -52,6 +52,24 @@ class ChatController {
                 message
             });
 
+            res.status(200).send(message);
+        }
+    }
+
+    static async setReactionToMessage(req, res) {
+        const { user } = req;
+        const { id, messageId } = req.params;
+        const chat = await ChatManager.findChatByMessageId(id, messageId);
+        if (!chat) {
+            res.status(404).send({});
+        }
+        if (chat.contacts.find(contact => contact.userId === user._id) != null) {
+            res.status(400).send({ error: 'Эээ, ты чьи сообщения оцениваешь?!' });
+        } else {
+            const { reactionId } = req.body;
+            const reaction = new Reaction(Object.assign({}, { reaction: reactionId, userId: user._id }));
+            const savedChat = await ChatManager.addReactionToMessage(chat, messageId, reaction);
+            const message = savedChat.messages.find(m => m._id == messageId);
             res.status(200).send(message);
         }
     }

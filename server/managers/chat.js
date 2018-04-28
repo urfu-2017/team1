@@ -37,6 +37,21 @@ class ChatManager {
     static async findChatById(id) {
         return await Chat.findById(id);
     }
+
+    static async findChatByMessageId(chatId, messageId) {
+        return await Chat.findOne({ _id: chatId, 'messages._id': messageId });
+    }
+
+    static async addReactionToMessage(chat, messageId, reaction) {
+        const message = chat.messages.find(m => messageId == m._id);
+        const reactionIndex = message.reactions.findIndex(r => r.userId == reaction.userId);
+        if (reactionIndex !== -1) {
+            message.reactions.splice(reactionIndex, 1);
+        } else {
+            message.reactions.push(reaction);
+        }
+        return await chat.save();
+    }
 }
 
 module.exports = ChatManager;

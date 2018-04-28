@@ -16,9 +16,12 @@ export default class Message extends Component {
         isSended: PropTypes.bool,
         isSuccess: PropTypes.bool,
         message: PropTypes.string,
+        messageId: PropTypes.string,
         creationTime: PropTypes.string,
         metadata: PropTypes.shape(),
-        sender:  PropTypes.shape()
+        sender: PropTypes.shape(),
+        chat: PropTypes.shape(),
+        setReactionToMessage: PropTypes.func
     };
 
     static defaultProps = { isSended: true, fromMe: '', message: '', creationTime: '', metadata: {} }
@@ -31,12 +34,18 @@ export default class Message extends Component {
     }
 
     getReactions = () => {
+        const { messageId, chat, setReactionToMessage } = this.props;
+        const { closeReactions } = this;
         const emojies = ['+1', '-1', 'ok_hand', 'heart'];
         return emojies.map(id => {
             return (
                 <Emoji
+                    key={id}
                     className="emoji__style"
-                    onClick={this.closeReactions}
+                    onClick={() => {
+                        setReactionToMessage(chat, messageId, id);
+                        closeReactions();
+                    }}
                     emoji={{ id }}
                     size={25}
                 />
@@ -53,7 +62,6 @@ export default class Message extends Component {
     render() {
         const { message, fromMe, metadata, isSuccess, isSended, creationTime, sender } = this.props;
         const { ogdata } = metadata;
-        let transformedMessage = message;
         let picker = '';
         if (this.state.emoji) {
             picker = (
@@ -92,7 +100,7 @@ export default class Message extends Component {
                     </div>
                     <div
                         className="messageBlock__text"
-                        dangerouslySetInnerHTML={{ __html: emoji.emojify(marked(transformedMessage), res => res) }}
+                        dangerouslySetInnerHTML={{ __html: emoji.emojify(marked(message), res => res) }}
                     />
                     { ogdata && Object.keys(ogdata).length !== 0 &&
                     <div className="metadata">

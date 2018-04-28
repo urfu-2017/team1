@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import io from 'socket.io-client';
+
 import PropTypes from 'prop-types';
 import MenuIcon from 'react-icons/lib/fa/list';
 import { Scrollbars } from 'react-custom-scrollbars';

@@ -102,3 +102,15 @@ export const changeAvatar = avatarData => dispatch => {
             dispatch(setAvatar(response.avatar));
         });
 };
+
+export const setReactionToMessage = (chat, messageId, reactionId) => dispatch => {
+    fetch(`/api/v1/chats/${chat._id}/${messageId}/reaction`, makeRequestOptions({ method: 'POST', body: { reactionId } }))
+        .then(response => {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                throw new Error('Ooops');
+            }
+        })
+        .then(message => dispatch(saveMessage(chat, true, message, message)));
+};

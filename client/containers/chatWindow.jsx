@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import ChatWindow from '../components/chatWindow';
-import { addMessageFromChatInput, sendMessage } from '../actions/actions';
+import { addMessageFromChatInput, sendMessage, setReactionToMessage } from '../actions/actions';
 
 const mapStateToProps = state => ({
     user: state.currentInfo.currentUser,
@@ -14,6 +14,9 @@ const mapDispatchToProps = dispatch => ({
     },
     sendMessage: (chat, message) => {
         dispatch(sendMessage(chat, message));
+    },
+    setReactionToMessage: (chat, message, reactionId) => {
+        dispatch(setReactionToMessage(chat, message, reactionId));
     }
 });
 
