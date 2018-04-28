@@ -64,7 +64,20 @@ export default class Message extends Component {
     findEmoji = id => emojiIndex.search(id).map(o => o.native);
 
     render() {
-        const { message, fromMe, metadata, isSuccess, isSended, userId, creationTime, sender, reactions } = this.props;
+        const {
+            message,
+            fromMe,
+            metadata,
+            chat,
+            isSuccess,
+            isSended,
+            userId,
+            creationTime,
+            sender,
+            reactions,
+            setReactionToMessage,
+            messageId
+        } = this.props;
         const { ogdata } = metadata;
 
         const reactionData = {};
@@ -89,7 +102,8 @@ export default class Message extends Component {
                 components.push(<Reaction key={reaction} 
                     count={value.count} 
                     isCurrentUser={value.isCurrentUser} 
-                    reaction={reaction} />)
+                    reaction={reaction}
+                    onReactionClick={() => setReactionToMessage(chat, messageId, reaction)} />)
             });
             return components;
         })(reactionData);

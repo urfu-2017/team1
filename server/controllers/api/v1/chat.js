@@ -43,6 +43,10 @@ class ChatController {
                 avatar: user.avatar
             };
             let messageData = req.body.message;
+            if (!messageData.message) {
+                res.status(400).send({ error: 'Сообщение не может быть пустым' });
+                return;
+            }
             messageData = Object.assign({}, messageData, { metadata: await getMetadata(messageData.message) });
             let message = new Message(Object.assign({}, messageData, { sender }));
             const savedChat = await ChatManager.addMessageToChat(chat, message);

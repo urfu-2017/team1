@@ -9,7 +9,8 @@ export default class Reaction extends React.Component {
     static propTypes = {
         reaction: PropTypes.string,
         count: PropTypes.number,
-        isCurrentUser: PropTypes.bool
+        isCurrentUser: PropTypes.bool,
+        onReactionClick: PropTypes.func
     };
 
     static defaultProps = {
@@ -18,14 +19,16 @@ export default class Reaction extends React.Component {
     }
     
     render() {
-        const { reaction, count, isCurrentUser } = this.props;
-        const classes = [];
+        const { reaction, count, isCurrentUser, onReactionClick } = this.props;
+        const classes = ['reaction'];
         if (isCurrentUser) {
             classes.push('reaction-current');
         }
-        return (<ReactionWrapper className={classes.join(' ')}>
-            <div className="reaction__emoji" dangerouslySetInnerHTML={{ __html: emoji.emojify(`:${reaction}:`) }} />
-            <div className="reaction__count">{count}</div>
+        return (<ReactionWrapper>
+            <div className={classes.join(' ')} onClick={onReactionClick}>
+                <div className="reaction__emoji" dangerouslySetInnerHTML={{ __html: emoji.emojify(`:${reaction}:`) }} />
+                <div className="reaction__count">{count}</div>
+            </div>
         </ReactionWrapper>)
     }
 }
