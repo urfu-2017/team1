@@ -17,6 +17,6 @@ export default class Index extends React.Component {
 
     render() {
         return createNextPage(this.props.httpUrl, this.props.wsUrl,
-            App, { currentUser: this.props.currentUser });
+            App, { userId: this.props.currentUser.id });
     }
 }

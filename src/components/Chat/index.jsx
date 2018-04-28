@@ -1,5 +1,5 @@
 import React from 'react';
-import {graphql, compose} from 'react-apollo';
+import {graphql} from 'react-apollo';
 import PropTypes from 'prop-types';
 
 import ChatWindowWrapper from '../../styles/chatWindow';
@@ -9,6 +9,7 @@ import {GetChatInfo} from '../../graphqlQueries/queries';
 import {withCurrentUser} from '../../lib/currentUserContext';
 import ChatEditor from './chatEditor';
 import withLocalState from '../../lib/withLocalState';
+import withStatusScreens from '../../lib/withStatusScreens';
 
 
 const currentChatSet = ({ currentChatId }) =>
@@ -18,6 +19,7 @@ const currentChatSet = ({ currentChatId }) =>
 // Не в compose, потому что тогда в localState не будет значения
 @withCurrentUser
 @withLocalState
+@withStatusScreens('Error :(', {})
 @graphql(
     GetChatInfo.query, {
         // не запрашиваем, если не открыт никакой чат, или localState ещё не успел выполниться
@@ -76,7 +78,7 @@ export default class Chat extends React.Component {
         if (!currentUser || !currentChatSet(localState)) {
             content = null;
         } else if (error) {
-            content = Chat.ErrorScreen;
+            content = this.ErrorScreen;
         } else {
             content = (
                 <React.Fragment>
@@ -96,6 +98,4 @@ export default class Chat extends React.Component {
             </ChatWindowWrapper>
         );
     }
-
-    static ErrorScreen = <p>Error ;(</p>;
 }

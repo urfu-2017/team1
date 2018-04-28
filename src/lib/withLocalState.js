@@ -1,4 +1,4 @@
-import {graphql, compose} from 'react-apollo/index';
+import {graphql, compose} from 'react-apollo';
 import {GET_CURRENT_CHAT_ID_ql, UpdateCurrentChatId} from '../graphqlQueries/localState';
 
 
