@@ -4,20 +4,24 @@ import marked from 'marked';
 import emoji from 'node-emoji';
 import moment from 'moment';
 import { Emoji, emojiIndex } from 'emoji-mart';
-
+import _ from 'lodash';
 
 moment.locale('ru');
 
 import { MessageWrapper } from '../styles/message';
+import { Reactions } from '../styles/reaction';
+import Reaction from './reaction';
 
 export default class Message extends Component {
     static propTypes = {
         fromMe: PropTypes.bool,
+        userId: PropTypes.string,
         isSended: PropTypes.bool,
         isSuccess: PropTypes.bool,
         message: PropTypes.string,
         messageId: PropTypes.string,
         creationTime: PropTypes.string,
+        reactions: PropTypes.arrayOf(PropTypes.shape()),
         metadata: PropTypes.shape(),
         sender: PropTypes.shape(),
         chat: PropTypes.shape(),
@@ -60,8 +64,36 @@ export default class Message extends Component {
     findEmoji = id => emojiIndex.search(id).map(o => o.native);
 
     render() {
-        const { message, fromMe, metadata, isSuccess, isSended, creationTime, sender } = this.props;
+        const { message, fromMe, metadata, isSuccess, isSended, userId, creationTime, sender, reactions } = this.props;
         const { ogdata } = metadata;
+
+        const reactionData = {};
+
+        for (let reaction of reactions) {
+            if (reactionData[reaction.reaction] == null) {
+                reactionData[reaction.reaction] = {
+                    count: 0,
+                    isCurrentUser: false
+                };
+            }
+            reactionData[reaction.reaction].count += 1;
+            if (reaction.userId === userId) {
+                reactionData[reaction.reaction].isCurrentUser = true;
+            }
+        }
+
+        const reactionComponents = ((data) => {
+            const components = [];
+            _.forEach(data, (value, reaction) => {
+                console.log(reaction);
+                components.push(<Reaction key={reaction} 
+                    count={value.count} 
+                    isCurrentUser={value.isCurrentUser} 
+                    reaction={reaction} />)
+            });
+            return components;
+        })(reactionData);
+
         let picker = '';
         if (this.state.emoji) {
             picker = (
@@ -109,6 +141,7 @@ export default class Message extends Component {
                             <div className="metadata-container__title">{ogdata.title}</div>
                         </a>
                     </div>}
+                    {reactionComponents.length > 0 && <Reactions>{reactionComponents}</Reactions>}
                 </div>
                 {picker}
             </MessageWrapper>
