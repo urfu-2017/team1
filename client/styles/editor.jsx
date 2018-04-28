@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const AlarmClockWrapper = styled.article`
+const Editor = styled.article`
     width: 340px;
     height: 400px;
     top: 50%;
@@ -15,4 +15,4 @@ const AlarmClockWrapper = styled.article`
     background: #f2f3dE;
 `;
 
-export default AlarmClockWrapper;
+export default Editor;

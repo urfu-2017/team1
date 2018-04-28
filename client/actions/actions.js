@@ -12,6 +12,7 @@ export const CHAT_SAVED = 'CHAT_SAVED';
 export const VISIBILITY_CHAT_EDITOR = 'VISIBILITY_CHAT_EDITOR';
 export const VISIBILITY_PARANJA = 'VISIBILITY_PARANJA';
 export const ADD_USER_CHAT = 'ADD_USER_CHAT';
+export const ADD_ALARM_CLOCK = 'ADD_ALARM_CLOCK';
 
 export const setVisibilityAddUser = visibility => ({ type: VISIBILITY_CHAT_EDITOR, visibility });
 

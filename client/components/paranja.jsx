@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Menu from './menu';
 
+import Menu from './menu';
 import Contacts from '../containers/contacts';
 import ProfileEditor from './profileEditor';
 import ChatEditor from './chatEditor';
-import AlarmClock from './alarmСlock';
+import AlarmClocks from './alarmСlocks';
+import AlarmClock from './alarmClock';
 
 import { ParanjaWrapper } from '../styles/paranja';
 
@@ -102,7 +103,9 @@ export default class Paranja extends React.Component {
                 }
                 { this.state.isOpenAlarmClock && (
                     <ParanjaWrapper>
-                        <AlarmClock />
+                        <AlarmClocks
+                            showAlarmClock={this.showAlarmClock}
+                        />
                     </ParanjaWrapper>
                 )}
             </React.Fragment>
