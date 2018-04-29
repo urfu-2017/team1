@@ -138,13 +138,15 @@ export default class Message extends Component {
                 <div className={`messageBlock ${(fromMe ? 'from_me' : 'from_they')}`}>
                     <div className="headerMessageBlock">
                         <div className="nameSender">{sender.name}</div>
-                        <div onClick={this.openReactions} className="addReactions">
-                            &#x263A;
-                        </div>
-                        <div className="messageTime">{moment(creationTime).format('LT')}
-                            {isSended !== false} {
-                                `\t${isSuccess ? '✓' : '⨯'}`
-                            }
+                        <div>
+                            <div onClick={this.openReactions} className="addReactions">
+                                &#x263A;
+                            </div>
+                            <div className="messageTime">{moment(creationTime).format('LT')}
+                                {isSended !== false} {
+                                    `\t${isSuccess ? '✓' : '⨯'}`
+                                }
+                            </div>
                         </div>
                     </div>
                     <div

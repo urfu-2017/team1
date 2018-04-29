@@ -7,7 +7,7 @@ export const MessagesList = styled.section`
 `;
 
 export const Header = styled.section`
-    height: 58px;
+    height: 74px;
     width: 100%;
     display: flex;
     align-items: center;

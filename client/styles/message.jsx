@@ -18,6 +18,7 @@ export const MessageWrapper = styled.article`
         display: flex;
         align-items: center;
         padding: 5px;
+        justify-content: space-between;
     }
     .messageBlock {
         max-width: 51%;
@@ -67,12 +68,15 @@ export const MessageWrapper = styled.article`
         text-align: end;
         font-size: 13px;
         white-space: nowrap;
+        display: inline-block;
     }
     .nameSender {
         padding: 0 5px;
         font-weight: 800;
     }
     .addReactions {
+        display: inline-block;
         font-size: 24px;
+        cursor: pointer;
     }
 `;
