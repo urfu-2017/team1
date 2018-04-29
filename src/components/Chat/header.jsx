@@ -63,7 +63,10 @@ export default class ChatHeader extends React.Component {
                     <input value={this.state.title}
                            size={title.length}
                            onChange={this.handleChange}
-                           onKeyPress={this.handleSubmit}/>
+                           onKeyPress={this.handleSubmit}
+                           autoFocus
+                           onFocus={e => e.target.select()}
+                    />
                 }
             </React.Fragment>
         );
