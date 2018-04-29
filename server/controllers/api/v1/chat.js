@@ -3,13 +3,31 @@
 const ChatManager = require('../../../managers/chat');
 const { Message } = require('../../../schemas/message');
 const { Reaction } = require('../../../schemas/reaction');
+const { User } = require('../../../schemas/user');
 
 const { getMetadata } = require('../../../lib/metadata');
+
+const _ = require('lodash');
 
 class ChatController {
     static async get(req, res) {
         const userId = req.user.id;
         const chats = await ChatManager.findChatsByUserId(userId);
+        let userIds = [];
+        _.forEach(chats, chat => {
+            userIds = userIds.concat(chat.contacts.map(c => c.userId));
+        });
+        const usersMap = {};
+        _.forEach(await User.find({ _id: userIds }), user => {
+            usersMap[user._id] = user;
+        });
+        _.forEach(chats, chat => {
+            _.forEach(chat.contacts, contact => {
+                const user = usersMap[contact.userId];
+                contact.avatar = user.avatar;
+                contact.name = user.name;
+            });
+        });
         res.status(200).send(chats);
     }
 

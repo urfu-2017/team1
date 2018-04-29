@@ -7,7 +7,9 @@ const passport = require('passport');
 const User = require('../managers/user');
 const GitHubStrategy = require('passport-github').Strategy;
 
-const { getPathToGeneratedPicture } = require('../lib/avatar-generation');
+const cloudinary = require('cloudinary');
+
+const { getPictureInBase64 } = require('../lib/avatar-generation');
 
 
 passport.use(new GitHubStrategy(
@@ -20,13 +22,15 @@ passport.use(new GitHubStrategy(
         const githubId = profile.id;
         const name = profile.displayName || profile.username;
         let user = await User.findByGithubId(githubId);
-        const avatarPath = `images/avatars/github/${githubId}.png`;
-        const fsAvatarPath = path.resolve('..', '..', 'public', avatarPath);
-        if (!fs.existsSync(fsAvatarPath)) {
-            getPathToGeneratedPicture(fsAvatarPath, githubId);
-        }
         if (!user) {
-            user = await User.create(name, githubId, `/static/${avatarPath}`);
+            const avatarData = `data:image/png;base64,${await getPictureInBase64(user.githubId)}`;
+            const promise = new Promise((resolve, reject) => {
+                cloudinary.uploader.upload(avatarData, data => {
+                    resolve(data);
+                });
+            });
+            const data = await promise;
+            user = await User.create(name, githubId, data.secure_url);
         } else {
             await User.update(user._id, { name });
         }
