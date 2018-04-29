@@ -42,6 +42,7 @@ fragment chatData on Chat {
   members {
     id
     name
+    avatarUrl
   }
 }
 `;
