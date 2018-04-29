@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { Editor, DowlandImage, DowlandButton, CreateButton, Exit } from '../styles/profileEditor';
+import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../styles/profileEditor';
 
 
 class ProfileEditor extends Component {
@@ -46,6 +46,7 @@ class ProfileEditor extends Component {
     drawBackground = () => {
         const reader = new window.FileReader();
         this.readPictureFromInput(reader, () => {
+            this.setTextDownloadArea('');
             const dataUrl = reader.result;
             const area = document.getElementById('area-for-drop');
             area.style.backgroundImage = `url(${dataUrl})`;
@@ -58,11 +59,19 @@ class ProfileEditor extends Component {
         };
         const avatar = this.getFirstFile();
         if (!avatar) {
-            console.log('не подгружен файл');
+            this.setTextDownloadArea('Не выбран файл');
+            const dropArea = document.getElementById('area-for-drop');
+            dropArea.style.backgroundImage = 'none';
+
             return;
         }
         reader.readAsDataURL(avatar);
     }
+
+    setTextDownloadArea = message => {
+        const input = document.getElementById('download_image_text');
+        input.textContent = message;
+    };
 
     render() {
         const { showParanja, setProfileEditorState } = this.props;
@@ -72,15 +81,20 @@ class ProfileEditor extends Component {
                     &#10006;
                 </Exit>
                 <h1 className="header">Загрузить аватар</h1>
-                <DowlandImage
+                <DownloadImage
                     onDrop={this.drop}
                     onDragOver={this.dragover}
                     id="area-for-drop"
                 >
-                    <p className="text">Загрузить фото</p>
-                </DowlandImage>
+                    <p
+                        className="text"
+                        id="download_image_text"
+                    >
+                        Загрузить фото
+                    </p>
+                </DownloadImage>
                 <div className="buttons">
-                    <DowlandButton
+                    <DownloadButton
                         id="upload"
                         type="file"
                         accept="image/*"
