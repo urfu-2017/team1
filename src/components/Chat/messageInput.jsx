@@ -76,7 +76,7 @@ export default class MessageInput extends React.Component {
             },
             metadata: null,
             ...message,
-            __typename: 'Message',
+            __typename: 'Message'
         }
     });
 

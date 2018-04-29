@@ -92,3 +92,25 @@ export const SubscribeToUser = mapper(SUBSCRIBE_TO_USER_ql,
         // updatedFields_contains: 'chatsUpdatedDummy'
     })
 );
+
+
+const SUBSCRIBE_TO_CHAT_ql = gql`
+subscription SubscribeToChat($filter: ChatSubscriptionFilter!) {
+  Chat(filter: $filter) {
+    mutation
+    node {
+      ...chatData
+    }
+  }
+}
+
+${fragments.chatData_ql}
+`;
+
+export const SubscribeToChat = mapper(SUBSCRIBE_TO_CHAT_ql,
+    chatId => ({
+        node: {
+            id: chatId
+        }
+    })
+);
