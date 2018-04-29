@@ -85,7 +85,7 @@ export default class Messages extends Component {
 
     render() {
         const { title } = this.props;
-        
+
         return (
             <React.Fragment>
                 <Header>{title}</Header>
