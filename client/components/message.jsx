@@ -4,7 +4,6 @@ import marked from 'marked';
 import emoji from 'node-emoji';
 import moment from 'moment';
 import { Emoji, emojiIndex } from 'emoji-mart';
-import _ from 'lodash';
 
 moment.locale('ru');
 
@@ -95,15 +94,18 @@ export default class Message extends Component {
             }
         }
 
-        const reactionComponents = ((data) => {
+        const reactionComponents = (data => {
             const components = [];
-            _.forEach(data, (value, reaction) => {
-                components.push(<Reaction key={reaction} 
-                    count={value.count} 
-                    isCurrentUser={value.isCurrentUser} 
+            const reactions = Object.keys(data);
+            for (let reaction of reactions) { // eslint-disable-line
+                const value = data[reaction];
+                components.push(<Reaction
+                    key={reaction}
+                    count={value.count}
+                    isCurrentUser={value.isCurrentUser}
                     reaction={reaction}
                     onReactionClick={() => setReactionToMessage(chat, messageId, reaction)} />)
-            });
+            }
             return components;
         })(reactionData);
 

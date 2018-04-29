@@ -23,7 +23,7 @@ passport.use(new GitHubStrategy(
         const name = profile.displayName || profile.username;
         let user = await User.findByGithubId(githubId);
         if (!user) {
-            const avatarData = `data:image/png;base64,${await getPictureInBase64(user.githubId)}`;
+            const avatarData = `data:image/png;base64,${await getPictureInBase64(githubId)}`;
             const promise = new Promise((resolve, reject) => {
                 cloudinary.uploader.upload(avatarData, data => {
                     resolve(data);
