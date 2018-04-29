@@ -98,7 +98,6 @@ export default class Message extends Component {
         const reactionComponents = ((data) => {
             const components = [];
             _.forEach(data, (value, reaction) => {
-                console.log(reaction);
                 components.push(<Reaction key={reaction} 
                     count={value.count} 
                     isCurrentUser={value.isCurrentUser} 

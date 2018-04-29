@@ -74,6 +74,11 @@ class ChatController {
             const reaction = new Reaction(Object.assign({}, { reaction: reactionId, userId: user._id }));
             const savedChat = await ChatManager.addReactionToMessage(chat, messageId, reaction);
             const message = savedChat.messages.find(m => m._id == messageId);
+
+            req.ioServer.in(chat._id).emit('message', {
+                message
+            });
+
             res.status(200).send(message);
         }
     }

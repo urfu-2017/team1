@@ -61,6 +61,7 @@ class ChatWindowInput extends Component {
                 isSended: false,
                 message: this.state.message,
                 createdAt: moment().format(),
+                reactions: [],
                 fromMe: true,
                 metadata: {}
             };
