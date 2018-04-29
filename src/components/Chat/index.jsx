@@ -9,7 +9,6 @@ import {GetChatInfo} from '../../graphqlQueries/queries';
 import {withCurrentUser} from '../../lib/currentUserContext';
 import ChatEditor from './chatEditor';
 import withLocalState from '../../lib/withLocalState';
-import withStatusScreens from '../../lib/withStatusScreens';
 
 
 const currentChatSet = ({ currentChatId }) =>
@@ -19,7 +18,6 @@ const currentChatSet = ({ currentChatId }) =>
 // Не в compose, потому что тогда в localState не будет значения
 @withCurrentUser
 @withLocalState
-@withStatusScreens('Error :(', {})
 @graphql(
     GetChatInfo.query, {
         // не запрашиваем, если не открыт никакой чат, или localState ещё не успел выполниться

@@ -9,7 +9,6 @@ import {GetUser} from '../graphqlQueries/queries';
 import Profile from './profile';
 import {Provider as CurrentUserProvider} from '../lib/currentUserContext';
 import withLocalState from '../lib/withLocalState';
-import withStatusScreens from '../lib/withStatusScreens';
 
 
 const Wrapper = styled.main`
@@ -22,7 +21,6 @@ const Wrapper = styled.main`
 
 
 @withLocalState
-@withStatusScreens('Cannot load user data', {})
 export default class App extends React.Component {
     constructor(props) {
         super(props);
@@ -55,10 +53,10 @@ export default class App extends React.Component {
                 <Query query={GetUser.query} variables={{ userId }}>{
                     ({ loading, error, data }) => {
                         if (error) {
-                            return this.ErrorScreen;
+                            return <p>Error</p>;
                         }
                         if (loading) {
-                            return this.LoadScreen;
+                            return <p>Loading</p>;
                         }
                         return (
                             <CurrentUserProvider value={data.User}>

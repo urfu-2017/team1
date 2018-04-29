@@ -12,14 +12,13 @@ import ChatPreview from './chatPreview';
 import Paranja from './paranja';
 import {Header, SearchInput, ChatsList} from '../../styles/chats';
 import Chat from '../Chat';
-import withStatusScreens from '../../lib/withStatusScreens';
 
 
 // TODO: retrieve last messages and sort by modification order
 // Первым декоратором получаем объект текущего пользователя, которого нам дал сервер
 // Вторым - с помощью этого объекта просим у api все чаты текущего пользователя
 @withCurrentUser
-@withStatusScreens('Error :(', { offsetPercentage: 10, opacity: 0 })
+
 @graphql(GetUserChats.query, {
     skip: props => !props.currentUser,
     options: ({ currentUser })  => ({
@@ -30,6 +29,9 @@ import withStatusScreens from '../../lib/withStatusScreens';
     props: GetUserChats.map
 })
 export default class SideBar extends React.Component {
+
+    static LoadScreen = <LoadScreen offsetPercentage={10} opacity={0}/>;
+    static ErrorScreen = <p>Error :(</p>;
     static propTypes = {
         currentUser: PropTypes.object,
         mainComponentChanger: PropTypes.func

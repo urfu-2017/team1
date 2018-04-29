@@ -10,12 +10,8 @@ import {messagesSubscriptionDataHandler} from '../../lib/dataHandlers';
 import {MessagesList} from '../../styles/messages';
 import {GetChatMessages} from '../../graphqlQueries/queries';
 import {SubscribeToMessages} from '../../graphqlQueries/subscriptions';
-import withStatusScreens from '../../lib/withStatusScreens';
 
 
-@withStatusScreens(
-    'Encountered unknown error while loading messages :(',
-    { offsetPercentage: 50, opacity: 1 })
 @graphql(
     GetChatMessages.query,
     {
@@ -74,9 +70,9 @@ export default class Messages extends React.Component {
         const { loading, error, messages, currentChatId, currentUserId } = this.props;
         let content = null;
         if (loading) {
-            content = this.LoadScreen;
+            content = Messages.LoadScreen;
         } else if (error) {
-            content = this.ErrorScreen;
+            content = Messages.ErrorScreen;
         } else {
             content = (
                 <React.Fragment>
@@ -97,7 +93,7 @@ export default class Messages extends React.Component {
                 <MessageInput
                     currentChatId={currentChatId}
                     currentUserId={currentUserId}
-                    updateMessages={this.props.data.updateQuery}/>
+                    updateMessages={this.props.data.updateQuery} />
             </React.Fragment>
         );
     }
@@ -116,4 +112,7 @@ export default class Messages extends React.Component {
             });
         }
     };
+
+    static LoadScreen = <LoadScreen offsetPercentage={50} opacity={1} />;
+    static ErrorScreen = <p>Encountered unknown error while loading messages :(</p>;
 }
