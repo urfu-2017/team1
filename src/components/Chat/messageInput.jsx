@@ -11,7 +11,7 @@ import {GetChatMessages} from '../../graphqlQueries/queries';
 
 @withCurrentUser
 @graphql(CreateMessage.mutation, { props: CreateMessage.map })
-export default class MessageInput extends React.PureComponent {
+export default class MessageInput extends React.Component {
     static propTypes = {
         currentChatId: PropTypes.string,
         currentUserId: PropTypes.string,
