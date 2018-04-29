@@ -19,8 +19,8 @@ const mapDispatchToProps = dispatch => (
             dispatch(selectChat(chat.id));
             dispatch(setVisibilityChat(chat));
         },
-        asyncCreateChat: (chat, serverURL, onClickChat) => {
-            dispatch(asyncCreateChat(chat, serverURL, onClickChat));
+        asyncCreateChat: (sourceUserId, targetUserId, onClickChat) => {
+            dispatch(asyncCreateChat(sourceUserId, targetUserId, onClickChat));
         },
         addChatFromContacts: chat => {
             dispatch(addChatFromContacts(chat));

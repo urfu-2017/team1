@@ -48,7 +48,7 @@ class ChatWindowInput extends Component {
     handleSubmit = event => {
         const { addMessageFromChatInput, sendMessage } = this.props;
 
-        if (event.which === 13 && !event.shiftKey) {
+        if (event.which === 13 && !event.shiftKey && this.state.message.trim()) {
             event.preventDefault();
             const { chat, user } = this.props;
             const message = {

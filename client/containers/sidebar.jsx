@@ -34,9 +34,6 @@ const mapDispatchToProps = dispatch => (
         setProfileEditorState: state => {
             dispatch(setProfileEditorState(state));
         },
-        asyncCreateChat: (sourceUserId, targetUserId, onClickChat) => {
-            dispatch(asyncCreateChat(sourceUserId, targetUserId, onClickChat));
-        },
         addChatFromContacts: chat => {
             dispatch(addChatFromContacts(chat));
         },

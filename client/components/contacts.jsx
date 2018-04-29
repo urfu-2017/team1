@@ -11,14 +11,6 @@ import {
     ContactsWrapper
 } from '../styles/contacts';
 
-const getNewChat = (user, contact) => ({
-    title: `${contact.name}`,
-    picture: 'picture1',
-    creatorId: user.id,
-    usersIds: [user.id, contact.id],
-    id: `${Math.random()}`,
-    userChatId: `${Math.random()}`
-});
 
 export default class Contacts extends Component {
     static propTypes = {
@@ -33,8 +25,7 @@ export default class Contacts extends Component {
         user: {},
         header: '',
         contacts: [],
-        onClickChat: () => {},
-        asyncCreateChat: () => {}
+        onClickChat: () => {}
     };
     constructor(props) {
         super(props);
@@ -46,8 +37,7 @@ export default class Contacts extends Component {
             <Contact
                 key={contact.name + Math.random()}
                 onClick={() => {
-                    const chat = getNewChat(user, contact);
-                    asyncCreateChat(chat, contact.id, onClickChat);
+                    asyncCreateChat(user._id, contact.userId, onClickChat);
                 }}
             >
                 <img src={contact.avatar} alt="ава" className="contact__image" />
