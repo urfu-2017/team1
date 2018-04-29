@@ -49,8 +49,6 @@ export const userSubscriptionDataHandler = (previousResult, { subscriptionData, 
     if (!previousResult.User) {
         return previousResult;
     }
-    console.log(previousResult);
-    console.log(previousResult);
     return { User: subscriptionData.data.User.node };
 };
 
@@ -66,4 +64,12 @@ export const processChat = (currentUserId, chat) => {
         title: otherUser.name,
         picture: otherUser.avatarUrl
     };
+};
+
+
+export const getTitleForPersonalChat = (userId1, userId2) => {
+    const length = Math.min(userId1.length, userId2.length);
+    return [...Array(length).keys()]
+        .map(i => String.fromCharCode(userId1.charCodeAt(i) ^ userId2.charCodeAt(i)))
+        .join();
 };

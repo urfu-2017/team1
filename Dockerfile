@@ -6,7 +6,7 @@ COPY package.json /
 RUN npm i --production
 
 ENV PORT 80
+ENV NODE_ENV production
 EXPOSE 80
 
-# CMD node npm run build && npm run start
-CMD node src/server
+CMD npm run build && npm run dev

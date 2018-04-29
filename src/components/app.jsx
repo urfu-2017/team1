@@ -26,6 +26,7 @@ const Wrapper = styled.main`
 @graphql(
     GetCurrentUser.query,
     {
+        skip: ({ userId }) => !userId,
         options: ({ userId }) => ({ variables: { userId } }),
         props: GetCurrentUser.map
     }

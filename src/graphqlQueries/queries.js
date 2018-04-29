@@ -39,10 +39,6 @@ query GetUser($userId: ID!) {
     ...userData
     chats {
       ...chatData
-      members {
-        id
-        name
-      }
     }
   }
 }
@@ -99,10 +95,6 @@ query GetUserChats($userId: ID!) {
     id
     chats {
       ...chatData
-      members {
-        id
-        name
-      }
     }
   }
 }
@@ -152,10 +144,6 @@ query GetChatInfo($chatId: ID!) {
   Chat(id: $chatId) {
     id
     ...chatData
-    members {
-      id
-      name
-    }
   }
 }
 

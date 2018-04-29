@@ -48,10 +48,6 @@ subscription SubscribeToUser($filter: UserSubscriptionFilter!) {
       ...userData
       chats {
         ...chatData
-        members {
-          id
-          name
-        }
       }
     }
   }

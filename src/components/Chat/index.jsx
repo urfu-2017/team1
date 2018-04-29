@@ -86,8 +86,7 @@ export default class Chat extends React.Component {
 
     render() {
         let { localState, loading, error, chat, currentUser } = this.props;
-        console.log(this.props);
-        // const {id, title, picture, createdAt, members} = chat;
+        // const {id, title, picture, createdAt, members, groupchat} = chat;
         let content = null;
         if (!currentUser || !currentChatSet(localState)) {
             content = null;

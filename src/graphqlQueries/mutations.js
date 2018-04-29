@@ -36,13 +36,11 @@ export const CreateMessage = mapper(CREATE_MESSAGE_ql, 'createMessage');
 const CREATE_CHAT_ql = gql`
 mutation CreateChat($title: String!, $ownerId: ID!, $picture: String, $user1: ID!, $user2: ID!) {
   createChat(title: $title, ownerId: $ownerId, picture: $picture, membersIds: [$user1, $user2], groupchat: false) {
-    ...chatData
-    members {
-      ...userData
-    }
+    id
   }
   currentUser: updateUser(id: $user1, chatsUpdatedDummy: true) {
     id
+    ...userData
     chats {
       ...chatData
     }
@@ -62,16 +60,18 @@ export const CreateChat = mapper(CREATE_CHAT_ql, 'createChat');
 const CREATE_GROUP_CHAT_ql = gql`
 mutation CreateGroupChat($title: String!, $ownerId: ID!, $picture: String, $userId: ID!) {
   createChat(title: $title, ownerId: $ownerId, picture: $picture, membersIds: [$userId], groupchat: true) {
-    ...chatData
+    id
   }
   currentUser: updateUser(id: $userId, chatsUpdatedDummy: true) {
     id
+    ...userData
     chats {
       ...chatData
     }
   }
 }
 
+${fragments.userData_ql}
 ${fragments.chatData_ql}
 `;
 

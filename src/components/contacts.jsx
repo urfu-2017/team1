@@ -6,11 +6,12 @@ import ContactsList from './contactsList';
 import {GetUserChats} from '../graphqlQueries/queries';
 import {CreateChat} from '../graphqlQueries/mutations';
 import withLocalState from '../lib/withLocalState';
+import {getTitleForPersonalChat} from '../lib/dataHandlers';
 
 
 const getNewChat = (currentUser, contact) => ({
-    title: `${contact.name} and ${currentUser.name}`,
-    picture: contact.avatarUrl,
+    title: getTitleForPersonalChat(currentUser.id, contact.id),
+    picture: '',
     ownerId: currentUser.id,
     user1: currentUser.id,
     user2: contact.id
@@ -19,9 +20,20 @@ const getNewChat = (currentUser, contact) => ({
 
 @withLocalState
 export default class Contacts extends React.Component {
-    static clickHandler = (createChat, currentUser, contact) => {
-        const chat = getNewChat(currentUser, contact);
-        createChat({ variables: { ...chat } });
+    clickHandler = (createChat, currentUser, contact) => {
+        const existingChat = currentUser.chats
+            .find(chat => !chat.groupchat && chat.members.find(u => u.id === contact.id));
+        if (existingChat) {
+            this.setActiveChat(existingChat.id);
+        } else {
+            const newChat = getNewChat(currentUser, contact);
+            createChat({ variables: { ...newChat } });
+        }
+    };
+
+    setActiveChat = chatId => {
+        this.props.updateCurrentChatId(chatId);
+        this.props.mainComponentChanger('Chat')();
     };
 
     render() {
@@ -36,17 +48,14 @@ export default class Contacts extends React.Component {
                             data: { User: { ...currentUser } },
                             variables: { userId: currentUser.id }
                         });
-                        this.props.updateCurrentChatId(createChat.id);
-                        this.props.mainComponentChanger('Chat')();
+                        this.setActiveChat(createChat.id);
                     }
                 }
             >{
                 createChat => (
                     <ContactsList
                         title="Контакты"
-                        clickHandler={
-                            (...args) => Contacts.clickHandler(createChat, ...args)
-                        }
+                        clickHandler={this.clickHandler.bind(this, createChat)}
                         contactsFilter={({ currentUser }, contact) => contact.id !== currentUser.id}
                     />
                 )

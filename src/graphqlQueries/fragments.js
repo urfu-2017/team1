@@ -39,5 +39,9 @@ fragment chatData on Chat {
   picture
   createdAt
   groupchat
+  members {
+    id
+    name
+  }
 }
 `;
