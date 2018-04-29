@@ -43,3 +43,27 @@ export const messagesSubscriptionDataHandler = (previousResult, { subscriptionDa
             return previousResult;
     }
 };
+
+
+export const userSubscriptionDataHandler = (previousResult, { subscriptionData, variables }) => {
+    if (!previousResult.User) {
+        return previousResult;
+    }
+    console.log(previousResult);
+    console.log(previousResult);
+    return { User: subscriptionData.data.User.node };
+};
+
+
+export const processChat = (currentUserId, chat) => {
+    if (chat.groupchat) {
+        return chat;
+    }
+    const otherUser = chat.members
+        .find(u => u.id !== currentUserId);
+    return {
+        ...chat,
+        title: otherUser.name,
+        picture: otherUser.avatarUrl
+    };
+};

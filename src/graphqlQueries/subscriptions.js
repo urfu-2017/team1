@@ -40,12 +40,43 @@ export const SubscribeToMessages = mapper(SUBSCRIBE_TO_MESSAGES_ql,
 );
 
 
-const SUBSCRIBE_TO_USER_CHATS_ql = gql`
-subscription SubscribeToUserChats($filter: UserSubscriptionFilter!) {
+const SUBSCRIBE_TO_CURRENT_USER_ql = gql`
+subscription SubscribeToUser($filter: UserSubscriptionFilter!) {
   User(filter: $filter) {
     mutation
     node {
-      id
+      ...userData
+      chats {
+        ...chatData
+        members {
+          id
+          name
+        }
+      }
+    }
+  }
+}
+
+${fragments.userData_ql}
+${fragments.chatData_ql}
+`;
+
+export const SubscribeToCurrentUser = mapper(SUBSCRIBE_TO_CURRENT_USER_ql,
+    userId => ({
+        node: {
+            id: userId
+        },
+        // updatedFields_contains: 'chatsUpdatedDummy'
+    })
+);
+
+
+const SUBSCRIBE_TO_USER_ql = gql`
+subscription SubscribeToUser($filter: UserSubscriptionFilter!) {
+  User(filter: $filter) {
+    mutation
+    node {
+      ...userData
       chats {
         ...chatData
       }
@@ -53,10 +84,11 @@ subscription SubscribeToUserChats($filter: UserSubscriptionFilter!) {
   }
 }
 
+${fragments.userData_ql}
 ${fragments.chatData_ql}
 `;
 
-export const SubscribeToUserChats = mapper(SUBSCRIBE_TO_USER_CHATS_ql,
+export const SubscribeToUser = mapper(SUBSCRIBE_TO_USER_ql,
     userId => ({
         node: {
             id: userId

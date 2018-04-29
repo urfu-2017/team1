@@ -9,7 +9,7 @@ import withLocalState from '../../lib/withLocalState';
 export default class ChatPreview extends React.PureComponent {
     static propTypes = {
         chat: PropTypes.object,
-        updateCurrentChatId: PropTypes.func  // присваивается вторым вызовом `graphql()`
+        updateCurrentChatId: PropTypes.func
     };
 
     static defaultProps = {

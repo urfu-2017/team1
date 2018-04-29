@@ -1,14 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Query} from 'react-apollo';
+import {graphql} from 'react-apollo';
 
 import Chat from './Chat';
 import SideBar from './SideBar';
 import Contacts from './contacts';
-import {GetUser} from '../graphqlQueries/queries';
+import {GetCurrentUser} from '../graphqlQueries/queries';
 import Profile from './profile';
 import {Provider as CurrentUserProvider} from '../lib/currentUserContext';
 import withLocalState from '../lib/withLocalState';
+import {SubscribeToCurrentUser} from '../graphqlQueries/subscriptions';
+import {userSubscriptionDataHandler} from '../lib/dataHandlers';
 
 
 const Wrapper = styled.main`
@@ -21,6 +23,13 @@ const Wrapper = styled.main`
 
 
 @withLocalState
+@graphql(
+    GetCurrentUser.query,
+    {
+        options: ({ userId }) => ({ variables: { userId } }),
+        props: GetCurrentUser.map
+    }
+)
 export default class App extends React.Component {
     constructor(props) {
         super(props);
@@ -47,27 +56,32 @@ export default class App extends React.Component {
     render() {
         // Динамически выбираем, какой компонент будет отображён в основном окне
         const MainComponent = this.components[this.state.mainComponentName];
-        const { userId } = this.props;
+        const { currentUser } = this.props;
+        !currentUser.error && !currentUser.loading && this.subscribe();
         return (
             <Wrapper>
-                <Query query={GetUser.query} variables={{ userId }}>{
-                    ({ loading, error, data }) => {
-                        if (error) {
-                            return <p>Error</p>;
-                        }
-                        if (loading) {
-                            return <p>Loading</p>;
-                        }
-                        return (
-                            <CurrentUserProvider value={data.User}>
-                                <SideBar mainComponentChanger={this.changeMainComponent}/>
-                                <MainComponent {...this.state.mainComponentProps}
-                                               mainComponentChanger={this.changeMainComponent}/>
-                            </CurrentUserProvider>
-                        );
-                    }
-                }</Query>
+                {currentUser.error && <p>Error</p> ||
+                currentUser.loading && <p>Loading</p> ||
+                (
+                    <CurrentUserProvider value={currentUser}>
+                        <SideBar mainComponentChanger={this.changeMainComponent}/>
+                        <MainComponent {...this.state.mainComponentProps}
+                                       mainComponentChanger={this.changeMainComponent}/>
+                    </CurrentUserProvider>)
+                }
             </Wrapper>
         );
     }
+
+    userSubscription = null;
+
+    subscribe = () => {
+        if (!this.userSubscription) {
+            this.userSubscription = this.props.data.subscribeToMore({
+                document: SubscribeToCurrentUser.subscription,
+                variables: SubscribeToCurrentUser.vars(this.props.currentUser.id),
+                updateQuery: userSubscriptionDataHandler
+            });
+        }
+    };
 }

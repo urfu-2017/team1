@@ -38,5 +38,6 @@ fragment chatData on Chat {
   private
   picture
   createdAt
+  groupchat
 }
 `;

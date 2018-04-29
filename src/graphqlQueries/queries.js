@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 
 import * as fragments from './fragments';
+import {processChat} from '../lib/dataHandlers';
 
 
 const mapper = (query, selector, name) => ({
@@ -11,7 +12,9 @@ const mapper = (query, selector, name) => ({
             loading: req.data.loading,
             error: req.data.error
         };
-        props[name] = selector(req.data);
+        if (req.data) {
+            props[name] = selector(req.data);
+        }
         return props;
     }
 });
@@ -28,6 +31,40 @@ ${fragments.userData_ql}
 `;
 
 export const GetUser = mapper(GET_USER_ql, data => data.User, 'user');
+
+
+const GET_CURRENT_USER_ql = gql`
+query GetUser($userId: ID!) {
+  User(id: $userId) {
+    ...userData
+    chats {
+      ...chatData
+      members {
+        id
+        name
+      }
+    }
+  }
+}
+
+${fragments.userData_ql}
+${fragments.chatData_ql}
+`;
+
+const GetCurrentUser_map = req => {
+    let chats = null;
+    if (req.User) {
+        const currentUserId = req.User.id;
+        chats = req.User.chats.map(chat => processChat(currentUserId, chat));
+    }
+    return {
+        ...req,
+        ...req.User,
+        chats
+    };
+};
+
+export const GetCurrentUser = mapper(GET_CURRENT_USER_ql, GetCurrentUser_map, 'currentUser');
 
 
 // TODO: dummy implementation
@@ -62,6 +99,10 @@ query GetUserChats($userId: ID!) {
     id
     chats {
       ...chatData
+      members {
+        id
+        name
+      }
     }
   }
 }
@@ -86,7 +127,7 @@ ${fragments.messageData_ql}
 `;
 
 export const GetChatMessages = mapper(GET_CHAT_MESSAGES_ql,
-        data => data.Chat && data.Chat.messages, 'messages');
+    data => data.Chat && data.Chat.messages, 'messages');
 
 
 const GET_CHAT_MEMBERS_ql = gql`
@@ -103,7 +144,7 @@ ${fragments.userData_ql}
 `;
 
 export const GetChatMembers = mapper(GET_CHAT_MEMBERS_ql,
-        data => data.Chat && data.Chat.members, 'members');
+    data => data.Chat && data.Chat.members, 'members');
 
 
 const GET_CHAT_INFO_ql = gql`
@@ -111,6 +152,10 @@ query GetChatInfo($chatId: ID!) {
   Chat(id: $chatId) {
     id
     ...chatData
+    members {
+      id
+      name
+    }
   }
 }
 

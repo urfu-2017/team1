@@ -2,11 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MenuIcon from 'react-icons/lib/fa/list';
 import {Scrollbars} from 'react-custom-scrollbars';
-import {graphql} from 'react-apollo';
 
 import LoadScreen from '../ui/loadScreen';
 import {withCurrentUser} from '../../lib/currentUserContext';
-import {GetUserChats} from '../../graphqlQueries/queries';
 import {SubscribeToUserChats} from '../../graphqlQueries/subscriptions';
 import ChatPreview from './chatPreview';
 import Paranja from './paranja';
@@ -14,20 +12,7 @@ import {Header, SearchInput, ChatsList} from '../../styles/chats';
 import Chat from '../Chat';
 
 
-// TODO: retrieve last messages and sort by modification order
-// Первым декоратором получаем объект текущего пользователя, которого нам дал сервер
-// Вторым - с помощью этого объекта просим у api все чаты текущего пользователя
 @withCurrentUser
-
-@graphql(GetUserChats.query, {
-    skip: props => !props.currentUser,
-    options: ({ currentUser })  => ({
-        variables: {
-            userId: currentUser.id
-        }
-    }),
-    props: GetUserChats.map
-})
 export default class SideBar extends React.Component {
 
     static LoadScreen = <LoadScreen offsetPercentage={10} opacity={0}/>;
@@ -47,8 +32,8 @@ export default class SideBar extends React.Component {
         };
     }
 
-    getChatsList() {
-        const { currentUser, chats } = this.props;
+    getChatsList(currentUser) {
+        const { chats } = currentUser;
         return chats
             .map(chat => (
                 <ChatPreview
@@ -83,10 +68,7 @@ export default class SideBar extends React.Component {
     };
 
     render() {
-        const { chats, currentUser, loading, error } = this.props;
-        if (chats && !loading) {
-            this.subscribe();
-        }
+        const { currentUser } = this.props;
         return (
             <React.Fragment>
                 {
@@ -105,10 +87,7 @@ export default class SideBar extends React.Component {
                         <SearchInput placeholder="Поиск" type="search"/>
                     </Header>
                     <Scrollbars universal>
-                        { loading ?
-                            SideBar.LoadScreen :
-                            chats && !error && this.getChatsList()
-                        }
+                        { currentUser.chats && this.getChatsList(currentUser) }
                     </Scrollbars>
                 </ChatsList>
             </React.Fragment>

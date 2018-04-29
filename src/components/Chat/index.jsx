@@ -9,6 +9,7 @@ import {GetChatInfo} from '../../graphqlQueries/queries';
 import {withCurrentUser} from '../../lib/currentUserContext';
 import ChatEditor from './chatEditor';
 import withLocalState from '../../lib/withLocalState';
+import {processChat} from '../../lib/dataHandlers';
 
 
 const currentChatSet = ({ currentChatId }) =>
@@ -69,21 +70,46 @@ export default class Chat extends React.Component {
 
     toggleEditor = () => this.setState(prev => ({ editorOpened: !prev.editorOpened }));
 
+    groupChatHeader = title => (
+        <span onClick={this.toggleEditor}>
+            {'✎\t' + title}
+        </span>
+    );
+
+    personalChatHeader = title => {
+        return (
+            <span>
+                {title}
+            </span>
+        );
+    };
+
     render() {
-        const { localState, loading, error, chat, currentUser } = this.props;
+        let { localState, loading, error, chat, currentUser } = this.props;
+        console.log(this.props);
         // const {id, title, picture, createdAt, members} = chat;
         let content = null;
         if (!currentUser || !currentChatSet(localState)) {
             content = null;
         } else if (error) {
             content = this.ErrorScreen;
-        } else {
+        } else if (loading) {
             content = (
                 <React.Fragment>
                     <Header>
-                        <span onClick={this.toggleEditor}>
-                            {chat.title ? '✎ ' + chat.title : 'Загрузка...'}
-                        </span>
+                        <span>Загрузка...</span>
+                    </Header>
+                    {this.getMainComponent(chat, currentUser)}
+                </React.Fragment>
+            );
+        } else {
+            chat = processChat(currentUser.id, chat);
+            const groupchat = chat.groupchat || false;
+            content = (
+                <React.Fragment>
+                    <Header>
+                        {groupchat && this.groupChatHeader(chat.title) ||
+                        this.personalChatHeader(chat.title)}
                     </Header>
                     {this.getMainComponent(chat, currentUser)}
                 </React.Fragment>
