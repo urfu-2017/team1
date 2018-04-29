@@ -1,21 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import List from 'material-ui/List/List';
+import ListItem from 'material-ui/List/ListItem';
+import Avatar from 'material-ui/Avatar';
 import { Scrollbars } from 'react-custom-scrollbars';
 
-import {
-    Search,
-    Contact,
-    CloseButton,
-    ContactsList,
-    CreateButton,
-    ContactsWrapper
-} from '../styles/contacts';
+import { ContactsWrapper } from '../styles/contacts';
 
 
 export default class Contacts extends Component {
     static propTypes = {
         user: PropTypes.shape(),
-        header: PropTypes.string,
         onClickChat: PropTypes.func,
         asyncCreateChat: PropTypes.func,
         contacts: PropTypes.arrayOf(PropTypes.object)
@@ -23,7 +18,6 @@ export default class Contacts extends Component {
 
     static defaultProps = {
         user: {},
-        header: '',
         contacts: [],
         onClickChat: () => {}
     };
@@ -34,36 +28,27 @@ export default class Contacts extends Component {
     getContactsList() {
         const { contacts, onClickChat, user, asyncCreateChat } = this.props;
         return contacts.map(contact => (
-            <Contact
+            <ListItem
+                insetChildren
+                primaryText={contact.name}
                 key={contact.name + Math.random()}
+                leftAvatar={<Avatar src={contact.avatar} />}
                 onClick={() => {
                     asyncCreateChat(user._id, contact.userId, onClickChat);
                 }}
-            >
-                <img src={contact.avatar} alt="ава" className="contact__image" />
-                <p>{contact.name}</p>
-            </Contact>
+            />
         ));
     }
 
     render() {
-        const { header } = this.props;
         return (
             <ContactsWrapper>
-                <h1 className="header"> { header } </h1>
-                <Search
-                    type="search"
-                    placeholder="Поиск"
-                />
-                <ContactsList>
-                    <Scrollbars universal>
+                <h1 className="header">Контакты</h1>
+                <Scrollbars universal>
+                    <List>
                         { this.getContactsList() }
-                    </Scrollbars>
-                </ContactsList>
-                <div className="buttons">
-                    <CreateButton type="button" value="Создать" />
-                    <CloseButton type="button" value="Закрыть" />
-                </div>
+                    </List>
+                </Scrollbars>
             </ContactsWrapper>
         );
     }

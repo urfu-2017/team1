@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import List from 'material-ui/List/List';
+import ListItem from 'material-ui/List/ListItem';
+import Avatar from 'material-ui/Avatar';
+
 import { MenuRoot } from '../styles/menu';
 
 export default class Menu extends Component {
     static propTypes = {
         user: PropTypes.shape(),
+        setEvent: PropTypes.func,
         showContacts: PropTypes.func,
-        setHeader: PropTypes.func,
         setProfileEditorState: PropTypes.func
     }
 
     static defaultProps = {
         user: {},
+        setEvent: () => {},
         showContacts: () => {},
-        setHeader: () => {}
+        setProfileEditorState: () => {}
     }
 
     constructor(props) {
@@ -22,41 +27,35 @@ export default class Menu extends Component {
     }
 
     render() {
-        const { user, showContacts, setProfileEditorState, setHeader } = this.props;
+        const { user, setEvent } = this.props;
+        const { showContacts, setProfileEditorState, showAlarmClock } = this.props;
         return (
             <MenuRoot>
-                <div className="profile">
-                    <img
-                        alt="Изображение аватарки"
-                        className="profile__avatar"
-                        src={user.avatar}
-                    />
-                    <div className="profile__name">{user.name}</div>
-                </div>
-                <main>
-                    <p
-                        role="presentation"
-                        className="menu__item"
-                        onClick={() => { showContacts(true); setHeader(' Контакты'); }}
+                <List>
+                    <ListItem
+                        disabled
+                        leftAvatar={
+                            <Avatar src={user.avatar} />
+                        }
+                    >
+                        {user.name}
+                    </ListItem>
+                    <ListItem
+                        onClick={() => { showContacts(true); setEvent('addNewChat'); }}
                     >
                         Контакты
-                    </p>
-                    {/* <p
-                        // ref={this.getRef}
-                        role="presentation"
-                        className="menu__item"
-                        onClick={() => { showContacts(true); setHeader('Создание чата'); }}
-                    >
-                        Новый чат
-                    </p> */}
-                    <p
-                        role="presentation"
-                        className="menu__item"
+                    </ListItem>
+                    <ListItem
                         onClick={() => { setProfileEditorState(true); }}
                     >
                         Редактирование профиля
-                    </p>
-                </main>
+                    </ListItem>
+                    <ListItem
+                        onClick={() => { showAlarmClock(true); }}
+                    >
+                        Будильник
+                    </ListItem>
+                </List>
             </MenuRoot>
         );
     }

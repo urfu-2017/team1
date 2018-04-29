@@ -132,6 +132,7 @@ export default class Message extends Component {
         } else {
             picker = '';
         }
+
         return (
             <MessageWrapper>
                 <div className={`messageBlock ${(fromMe ? 'from_me' : 'from_they')}`}>
@@ -143,7 +144,8 @@ export default class Message extends Component {
                         <div className="messageTime">{moment(creationTime).format('LT')}
                             {isSended !== false} {
                                 `\t${isSuccess ? '✓' : '⨯'}`
-                        }</div>
+                            }
+                        </div>
                     </div>
                     <div
                         className="messageBlock__text"

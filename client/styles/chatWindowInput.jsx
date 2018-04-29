@@ -18,18 +18,19 @@ const Textarea = styled.div`
         justify-content: flex-end;
         align-items: center;
         width: 100%;
+        border-left: 1px solid #d3d6d5;
     }
 
     .textarea__style {
         width: 97%;
         resize: none;
-        height: 45px;
+        height: 58px;
         border: none;
         outline: none;
-        padding: 16px 0 0 16px;
+        padding: 24px 0 0 16px;
         box-sizing: border-box;
-        background-color: rgba(255,255,255,.7);
         display: inline-block;
+        background-color: #f2f3de;
     }
 
     .closeEmojiButton__style {

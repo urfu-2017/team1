@@ -2,6 +2,7 @@ import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
 import Menu from './menu';
 
+import AlarmClocks from './alarmСlocks';
 import Contacts from '../containers/contacts';
 import ProfileEditor from '../containers/profileEditor';
 
@@ -26,13 +27,15 @@ export default class Paranja extends Component {
         super(props);
         this.state = {
             visible: false,
-            isOpenContacts: false
+            isOpenContacts: false,
+            isOpenAlarmClock: false
         };
     }
 
     setHeader = header => { this.setState({ header }); }
     handleCancel = e => { this.setState({ visible: false }); }
     showContacts = isOpen => { this.setState({ isOpenContacts: isOpen }); }
+    showAlarmClock = isOpen => { this.setState({ isOpenAlarmClock: isOpen }); }
 
     render() {
         const { user, isOpenParanja, showParanja, profileEditorState, setProfileEditorState } = this.props;
@@ -45,8 +48,8 @@ export default class Paranja extends Component {
                             <Menu
                                 user={user}
                                 setHeader={this.setHeader}
-                                showEditor={this.showEditor}
                                 showContacts={this.showContacts}
+                                showAlarmClock={this.showAlarmClock}
                                 setProfileEditorState={setProfileEditorState}
                             />)
                         }
@@ -68,6 +71,13 @@ export default class Paranja extends Component {
                         />
                     </ParanjaWrapper>)
                 }
+                { this.state.isOpenAlarmClock && (
+                    <ParanjaWrapper>
+                        <AlarmClocks
+                            showAlarmClock={this.showAlarmClock}
+                        />
+                    </ParanjaWrapper>
+                )}
             </Fragment>
         );
     }

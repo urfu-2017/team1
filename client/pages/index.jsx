@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import io from 'socket.io-client';
 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -39,10 +40,12 @@ export default class KilogrammApp extends React.Component {
     render() {
         return (
             <Provider store={this.store}>
-                <Wrapper>
-                    <SideBar />
-                    <ChatWindow />
-                </Wrapper>
+                <MuiThemeProvider >
+                    <Wrapper>
+                        <SideBar />
+                        <ChatWindow />
+                    </Wrapper>
+                </MuiThemeProvider>
             </Provider>
         );
     }

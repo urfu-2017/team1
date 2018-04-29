@@ -5,6 +5,7 @@ import {
     MESSAGE_SAVED,
     SEND_NEW_MESSAGE,
     SAVED_AVATAR,
+    ADD_ALARM_CLOCK,
     CHANGE_PROFILE_EDITOR_STATE
 } from '../actions/actions';
 
@@ -57,6 +58,10 @@ export default function createMetaReducer(currentUser) {
             return Object.assign({}, state);
         case VISIBILITY_PARANJA:
             state.isOpenParanja = action.visibility;
+            return Object.assign({}, state);
+        case ADD_ALARM_CLOCK:
+            console.log(action.alarmClock);
+            //послать запрос в базу для сохранения будильника
             return Object.assign({}, state);
         default: return state;
         }

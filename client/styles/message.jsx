@@ -53,14 +53,14 @@ export const MessageWrapper = styled.article`
         display: flex;
         color: #42648b;
         align-items: center;
-        text-decoration: none; 
+        text-decoration: none;
+    }
+    .metadata-container__title {
     }
     .metadata-container__img {
         flex-basis: 100%;
         padding-right: 8px;
-        max-width: 178px;
-        width: auto;
-        height: 78px;
+        max-width: 100px;
     }
     .messageTime {
         padding: 5px;

@@ -20,8 +20,12 @@ passport.use(new GitHubStrategy(
     },
     (async (accessToken, refreshToken, profile, cb) => {
         const githubId = profile.id;
+        console.log(githubId);
+        
         const name = profile.displayName || profile.username;
         let user = await User.findByGithubId(githubId);
+        console.log(user);
+        
         if (!user) {
             const avatarData = `data:image/png;base64,${await getPictureInBase64(githubId)}`;
             const promise = new Promise((resolve, reject) => {

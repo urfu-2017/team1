@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
-import MenuIcon from 'react-icons/lib/fa/list';
+import AppBar from 'material-ui/AppBar';
+import List from 'material-ui/List/List';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import Chat from './chat';
@@ -66,14 +67,14 @@ export default class Chats extends Component {
                     profileEditorState={profileEditorState}
                 />
                 <ChatsList>
-                    <Header>
-                        <div className="header__menu-icon">
-                            <MenuIcon onClick={() => { showParanja(true); }} />
-                        </div>
-                        <SearchInput placeholder="Поиск" type="search" />
-                    </Header>
+                    <AppBar
+                        onClick={() => { showParanja(true); }}
+                        iconClassNameRight="muidocs-icon-navigation-expand-more"
+                    />
                     <Scrollbars universal>
-                        { this.getChatsList() }
+                        <List>
+                            { this.getChatsList() }
+                        </List>
                     </Scrollbars>
                 </ChatsList>
             </React.Fragment>

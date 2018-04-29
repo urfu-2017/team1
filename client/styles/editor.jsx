@@ -1,18 +1,17 @@
 import styled from 'styled-components';
 
-export const ContactsWrapper = styled.article`
+const Editor = styled.article`
     width: 340px;
-    height: 500px;
+    height: 400px;
     top: 50%;
     left: 50%;
     position: absolute;
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     justify-content: space-around;
+    align-items: center;
     transform: translate(-50%, -50%);
     background: #f2f3dE;
-    .header {
-        padding: 0 0 0 20px;
-        margin: 30px 0;
-    }
 `;
+
+export default Editor;

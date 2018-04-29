@@ -1,44 +1,10 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import PropTypes from 'prop-types';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { MessagesList, Header, Button } from '../styles/messages';
 
 import Message from './message';
-
-class ScrollButton extends React.Component {
-    constructor() {
-        super();
-
-        this.state = {
-            intervalId: 0
-        };
-    }
-
-    scrollStep() {
-        const messagesBlock = document.getElementById('messages');
-        const { scrollHeight } = messagesBlock;
-        if (messagesBlock.pageYOffset !== scrollHeight) {
-            clearInterval(this.state.intervalId);
-        }
-        messagesBlock.scroll(0.0, scrollHeight - this.props.scrollStepInPx);
-    }
-
-    scrollToBottom() {
-        let intervalId = setInterval(this.scrollStep.bind(this), this.props.delayInMs);
-        this.setState({ intervalId });
-    }
-
-    render() {
-        return (
-            <Button
-                type="button"
-                title="Жмяк вниз"
-                className="scroll"
-                onClick={() => { this.scrollToBottom(); }}
-            />
-        );
-    }
-}
 
 export default class Messages extends Component {
     static propTypes = {
@@ -119,13 +85,25 @@ export default class Messages extends Component {
 
     render() {
         const { title } = this.props;
+        
         return (
             <React.Fragment>
                 <Header>{title}</Header>
-                <MessagesList id="messages" ref={this.getSectionRef}>
-                    <ScrollButton scrollStepInPx="50" delayInMs="16.66" />
-                    {this.getMessagesList()}
-                </MessagesList>
+                <Scrollbars
+                    style={{ 'background-color': 'rgba(255,255,255, .7)' }}
+                    ref={this.getSectionRef}
+                >
+                    <Button
+                        type="button"
+                        title="Жмяк вниз"
+                        value="&#11167;"
+                        className="scroll"
+                        onClick={() => this.node.scrollToBottom()}
+                    />
+                    <MessagesList >
+                        {this.getMessagesList()}
+                    </MessagesList>
+                </Scrollbars>
             </React.Fragment>
         );
     }

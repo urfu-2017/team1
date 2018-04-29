@@ -14,11 +14,14 @@ export const SAVED_AVATAR = 'SAVED_AVATAR';
 
 export const CHANGE_PROFILE_EDITOR_STATE = 'CHANGE_PROFILE_EDITOR_STATE';
 
+export const ADD_ALARM_CLOCK = 'ADD_ALARM_CLOCK';
 export const VISIBILITY_PARANJA = 'VISIBILITY_PARANJA';
 
 export const setVisibilityParanja = visibility => ({ type: VISIBILITY_PARANJA, visibility });
 
 export const setVisibilityChat = chat => ({ type: VISIBILITY_CHAT, chat });
+
+export const addAlarmClock = alarmClock => ({ type: ADD_ALARM_CLOCK, alarmClock });
 
 export const addMessageFromSocket = (message, currentUserId, sender) =>
     ({ type: RECEIVED_NEW_MESSAGE, info: { message, currentUserId, sender } });

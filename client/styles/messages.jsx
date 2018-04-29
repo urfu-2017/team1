@@ -2,25 +2,22 @@ import styled from 'styled-components';
 
 export const MessagesList = styled.section`
     width: 100%;
-    overflow-y: scroll;
     display: flex;
-    flex: 1;
     flex-direction: column;
-    background-color: #ffffff;
 `;
 
 export const Header = styled.section`
-    height: 45px;
+    height: 58px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(255,255,255, .7);
+    background-color: #f2f3de;
 `;
 
-export const Button = styled.div`
-    background-color: white;
-    position: absolute;
+export const Button = styled.input`
+    backgroundColor: white;
+    position: fixed;
     padding: 0;
     margin-right: 128px;
     margin-bottom: 10px;
