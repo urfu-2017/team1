@@ -33,7 +33,6 @@ class ScrollButton extends React.Component {
             <Button
                 type="button"
                 title="Жмяк вниз"
-                value="&#11167;"
                 className="scroll"
                 onClick={() => { this.scrollToBottom(); }}
             />

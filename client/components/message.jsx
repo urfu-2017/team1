@@ -149,10 +149,10 @@ export default class Message extends Component {
                         className="messageBlock__text"
                         dangerouslySetInnerHTML={{ __html: emoji.emojify(marked(message), res => res) }}
                     />
-                    { ogdata && Object.keys(ogdata).length !== 0 &&
+                    { ogdata && ogdata.url && Object.keys(ogdata).length !== 0 &&
                     <div className="metadata">
                         <a href={ogdata.url} className="metadata-container">
-                            <img className="metadata-container__img" src={ogdata.image.url} alt="{ogdata.title}" />
+                            { ogdata.image && <img className="metadata-container__img" src={ogdata.image.url} alt={ogdata.title} /> }
                             <div className="metadata-container__title">{ogdata.title}</div>
                         </a>
                     </div>}

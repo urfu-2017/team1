@@ -30,8 +30,9 @@ export default class MyDocument extends Document {
         return (
             <html lang='ru'>
                 <Head>
-                    <title>My page</title>
+                    <title>Kilogram чат - team1</title>
                     {this.props.styleTags}
+                    <link rel="stylesheet" type="text/css" href="/static/css/fonts.css"/>
                 </Head>
                 <body>
                     <Main />

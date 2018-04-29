@@ -1,0 +1,36 @@
+@font-face {
+    font-family: 'FontAwesome5-brands';
+    src: url('../fonts/awesome-icons5/fa-brands-400.eot?v=5.0.0');
+    src: url('../fonts/awesome-icons5/fa-brands-400.eot?#iefix&v=5.0.0') format('embedded-opentype'),
+         url('../fonts/awesome-icons5/fa-brands-400.woff2?v=5.0.0') format('woff2'),
+         url('../fonts/awesome-icons5/fa-brands-400.woff?v=5.0.0') format('woff'),
+         url('../fonts/awesome-icons5/fa-brands-400.ttf?v=5.0.0') format('truetype'),
+         url('../fonts/awesome-icons5/fa-brands-400.svg?v=5.0.0#fontawesomeregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'FontAwesome5';
+    src: url('../fonts/awesome-icons5/fa-regular-400.eot?v=5.0.0');
+    src: url('../fonts/awesome-icons5/fa-regular-400.eot?#iefix&v=5.0.0') format('embedded-opentype'),
+         url('../fonts/awesome-icons5/fa-regular-400.woff2?v=5.0.0') format('woff2'),
+         url('../fonts/awesome-icons5/fa-regular-400.woff?v=5.0.0') format('woff'),
+         url('../fonts/awesome-icons5/fa-regular-400.ttf?v=5.0.0') format('truetype'),
+         url('../fonts/awesome-icons5/fa-regular-400.svg?v=5.0.0#fontawesomeregular') format('svg');
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'FontAwesome5';
+    src: url('../fonts/awesome-icons5/fa-solid-900.eot?v=5.0.0');
+    src: url('../fonts/awesome-icons5/fa-solid-900.eot?#iefix&v=5.0.0') format('embedded-opentype'),
+         url('../fonts/awesome-icons5/fa-solid-900.woff2?v=5.0.0') format('woff2'),
+         url('../fonts/awesome-icons5/fa-solid-900.woff?v=5.0.0') format('woff'),
+         url('../fonts/awesome-icons5/fa-solid-900.ttf?v=5.0.0') format('truetype'),
+         url('../fonts/awesome-icons5/fa-solid-900.svg?v=5.0.0#fontawesomeregular') format('svg');
+    font-weight: 900;
+    font-style: normal;
+  }
+  
