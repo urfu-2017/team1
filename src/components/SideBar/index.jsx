@@ -14,9 +14,6 @@ import Chat from '../Chat';
 
 @withCurrentUser
 export default class SideBar extends React.Component {
-
-    static LoadScreen = <LoadScreen offsetPercentage={10} opacity={0}/>;
-    static ErrorScreen = <p>Error :(</p>;
     static propTypes = {
         currentUser: PropTypes.object,
         mainComponentChanger: PropTypes.func
@@ -47,25 +44,6 @@ export default class SideBar extends React.Component {
 
     toggleParanja = () =>
         this.setState(prev => ({ paranjaOpened: !prev.paranjaOpened }));
-
-    subscription = null;
-
-    static subscriptionDataHandler = (previousResult, { subscriptionData, variables }) => {
-        if (!previousResult.User) {
-            return previousResult;
-        }
-        return { User: subscriptionData.data.User.node };
-    };
-
-    subscribe = () => {
-        if (!this.subscription) {
-            this.subscription = this.props.data.subscribeToMore({
-                document: SubscribeToUserChats.subscription,
-                variables: SubscribeToUserChats.vars(this.props.currentUser.id),
-                updateQuery: SideBar.subscriptionDataHandler
-            });
-        }
-    };
 
     render() {
         const { currentUser } = this.props;
