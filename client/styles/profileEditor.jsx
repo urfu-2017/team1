@@ -24,9 +24,10 @@ export const Editor = styled.article`
     }
 `;
 
-export const DowlandImage = styled.div`
+export const DownloadImage = styled.div`
+    position: relative;
+    background: #fff;
     background-size: cover;
-    opacity: 0.3;
     width: 200px;
     height: 200px;
     display: flex;
@@ -39,14 +40,14 @@ export const DowlandImage = styled.div`
     }
 `;
 
-export const DowlandButton = styled.input`
+export const DownloadButton = styled.input`
     width: 225px;
     padding: 7px;
     border-radius: 5px;
     background: #e4e0dc;
 `;
 
-export const CreateButton = DowlandButton.extend`
+export const CreateButton = DownloadButton.extend`
     width: 85px;
     padding: 7px;
     border-radius: 5px;
@@ -54,7 +55,6 @@ export const CreateButton = DowlandButton.extend`
 `;
 
 export const Exit = styled.div`
-    cursor: pointer;
     position: absolute;
     right: 5px;
     top: 0;
