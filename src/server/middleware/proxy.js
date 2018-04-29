@@ -52,7 +52,7 @@ module.exports = requestsInterceptor => {
         if (Array.isArray(req.body)) {
             // enabling batched queries
             body = await Promise.all(req.body.map(requestsInterceptor));
-            body.map((item, i) => item || req.body[i]);
+            body = body.map((item, i) => item || req.body[i]);
         } else {
             body = await requestsInterceptor(req.body) || req.body;
         }
