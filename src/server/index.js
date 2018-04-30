@@ -9,6 +9,7 @@ const routes = require('./routes');
 const session = require('express-session');
 const memoryStore = require('session-memory-store')(session)();
 const Express = require('express');
+const cloudinary = require('cloudinary');
 
 // TODO: КАК НЕИСПОЛЬЗУЕМЫЕ ИМПОРТЫ ВЛИЯЮТ НА РАБОТУ СЕРВЕРА?!
 const request = require('request');
@@ -30,6 +31,12 @@ function main(isProduction, port) {
     const server = new Express();
     const proxyEnabled = process.env.PROXY_DEFAULT === 'true';
     const dynamicConfig = new DynamicConfig({}, proxyEnabled);
+
+    cloudinary.config({
+        cloud_name: process.env.CLOUD_NAME,
+        api_key: process.env.API_KEY,
+        api_secret: process.env.API_SECRET
+    });
 
     server.use(cookieParser())
         .use(Express.urlencoded({ extended: true }))

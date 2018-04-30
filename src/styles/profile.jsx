@@ -26,7 +26,9 @@ export const Editor = styled.article`
 `;
 
 export const DownloadImage = styled.div`
-    width: 85%;
+    background-size: cover;
+    opacity: 0.3;
+    width: 200px;
     height: 200px;
     display: flex;
     align-items: center;
@@ -34,14 +36,29 @@ export const DownloadImage = styled.div`
     border: 1px dashed;
     .text {
         font-size: 20px;
+        background: #fff;
     }
-`
+`;
 
 export const DownloadButton = styled.input`
+    width: 225px;
     padding: 7px;
     border-radius: 5px;
     background: #e4e0dc;
 `;
 
 export const CreateButton = DownloadButton.extend`
+    width: 85px;
+    padding: 7px;
+    border-radius: 5px;
+    background: #e4e0dc;
+`;
+
+
+export const Exit = styled.div`
+    cursor: pointer;
+    position: absolute;
+    right: 5px;
+    top: 0;
+    font-size: 30px;
 `;
