@@ -85,30 +85,33 @@ class ChatWindowInput extends Component {
     addEmojiIntoText = emoji =>
         this.setState({ message: `${this.state.message}${this.findEmoji(emoji.id)}` });
 
-    render() {
-        let picker = '';
-        if (this.state.emoji) {
-            picker = (
-                <div className="picker__style">
-                    <span>
-                        Выберите Emoji
-                    </span>
-                    <div
-                        className="closeEmojiButton__style"
-                        onClick={this.closeEmojies}
-                        title="Скрыть"
-                    >
-                        &#x274C;
-                    </div>
-                    <hr />
-                    <div>
-                        {this.getEmojiesPopup()}
-                    </div>
-                </div>
-            );
-        } else {
-            picker = '';
+    getPicker = () => {
+        if (!this.state.emoji) {
+            return '';
         }
+        return (
+            <div className="picker__style">
+                <span>
+                    Выберите Emoji
+                </span>
+                <div
+                    className="closeEmojiButton__style"
+                    onClick={this.closeEmojies}
+                    title="Скрыть"
+                >
+                    &#x274C;
+                </div>
+                <hr />
+                <div>
+                    {this.getEmojiesPopup()}
+                </div>
+            </div>
+        );
+    }
+
+    render() {
+        const picker = this.getPicker();
+
         return (
             <Textarea>
                 <div className="inputField__style">
@@ -121,7 +124,12 @@ class ChatWindowInput extends Component {
                         value={this.state.message}
                         required
                     />
-                    <div onClick={this.openEmojies}
+                    <div
+                        title="Send picture"
+                        className="clip"
+                    />
+                    <div
+                        onClick={this.openEmojies}
                         className="openEmojiButton__style"
                         title="Emoji"
                     >
