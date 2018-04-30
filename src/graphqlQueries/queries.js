@@ -105,9 +105,9 @@ ${fragments.chatData_ql}
 export const GetUserChats = mapper(GET_USER_CHATS_ql, data => data.User && data.User.chats, 'chats');
 
 
-const GET_CHAT_MESSAGES_ql = gql`
-query GetChatMessages($chatId: ID!) {
-  Chat(id: $chatId) {
+const GET_CHAT_MESSAGES_ql = chatId => gql`
+query GetChatMessages {
+  Chat(id: "${chatId}") {
     id
     messages {
       ...messageData

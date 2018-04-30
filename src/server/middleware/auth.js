@@ -1,7 +1,6 @@
 'use strict';
 
 const cloudinary = require('cloudinary');
-
 const passport = require('passport');
 const User = require('../model/user');
 const GitHubStrategy = require('passport-github').Strategy;

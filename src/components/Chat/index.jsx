@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import ChatWindowWrapper from '../../styles/chatWindow';
 import Header from './header';
 import Messages from './messages';
-import {GetChatInfo} from '../../graphqlQueries/queries';
+import {GetChatInfo, GetChatMessages} from '../../graphqlQueries/queries';
 import {withCurrentUser} from '../../lib/currentUserContext';
 import ChatEditor from './chatEditor';
 import withLocalState from '../../lib/withLocalState';
@@ -59,14 +59,27 @@ export default class Chat extends React.Component {
     }
 
     getMainComponent(chat, currentUser) {
-        return this.state.editorOpened ?
-            <ChatEditor
-                currentChat={chat}
-                currentUser={currentUser}
-                toggleEditor={this.toggleEditor}/> :
-            <Messages
-                currentChatId={chat.id || null}
-                currentUserId={currentUser.id}/>;
+        if (this.state.editorOpened) {
+            return (
+                <ChatEditor
+                    currentChat={chat}
+                    currentUser={currentUser}
+                    toggleEditor={this.toggleEditor}/>
+            );
+        }
+
+        // Nothing to see here...
+        const MessagesWithData = graphql(
+            GetChatMessages.query(chat.id),
+            {
+                name: 'data',
+                skip: ({ currentChatId }) => !currentChatId,
+                props: GetChatMessages.map
+            }
+        )(Messages);
+        return (<MessagesWithData
+            currentChatId={chat.id || null}
+            currentUserId={currentUser.id}/>);
 
     }
 
@@ -95,7 +108,7 @@ export default class Chat extends React.Component {
                     <Header chat={chat}
                             loading={false}
                             toggleEditor={this.toggleEditor}
-                            editorOpened={this.state.editorOpened} />
+                            editorOpened={this.state.editorOpened}/>
                     {this.getMainComponent(chat, currentUser)}
                 </React.Fragment>
             );

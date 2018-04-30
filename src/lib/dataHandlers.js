@@ -27,21 +27,33 @@ export const deleteMessage = (message, target) => {
 };
 
 
+const messagesResults = {};
+
+
 export const messagesSubscriptionDataHandler = (previousResult, { subscriptionData, variables }) => {
     if (!previousResult.Chat) {
         return previousResult;
     }
     const { mutation, node } = subscriptionData.data.Message;
+    // if (previousResult.Chat.id !== node.chat.id) {
+    //     return previousResult;
+    // }
+    let result = null;
     switch (mutation) {
         case 'CREATED':
-            return addNewMessage(node, previousResult);
+            result = addNewMessage(node, previousResult);
+            break;
         case 'UPDATED':
-            return updateMessage(node, previousResult);
+            result = updateMessage(node, previousResult);
+            break;
         case 'DELETED':
-            return deleteMessage(node, previousResult);
+            result = deleteMessage(node, previousResult);
+            break;
         default:
-            return previousResult;
+            result = previousResult;
     }
+    messagesResults[result.Chat.id] = result;
+    return result;
 };
 
 

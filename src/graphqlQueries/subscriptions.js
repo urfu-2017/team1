@@ -17,6 +17,9 @@ subscription SubscribeToMessages($filter: MessageSubscriptionFilter!) {
     mutation
     node {
       ...messageData
+      chat {
+        id
+      }
     }
   }
 }
