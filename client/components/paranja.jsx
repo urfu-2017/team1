@@ -74,6 +74,7 @@ export default class Paranja extends Component {
                 { this.state.isOpenAlarmClock && (
                     <ParanjaWrapper>
                         <AlarmClocks
+                            user={user}
                             showAlarmClock={this.showAlarmClock}
                         />
                     </ParanjaWrapper>

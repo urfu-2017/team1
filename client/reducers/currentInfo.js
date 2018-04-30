@@ -59,10 +59,6 @@ export default function createMetaReducer(currentUser) {
         case VISIBILITY_PARANJA:
             state.isOpenParanja = action.visibility;
             return Object.assign({}, state);
-        case ADD_ALARM_CLOCK:
-            console.log(action.alarmClock);
-            //послать запрос в базу для сохранения будильника
-            return Object.assign({}, state);
         default: return state;
         }
     };

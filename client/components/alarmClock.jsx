@@ -30,7 +30,7 @@ export default class AlarmClocks extends React.Component {
 
         const switched = this.repeat.state.switched;
 
-        return { time, music, switched };
+        return { time, music, repeat: switched };
     }
 
     render() {

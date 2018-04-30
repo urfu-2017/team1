@@ -33,13 +33,16 @@ export default class AlarmClocks extends React.Component {
     disableDates = date => date < this.state.minDate;
     showNewAlarmClock = isOpen => this.setState({ isOpenNewAlarmClock: isOpen })
     render() {
-        const { showAlarmClock } = this.props;
+        const { showAlarmClock, user } = this.props;
         const list = {
             height: '225px',
             width: '80%',
             border: '1px solid'
         };
-
+        console.log('Будиьники');
+        
+        console.log(user.alarmClocks);
+        
         return (
             <Editor>
                 <h1>Будильник</h1>

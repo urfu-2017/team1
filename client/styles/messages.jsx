@@ -15,19 +15,19 @@ export const Header = styled.section`
     background-color: #f2f3de;
 `;
 
-export const Button = styled.input`
-    backgroundColor: white;
+export const Button = styled.div`
+    background-color: white;
     position: fixed;
     padding: 0;
-    bottom: 60px;
-    right: 10px;
+    margin-bottom: 10px;
+    bottom: 50px;
     width: 30px;
     height: 30px;
     border: 2px solid #b7c5f5;
     border-radius: 50%;
     color: #b7c5f5;
+    left: 92%;
     cursor: pointer;
-
     &::before {
         font-family: FontAwesome5;
         content: '\f107';

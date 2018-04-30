@@ -87,7 +87,6 @@ export default class Messages extends Component {
                     <Button
                         type="button"
                         title="Жмяк вниз"
-                        value="&#11167;"
                         className="scroll"
                         onClick={() => this.scroll.scrollToBottom()}
                     />
