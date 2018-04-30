@@ -27,18 +27,6 @@ export const addMessageFromSocket = (message, currentUserId, sender) =>
     ({ type: RECEIVED_NEW_MESSAGE, info: { message, currentUserId, sender } });
 
 
-export const cursorIsPressedFromBelow = () => {
-    const messages = document.querySelector('#messages');
-    return Math.ceil(messages.scrollTop) + messages.offsetHeight >= messages.scrollHeight;
-};
-
-export const moveCursorDown = () => {
-    const messages = document.querySelector('#messages');
-    setTimeout(() => {
-        messages.scrollTop = messages.scrollHeight - messages.offsetHeight;
-    }, 0);
-};
-
 export const addMessageFromChatInput = (chat, message) => ({ type: SEND_NEW_MESSAGE, chat, message });
 
 export const selectChat = id => ({ type: SELECT_CHAT, id });

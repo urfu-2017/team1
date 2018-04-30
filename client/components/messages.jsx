@@ -21,8 +21,6 @@ export default class Messages extends Component {
     componentDidMount() {
         const { socketURL, chat, onReceiveMessage, user } = this.props;
 
-        this.node.scrollTop = this.node.scrollHeight;
-
         this.socket = io(socketURL, {
             transports: ['websocket']
         });
@@ -45,21 +43,18 @@ export default class Messages extends Component {
     }
 
     componentWillUpdate() {
-        this.shouldScrollBottom = this.node.scrollTop +
-            this.node.offsetHeight === this.node.scrollHeight;
+        this.scroll.scrollToBottom();
     }
 
     componentDidUpdate() {
-        if (this.shouldScrollBottom) {
-            this.node.scrollTop = this.node.scrollHeight;
-        }
+        this.scroll.scrollToBottom();
     }
 
     componentWillUnmount() {
         this.socket.disconnect();
     }
 
-    getSectionRef = node => { this.node = node; }
+    getSectionRef = node => { this.scroll = node; }
 
     getMessagesList() {
         const { chat, user, setReactionToMessage } = this.props;
@@ -98,7 +93,7 @@ export default class Messages extends Component {
                         title="Жмяк вниз"
                         value="&#11167;"
                         className="scroll"
-                        onClick={() => this.node.scrollToBottom()}
+                        onClick={() => this.scroll.scrollToBottom()}
                     />
                     <MessagesList >
                         {this.getMessagesList()}

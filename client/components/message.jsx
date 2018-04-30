@@ -4,12 +4,11 @@ import marked from 'marked';
 import emoji from 'node-emoji';
 import moment from 'moment';
 import { Emoji, emojiIndex } from 'emoji-mart';
-
-moment.locale('ru');
-
 import { MessageWrapper } from '../styles/message';
 import { Reactions } from '../styles/reaction';
 import Reaction from './reaction';
+
+moment.locale('ru');
 
 export default class Message extends Component {
     static propTypes = {
@@ -156,7 +155,8 @@ export default class Message extends Component {
                     { ogdata && ogdata.url && Object.keys(ogdata).length !== 0 &&
                     <div className="metadata">
                         <a href={ogdata.url} className="metadata-container">
-                            { ogdata.image && <img className="metadata-container__img" src={ogdata.image.url} alt={ogdata.title} /> }
+                            { ogdata.image &&
+                                <img className="metadata-container__img" src={ogdata.image.url} alt={ogdata.title} /> }
                             <div className="metadata-container__title">{ogdata.title}</div>
                         </a>
                     </div>}

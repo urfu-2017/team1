@@ -19,15 +19,13 @@ export const Button = styled.input`
     backgroundColor: white;
     position: fixed;
     padding: 0;
-    margin-right: 128px;
-    margin-bottom: 10px;
-    bottom: 50px;
+    bottom: 60px;
+    right: 10px;
     width: 30px;
     height: 30px;
     border: 2px solid #b7c5f5;
     border-radius: 50%;
     color: #b7c5f5;
-    right: 30px;
     cursor: pointer;
 
     &::before {

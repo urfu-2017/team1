@@ -5,8 +5,6 @@ import PropTypes from 'prop-types';
 import { Emoji, emojiIndex } from 'emoji-mart';
 
 import Textarea from '../styles/chatWindowInput';
-import { cursorIsPressedFromBelow, moveCursorDown }
-    from '../actions/actions';
 
 class ChatWindowInput extends Component {
     static propTypes = {
@@ -65,13 +63,8 @@ class ChatWindowInput extends Component {
                 fromMe: true,
                 metadata: {}
             };
-            const cursorInBottom = cursorIsPressedFromBelow();
             addMessageFromChatInput(chat, message);
-            if (cursorInBottom) {
-                moveCursorDown();
-            }
             sendMessage(chat, message);
-
             this.setState({ message: '' });
         }
     };
