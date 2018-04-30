@@ -9,8 +9,8 @@ import {GetChatInfo, GetChatMessages} from '../../graphqlQueries/queries';
 import {withCurrentUser} from '../../lib/currentUserContext';
 import ChatEditor from './chatEditor';
 import withLocalState from '../../lib/withLocalState';
-import {processChat, chatSubscriptionDataHandler} from '../../lib/dataHandlers';
-import {SubscribeToChat} from '../../graphqlQueries/subscriptions';
+import {processChat, userSubscriptionDataHandler} from '../../lib/dataHandlers';
+import {SubscribeToUsersInChat} from '../../graphqlQueries/subscriptions';
 
 
 const currentChatSet = ({ currentChatId }) =>
@@ -77,9 +77,11 @@ export default class Chat extends React.Component {
                 props: GetChatMessages.map
             }
         )(Messages);
-        return (<MessagesWithData
-            currentChatId={chat.id || null}
-            currentUserId={currentUser.id}/>);
+        return (
+            <MessagesWithData
+                currentChatId={chat.id || null}
+                currentUserId={currentUser.id}/>
+        );
 
     }
 
@@ -121,14 +123,14 @@ export default class Chat extends React.Component {
         );
     }
 
-    chatSubscription = null;
+    chatUsersSubscription = null;
 
     subscribe = () => {
-        if (!this.chatSubscription) {
-            this.chatSubscription = this.props.data.subscribeToMore({
-                document: SubscribeToChat.subscription,
-                variables: SubscribeToChat.vars(this.props.chat.id),
-                updateQuery: chatSubscriptionDataHandler
+        if (!this.chatUsersSubscription) {
+            this.chatUsersSubscription = this.props.data.subscribeToMore({
+                document: SubscribeToUsersInChat.subscription,
+                variables: SubscribeToUsersInChat.vars(this.props.chat.id),
+                updateQuery: userSubscriptionDataHandler
             });
         }
     };

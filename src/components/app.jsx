@@ -9,8 +9,9 @@ import {GetCurrentUser} from '../graphqlQueries/queries';
 import Profile from './profile';
 import {Provider as CurrentUserProvider} from '../lib/currentUserContext';
 import withLocalState from '../lib/withLocalState';
-import {SubscribeToCurrentUser} from '../graphqlQueries/subscriptions';
-import {userSubscriptionDataHandler} from '../lib/dataHandlers';
+import {SubscribeToCurrentUser, SubscribeToUserChats, SubscribeToUsersHavingPersonalChats}
+    from '../graphqlQueries/subscriptions';
+import {userSubscriptionDataHandler, chatSubscriptionDataHandler} from '../lib/dataHandlers';
 
 
 const Wrapper = styled.main`
@@ -75,6 +76,8 @@ export default class App extends React.Component {
     }
 
     userSubscription = null;
+    chatsSubscription = null;
+    personalChatsSubscription = null;
 
     subscribe = () => {
         if (!this.userSubscription) {
@@ -84,5 +87,20 @@ export default class App extends React.Component {
                 updateQuery: userSubscriptionDataHandler
             });
         }
+        if (!this.chatsSubscription) {
+            this.chatsSubscription = this.props.data.subscribeToMore({
+                document: SubscribeToUserChats.subscription,
+                variables: SubscribeToUserChats.vars(this.props.currentUser.id),
+                updateQuery: chatSubscriptionDataHandler
+            });
+        }
+        // TODO: исчезают все чаты
+        // if (!this.personalChatsSubscription) {
+        //     this.personalChatsSubscription = this.props.data.subscribeToMore({
+        //         document: SubscribeToUsersHavingPersonalChats.subscription,
+        //         variables: SubscribeToUsersHavingPersonalChats.vars(this.props.currentUser.id),
+        //         updateQuery: userSubscriptionDataHandler
+        //     });
+        // }
     };
 }

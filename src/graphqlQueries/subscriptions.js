@@ -76,15 +76,11 @@ subscription SubscribeToUser($filter: UserSubscriptionFilter!) {
     mutation
     node {
       ...userData
-      chats {
-        ...chatData
-      }
     }
   }
 }
 
 ${fragments.userData_ql}
-${fragments.chatData_ql}
 `;
 
 export const SubscribeToUser = mapper(SUBSCRIBE_TO_USER_ql,
@@ -93,6 +89,29 @@ export const SubscribeToUser = mapper(SUBSCRIBE_TO_USER_ql,
             id: userId
         },
         // updatedFields_contains: 'chatsUpdatedDummy'
+    })
+);
+
+export const SubscribeToUsersInChat = mapper(SUBSCRIBE_TO_USER_ql,
+    chatId => ({
+        node: {
+            chats_some: {
+                id: chatId
+            }
+        }
+    })
+);
+
+export const SubscribeToUsersHavingPersonalChats = mapper(SUBSCRIBE_TO_USER_ql,
+    currentUserId => ({
+        node: {
+            chats_some: {
+                groupchat: false,
+                members_some: {
+                    id: currentUserId
+                }
+            }
+        }
     })
 );
 
@@ -114,6 +133,17 @@ export const SubscribeToChat = mapper(SUBSCRIBE_TO_CHAT_ql,
     chatId => ({
         node: {
             id: chatId
+        }
+    })
+);
+
+
+export const SubscribeToUserChats = mapper(SUBSCRIBE_TO_CHAT_ql,
+    userId => ({
+        node: {
+            members_some: {
+                id: userId
+            }
         }
     })
 );
