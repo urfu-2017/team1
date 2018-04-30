@@ -1,12 +1,13 @@
 'use strict';
 
 const fs = require('fs');
+const cloudinary = require('cloudinary');
 
 const passport = require('passport');
 const User = require('../model/user');
 const GitHubStrategy = require('passport-github').Strategy;
 
-const { getPathToGeneratedPicture } = require('../lib/avatar-generation');
+const { getPictureInBase64 } = require('../lib/avatar-generation');
 
 
 passport.use(new GitHubStrategy(
@@ -29,17 +30,18 @@ passport.use(new GitHubStrategy(
             } catch (exc) { }
         }
         if (failed) throw new Error('Network error');
-        const avatarPath = `images/avatars/github/${githubId}.png`;
-        const fsAvatarPath = `../../public/${avatarPath}`;
-        if (!fs.existsSync(fsAvatarPath)) {
-            getPathToGeneratedPicture(fsAvatarPath, githubId);
-        }
+
         if (!user) {
-            console.log(user);
-            user = await User.create(name, `/static/${avatarPath}`, githubId);
-        } //else {
-          //  await user.update({ name });
-        //}
+            const avatarData = `data:image/png;base64,${await getPictureInBase64(githubId)}`;
+            const promise = new Promise((resolve, reject) => {
+                cloudinary.uploader.upload(avatarData, data => {
+                    resolve(data);
+                });
+            });
+            const data = await promise;
+            user = await User.create(name, data.secure_url, githubId);
+        }
+        
         cb(null, user);
     })
 ));
