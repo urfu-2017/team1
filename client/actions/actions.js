@@ -14,6 +14,8 @@ export const SAVED_AVATAR = 'SAVED_AVATAR';
 
 export const CHANGE_PROFILE_EDITOR_STATE = 'CHANGE_PROFILE_EDITOR_STATE';
 
+export const CHANGE_IMAGE_SENDER_STATE = 'CHANGE_IMAGE_SENDER_STATE';
+
 export const VISIBILITY_PARANJA = 'VISIBILITY_PARANJA';
 
 export const setVisibilityParanja = visibility => ({ type: VISIBILITY_PARANJA, visibility });
@@ -48,7 +50,9 @@ export const updateContacts = contacts => ({ type: UPDATE_CONTACT_LIST, contacts
 
 export const setAvatar = avatar => ({ type: SAVED_AVATAR, avatar });
 
-export const setProfileEditorState = state => ({ type: CHANGE_PROFILE_EDITOR_STATE, state }); 
+export const setProfileEditorState = state => ({ type: CHANGE_PROFILE_EDITOR_STATE, state });
+
+export const setImageSenderState = state => ({ type: CHANGE_IMAGE_SENDER_STATE, state });
 
 export const saveMessage = (chat, isSuccess, dumbMessage, message) =>
     ({ type: MESSAGE_SAVED, chat, isSuccess, dumbMessage, message });
@@ -100,6 +104,18 @@ export const changeAvatar = avatarData => dispatch => {
             dispatch(setVisibilityParanja(false));
             dispatch(setProfileEditorState(false));
             dispatch(setAvatar(response.avatar));
+        });
+};
+
+export const sendImage = (chat, imageData) => dispatch => {
+    console.log('sendImage')
+    console.log(chat);
+    console.log(imageData);
+    fetch('/api/v1/upload/picture', makeRequestOptions({ method: 'POST', body: { imageData } }))
+        .then(response => response.json())
+        .then(message => {
+            dispatch(setImageSenderState(false));
+            dispatch(saveMessage(chat, true, null, message));
         });
 };
 

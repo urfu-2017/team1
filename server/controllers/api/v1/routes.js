@@ -11,5 +11,6 @@ router.get('/chats', ChatController.get);
 router.get('/contacts', ContactController.get);
 
 router.post('/upload/avatar', UploadController.avatar);
+router.post('/upload/picture', UploadController.sendPicture);
 
 module.exports = router;

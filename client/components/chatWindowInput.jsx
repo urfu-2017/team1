@@ -13,7 +13,9 @@ class ChatWindowInput extends Component {
         addMessageFromChatInput: PropTypes.func,
         sendMessage: PropTypes.func,
         chat: PropTypes.shape(),
-        user: PropTypes.shape()
+        user: PropTypes.shape(),
+        setImageSenderState: PropTypes.func,
+        showParanja: PropTypes.func
     }
 
     constructor(props) {
@@ -85,32 +87,32 @@ class ChatWindowInput extends Component {
     addEmojiIntoText = emoji =>
         this.setState({ message: `${this.state.message}${this.findEmoji(emoji.id)}` });
 
-    getPicker = () => {
-        if (!this.state.emoji) {
-            return '';
-        }
-        return (
-            <div className="picker__style">
-                <span>
-                    Выберите Emoji
-                </span>
-                <div
-                    className="closeEmojiButton__style"
-                    onClick={this.closeEmojies}
-                    title="Скрыть"
-                >
-                    &#x274C;
-                </div>
-                <hr />
-                <div>
-                    {this.getEmojiesPopup()}
-                </div>
-            </div>
-        );
-    }
-
     render() {
-        const picker = this.getPicker();
+        const { setImageSenderState } = this.props;
+
+        let picker;
+        if (!this.state.emoji) {
+            picker = '';
+        } else {
+            picker = (
+                <div className="picker__style">
+                    <span>
+                        Выберите Emoji
+                    </span>
+                    <div
+                        className="closeEmojiButton__style"
+                        onClick={this.closeEmojies}
+                        title="Скрыть"
+                    >
+                        &#x274C;
+                    </div>
+                    <hr />
+                    <div>
+                        {this.getEmojiesPopup()}
+                    </div>
+                </div>
+            );
+        }
 
         return (
             <Textarea>
@@ -127,6 +129,7 @@ class ChatWindowInput extends Component {
                     <div
                         title="Send picture"
                         className="clip"
+                        onClick={() => { setImageSenderState(true); }}
                     />
                     <div
                         onClick={this.openEmojies}

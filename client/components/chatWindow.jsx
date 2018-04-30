@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ChatWindowWrapper from '../styles/chatWindow';
+import { ParanjaWrapper } from '../styles/paranja';
 
 import Messages from '../components/messages';
 import ChatWindowInput from './chatWindowInput';
+import ImageSender from '../containers/imageSender';
 
 import { getChatName } from '../utils/chats';
 
@@ -14,12 +16,15 @@ export default class ChatWindow extends Component {
         setReactionToMessage: PropTypes.func,
         user: PropTypes.shape(),
         chat: PropTypes.shape(),
-        socketURL: PropTypes.string
+        socketURL: PropTypes.string,
+        setImageSenderState: PropTypes.func,
+        imageSenderState: PropTypes.bool
     };
 
     static defaultProps = {
         chat: {},
-        user: {}
+        user: {},
+        imageSenderState: false
     };
 
     constructor(props) {
@@ -28,7 +33,16 @@ export default class ChatWindow extends Component {
     }
 
     render() {
-        const { chat, user, sendMessage, addMessageFromChatInput, socketURL, setReactionToMessage } = this.props;
+        const {
+            chat,
+            user,
+            sendMessage,
+            addMessageFromChatInput,
+            socketURL,
+            setReactionToMessage,
+            setImageSenderState,
+            imageSenderState
+        } = this.props;
 
         return chat._id ?
             <ChatWindowWrapper>
@@ -45,7 +59,15 @@ export default class ChatWindow extends Component {
                     addMessageFromChatInput={addMessageFromChatInput}
                     chat={chat}
                     user={user}
+                    setImageSenderState={setImageSenderState}
                 />
+                { imageSenderState && (
+                    <ImageSender
+                        user={user}
+                        chat={chat}
+                        setImageSenderState={setImageSenderState}
+                    />
+                )}
             </ChatWindowWrapper > : <ChatWindowWrapper />;
     }
 }
