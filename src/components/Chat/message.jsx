@@ -115,6 +115,13 @@ export default class Message extends React.PureComponent {
         return reactionComponents;
     }
 
+    static formatDate = new Intl.DateTimeFormat('ru', {
+        hour: 'numeric',
+        minute: 'numeric',
+        day: 'numeric',
+        month: 'long'
+    }).format;
+
     render() {
         const { loading, error, message, user, isFromSelf } = this.props;
         // небольшой костыль: optimistic response присваивает сообщениям
@@ -123,25 +130,29 @@ export default class Message extends React.PureComponent {
         const ogdata = message.metadata && message.metadata.ogdata || {};
 
         let reactionComponents = this.createReactionComponents(message.reactions);
+        const createdAt = Message.formatDate(new Date(message.createdAt));
 
         return (
             <MessageWrapper isFromSelf={isFromSelf}>
                 <div className="messageBlock">
+                    <img src={user && user.avatarUrl} width="30px" />
                     <span>{user && user.name + delivered}</span>
                     {/*TODO: у сообщения есть также поле modifiedAt, равное null, если оно не менялось */}
+
                     <div onClick={this.openReactions} className="addReactions">
                             &#x263A;
                         </div>
-                    <div className="messageBlock__time">{message.createdAt}</div>
+                    <div className="messageBlock__time">{createdAt}</div>
+
                     <div
                         className="messageBlock__text"
                         isFromSelf={isFromSelf}
                         dangerouslySetInnerHTML={{ __html: message.text }}
                     />
-                    { ogdata && Object.keys(ogdata).length !== 0 &&
+                    {ogdata && Object.keys(ogdata).length !== 0 &&
                     <div className="metadata">
                         <a href={ogdata.url} className="metadata-container">
-                            <img className="metadata-container__img" src={ogdata.image.url} alt="{ogdata.title}" />
+                            <img className="metadata-container__img" src={ogdata.image.url} alt="{ogdata.title}"/>
                             <div className="metadata-container__title">{ogdata.title}</div>
                         </a>
                     </div>}

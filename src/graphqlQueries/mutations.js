@@ -96,8 +96,9 @@ mutation AddUserToChat($chatId: ID!, $userId: ID!) {
 
 export const AddUserToChat = mapper(ADD_USER_TO_CHAT_ql, 'addUserToChat');
 
+
 const UPDATE_USER_AVATAR_ql = gql`
-mutation updateUserAvatar($userId: ID!, $url: String) {
+mutation UpdateUserAvatar($userId: ID!, $url: String) {
   updateUser(id: $userId, avatarUrl: $url) {
     avatarUrl
   }
@@ -115,3 +116,19 @@ mutation updateMessageReactions($messageId: ID!, $reactions: Json) {
 `
 
 export const UpdateMessageReactions = mapper(UPDATE_MESSAGE_REACTIONS_ql, 'updateMessageReactions');
+
+
+const UPDATE_CHAT_TITLE_ql = gql`
+mutation UpdateChatTitle($chatId: ID!, $title: String!) {
+  updateChat(id: $chatId, title: $title) {
+    ...chatTitle
+  }
+}
+
+${fragments.chatTitle_ql}
+`;
+
+export const UpdateChatTitle = mapper(UPDATE_CHAT_TITLE_ql, 'updateChatTitle');
+
+
+

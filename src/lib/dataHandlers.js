@@ -53,6 +53,14 @@ export const userSubscriptionDataHandler = (previousResult, { subscriptionData, 
 };
 
 
+export const chatSubscriptionDataHandler = (previousResult, { subscriptionData, variables }) => {
+    if (!previousResult.User) {
+        return previousResult;
+    }
+    return { Chat: subscriptionData.data.Chat.node };
+};
+
+
 export const processChat = (currentUserId, chat) => {
     if (chat.groupchat) {
         return chat;

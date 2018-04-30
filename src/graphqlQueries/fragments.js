@@ -47,3 +47,10 @@ fragment chatData on Chat {
   }
 }
 `;
+
+export const chatTitle_ql = gql`
+fragment chatTitle on Chat {
+  id
+  title
+}
+`;
