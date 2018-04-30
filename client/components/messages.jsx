@@ -20,7 +20,7 @@ export default class Messages extends Component {
 
     componentDidMount() {
         const { socketURL, chat, onReceiveMessage, user } = this.props;
-
+        this.scroll.scrollToBottom();
         this.socket = io(socketURL, {
             transports: ['websocket']
         });
@@ -43,10 +43,6 @@ export default class Messages extends Component {
     }
 
     componentWillUpdate() {
-        this.scroll.scrollToBottom();
-    }
-
-    componentDidUpdate() {
         this.scroll.scrollToBottom();
     }
 

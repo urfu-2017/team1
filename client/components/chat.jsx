@@ -34,11 +34,12 @@ class Chat extends Component {
 
         const chatName = getChatName(chat, user);
         const chatAvatar = getChatAvatar(chat, user);
+        const background = select ? '#00bcd4' : '#f2f3dE';
 
         return (
             <ListItem
                 onClick={onClick}
-                select={select}
+                innerDivStyle={{ background }}
                 leftAvatar={<Avatar src={chatAvatar} />}
                 primaryText={chatName}
                 secondaryText={
