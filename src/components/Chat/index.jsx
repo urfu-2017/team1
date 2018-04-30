@@ -3,13 +3,14 @@ import {graphql} from 'react-apollo';
 import PropTypes from 'prop-types';
 
 import ChatWindowWrapper from '../../styles/chatWindow';
-import {Header} from '../../styles/messages';
+import Header from './header';
 import Messages from './messages';
 import {GetChatInfo} from '../../graphqlQueries/queries';
 import {withCurrentUser} from '../../lib/currentUserContext';
 import ChatEditor from './chatEditor';
 import withLocalState from '../../lib/withLocalState';
-import {processChat} from '../../lib/dataHandlers';
+import {processChat, chatSubscriptionDataHandler} from '../../lib/dataHandlers';
+import {SubscribeToChat} from '../../graphqlQueries/subscriptions';
 
 
 const currentChatSet = ({ currentChatId }) =>
@@ -57,32 +58,19 @@ export default class Chat extends React.Component {
         this.setState({ editorOpened });
     }
 
-    getMainComponent(currentChat, currentUser) {
+    getMainComponent(chat, currentUser) {
         return this.state.editorOpened ?
             <ChatEditor
-                currentChat={currentChat}
+                currentChat={chat}
                 currentUser={currentUser}
                 toggleEditor={this.toggleEditor}/> :
             <Messages
-                currentChatId={currentChat.id || null}
+                currentChatId={chat.id || null}
                 currentUserId={currentUser.id}/>;
+
     }
 
     toggleEditor = () => this.setState(prev => ({ editorOpened: !prev.editorOpened }));
-
-    groupChatHeader = title => (
-        <span onClick={this.toggleEditor}>
-            {'✎\t' + title}
-        </span>
-    );
-
-    personalChatHeader = title => {
-        return (
-            <span>
-                {title}
-            </span>
-        );
-    };
 
     render() {
         let { localState, loading, error, chat, currentUser } = this.props;
@@ -92,24 +80,22 @@ export default class Chat extends React.Component {
             content = null;
         } else if (error) {
             content = this.ErrorScreen;
-        } else if (loading) {
+        } else if (loading || !chat) {
             content = (
                 <React.Fragment>
-                    <Header>
-                        <span>Загрузка...</span>
-                    </Header>
+                    <Header loading={true}/>
                     {this.getMainComponent(chat, currentUser)}
                 </React.Fragment>
             );
         } else {
+            this.subscribe();
             chat = processChat(currentUser.id, chat);
-            const groupchat = chat.groupchat || false;
             content = (
                 <React.Fragment>
-                    <Header>
-                        {groupchat && this.groupChatHeader(chat.title) ||
-                        this.personalChatHeader(chat.title)}
-                    </Header>
+                    <Header chat={chat}
+                            loading={false}
+                            toggleEditor={this.toggleEditor}
+                            editorOpened={this.state.editorOpened} />
                     {this.getMainComponent(chat, currentUser)}
                 </React.Fragment>
             );
@@ -121,4 +107,16 @@ export default class Chat extends React.Component {
             </ChatWindowWrapper>
         );
     }
+
+    chatSubscription = null;
+
+    subscribe = () => {
+        if (!this.chatSubscription) {
+            this.chatSubscription = this.props.data.subscribeToMore({
+                document: SubscribeToChat.subscription,
+                variables: SubscribeToChat.vars(this.props.chat.id),
+                updateQuery: chatSubscriptionDataHandler
+            });
+        }
+    };
 }
