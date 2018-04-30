@@ -1,6 +1,5 @@
 'use strict';
 
-const fs = require('fs');
 const cloudinary = require('cloudinary');
 
 const passport = require('passport');
@@ -32,8 +31,9 @@ passport.use(new GitHubStrategy(
         if (failed) throw new Error('Network error');
 
         if (!user) {
-            const avatarData = `data:image/png;base64,${await getPictureInBase64(githubId)}`;
-            const promise = new Promise((resolve, reject) => {
+            const pictureBase64 = await getPictureInBase64(githubId);
+            const avatarData = `data:image/png;base64,${pictureBase64}`;
+            const promise = new Promise(resolve => {
                 cloudinary.uploader.upload(avatarData, data => {
                     resolve(data);
                 });
@@ -41,7 +41,7 @@ passport.use(new GitHubStrategy(
             const data = await promise;
             user = await User.create(name, data.secure_url, githubId);
         }
-        
+
         cb(null, user);
     })
 ));

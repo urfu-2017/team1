@@ -98,12 +98,12 @@ export const AddUserToChat = mapper(ADD_USER_TO_CHAT_ql, 'addUserToChat');
 
 
 const UPDATE_USER_AVATAR_ql = gql`
-mutation UpdateUserAvatar($userId: ID!, $url: String) {
-  updateUser(id: $userId, avatarUrl: $url) {
+mutation UpdateUserAvatar($userId: ID!, $avatarUrl: String) {
+  updateUser(id: $userId, avatarUrl: $avatarUrl) {
     avatarUrl
   }
 }
-`
+`;
 
 export const UpdateUserAvatar = mapper(UPDATE_USER_AVATAR_ql, 'updateUserAvatar');
 
