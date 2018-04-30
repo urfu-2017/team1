@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../styles/profileEditor';
+import ImageHandler from './imageHandler';
 
 
-class ProfileEditor extends Component {
+class ProfileEditor extends ImageHandler {
     static propTypes = {
         showParanja: PropTypes.func,
         onChangeAvatar: PropTypes.func,
@@ -16,24 +17,6 @@ class ProfileEditor extends Component {
         this.state = {};
     }
 
-    getFirstFile = e => {
-        const inputUpload = document.getElementById('upload');
-
-        return inputUpload.files[0];
-    }
-
-    dragover = e => {
-        e.preventDefault();
-        e.stopPropagation();
-    };
-
-    drop = e => {
-        e.preventDefault();
-        e.stopPropagation();
-        const inputUpload = document.getElementById('upload');
-        inputUpload.files = e.dataTransfer.files;
-    };
-
     saveAvatar = () => {
         const { onChangeAvatar } = this.props;
         const reader = new window.FileReader();
@@ -41,36 +24,6 @@ class ProfileEditor extends Component {
         this.readPictureFromInput(reader, async () => {
             onChangeAvatar(reader.result);
         });
-    };
-
-    drawBackground = () => {
-        const reader = new window.FileReader();
-        this.readPictureFromInput(reader, () => {
-            this.setTextDownloadArea('');
-            const dataUrl = reader.result;
-            const area = document.getElementById('area-for-drop');
-            area.style.backgroundImage = `url(${dataUrl})`;
-        });
-    }
-
-    readPictureFromInput = (reader, cb) => {
-        reader.onloadend = async () => {
-            cb();
-        };
-        const avatar = this.getFirstFile();
-        if (!avatar) {
-            this.setTextDownloadArea('Не выбран файл');
-            const dropArea = document.getElementById('area-for-drop');
-            dropArea.style.backgroundImage = 'none';
-
-            return;
-        }
-        reader.readAsDataURL(avatar);
-    }
-
-    setTextDownloadArea = message => {
-        const input = document.getElementById('download_image_text');
-        input.textContent = message;
     };
 
     render() {
