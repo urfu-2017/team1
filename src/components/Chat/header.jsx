@@ -10,7 +10,7 @@ import {chatTitle_ql} from '../../graphqlQueries/fragments';
 export default class ChatHeader extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { title: 'some' };
+        this.state = { title: '' };
     }
 
     componentWillReceiveProps(props) {
@@ -49,7 +49,7 @@ export default class ChatHeader extends React.Component {
     };
 
     groupChatHeader = (title, editorOpened) => {
-        const switcher = editorOpened ? '✖\t' : '✎\t';
+        const switcher = editorOpened ? '✖' : '✎';
         const prefix = (
             <span onClick={this.props.toggleEditor}>
                 {switcher + (!editorOpened ? title : '')}
