@@ -22,12 +22,13 @@ export default class Message extends Component {
         creationTime: PropTypes.string,
         reactions: PropTypes.arrayOf(PropTypes.shape()),
         metadata: PropTypes.shape(),
+        picture: PropTypes.string,
         sender: PropTypes.shape(),
         chat: PropTypes.shape(),
         setReactionToMessage: PropTypes.func
     };
 
-    static defaultProps = { isSended: true, fromMe: '', message: '', creationTime: '', metadata: {} }
+    static defaultProps = { isSended: true, fromMe: '', message: '', creationTime: '', metadata: {}, picture: '' }
 
     constructor(props) {
         super(props);
@@ -75,7 +76,8 @@ export default class Message extends Component {
             sender,
             reactions,
             setReactionToMessage,
-            messageId
+            messageId,
+            picture
         } = this.props;
         const { ogdata } = metadata;
 
@@ -132,6 +134,26 @@ export default class Message extends Component {
         } else {
             picker = '';
         }
+
+        let body;
+        if (picture) {
+            body = (
+                <img
+                    src={picture}
+                    className="messageBlock__picture"
+                    alt=""
+                />
+            );
+        } else {
+            body = (
+                <div
+                    className="messageBlock__text"
+                    dangerouslySetInnerHTML={{ __html: emoji.emojify(marked(message), res => res) }}
+                />
+            );
+        }
+
+
         return (
             <MessageWrapper>
                 <div className={`messageBlock ${(fromMe ? 'from_me' : 'from_they')}`}>
@@ -145,10 +167,7 @@ export default class Message extends Component {
                                 `\t${isSuccess ? '✓' : '⨯'}`
                         }</div>
                     </div>
-                    <div
-                        className="messageBlock__text"
-                        dangerouslySetInnerHTML={{ __html: emoji.emojify(marked(message), res => res) }}
-                    />
+                    {body}
                     { ogdata && ogdata.url && Object.keys(ogdata).length !== 0 &&
                     <div className="metadata">
                         <a href={ogdata.url} className="metadata-container">

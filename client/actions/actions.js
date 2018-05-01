@@ -6,6 +6,7 @@ export const SEND_NEW_MESSAGE = 'SEND_NEW_MESSAGE';
 export const SELECT_CHAT = 'SELECT_CHAT';
 export const MESSAGE_SAVED = 'MESSAGE_SAVED';
 export const SEND_NEW_CHAT = 'SEND_NEW_CHAT';
+export const MESSAGE_PICTURE_SAVED = 'MESSAGE_PICTURE_SAVED';
 
 export const ADD_CHAT_TO_CHAT_LIST = 'ADD_CHAT_TO_CHAT_LIST';
 export const UPDATE_CHAT_LIST = 'UPDATE_CHAT_LIST';
@@ -56,6 +57,9 @@ export const setImageSenderState = state => ({ type: CHANGE_IMAGE_SENDER_STATE, 
 
 export const saveMessage = (chat, isSuccess, dumbMessage, message) =>
     ({ type: MESSAGE_SAVED, chat, isSuccess, dumbMessage, message });
+
+export const savePictureMessage = (chat, isSuccess, message) =>
+    ({ type: MESSAGE_PICTURE_SAVED, chat, isSuccess, message });
 
 export const sendMessage = (chat, message) => dispatch => {
     fetch(`api/v1/chats/${chat._id}`, makeRequestOptions({ body: { message }, method: 'POST' }))
@@ -108,15 +112,15 @@ export const changeAvatar = avatarData => dispatch => {
 };
 
 export const sendImage = (chat, imageData) => dispatch => {
-    console.log('sendImage')
-    console.log(chat);
-    console.log(imageData);
-    fetch('/api/v1/upload/picture', makeRequestOptions({ method: 'POST', body: { imageData } }))
+    fetch('/api/v1/upload/picture', makeRequestOptions({ method: 'POST', body: { imageData, chatId: chat._id } }))
         .then(response => response.json())
         .then(message => {
             dispatch(setImageSenderState(false));
-            dispatch(saveMessage(chat, true, null, message));
-        });
+            if (message.picture) {
+                dispatch(savePictureMessage(chat, true, message));
+            }
+        })
+        .catch(() => alert('Слишком много запросов на сервере, подождите'));
 };
 
 export const setReactionToMessage = (chat, messageId, reactionId) => dispatch => {

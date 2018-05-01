@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../styles/profileEditor';
+import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../styles/imageHandler';
 import ImageHandler from './imageHandler';
 
 

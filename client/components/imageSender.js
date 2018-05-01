@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../styles/profileEditor';
+import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../styles/imageHandler';
 import ImageHandler from './imageHandler';
 
 
@@ -35,7 +35,7 @@ class ImageSender extends ImageHandler {
                 <Exit onClick={() => { setImageSenderState(false); }}>
                     &#10006;
                 </Exit>
-                <h1 className="header">Загрузить аватар</h1>
+                <h1 className="header">Отправить картинку в чат</h1>
                 <DownloadImage
                     onDrop={this.drop}
                     onDragOver={this.dragover}
@@ -45,7 +45,7 @@ class ImageSender extends ImageHandler {
                         className="text"
                         id="download_image_text"
                     >
-                        Загрузить фото
+                        Загрузить картинку
                     </p>
                 </DownloadImage>
                 <div className="buttons">
@@ -58,7 +58,7 @@ class ImageSender extends ImageHandler {
                     <CreateButton
                         id="saveAvatar"
                         type="button"
-                        value="Сохранить"
+                        value="Отправить"
                         onClick={this.sendImage}
                     />
                 </div>

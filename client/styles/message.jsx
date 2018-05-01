@@ -75,4 +75,8 @@ export const MessageWrapper = styled.article`
     .addReactions {
         font-size: 24px;
     }
+    .messageBlock__picture {
+        padding: 5%;
+        width: 90%;
+    }
 `;

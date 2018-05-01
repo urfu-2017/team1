@@ -1,5 +1,7 @@
 import { Component } from 'react';
 
+const MAX_FILE_SIZE = 100000;
+
 
 class ImageHandler extends Component {
     getFirstFile = () => {
@@ -38,15 +40,23 @@ class ImageHandler extends Component {
         reader.onloadend = async () => {
             cb();
         };
-        const avatar = this.getFirstFile();
-        if (!avatar) {
+        const image = this.getFirstFile();
+        if (!image) {
             this.setTextDownloadArea('Не выбран файл');
             const dropArea = document.getElementById('area-for-drop');
             dropArea.style.backgroundImage = 'none';
 
             return;
         }
-        reader.readAsDataURL(avatar);
+        if (image.size >= MAX_FILE_SIZE) {
+            this.setTextDownloadArea('Размер вашей фотографии не должен быть больше 100 KB. ' +
+                'Для снятия ограничения закиньте $15 на нашу почту');
+            const dropArea = document.getElementById('area-for-drop');
+            dropArea.style.backgroundImage = 'none';
+
+            return;
+        }
+        reader.readAsDataURL(image);
     };
 }
 

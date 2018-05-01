@@ -6,7 +6,8 @@ import {
     SEND_NEW_MESSAGE,
     SAVED_AVATAR,
     CHANGE_PROFILE_EDITOR_STATE,
-    CHANGE_IMAGE_SENDER_STATE
+    CHANGE_IMAGE_SENDER_STATE,
+    MESSAGE_PICTURE_SAVED
 } from '../actions/actions';
 
 const initialStateStub = {
@@ -58,6 +59,11 @@ export default function createMetaReducer(currentUser) {
             state.currentChat = Object.assign({}, chat);
             return Object.assign({}, state);
         }
+        case MESSAGE_PICTURE_SAVED:
+            const { chat, message } = action;
+            chat.messages.push(message);
+            state.currentChat = Object.assign({}, chat);
+            return Object.assign({}, state);
         case SELECT_CHAT:
             state.selectedChatId = action.id;
             return Object.assign({}, state);

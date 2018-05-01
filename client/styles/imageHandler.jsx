@@ -37,6 +37,7 @@ export const DownloadImage = styled.div`
     .text {
         font-size: 20px;
         background: #fff;
+        width: 180px;
     }
 `;
 
