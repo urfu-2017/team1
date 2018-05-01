@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import ListItem from 'material-ui/List/ListItem';
+import Avatar from 'material-ui/Avatar';
 import {ChatWrapper, ChatHeader, LastMessage, Sender} from '../../styles/chat';
 import withLocalState from '../../lib/withLocalState';
 
@@ -26,23 +27,21 @@ export default class ChatPreview extends React.PureComponent {
 
     render() {
         const { lastMessage, chat } = this.props;
+        const background = this.isSelected() ? '#00bcd4' : '#f2f3dE';
         return (
-            <ChatWrapper onClick={this.selectThisChat} select={this.isSelected()}>
-                <div className='chat-avatar'>
-                    <img src={chat.picture} width='50' height='50'
-                         className='chat-avatar__img'/>
-                </div>
-                <div className='chat-description'>
-                    <ChatHeader>{chat.title}</ChatHeader>
-                    {/* TODO: lastMessage */}
-                    {lastMessage && lastMessage.content && lastMessage.sender &&
+            <ListItem
+                onClick={this.selectThisChat}
+                innerDivStyle={{ background }}
+                leftAvatar={<Avatar src={chat.picture} />}
+                primaryText={chat.title}
+                secondaryText={
+                    lastMessage && lastMessage.content && lastMessage.sender &&
                     <LastMessage>
                         <Sender>{lastMessage.sender.name}:</Sender>
                         <span>{lastMessage.content.text}</span>
                     </LastMessage>
-                    }
-                </div>
-            </ChatWrapper>
+                }
+            />
         );
     }
 }

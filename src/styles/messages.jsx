@@ -2,11 +2,8 @@ import styled from 'styled-components';
 
 export const MessagesList = styled.section`
     width: 100%;
-    overflow-y: scroll;
     display: flex;
-    flex: 1;
     flex-direction: column;
-    background-color: #ffffff;
 `;
 
 export const Header = styled.section`
@@ -18,19 +15,26 @@ export const Header = styled.section`
     background-color: rgba(255,255,255, .7);
 `;
 
-export const Button = styled.input`
-    backgroundColor: white;
-    position: absolute;
+export const ScrollButton = styled.div`
+    background-color: white;
+    position: fixed;
     padding: 0;
-    marginRight: 128px;
-    marginBottom: 10px;
+    margin-bottom: 10px;
     bottom: 50px;
     width: 30px;
     height: 30px;
+    border: 2px solid #b7c5f5;
     border-radius: 50%;
-    borderColor: #b7c5f5;
     color: #b7c5f5;
-    right: 30px;
+    left: 92%;
     cursor: pointer;
+    &::before {
+        font-family: FontAwesome5;
+        content: '\f107';
+        font-weight: 900;
+        position: absolute;
+        top: 4px;
+        left: 7px;
+        font-size: 24px;
+    }
 `;
-

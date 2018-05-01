@@ -7,6 +7,7 @@ import SideBar from './SideBar';
 import Contacts from './contacts';
 import {GetCurrentUser} from '../graphqlQueries/queries';
 import Profile from './profile';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Provider as CurrentUserProvider} from '../lib/currentUserContext';
 import withLocalState from '../lib/withLocalState';
 import {SubscribeToCurrentUser, SubscribeToUserChats, SubscribeToUsersHavingPersonalChats}
@@ -64,17 +65,19 @@ export default class App extends React.Component {
         const { currentUser } = this.props;
         !currentUser.error && !currentUser.loading && this.subscribe();
         return (
-            <Wrapper>
-                {currentUser.error && <p>Error</p> ||
-                currentUser.loading && <p>Loading</p> ||
-                (
-                    <CurrentUserProvider value={currentUser}>
-                        <SideBar mainComponentChanger={this.changeMainComponent}/>
-                        <MainComponent {...this.state.mainComponentProps}
-                                       mainComponentChanger={this.changeMainComponent}/>
-                    </CurrentUserProvider>)
-                }
-            </Wrapper>
+            <MuiThemeProvider>
+                <Wrapper>
+                    {currentUser.error && <p>Error</p> ||
+                    currentUser.loading && <p>Loading</p> ||
+                    (
+                        <CurrentUserProvider value={currentUser}>
+                            <SideBar mainComponentChanger={this.changeMainComponent}/>
+                            <MainComponent {...this.state.mainComponentProps}
+                                        mainComponentChanger={this.changeMainComponent}/>
+                        </CurrentUserProvider>)
+                    }
+                </Wrapper>
+            </MuiThemeProvider>
         );
     }
 
