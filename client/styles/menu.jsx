@@ -43,4 +43,11 @@ export const MenuRoot = styled.section`
             content: '\f044';
         }
     }
+    .createChat {
+        &:before {
+            margin-right: 20px;
+            font-family: FontAwesome5;
+            content: '\f086';
+        }
+    }
 `;

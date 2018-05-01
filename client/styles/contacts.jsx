@@ -52,7 +52,7 @@ export const Contact = styled.div`
     margin: 10px 0;
     .contact__image {
         width: 35px;
-        height: 35px;
+        height: 36px;
         border 1px solid #639eca;
         margin: 0 16px;
     }

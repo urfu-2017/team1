@@ -44,7 +44,7 @@ export default class Menu extends Component {
                     </p>
                     { <p
                         role="presentation"
-                        className="menu__item"
+                        className="menu__item createChat"
                         onClick={() => { setGroupChatCreatorState(true); }}
                      >
                         Создать чат

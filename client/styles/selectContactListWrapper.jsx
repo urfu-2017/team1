@@ -16,6 +16,6 @@ export const SelectContactListWrapper = styled.div`
     .selected-contact__inactive::before {
         font-family: FontAwesome5;
         font-weight: 400;
-        content: '\f111';
+        
     }
 `;
