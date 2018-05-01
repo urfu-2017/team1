@@ -8,6 +8,10 @@ import Avatar from 'material-ui/Avatar';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import {Scrollbars} from 'react-custom-scrollbars';
 
+import List from 'material-ui/List/List';
+import ListItem from 'material-ui/List/ListItem';
+import Avatar from 'material-ui/Avatar';
+
 import LoadScreen from './ui/loadScreen';
 import {
     Search,

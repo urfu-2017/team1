@@ -30,10 +30,13 @@ export default class Messages extends React.Component {
         data: {}
     };
 
+<<<<<<< 841bea52582927ce1421b9adf2a97a91255a0bda
     componentDidMount() {
         this.scroll.scrollToBottom();
     }
 
+=======
+>>>>>>> add tabs
     componentDidUpdate() {
         this.scroll.scrollToBottom();
     }
