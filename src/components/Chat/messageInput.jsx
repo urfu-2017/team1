@@ -1,7 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
-import {Emoji, emojiIndex} from 'emoji-mart';
+import {Emoji, emojiIndex, Picker} from 'emoji-mart';
+import dynamic from 'next/dynamic';
+import JSEMOJI from 'emoji-js';
+
+const EmojiPicker = dynamic(
+    import('emoji-picker-react'),
+    { ssr: false }
+);
 
 import {withCurrentUser} from '../../lib/currentUserContext';
 import Textarea from '../../styles/chatWindowInput';
@@ -120,36 +127,52 @@ export default class MessageInput extends React.Component {
 
     findEmoji = id => emojiIndex.search(id).map(o => o.native);
 
-    addEmojiIntoText = emoji =>
-        this.setState({ message: `${this.state.message}${this.findEmoji(emoji.id)}` });
+    addEmojiIntoText = emoji => {
+        let jsemoji = new JSEMOJI();
+        jsemoji.img_set = 'emojione';
+        var s = jsemoji.replace_colons(`:${emoji}:`);
+        
+        console.log('^^^^^^^^^^^^^^');
+        this.setState({ message: `${this.state.message}${s}` });
+    }
 
     getPicker = () => {
         let picker = '';
         if (this.state.emoji) {
-            picker = (
-                <div className="picker__style">
-                    <span>
-                        Выберите Emoji
-                    </span>
-                    <div
-                        className="closeEmojiButton__style"
-                        onClick={this.closeEmojies}
-                        title="Скрыть"
-                    >
-                        &#x274C;
-                    </div>
-                    <hr/>
-                    <div>
-                        {this.getEmojiesPopup()}
-                    </div>
-                </div>
-            );
+            // picker = (
+            //     <div className="picker__style">
+            //         <span>
+            //             Выберите Emoji
+            //         </span>
+            //         <div
+            //             className="closeEmojiButton__style"
+            //             onClick={this.closeEmojies}
+            //             title="Скрыть"
+            //         >
+            //             &#x274C;
+            //         </div>
+            //         <hr/>
+            //         <div>
+            //             {this.getEmojiesPopup()}
+            //         </div>
+            //     </div>
+            // );
+
+            return (<Picker set='emojione' />)
+
+            //return (<EmojiPicker className="emoji__picker" onEmojiClick={this.onClick}/>);
         } else {
             picker = '';
         }
 
         return picker;
     };
+
+    onClick = (e, val) => {
+        console.log(e);
+        console.log(val);
+        this.addEmojiIntoText(val.name);
+    }
 
     getButtonWithSmile = () => {
         return (
@@ -164,6 +187,8 @@ export default class MessageInput extends React.Component {
 
     render() {
         return (
+            <div>
+                {this.getPicker()}
             <Textarea>
                  <div className="inputField__style">
                     <textarea
@@ -174,9 +199,10 @@ export default class MessageInput extends React.Component {
                         value={this.state.message}
                         required/>
                      {this.getButtonWithSmile()}
-                     {this.getPicker()}
+                     
                 </div>
             </Textarea>
+            </div>
         );
     }
 }
