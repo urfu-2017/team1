@@ -54,7 +54,7 @@ export default class SelectContactList extends React.Component {
             <div>
                 <SelectContactListWrapper>
                     { this.getContactList(contacts) }
-                </SelectContactListWrapper>);
+                </SelectContactListWrapper>
             </div>
         );
     }
