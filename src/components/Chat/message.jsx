@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 
 import { MessageWrapper } from '../../styles/message';
 import { GetUser } from '../../graphqlQueries/queries';
-import { UpdateMessageReactions } from '../../graphqlQueries/mutations'
+import { UpdateMessageReactions } from '../../graphqlQueries/mutations';
 import { Reactions } from '../../styles/reaction';
 import Reaction from './reaction';
 import { getNewReactions } from '../../helpers/reactionsHelper';
@@ -76,9 +76,9 @@ export default class Message extends React.PureComponent {
                     count={x.users.length}
                     isCurrentUser={x.users.includes(currentUserId)}
                     reaction={x.emoji}
-                    onReactionClick={() => this.updateMessageReactions(x.emoji)} 
+                    onReactionClick={() => this.updateMessageReactions(x.emoji)}
                     emojiNative={this.findEmoji(x.emoji)}
-                    />));
+                />));
         }
 
         return reactionComponents;
@@ -131,7 +131,7 @@ export default class Message extends React.PureComponent {
                             </a>
                         </div>}
                     {reactionComponents.length > 0 && <Reactions>{reactionComponents}</Reactions>}
-                </div>    
+                </div>
                 {this.getPicker()}
             </MessageWrapper>
         );
