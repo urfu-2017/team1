@@ -31,6 +31,7 @@ export default function createMetaReducer(currentUser) {
             return Object.assign({}, state);
         case VISIBILITY_CHAT:
             state.currentChat = action.chat;
+            state.groupChatEditorState = false;
             return Object.assign({}, state);
         case SEND_NEW_MESSAGE: {
             if (!action.chat.messages.find(m => m._id === action.message._id)) {

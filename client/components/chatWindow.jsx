@@ -5,6 +5,8 @@ import ChatWindowWrapper from '../styles/chatWindow';
 import Messages from '../components/messages';
 import ChatWindowInput from './chatWindowInput';
 
+import GroupChatCreate from '../containers/groupChatCreate';
+
 import { getChatName } from '../utils/chats';
 
 export default class ChatWindow extends Component {
@@ -12,6 +14,7 @@ export default class ChatWindow extends Component {
         sendMessage: PropTypes.func,
         addMessageFromChatInput: PropTypes.func,
         setReactionToMessage: PropTypes.func,
+        groupChatEditorState: PropTypes.bool,
         user: PropTypes.shape(),
         chat: PropTypes.shape(),
         socketURL: PropTypes.string
@@ -27,11 +30,15 @@ export default class ChatWindow extends Component {
         this.state = {};
     }
 
-    render() {
-        const { chat, user, sendMessage, addMessageFromChatInput, socketURL, setReactionToMessage } = this.props;
+    getChatWindowComponent() {
+        const { groupChatEditorState, chat, user, sendMessage, addMessageFromChatInput, socketURL, setReactionToMessage } = this.props;
 
-        return chat._id ?
-            <ChatWindowWrapper>
+        if (groupChatEditorState) {
+            return <GroupChatCreate />;
+        }
+        if (chat._id) {
+            console.log(chat);
+            return (<ChatWindowWrapper>
                 <Messages
                     title={getChatName(chat, user)}
                     user={user}
@@ -46,6 +53,12 @@ export default class ChatWindow extends Component {
                     chat={chat}
                     user={user}
                 />
-            </ChatWindowWrapper > : <ChatWindowWrapper />;
+            </ChatWindowWrapper >);
+        }
+        return <ChatWindowWrapper />;
+    }
+    
+    render() {
+        return this.getChatWindowComponent();
     }
 }

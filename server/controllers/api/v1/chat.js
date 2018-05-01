@@ -35,11 +35,18 @@ class ChatController {
         const { targetUserId } = req.body;
         const p2pChats = await ChatManager.findP2PChat(req.user.id, targetUserId);
         if (p2pChats.length === 0) {
-            const chat = await ChatManager.create([req.user.id, targetUserId], null);
+            const chat = await ChatManager.create([req.user.id, targetUserId], null, 'p2p');
             res.status(200).send(chat);
         } else {
             res.status(200).send(p2pChats[0]);
         }
+    }
+
+    static async groupPost(req, res) {
+        const { userIds } = req.body;
+        userIds.push(req.user._id);
+        const chat = await ChatManager.create(userIds, null, 'group');
+        res.status(200).send(chat);
     }
 
     static async sendMessageToChat(req, res) {

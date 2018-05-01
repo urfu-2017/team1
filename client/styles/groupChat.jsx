@@ -1,25 +1,31 @@
 import styled from 'styled-components';
 
 export const GroupChatCreateWrapper = styled.div`
-    width: 340px;
-    height: 350px;
-    top: 50%;
-    left: 50%;
-    position: absolute;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: space-around;
-    transform: translate(-50%, -50%);
-    background: #f2f3dE;
-    .header {
-        padding: 0 30px;
+    .group-chat-create-header {
+        justify-content: space-between;
     }
-    .buttons {
-        width: 100%;
-        height: 40px;
+    .group-chat-create-header__button {
+        cursor: pointer;
         display: flex;
-        justify-content: space-around
         align-items: center;
+        padding: 0 15px;
+    }
+    .group-chat-create__input {
+        margin-left: 15px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        width: 700px;
+    }
+    .button--left::before {
+        font-family: FontAwesome5;
+        font-weight: 900;
+        content: '\f053';
+        padding-right: 5px;
+    }
+    .button--right::after {
+        font-family: FontAwesome5;
+        font-weight: 900;
+        content: '\f054';
+        padding-left: 5px;
     }
 `;

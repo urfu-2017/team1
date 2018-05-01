@@ -5,7 +5,8 @@ import { addMessageFromChatInput, sendMessage, setReactionToMessage } from '../a
 const mapStateToProps = state => ({
     user: state.currentInfo.currentUser,
     chat: state.currentInfo.currentChat,
-    socketURL: state.socketURL
+    socketURL: state.socketURL,
+    groupChatEditorState: state.currentInfo.groupChatEditorState
 });
 
 const mapDispatchToProps = dispatch => ({
