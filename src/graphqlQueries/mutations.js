@@ -107,6 +107,16 @@ mutation UpdateUserAvatar($userId: ID!, $avatarUrl: String) {
 
 export const UpdateUserAvatar = mapper(UPDATE_USER_AVATAR_ql, 'updateUserAvatar');
 
+const UPDATE_MESSAGE_REACTIONS_ql = gql`
+mutation updateMessageReactions($messageId: ID!, $reactions: Json) {
+  updateMessage(id: $messageId, reactions: $reactions) {
+    reactions
+  }
+}
+`
+
+export const UpdateMessageReactions = mapper(UPDATE_MESSAGE_REACTIONS_ql, 'updateMessageReactions');
+
 
 const UPDATE_CHAT_TITLE_ql = gql`
 mutation UpdateChatTitle($chatId: ID!, $title: String!) {

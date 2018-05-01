@@ -12,6 +12,7 @@ fragment messageData on Message {
   sender {
     id
   }
+  reactions
 }
 `;
 
