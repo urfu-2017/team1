@@ -134,6 +134,9 @@ export default class Message extends Component {
         }
         return (
             <MessageWrapper>
+                <img src={sender.avatar} alt="ava" width="50" height="50"
+                    className={`senderAvatar ${(fromMe ? 'from_me' : 'from_they')}`}>
+                </img>    
                 <div className={`messageBlock ${(fromMe ? 'from_me' : 'from_they')}`}>
                     <div className="headerMessageBlock">
                         <div className="nameSender">{sender.name}</div>

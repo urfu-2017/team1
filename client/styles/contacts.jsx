@@ -10,16 +10,19 @@ export const ContactsWrapper = styled.article`
     flex-direction: column;
     justify-content: space-around;
     transform: translate(-50%, -50%);
-    background: #f2f3dE;
+    background: #fff;
+    color: black;
     .header {
-        padding: 0 0 0 20px;
-        margin: 30px 0 0 0;
+        padding: 20px 0;
+        text-align: center;
+        color: white;
+        background: #639eca;
     }
     .buttons {
         width: 100%;
         height: 40px;
         display: flex;
-        justify-content: space-around
+        justify-content: space-around;
         align-items: center;
     }
 `;
@@ -27,17 +30,19 @@ export const ContactsWrapper = styled.article`
 export const Search = styled.input`
     width: 100%;
     height: 45px;
-    background: #f2f3dE;
+    background: #fff;
     padding: 0 0 0 30px;
     border: none;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid #639eca;
 `;
 
 export const ContactsList = styled.section`
     width: 100%;
     height: 350px;
+    &:hover {
+        background: #639eca33;
+     }
 `;
-
 
 export const Contact = styled.div`
     display: flex;
@@ -48,16 +53,21 @@ export const Contact = styled.div`
     .contact__image {
         width: 35px;
         height: 35px;
-        border 1px solid;
-        margin: 0 15px;
+        border 1px solid #639eca;
+        margin: 0 16px;
     }
 `;
 
 export const CreateButton = styled.input`
     padding: 7px;
     border-radius: 5px;
-    background: #e4e0dc;
+    background: #639eca;
+    color: white;
+    border: 1px solid;
 `;
 
 export const CloseButton = CreateButton.extend`
+    background: #639eca;
+    color: white;
+    border: 1px solid;
 `;

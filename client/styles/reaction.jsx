@@ -19,7 +19,8 @@ export const ReactionWrapper = styled.div`
         -moz-border-radius: 4px;
     }
     .reaction.reaction-current {
-        border-color: blue;
+        border-color: #639eca;
+        background: white;
     }
     .reaction .reaction__emoji {
         margin-right: 2px;

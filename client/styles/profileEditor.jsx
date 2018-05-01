@@ -11,7 +11,7 @@ export const Editor = styled.article`
     flex-direction: column;
     justify-content: space-around;
     transform: translate(-50%, -50%);
-    background: #f2f3dE;
+    background: #fff;
     .header {
         padding: 0 30px;
     }
@@ -19,7 +19,7 @@ export const Editor = styled.article`
         width: 100%;
         height: 40px;
         display: flex;
-        justify-content: space-around
+        justify-content: space-around;
         align-items: center;
     }
 `;
@@ -33,7 +33,7 @@ export const DownloadImage = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px dashed;
+    border: 2px dashed;
     .text {
         font-size: 20px;
         background: #fff;
@@ -44,19 +44,24 @@ export const DownloadButton = styled.input`
     width: 225px;
     padding: 7px;
     border-radius: 5px;
-    background: #e4e0dc;
+    background: #639eca;
+    color: white;
+    border: 1px solid;
 `;
 
 export const CreateButton = DownloadButton.extend`
+    height: 36px;
     width: 85px;
     padding: 7px;
     border-radius: 5px;
-    background: #e4e0dc;
+    background: #639eca;
+    color: white;
+    border: 1px solid;
 `;
 
 export const Exit = styled.div`
     position: absolute;
     right: 5px;
     top: 0;
-    font-size: 30px;
+    font-size: 22px;
 `;

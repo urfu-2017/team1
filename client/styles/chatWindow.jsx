@@ -7,6 +7,7 @@ const ChatWindowWrapper = styled.section`
     flex-direction: column;
     box-sizing: border-box;
     background: #e4e0dc;
+    border-left: 1px solid #639eca;
 `;
 
 export default ChatWindowWrapper;

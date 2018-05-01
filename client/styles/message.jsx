@@ -27,11 +27,11 @@ export const MessageWrapper = styled.article`
     }
     .from_me {
         float: right;
-        background-color: #92d7ef;
+        background-color: #d3ddff;
     }
     .from_they {
         float: left;
-        background-color: #a2eae0;
+        background-color: #d3ddff;
     }
     .messageBlock__text {
         word-break: break-all;
@@ -74,5 +74,9 @@ export const MessageWrapper = styled.article`
     }
     .addReactions {
         font-size: 24px;
+    }
+    .senderAvatar {
+        margin: 0 5px;
+        border-radius: 50%;
     }
 `;

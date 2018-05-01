@@ -3,6 +3,8 @@ import styled from 'styled-components';
 export const Header = styled.header`
     height: 60px;
     display: flex;
+    color: white;
+    background-color: #639eca;
     align-items: center;
     justify-content: space-around;
     .header__menu-icon {
@@ -22,7 +24,7 @@ export const ChatsList = styled.section`
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    background: #f2f3dE;
+    background: #fff;
 `;
 
 export const Paranja = styled.section`
@@ -30,7 +32,7 @@ export const Paranja = styled.section`
     height: 100%;
     z-index: 2;
     position: absolute;
-    background: rgba(0,0,0,.2);
+    background: #fff;
     max-width: 1260px;
 `;
 
@@ -38,12 +40,12 @@ export const Contacts = styled.section`
     width: 340px;
     height: 400px;
     overflow: hidden;
-    border: 1px solid
+    border: 1px solid;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #f2f3dE;
+    background: #fff;
     .contacts__list {
         width: 360px;
         height: 400px;

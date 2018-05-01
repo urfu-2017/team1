@@ -50,7 +50,7 @@ export default class Contacts extends Component {
         const { header } = this.props;
         return (
             <ContactsWrapper>
-                <h1 className="header"> { header } </h1>
+                <div className="header"> { header } </div>
                 <Search
                     type="search"
                     placeholder="Поиск"
