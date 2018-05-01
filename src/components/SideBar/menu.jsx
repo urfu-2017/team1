@@ -1,6 +1,9 @@
 import React from 'react';
 import {Mutation} from 'react-apollo';
 import PropTypes from 'prop-types';
+import Group from 'material-ui/svg-icons/social/group';
+import Person from 'material-ui/svg-icons/social/people';
+import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 
 import {MenuRoot} from '../../styles/menu';
 import List from 'material-ui/List/List';
@@ -71,6 +74,7 @@ export default class Menu extends React.Component {
                         {currentUser.name}
                     </ListItem>
                     <ListItem
+                        leftIcon={<Person />}
                         style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
                             display: "flex", alignItems: "center"}}
                         onClick={mainComponentChanger('Contacts')}
@@ -78,6 +82,7 @@ export default class Menu extends React.Component {
                         Контакты
                     </ListItem>
                     <ListItem
+                        leftIcon={<ModeEdit />}
                         style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
                             display: "flex", alignItems: "center"}}
                         onClick={mainComponentChanger('Profile')}
@@ -86,6 +91,7 @@ export default class Menu extends React.Component {
                     </ListItem>
                     {this.createChatMutation(currentUser, (onClick) => (
                         <ListItem
+                            leftIcon={<Group />}
                             style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
                                 display: "flex", alignItems: "center"}}
                             onClick={onClick} 
