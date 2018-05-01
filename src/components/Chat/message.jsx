@@ -68,14 +68,14 @@ export default class Message extends React.PureComponent {
     getPicker = () => (this.state.emoji) ?
     (<EmojiPicker onEmojiClick={this.onEmojiClick} disableDiversityPicker />) : '';
 
-    createReactionComponents = (reactions) => {
+    createReactionComponents = (reactions, userId) => {
         let reactionsCopy = JSON.parse(JSON.stringify(reactions));
         let reactionComponents = [];
 
         if (reactionsCopy) {
             reactionComponents = reactionsCopy.map(x => (<Reaction key={Math.random()} 
             count={x.users.length} 
-            isCurrentUser={x.users.includes(this.props.user.id)} 
+            isCurrentUser={x.users.includes(userId)} 
             reaction={x.emoji}
             onReactionClick={() => this.updateMessageReactions(x.emoji)} />)); 
         }
@@ -97,7 +97,12 @@ export default class Message extends React.PureComponent {
         const delivered = isFromSelf ? (message.id < 0 ? '  ' : ' ✓') : '';
         const ogdata = message.metadata && message.metadata.ogdata || {};
 
-        let reactionComponents = this.createReactionComponents(message.reactions);
+        console.log(`is undefined: ${user === undefined}`);
+        if (!user) {
+            return '';
+        }
+
+        let reactionComponents = this.createReactionComponents(message.reactions, user.id);
         const createdAt = Message.formatDate(new Date(message.createdAt));
 
         return (
