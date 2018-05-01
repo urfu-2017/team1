@@ -16,9 +16,24 @@ class ChatManager {
         return await chat.save();
     }
 
+    static async update(chatId, name, userIds) {
+        const users = await User.find({ _id: userIds });
+        const contacts = users.map(user => ({
+            userId: user._id,
+            name: user.name,
+            avatar: user.avatar
+        }));
+        await Chat.updateOne({ _id: chatId }, { contacts, name });
+        return await Chat.findOne({ _id: chatId });
+    }
+
     static async addMessageToChat(chat, message) {
         chat.messages.push(message);
         return await chat.save();
+    }
+
+    static async findByInviteId(inviteId) {
+        return await Chat.findOne({ _id: inviteId });
     }
 
     static async findP2PChat(sourceUserId, targetUserId) {

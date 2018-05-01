@@ -7,7 +7,8 @@ import {
     SAVED_AVATAR,
     CHANGE_PROFILE_EDITOR_STATE,
     CHANGED_GROUP_CHAT_CREATOR_STATE,
-    CHANGED_GROUP_CHAT_EDITOR_STATE
+    CHANGED_GROUP_CHAT_EDITOR_STATE,
+    UPDATE_CHAT
 } from '../actions/actions';
 
 const initialStateStub = {
@@ -52,6 +53,13 @@ export default function createMetaReducer(currentUser) {
         }
         case CHANGED_GROUP_CHAT_EDITOR_STATE: {
             state.editedChat = action.chat;
+            return Object.assign({}, state);
+        }
+        case UPDATE_CHAT: {
+            state.editedChat = null;
+            if (state.currentChat._id === action.chat._id) {
+                state.currentChat = action.chat;
+            }
             return Object.assign({}, state);
         }
         case MESSAGE_SAVED: {

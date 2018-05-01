@@ -22,7 +22,7 @@ export default class GroupChatCreate extends React.Component {
     }
 
     onChangeHandler(e) {
-        this.setState({ name: e.target.value.trim() });
+        this.setState({ name: e.target.value });
     }
 
     createChat() {

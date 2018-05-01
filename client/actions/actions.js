@@ -11,6 +11,7 @@ export const CHANGED_GROUP_CHAT_CREATOR_STATE = 'CHANGED_GROUP_CHAT_CREATOR_STAT
 export const CHANGED_GROUP_CHAT_EDITOR_STATE = 'CHANGED_GROUP_CHAT_EDITOR_STATE';
 
 export const ADD_CHAT_TO_CHAT_LIST = 'ADD_CHAT_TO_CHAT_LIST';
+export const UPDATE_CHAT = 'UPDATE_CHAT';
 export const UPDATE_CHAT_LIST = 'UPDATE_CHAT_LIST';
 export const UPDATE_CONTACT_LIST = 'UPDATE_CONTACT_LIST';
 export const SAVED_AVATAR = 'SAVED_AVATAR';
@@ -44,6 +45,8 @@ export const selectChat = id => ({ type: SELECT_CHAT, id });
 
 export const addChatToChatList = chat => ({ type: ADD_CHAT_TO_CHAT_LIST, chat });
 
+export const updateChat = chat => ({ type: UPDATE_CHAT, chat });
+
 export const updateChatList = chats => ({ type: UPDATE_CHAT_LIST, chats });
 
 export const updateContacts = contacts => ({ type: UPDATE_CONTACT_LIST, contacts });
@@ -59,7 +62,7 @@ export const saveMessage = (chat, isSuccess, dumbMessage, message) =>
     ({ type: MESSAGE_SAVED, chat, isSuccess, dumbMessage, message });
 
 export const sendMessage = (chat, message) => dispatch => {
-    fetch(`api/v1/chats/${chat._id}`, makeRequestOptions({ body: { message }, method: 'POST' }))
+    fetch(`api/v1/chats/${chat._id}/send`, makeRequestOptions({ body: { message }, method: 'POST' }))
         .then(response => {
             if (response.status === 200) {
                 return response.json();
@@ -74,6 +77,21 @@ export const sendMessage = (chat, message) => dispatch => {
             dispatch(saveMessage(chat, false, message));
         });
 };
+
+export const editChat = (chat, name, userIds) => dispatch => {
+    fetch(`api/v1/chats/${chat._id}/edit`, makeRequestOptions({ method: 'POST', body: { name, userIds } }))
+        .then(response => {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                throw new Error('Ooops');
+            }
+        })
+        .then(updatedChat => {
+            dispatch(updateChat(updatedChat));
+        });
+};
+
 
 export const asyncCreateChat = (sourceUserId, targetUserId, callback) => dispatch => {
     fetch('/api/v1/chats/p2p', makeRequestOptions({ method: 'POST', body: { targetUserId } }))
