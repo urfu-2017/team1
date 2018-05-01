@@ -147,7 +147,7 @@ export default class Contacts extends React.Component {
     render() {
         // TODO: refactor this, PLEEEEEASE11111
         return <React.Fragment>
-            <Tabs
+            {/* <Tabs
                 style={{ width: '100%' }}
                 tabTemplateStyle={{ height: '100%' }}
                 contentContainerStyle={{ height: '100%' }}
@@ -161,14 +161,14 @@ export default class Contacts extends React.Component {
                 <Tab  label="Все пользователи" value="allUsers">
                     {  this.withAllUsers(this.allUsers) }
                 </Tab>
-            </Tabs>
-            {/* <span onClick={this.hideAllUsers}>Контакты</span>
+            </Tabs> */}
+            <span onClick={this.hideAllUsers}>Контакты</span>
             <span onClick={this.showAllUsers}>Все пользователи</span>
             {
                 this.state.showAllUsers ?
                     this.withAllUsers(this.allUsers) :
                     this.withContacts(this.myContacts)
-            } */}
+            }
         </React.Fragment>;
     }
 }
