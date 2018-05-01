@@ -2,10 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {graphql, Mutation} from 'react-apollo';
 import {Scrollbars} from 'react-custom-scrollbars';
+import Paper from 'material-ui/Paper';
+import List from 'material-ui/List/List';
+import ListItem from 'material-ui/List/ListItem';
+import Avatar from 'material-ui/Avatar';
 
 import {GetChatMembers, GetUserContacts} from '../../graphqlQueries/queries';
 import {AddUserToChat} from '../../graphqlQueries/mutations';
-import {Editor, AddButton, UserList, Contact} from '../../styles/chatEditor';
+import {Editor, AddButton, UserList } from '../../styles/chatEditor';
 import ContactsList from '../contactsList';
 import {withCurrentUser} from '../../lib/currentUserContext';
 
@@ -28,9 +32,16 @@ export default class ChatEditor extends React.Component {
 
     getMembersList() {
         const { members } = this.props;
-
+        console.log(members);
+        
         return members
-            .map(user => (<Contact key={user.id}>{user.name}</Contact>));
+            .map(user => (
+                <ListItem
+                    key={user.id}
+                    primaryText={user.name}
+                    rightAvatar={<Avatar src={user.avatarUrl}/>}
+                />
+            ));
     }
 
     clickHandler = (addUserToChat, currentUser, contact) => {
@@ -63,8 +74,9 @@ export default class ChatEditor extends React.Component {
         const { currentChat, members } = this.props;
 
         return (
-            <Editor>{
-                this.state.usersListOpened && members
+            <Editor>
+                <Paper zDepth={3} />
+                { this.state.usersListOpened && members
                     ? this.usersList()
                     : <React.Fragment>
                         <img className="image" src={currentChat.picture} alt="Изображение чата"/>
@@ -76,13 +88,15 @@ export default class ChatEditor extends React.Component {
                                 onClick={this.toggleUsersList}
                             />
                         </div>
-                        <dl>
+                        <dl className="link">
                             <dt>Инвайт</dt>
                             <dd><a href={`/invite/${currentChat.id}`}>/invite/{currentChat.id}</a></dd>
                         </dl>
                         <UserList>
                             <Scrollbars universal>
-                                {members && this.getMembersList()}
+                                <List>
+                                    {members && this.getMembersList()}
+                                </List>
                             </Scrollbars>
                         </UserList>
                     </React.Fragment>

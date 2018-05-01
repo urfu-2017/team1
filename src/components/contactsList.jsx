@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
-import {Scrollbars} from 'react-custom-scrollbars';
-
 import List from 'material-ui/List/List';
+import RaisedButton from 'material-ui/RaisedButton';
 import ListItem from 'material-ui/List/ListItem';
 import Avatar from 'material-ui/Avatar';
+import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
+import {Scrollbars} from 'react-custom-scrollbars';
 
 import LoadScreen from './ui/loadScreen';
 import {
@@ -43,10 +44,6 @@ export default class ContactsList extends React.Component {
         if (error || !contacts) {
             return ContactsList.ErrorScreen;
         }
-        console.log(1111111);
-        console.log(contactsFilter);
-        log
-        
         return contacts
             .filter(contactsFilter.bind(null, this.props))
             .map(contact => ContactsList.getContactsItem(clickHandler, currentUser, contact));
@@ -54,10 +51,11 @@ export default class ContactsList extends React.Component {
 
     static getContactsItem = (clickHandler, currentUser, contact) => (
             <ListItem
-                key={contact.id}
                 insetChildren
                 primaryText={contact.name}
+                key={contact.name + Math.random()}
                 leftAvatar={<Avatar src={contact.avatarUrl} />}
+                rightIcon={<CommunicationChatBubble />}
                 onClick={() => clickHandler(currentUser, contact)}
             />
     );
@@ -73,12 +71,12 @@ export default class ContactsList extends React.Component {
                 />
                 <Scrollbars universal>
                     <List>
-                        { this.getContactsList() }
+                        {this.getContactsList()}
                     </List>
                 </Scrollbars>
                 {closeAction &&
                 <div className="buttons">
-                    <CloseButton type="button" value="Закрыть" onClick={closeAction} />
+                    <RaisedButton label="Закрыть" onClick={closeAction} />
                 </div>}
             </ContactsWrapper>
         );

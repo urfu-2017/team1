@@ -1,25 +1,27 @@
 import styled from 'styled-components';
 
 export const Editor = styled.article`
-    width: 340px;
-    height: 400px;
-    top: 50%;
-    left: 50%;
-    position: absolute;
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    flex-direction: row;
-    justify-content: space-around;
-    transform: translate(-50%, -50%);
+    justify-content: center;
     background: #f2f3dE;
     .image {
-        width: 90px;
-        height: 90px;
+        width: 130px;
+        margin: 20px 50px;
         border: 1px solid;
     }
     .chat-editor {
-        text-align:center;
+        text-align: center;
+        width: 60%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .link {
+        width: 77%;
     }
     .chat-editor__header {
         width: 190px;
@@ -36,12 +38,7 @@ export const AddButton = styled.input`
 `;
 
 export const UserList = styled.section`
-    width: 300px;
-    height: 200px;
-    border: 1px solid;
-
+    width: 80%;
+    height: 400px;
 `;
 
-export const Contact = styled.p`
-    padding: 0 0 0 20px;
-`;

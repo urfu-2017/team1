@@ -30,6 +30,10 @@ export default class Messages extends React.Component {
         data: {}
     };
 
+    componentDidMount() {
+        this.scroll.scrollToBottom();
+    }
+
     componentDidUpdate() {
         this.scroll.scrollToBottom();
     }
