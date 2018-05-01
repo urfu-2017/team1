@@ -5,10 +5,10 @@ mutation AddUserToChat($chatId: ID!, $userId: ID!) {
   addToChatOnUser(chatsChatId: $chatId, membersUserId: $userId) {
     membersUser {
       id
-      chats {
-        id
-      }
     }
+  }
+  updateUser(id: $userId, chatsUpdatedDummy: true) {
+    id
   }
 }
 `;

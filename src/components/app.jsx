@@ -35,6 +35,9 @@ const Wrapper = styled.main`
 export default class App extends React.Component {
     constructor(props) {
         super(props);
+
+        const { currentChatId, updateCurrentChatId } = this.props;
+        if (currentChatId) updateCurrentChatId(currentChatId);
         this.state = {
             mainComponentName: 'Chat',
             mainComponentProps: null

@@ -76,6 +76,10 @@ export default class ChatEditor extends React.Component {
                                 onClick={this.toggleUsersList}
                             />
                         </div>
+                        <dl>
+                            <dt>Инвайт</dt>
+                            <dd><a href={`/invite/${currentChat.id}`}>/invite/{currentChat.id}</a></dd>
+                        </dl>
                         <UserList>
                             <Scrollbars universal>
                                 {members && this.getMembersList()}

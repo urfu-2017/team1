@@ -11,12 +11,13 @@ export default class Index extends React.Component {
             initialState: req.state,
             currentUser: req.user,
             httpUrl: req.httpUrl,
-            wsUrl: req.wsUrl
+            wsUrl: req.wsUrl,
+            currentChatId: req.currentChatId
         };
     }
 
     render() {
         return createNextPage(this.props.httpUrl, this.props.wsUrl,
-            App, { userId: this.props.currentUser.id });
+            App, { userId: this.props.currentUser.id, currentChatId: this.props.currentChatId });
     }
 }

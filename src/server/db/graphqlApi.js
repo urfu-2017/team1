@@ -80,6 +80,13 @@ class GraphqlApi {
 
         return user.data.createUser;
     }
+
+    async addUserToChat(userId, chatId) {
+        await this.client.mutate({
+            mutation: AddUserToChat,
+            variables: { userId, chatId }
+        });
+    }
 }
 
 module.exports = GraphqlApi;
