@@ -69,10 +69,11 @@ export default class Message extends React.PureComponent {
     (<EmojiPicker onEmojiClick={this.onEmojiClick} disableDiversityPicker />) : '';
 
     createReactionComponents = (reactions) => {
+        let reactionsCopy = JSON.parse(JSON.stringify(reactions));
         let reactionComponents = [];
 
-        if (reactions) {
-            reactionComponents = reactions.map(x => (<Reaction key={Math.random()} 
+        if (reactionsCopy) {
+            reactionComponents = reactionsCopy.map(x => (<Reaction key={Math.random()} 
             count={x.users.length} 
             isCurrentUser={x.users.includes(this.props.user.id)} 
             reaction={x.emoji}
