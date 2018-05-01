@@ -27,6 +27,7 @@ export const MessageWrapper = styled.article`
         white-space: pre-wrap;
         width: fit-content;
         word-wrap: break-word;
+        word-break: break-word;
         padding: 6px 4px 6px 6px;
     }
     .messageBlock__time {
