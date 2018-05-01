@@ -36,7 +36,7 @@ export default class Menu extends Component {
                 <main>
                     <p
                         role="presentation"
-                        className="menu__item"
+                        className="menu__item contacts"
                         onClick={() => { showContacts(true); setHeader(' Контакты'); }}
                     >
                         Контакты
@@ -51,7 +51,7 @@ export default class Menu extends Component {
                     </p> */}
                     <p
                         role="presentation"
-                        className="menu__item"
+                        className="menu__item editProfile"
                         onClick={() => { setProfileEditorState(true); }}
                     >
                         Редактирование профиля

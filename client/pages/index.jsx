@@ -18,6 +18,8 @@ const Wrapper = styled.main`
     display: flex;
     margin: 0 auto;
     overflow: hidden;
+    background: #e7ebf0;
+    border: 1px solid #639eca;
 `;
 
 export default class KilogrammApp extends React.Component {

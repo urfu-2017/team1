@@ -10,12 +10,14 @@ export const MessagesList = styled.section`
 `;
 
 export const Header = styled.section`
-    height: 45px;
+    height: 55px;
     width: 100%;
     display: flex;
+    font-weight: 600;
     align-items: center;
     justify-content: center;
-    background-color: rgba(255,255,255, .7);
+    color: white;
+    background-color: #639eca;
 `;
 
 export const Button = styled.div`
