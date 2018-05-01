@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 import { Emoji, emojiIndex } from 'emoji-mart';
+import dynamic from 'next/dynamic';
 
 import {MessageWrapper} from '../../styles/message';
 import {GetUser} from '../../graphqlQueries/queries';
@@ -9,6 +10,11 @@ import {UpdateMessageReactions} from '../../graphqlQueries/mutations'
 import { Reactions } from '../../styles/reaction';
 import Reaction from './reaction';
 import { getNewReactions } from '../../helpers/reactionsHelper';
+
+const EmojiPicker = dynamic(
+    import('emoji-picker-react'),
+    { ssr: false }
+);
 
 @graphql(
     GetUser.query,
@@ -30,8 +36,6 @@ export default class Message extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {};
-
-        this.getReactions = this.getReactions.bind(this);
     }
 
     static defaultProps = { isFromSelf: false, message: {}, sender: {} };
@@ -48,58 +52,21 @@ export default class Message extends React.PureComponent {
         });
     };
 
-    getReactions = () => {
-        const { messageId, chat, setReactionToMessage } = this.props;
-        const { closeReactions } = this;
-        const emojies = ['+1', '-1', 'ok_hand', 'heart'];
-        return emojies.map(id => {
-            return (
-                <Emoji
-                    key={id}
-                    className="emoji__style"
-                    onClick={() => {
-                        this.updateMessageReactions(id);
-                        this.closeReactions();
-                    }}
-                    emoji={{ id }}
-                    size={25}
-                />
-            );
-        });
-    }
-
     openReactions = () => this.setState({ emoji: true });
 
     closeReactions = () => this.setState({ emoji: false });
 
-    findEmoji = id => emojiIndex.search(id).map(o => o.native);
-
-    getPicker = () => {
-        let picker = '';
-        if (this.state.emoji) {
-            picker = (
-                <div className="picker__style">
-                    <span>
-                        Выберите Реакцию
-                    </span>
-                    <div
-                        className="closeEmojiButton__style"
-                        onClick={this.closeReactions}
-                        title="Скрыть"
-                    >
-                        &#x274C;
-                    </div>
-                    <hr />
-                    <div>
-                        {this.getReactions()}
-                    </div>
-                </div>
-            );
-        } else {
-            picker = '';
-        }
-        return picker;
+    onEmojiClick = (_, val) => 
+    {
+        this.updateMessageReactions(val.name);
     }
+    
+    findEmoji = id => emojiIndex.search(id)
+        .filter(x => x.id === id)
+        .map(x => x.native);
+
+    getPicker = () => (this.state.emoji) ?
+    (<EmojiPicker onEmojiClick={this.onEmojiClick} disableDiversityPicker />) : '';
 
     createReactionComponents = (reactions) => {
         let reactionComponents = [];
@@ -141,7 +108,7 @@ export default class Message extends React.PureComponent {
 
                     <div onClick={this.openReactions} className="addReactions">
                             &#x263A;
-                        </div>
+                    </div>
                     <div className="messageBlock__time">{createdAt}</div>
 
                     <div
