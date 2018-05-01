@@ -25,6 +25,6 @@ export const getNewReactions = (reactions, emoji, currentUserId) => {
             reaction.users = reaction.users.filter(x => x !== currentUserId);
         }
     }
-
+    
     return reactionsCopy;
 };

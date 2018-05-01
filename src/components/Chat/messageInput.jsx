@@ -1,13 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {graphql} from 'react-apollo';
-import {Emoji, emojiIndex} from 'emoji-mart';
+import { graphql } from 'react-apollo';
+import { Emoji, emojiIndex } from 'emoji-mart';
+import dynamic from 'next/dynamic';
 
-import {withCurrentUser} from '../../lib/currentUserContext';
+const EmojiPicker = dynamic(
+    import('emoji-picker-react'),
+    { ssr: false }
+);
+
+import { withCurrentUser } from '../../lib/currentUserContext';
 import Textarea from '../../styles/chatWindowInput';
-import {addNewMessage} from '../../lib/dataHandlers';
-import {CreateMessage} from '../../graphqlQueries/mutations';
-import {GetChatMessages} from '../../graphqlQueries/queries';
+import { addNewMessage } from '../../lib/dataHandlers';
+import { CreateMessage } from '../../graphqlQueries/mutations';
+import { GetChatMessages } from '../../graphqlQueries/queries';
 
 
 @withCurrentUser
@@ -99,83 +105,43 @@ export default class MessageInput extends React.Component {
 
     handleChange = event => this.setState({ message: event.target.value });
 
-    getEmojiesPopup = () => {
-        const emojies = ['+1', '-1', 'kissing_heart', 'sparkling_heart', 'gift_heart', 'santa',
-            'yum', 'upside_down_face', 'ok_hand', 'cherry_blossom', 'star-struck',
-            'green_apple'];
-        return emojies.map(id => {
-            return (
-                <Emoji
-                    className="emoji__style"
-                    onClick={this.addEmojiIntoText.bind(id)}
-                    emoji={{ id }}
-                    size={25}
-                />
-            );
-        });
-    };
+    openOrCloseEmojies = () => this.setState({ emoji: !this.state.emoji });
 
-    openEmojies = () => this.setState({ emoji: true });
+    findEmoji = id => emojiIndex.search(id)
+        .filter(x => x.id === id)
+        .map(x => x.native);
 
-    closeEmojies = () => this.setState({ emoji: false });
+    addEmojiIntoText = emoji => this.setState({ message: `${this.state.message}${this.findEmoji(emoji)}` });
 
-    findEmoji = id => emojiIndex.search(id).map(o => o.native);
+    onEmojiClick = (_, val) => this.addEmojiIntoText(val.name);
 
-    addEmojiIntoText = emoji =>
-        this.setState({ message: `${this.state.message}${this.findEmoji(emoji.id)}` });
+    getPicker = () => (this.state.emoji) ?
+    (<EmojiPicker onEmojiClick={this.onEmojiClick} disableDiversityPicker />) : '';
 
-    getPicker = () => {
-        let picker = '';
-        if (this.state.emoji) {
-            picker = (
-                <div className="picker__style">
-                    <span>
-                        Выберите Emoji
-                    </span>
-                    <div
-                        className="closeEmojiButton__style"
-                        onClick={this.closeEmojies}
-                        title="Скрыть"
-                    >
-                        &#x274C;
-                    </div>
-                    <hr/>
-                    <div>
-                        {this.getEmojiesPopup()}
-                    </div>
-                </div>
-            );
-        } else {
-            picker = '';
-        }
-
-        return picker;
-    };
-
-    getButtonWithSmile = () => {
-        return (
-            <div onClick={this.openEmojies}
-                 className="openEmojiButton__style"
-                 title="Emoji"
-            >
-                &#x263A;
-            </div>
-        );
-    };
+    getButtonWithSmile = () => (
+        <div onClick={this.openOrCloseEmojies}
+            className="openEmojiButton__style"
+            title="Emoji"
+        >
+            &#x263A;
+        </div>
+    );
 
     render() {
         return (
             <Textarea>
-                 <div className="inputField__style">
+                <div className="inputField__style">
                     <textarea
                         className="textarea__style"
                         onKeyPress={this.handleSubmit}
                         onChange={this.handleChange}
                         placeholder="Сообщение..."
                         value={this.state.message}
-                        required/>
-                     {this.getButtonWithSmile()}
-                     {this.getPicker()}
+                        required />
+                    {this.getButtonWithSmile()}
+                </div>
+                <div class="picker__style">
+                    {this.getPicker()}
                 </div>
             </Textarea>
         );
