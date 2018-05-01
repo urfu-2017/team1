@@ -101,10 +101,7 @@ export default class Messages extends React.Component {
         }
     };
 
-<<<<<<< 9d149547b4c263f631a4194cfee60ca22e153afd
     static LoadScreen = <LoadScreen offsetPercentage={100} opacity={1} />;
-=======
-    static LoadScreen = <LoadScreen offsetPercentage={500} opacity={1} />;
->>>>>>> add styles
+
     static ErrorScreen = <p>Encountered unknown error while loading messages :(</p>;
 }
