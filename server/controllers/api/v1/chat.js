@@ -27,6 +27,11 @@ class ChatController {
                 contact.avatar = user.avatar;
                 contact.name = user.name;
             });
+            _.forEach(chat.messages, message => {
+                const user = usersMap[message.sender.userId];
+                message.sender.avatar = user.avatar;
+                message.sender.name = user.name;
+            });
         });
         res.status(200).send(chats);
     }
@@ -47,6 +52,30 @@ class ChatController {
         userIds.push(req.user._id);
         const chat = await ChatManager.create(userIds, null, 'group');
         res.status(200).send(chat);
+    }
+
+    static async editChat(req, res) {
+        const chat = await ChatManager.findChatById(req.params.id);
+        if (chat.type !== 'group') {
+            res.status(400).send({ errors: ['Можно редактировать только групповые чаты'] });
+        } else {
+            const { name, userIds } = req.body;
+            const updatedChat = await ChatManager.update(chat._id, name, userIds);
+            res.status(200).send(updatedChat);
+        }
+    }
+
+    static async invite(req, res) {
+        const chat = await ChatManager.findByInviteId(req.params.id);
+        if (!chat || chat.type !== 'group') {
+            res.status(404).send();
+            return;
+        }
+        if (!chat.contacts.find(c => c.userId === req.user._id)) {
+            chat.contacts.push(req.user._id);
+            await chat.save();
+        }
+        res.redirect('/');
     }
 
     static async sendMessageToChat(req, res) {

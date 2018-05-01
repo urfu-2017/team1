@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import Paranja from '../components/paranja';
 
 import {
-    setVisibilityAddUser,
     setVisibilityParanja
 } from '../actions/actions';
 
@@ -17,16 +16,11 @@ const mapStateToProps = (state, props) => ({
     groupChatEditorState: state.currentInfo.groupChatEditorState
 });
 
-const mapDispatchToProps = dispatch => (
-    {
-        visibilityAddUser: visibility => {
-            dispatch(setVisibilityAddUser(visibility));
-        },
-        showParanja: visibility => {
-            dispatch(setVisibilityParanja(visibility));
-        }
+const mapDispatchToProps = dispatch => ({
+    showParanja: visibility => {
+        dispatch(setVisibilityParanja(visibility));
     }
-);
+});
 
 export default connect(
     mapStateToProps,

@@ -32,7 +32,9 @@ export default class MyDocument extends Document {
                 <Head>
                     <title>Kilogram чат - team1</title>
                     {this.props.styleTags}
-                    <link rel="stylesheet" type="text/css" href="/static/css/fonts.css"/>
+                    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+                    <link rel="stylesheet" type="text/css" href="/static/css/fonts.css" />
+                    <link rel="stylesheet" type="text/css" href="/static/css/globals.css" />                    
                 </Head>
                 <body>
                     <Main />

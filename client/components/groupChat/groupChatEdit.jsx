@@ -13,7 +13,8 @@ export default class GroupChatEdit extends React.Component {
     static propTypes = {
         chat: PropTypes.shape(),
         contacts: PropTypes.arrayOf(PropTypes.shape()),
-        setGroupChatEditorState: PropTypes.func
+        setGroupChatEditorState: PropTypes.func,
+        editChat: PropTypes.func
     }
 
     state = {
@@ -21,15 +22,12 @@ export default class GroupChatEdit extends React.Component {
     }
 
     onChangeHandler(e) {
-        this.setState({ name: e.target.value.trim() });
+        this.setState({ name: e.target.value });
     }
 
     render() {
-        const { setGroupChatEditorState, contacts, chat } = this.props;
+        const { setGroupChatEditorState, contacts, chat, editChat } = this.props;
         const userInChatIds = chat.contacts.map(c => c.userId);
-        const filteredContacts = contacts.filter(contact => {
-            return !userInChatIds.includes(contact.userId);
-        });
         return (<GroupChatWrapper>
             <div>
                 <Header className="group-chat-header">
@@ -37,7 +35,7 @@ export default class GroupChatEdit extends React.Component {
                         onClick={() => { setGroupChatEditorState(null); }}>Назад</div>
                     <div className="group-chat-header__button">Редактирование чата</div>
                     <div className="group-chat-header__button done--right"
-                        onClick={() => { }}>Сохранить</div>
+                        onClick={() => { editChat(chat, this.state.name.trim(), this.scl.state.selectedIds) }}>Сохранить</div>
                 </Header>
                 <div>
                     <input
@@ -48,7 +46,7 @@ export default class GroupChatEdit extends React.Component {
                         onChange={e => { this.onChangeHandler(e); }}
                     />
                 </div>
-                <SelectContactsList ref={scl => { this.scl = scl; }} contacts={filteredContacts} />
+                <SelectContactsList ref={scl => { this.scl = scl; }} selectedIds={userInChatIds} contacts={contacts} />
             </div>
         </GroupChatWrapper>);
     }

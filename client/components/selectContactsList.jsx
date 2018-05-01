@@ -7,11 +7,16 @@ import { SelectContactListWrapper } from '../styles/selectContactListWrapper';
 
 export default class SelectContactList extends React.Component {
     static propTypes = {
-        contacts: PropTypes.arrayOf(PropTypes.shape())
+        contacts: PropTypes.arrayOf(PropTypes.shape()),
+        selectedIds: PropTypes.arrayOf(PropTypes.string)
+    }
+
+    static defaultProps = {
+        selectedIds: []
     }
 
     state = {
-        selectedIds: []
+        selectedIds: this.props.selectedIds
     }
 
     getContactList(contacts) {
