@@ -13,11 +13,9 @@ import {
     ContactsWrapper
 } from '../styles/contacts';
 import {withCurrentUser} from '../lib/currentUserContext';
-import {GET_USER_CONTACTS_ql} from '../graphqlQueries/queries';
 
 
 @withCurrentUser
-@graphql(GET_USER_CONTACTS_ql, { name: 'contacts' })
 export default class ContactsList extends React.Component {
     static propTypes = {
         contactsFilter: PropTypes.func,  // предикат, принимающий (this.props, contact)
@@ -36,14 +34,14 @@ export default class ContactsList extends React.Component {
     };
 
     getContactsList() {
-        const { clickHandler, currentUser, contacts, contactsFilter } = this.props;
-        if (contacts.loading) {
+        const { clickHandler, currentUser, contacts, contactsFilter, error, loading } = this.props;
+        if (loading) {
             return ContactsList.LoadScreen;
         }
-        if (contacts.error || !contacts.allUsers) {
+        if (error || !contacts) {
             return ContactsList.ErrorScreen;
         }
-        return contacts.allUsers
+        return contacts
             .filter(contactsFilter.bind(null, this.props))
             .map(contact => ContactsList.getContactsItem(clickHandler, currentUser, contact));
     }

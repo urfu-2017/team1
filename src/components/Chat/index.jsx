@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 import ChatWindowWrapper from '../../styles/chatWindow';
 import Header from './header';
 import Messages from './messages';
-import {GetChatInfo} from '../../graphqlQueries/queries';
+import {GetChatInfo, GetChatMessages} from '../../graphqlQueries/queries';
 import {withCurrentUser} from '../../lib/currentUserContext';
 import ChatEditor from './chatEditor';
 import withLocalState from '../../lib/withLocalState';
-import {processChat, chatSubscriptionDataHandler} from '../../lib/dataHandlers';
-import {SubscribeToChat} from '../../graphqlQueries/subscriptions';
+import {processChat, userSubscriptionDataHandler} from '../../lib/dataHandlers';
+import {SubscribeToUsersInChat} from '../../graphqlQueries/subscriptions';
 
 
 const currentChatSet = ({ currentChatId }) =>
@@ -59,14 +59,29 @@ export default class Chat extends React.Component {
     }
 
     getMainComponent(chat, currentUser) {
-        return this.state.editorOpened ?
-            <ChatEditor
-                currentChat={chat}
-                currentUser={currentUser}
-                toggleEditor={this.toggleEditor}/> :
-            <Messages
+        if (this.state.editorOpened) {
+            return (
+                <ChatEditor
+                    currentChat={chat}
+                    currentUser={currentUser}
+                    toggleEditor={this.toggleEditor}/>
+            );
+        }
+
+        // Nothing to see here...
+        const MessagesWithData = graphql(
+            GetChatMessages.query(chat.id),
+            {
+                name: 'data',
+                skip: ({ currentChatId }) => !currentChatId,
+                props: GetChatMessages.map
+            }
+        )(Messages);
+        return (
+            <MessagesWithData
                 currentChatId={chat.id || null}
-                currentUserId={currentUser.id}/>;
+                currentUserId={currentUser.id}/>
+        );
 
     }
 
@@ -95,7 +110,7 @@ export default class Chat extends React.Component {
                     <Header chat={chat}
                             loading={false}
                             toggleEditor={this.toggleEditor}
-                            editorOpened={this.state.editorOpened} />
+                            editorOpened={this.state.editorOpened}/>
                     {this.getMainComponent(chat, currentUser)}
                 </React.Fragment>
             );
@@ -108,14 +123,14 @@ export default class Chat extends React.Component {
         );
     }
 
-    chatSubscription = null;
+    chatUsersSubscription = null;
 
     subscribe = () => {
-        if (!this.chatSubscription) {
-            this.chatSubscription = this.props.data.subscribeToMore({
-                document: SubscribeToChat.subscription,
-                variables: SubscribeToChat.vars(this.props.chat.id),
-                updateQuery: chatSubscriptionDataHandler
+        if (!this.chatUsersSubscription) {
+            this.chatUsersSubscription = this.props.data.subscribeToMore({
+                document: SubscribeToUsersInChat.subscription,
+                variables: SubscribeToUsersInChat.vars(this.props.chat.id),
+                updateQuery: userSubscriptionDataHandler
             });
         }
     };

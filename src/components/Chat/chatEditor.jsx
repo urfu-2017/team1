@@ -3,19 +3,23 @@ import PropTypes from 'prop-types';
 import {graphql, Mutation} from 'react-apollo';
 import {Scrollbars} from 'react-custom-scrollbars';
 
-import {GetChatMembers} from '../../graphqlQueries/queries';
+import {GetChatMembers, GetUserContacts} from '../../graphqlQueries/queries';
 import {AddUserToChat} from '../../graphqlQueries/mutations';
 import {Editor, AddButton, UserList, Contact} from '../../styles/chatEditor';
 import ContactsList from '../contactsList';
+import {withCurrentUser} from '../../lib/currentUserContext';
 
 
-@graphql(
-    GetChatMembers.query,
-    {
-        options: ({ currentChat }) => ({ variables: { chatId: currentChat.id } }),
-        props: GetChatMembers.map
-    }
-)
+@withCurrentUser
+@graphql(GetChatMembers.query, {
+    options: ({ currentChat }) => ({ variables: { chatId: currentChat.id } }),
+    props: GetChatMembers.map
+})
+@graphql(GetUserContacts.query, {
+    skip: ({ currentUser }) => !currentUser,
+    options: ({ currentUser }) => ({ variables: { userId: currentUser.id } }),
+    props: GetUserContacts.map
+})
 export default class ChatEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -45,6 +49,9 @@ export default class ChatEditor extends React.Component {
                 clickHandler={this.clickHandler.bind(null, addUserToChat)}
                 contactsFilter={this.contactsFilter}
                 closeAction={this.toggleUsersList}
+                contacts={this.props.contacts}
+                loading={this.props.loading}
+                error={this.props.error}
             />
         }</Mutation>
     );
@@ -69,6 +76,10 @@ export default class ChatEditor extends React.Component {
                                 onClick={this.toggleUsersList}
                             />
                         </div>
+                        <dl>
+                            <dt>Инвайт</dt>
+                            <dd><a href={`/invite/${currentChat.id}`}>/invite/{currentChat.id}</a></dd>
+                        </dl>
                         <UserList>
                             <Scrollbars universal>
                                 {members && this.getMembersList()}

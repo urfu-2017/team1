@@ -63,30 +63,20 @@ const GetCurrentUser_map = req => {
 export const GetCurrentUser = mapper(GET_CURRENT_USER_ql, GetCurrentUser_map, 'currentUser');
 
 
-// TODO: dummy implementation
-export const GET_USER_CONTACTS_ql = gql`
-query GetUserContacts {
-    allUsers {
-        id
-        name
-        avatarUrl
-        createdAt
+const GET_USER_CONTACTS_ql = gql`
+query GetUserContacts($userId: ID!) {
+  User(id: $userId) {
+    id
+    contacts {
+      ...userData
     }
+  }
 }
+
+${fragments.userData_ql}
 `;
 
-// export const GET_USER_CONTACTS_ql = gql`
-// query GetUserContacts($userId: ID!) {
-//   User(id: $userId) {
-//     id
-//     contacts {
-//       ...userData
-//     }
-//   }
-// }
-//
-// ${fragments.userData_ql}
-// `;
+export const GetUserContacts = mapper(GET_USER_CONTACTS_ql, data => data.User && data.User.contacts, 'contacts');
 
 
 const GET_USER_CHATS_ql = gql`
@@ -105,9 +95,9 @@ ${fragments.chatData_ql}
 export const GetUserChats = mapper(GET_USER_CHATS_ql, data => data.User && data.User.chats, 'chats');
 
 
-const GET_CHAT_MESSAGES_ql = gql`
-query GetChatMessages($chatId: ID!) {
-  Chat(id: $chatId) {
+const GET_CHAT_MESSAGES_ql = chatId => gql`
+query GetChatMessages {
+  Chat(id: "${chatId}") {
     id
     messages {
       ...messageData

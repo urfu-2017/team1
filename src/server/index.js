@@ -24,6 +24,7 @@ const DynamicConfig = require('./dynamicConfig');
 const GraphqlApi = require('./db/graphqlApi');
 const authMiddleware = require('./middleware/auth');
 const proxyMiddleware = require('./middleware/proxy');
+const inviteMiddleware = require('./middleware/invite');
 const requestInterceptor = require('./lib/requestsInterceptor');
 
 
@@ -62,6 +63,7 @@ function main(isProduction, port) {
             dynamicConfig.configureReq(req);
             next();
         })
+        .use(inviteMiddleware)
         .use(routes);
 
 

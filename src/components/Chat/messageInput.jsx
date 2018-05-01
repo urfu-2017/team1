@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
-import { Emoji, emojiIndex } from 'emoji-mart';
+import {Emoji, emojiIndex} from 'emoji-mart';
 
 import {withCurrentUser} from '../../lib/currentUserContext';
 import Textarea from '../../styles/chatWindowInput';
@@ -84,13 +84,15 @@ export default class MessageInput extends React.Component {
     });
 
     updateCache = (cache, { data: { createMessage } }) => {
-        const variables = { chatId: this.props.currentChatId };
+        const chatId = this.props.currentChatId;
+        const query = GetChatMessages.query(chatId);
+        const variables = { chatId };
         const data = cache.readQuery({
-            query: GetChatMessages.query,
+            query,
             variables
         });
         const updated = addNewMessage(createMessage, data);
-        cache.writeQuery({ query: GetChatMessages.query, data: updated });
+        cache.writeQuery({ query, data: updated });
         this.props.updateMessages((_, { variables }) => updated);
     };
 
@@ -110,7 +112,7 @@ export default class MessageInput extends React.Component {
                 />
             );
         });
-    }
+    };
 
     openEmojies = () => this.setState({ emoji: true });
 
@@ -136,7 +138,7 @@ export default class MessageInput extends React.Component {
                     >
                         &#x274C;
                     </div>
-                    <hr />
+                    <hr/>
                     <div>
                         {this.getEmojiesPopup()}
                     </div>
@@ -147,19 +149,19 @@ export default class MessageInput extends React.Component {
         }
 
         return picker;
-    }
+    };
 
     getButtonWithSmile = () => {
         return (
             <div onClick={this.openEmojies}
-                className="openEmojiButton__style"
-                title="Emoji"
-                >
+                 className="openEmojiButton__style"
+                 title="Emoji"
+            >
                 &#x263A;
             </div>
-        )
-    }
-    
+        );
+    };
+
     render() {
         return (
             <Textarea>
@@ -171,8 +173,8 @@ export default class MessageInput extends React.Component {
                         placeholder="Сообщение..."
                         value={this.state.message}
                         required/>
-                    {this.getButtonWithSmile()}
-                    {this.getPicker()}
+                     {this.getButtonWithSmile()}
+                     {this.getPicker()}
                 </div>
             </Textarea>
         );

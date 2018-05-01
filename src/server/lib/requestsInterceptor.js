@@ -18,17 +18,16 @@ module.exports = async body => {
     }
     if (body.operationName === 'UpdateUserAvatar') {
         const { variables } = body;
-        //todo: fix this to variables imgData, but not now
-        let avatarData = variables.url;
-        const promise = new Promise((resolve, reject) => {
+        let avatarData = variables.avatarUrl;
+        const promise = new Promise(resolve => {
             cloudinary.uploader.upload(avatarData, data => {
                 resolve(data);
             });
         });
         const data = await promise;
-        variables.url = data.secure_url;
+        variables.avatarUrl = data.secure_url;
         return body;
     }
-   
+
     return null;
 };

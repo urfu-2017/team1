@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {graphql} from 'react-apollo';
 
 import LoadScreen from '../ui/loadScreen';
 import MessageInput from './messageInput';
@@ -8,21 +7,9 @@ import ScrollButton from './scrollButton';
 import Message from './message';
 import {messagesSubscriptionDataHandler} from '../../lib/dataHandlers';
 import {MessagesList} from '../../styles/messages';
-import {GetChatMessages} from '../../graphqlQueries/queries';
 import {SubscribeToMessages} from '../../graphqlQueries/subscriptions';
 
 
-@graphql(
-    GetChatMessages.query,
-    {
-        name: 'data',
-        skip: ({ currentChatId }) => !currentChatId,
-        options: ({ currentChatId }) => ({
-            variables: { chatId: currentChatId }
-        }),
-        props: GetChatMessages.map
-    }
-)
 export default class Messages extends React.Component {
     static propTypes = {
         messages: PropTypes.arrayOf(PropTypes.object),
@@ -98,14 +85,13 @@ export default class Messages extends React.Component {
         );
     }
 
-    // Компонент не перемонтируется при переключении чатов
-    // Поэтому, чтобы подписаться на все открытые чаты, нужно иметь словарь
-    subscriptions = {};
+    subscription = null;
 
     subscribe = () => {
         const { currentChatId, currentUserId, data } = this.props;
-        if (!this.subscriptions[currentChatId]) {
-            this.subscriptions[currentChatId] = data.subscribeToMore({
+        if (!this.subscription) {
+            data.refetch();
+            this.subscription = data.subscribeToMore({
                 document: SubscribeToMessages.subscription,
                 variables: SubscribeToMessages.vars(currentChatId, currentUserId),
                 updateQuery: messagesSubscriptionDataHandler

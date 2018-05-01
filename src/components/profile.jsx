@@ -6,6 +6,7 @@ import {Editor, DownloadImage, DownloadButton, CreateButton, Exit} from '../styl
 import {UpdateUserAvatar} from '../graphqlQueries/mutations';
 import {withCurrentUser} from '../lib/currentUserContext';
 
+
 @withCurrentUser
 @graphql(UpdateUserAvatar.mutation, { props: UpdateUserAvatar.map })
 export default class ProfileEditor extends React.PureComponent {
@@ -19,15 +20,11 @@ export default class ProfileEditor extends React.PureComponent {
         mainComponentChanger: {}
     };
 
-    constructor(props) {
-        super(props);
-    }
-
     getFirstFile = e => {
         const inputUpload = document.getElementById('upload');
 
         return inputUpload.files[0];
-    }
+    };
 
     dragover = e => {
         e.preventDefault();
@@ -49,7 +46,7 @@ export default class ProfileEditor extends React.PureComponent {
             const avatarData = reader.result;
             this.props.updateUserAvatar({
                 userId: userId,
-                url: avatarData
+                avatarUrl: avatarData
             });
         });
     };
@@ -62,7 +59,7 @@ export default class ProfileEditor extends React.PureComponent {
             const area = document.getElementById('area-for-drop');
             area.style.backgroundImage = `url(${dataUrl})`;
         });
-    }
+    };
 
     readPictureFromInput = (reader, cb) => {
         reader.onloadend = async () => {
@@ -74,7 +71,7 @@ export default class ProfileEditor extends React.PureComponent {
             return;
         }
         reader.readAsDataURL(avatar);
-    }
+    };
 
     render() {
         const { mainComponentChanger } = this.props;
@@ -84,20 +81,20 @@ export default class ProfileEditor extends React.PureComponent {
                     &#10006;
                 </Exit>
                 <h1 className="header">Загрузить аватар</h1>
-                <DownloadImage  
+                <DownloadImage
                     onDrop={this.drop}
                     onDragOver={this.dragover}
                     id="area-for-drop">
                     <p className="text">Загрузить фото</p>
                 </DownloadImage>
                 <div className="buttons">
-                    <DownloadButton  
+                    <DownloadButton
                         id="upload"
                         type="file"
                         accept="image/*"
                         onChange={this.drawBackground}
                     />
-                    <CreateButton 
+                    <CreateButton
                         id="saveAvatar"
                         type="button"
                         value="Сохранить"

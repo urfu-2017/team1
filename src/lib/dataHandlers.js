@@ -32,6 +32,8 @@ export const messagesSubscriptionDataHandler = (previousResult, { subscriptionDa
         return previousResult;
     }
     const { mutation, node } = subscriptionData.data.Message;
+    console.log(node.chat.id);
+    variables.chatId = node.chat.id;
     switch (mutation) {
         case 'CREATED':
             return addNewMessage(node, previousResult);
@@ -54,7 +56,7 @@ export const userSubscriptionDataHandler = (previousResult, { subscriptionData, 
 
 
 export const chatSubscriptionDataHandler = (previousResult, { subscriptionData, variables }) => {
-    if (!previousResult.User) {
+    if (!previousResult.Chat) {
         return previousResult;
     }
     return { Chat: subscriptionData.data.Chat.node };
