@@ -169,7 +169,7 @@ export default class Contacts extends React.Component {
                     style={{ width: "100%", background: "#5682a3" }} >
                     { this.state.showAllUsers && this.withAllUsers(this.allUsers) }
                 </Tab>
-            </Tabs>
+            </Tabs> 
         </React.Fragment>;
     }
 }
