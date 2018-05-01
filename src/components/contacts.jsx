@@ -1,13 +1,13 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+<<<<<<< 724d9cae2dcc6ae08426775fdeafbb814b9f5659
 import {Tabs, Tab} from 'material-ui/Tabs';
 import {Mutation, Query, graphql} from 'react-apollo';
+=======
+>>>>>>> editor chats
 import {Tabs, Tab} from 'material-ui/Tabs';
-
-import List from 'material-ui/List/List';
-import ListItem from 'material-ui/List/ListItem';
-import Avatar from 'material-ui/Avatar';
+import {Mutation, Query, graphql} from 'react-apollo';
 
 import ContactsList from './contactsList';
 import {GetUserChats} from '../graphqlQueries/queries';
@@ -38,6 +38,7 @@ const getNewChat = (currentUser, contact) => ({
 export default class Contacts extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = { showAllUsers: false };
     }
 
@@ -96,12 +97,8 @@ export default class Contacts extends React.Component {
         </Query>
     );
 
-    contactsFilter = ({ currentUser }, contact) => {
-        console.log(this.props);
-        return this.currentUserFilter({ currentUser }, contact) &&
-            !this.props.contacts.find(u => u.id === contact.id);
-        
-    }
+    contactsFilter = ({ currentUser }, contact) => this.currentUserFilter({ currentUser }, contact) &&
+        !this.props.contacts.find(u => u.id === contact.id);
 
     allUsers = ({ allUsers, loading, error }) => (
         <Mutation
@@ -154,6 +151,7 @@ export default class Contacts extends React.Component {
                 contentContainerStyle={{ height: '100%' }}
                 tabItemContainerStyle={{ height: '60px' }}
             >
+<<<<<<< 724d9cae2dcc6ae08426775fdeafbb814b9f5659
                 <Tab
                     label="Контакты"
                     value="contacts"
@@ -170,6 +168,16 @@ export default class Contacts extends React.Component {
                     { this.state.showAllUsers && this.withAllUsers(this.allUsers) }
                 </Tab>
             </Tabs> 
+=======
+                <Tab label="Контакты" value="contacts" onActive={this.hideAllUsers} >
+                    { !this.state.showAllUsers && this.withContacts(this.myContacts) }
+                    
+                </Tab>
+                <Tab  label="Все пользователи" value="allUsers" onActive={this.showAllUsers}>
+                    { this.state.showAllUsers && this.withAllUsers(this.allUsers) }
+                </Tab>
+            </Tabs>
+>>>>>>> editor chats
         </React.Fragment>;
     }
 }

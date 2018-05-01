@@ -7,6 +7,7 @@ export const Editor = styled.article`
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+<<<<<<< 724d9cae2dcc6ae08426775fdeafbb814b9f5659
     background: #fff;
     .image {
         height: 130px;
@@ -17,6 +18,15 @@ export const Editor = styled.article`
     .chat-editor {
         height: 130px;
         border-left: 1px solid lavender;
+=======
+    background: #f2f3dE;
+    .image {
+        width: 130px;
+        margin: 20px 50px;
+        border: 1px solid;
+    }
+    .chat-editor {
+>>>>>>> editor chats
         text-align: center;
         width: 60%;
         display: flex;
@@ -24,6 +34,7 @@ export const Editor = styled.article`
         align-items: center;
     }
     .link {
+<<<<<<< 724d9cae2dcc6ae08426775fdeafbb814b9f5659
         border-top: 1px solid lavender;
         border-bottom: 1px solid lavender;
         padding: 5px;
@@ -32,6 +43,9 @@ export const Editor = styled.article`
     .link a {
         text-decoration: none;
         color: deeppink;
+=======
+        width: 77%;
+>>>>>>> editor chats
     }
     .chat-editor__header {
         width: 190px;

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
+<<<<<<< 724d9cae2dcc6ae08426775fdeafbb814b9f5659
 import List from 'material-ui/List/List';
 import RaisedButton from 'material-ui/RaisedButton';
 import ListItem from 'material-ui/List/ListItem';
@@ -8,9 +9,14 @@ import Avatar from 'material-ui/Avatar';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import {Scrollbars} from 'react-custom-scrollbars';
 
+=======
+>>>>>>> editor chats
 import List from 'material-ui/List/List';
+import RaisedButton from 'material-ui/RaisedButton';
 import ListItem from 'material-ui/List/ListItem';
 import Avatar from 'material-ui/Avatar';
+import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
+import {Scrollbars} from 'react-custom-scrollbars';
 
 import LoadScreen from './ui/loadScreen';
 import {
