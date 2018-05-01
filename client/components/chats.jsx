@@ -5,14 +5,12 @@ import MenuIcon from 'react-icons/lib/fa/list';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import Chat from './chat';
-import Paranja from './paranja';
+import Paranja from '../containers/paranja';
 import { Header, SearchInput, ChatsList } from '../styles/chats';
 
 export default class Chats extends Component {
     static propTypes = {
         showParanja: PropTypes.func,
-        profileEditorState: PropTypes.bool,
-        setProfileEditorState: PropTypes.func,
         isOpenParanja: PropTypes.bool,
         chats: PropTypes.arrayOf(PropTypes.object),
         onClickChat: PropTypes.func,
@@ -54,7 +52,7 @@ export default class Chats extends Component {
     }
 
     render() {
-        const { user, isOpenParanja, showParanja, profileEditorState, setProfileEditorState } = this.props;
+        const { user, isOpenParanja, showParanja } = this.props;
 
         return (
             <React.Fragment>
@@ -62,8 +60,6 @@ export default class Chats extends Component {
                     user={user}
                     isOpenParanja={isOpenParanja}
                     showParanja={showParanja}
-                    setProfileEditorState={setProfileEditorState}
-                    profileEditorState={profileEditorState}
                 />
                 <ChatsList>
                     <Header>

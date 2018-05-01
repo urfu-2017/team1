@@ -1,9 +1,10 @@
 import React, { Fragment, Component } from 'react';
 import PropTypes from 'prop-types';
-import Menu from './menu';
+import Menu from '../containers/menu';
 
 import Contacts from '../containers/contacts';
 import ProfileEditor from '../containers/profileEditor';
+import GroupChatCreate from '../components/groupChat';
 
 import { ParanjaWrapper } from '../styles/paranja';
 
@@ -13,14 +14,15 @@ export default class Paranja extends Component {
         isOpenParanja: PropTypes.bool,
         showParanja: PropTypes.func,
         profileEditorState: PropTypes.bool,
-        setProfileEditorState: PropTypes.func
+        groupChatEditorState: PropTypes.bool
     };
 
     static defaultProps = {
         user: {},
         isOpenParanja: false,
         showParanja: () => {},
-        profileEditorState: false
+        profileEditorState: false,
+        groupChatEditorState: false
     };
     constructor(props) {
         super(props);
@@ -35,7 +37,7 @@ export default class Paranja extends Component {
     showContacts = isOpen => { this.setState({ isOpenContacts: isOpen }); }
 
     render() {
-        const { user, isOpenParanja, showParanja, profileEditorState, setProfileEditorState } = this.props;
+        const { user, isOpenParanja, showParanja, profileEditorState, groupChatEditorState } = this.props;
 
         return (
             <Fragment>
@@ -47,7 +49,6 @@ export default class Paranja extends Component {
                                 setHeader={this.setHeader}
                                 showEditor={this.showEditor}
                                 showContacts={this.showContacts}
-                                setProfileEditorState={setProfileEditorState}
                             />)
                         }
                     </ParanjaWrapper>
@@ -64,10 +65,14 @@ export default class Paranja extends Component {
                         <ProfileEditor
                             user={user}
                             showParanja={showParanja}
-                            setProfileEditorState={setProfileEditorState}
                         />
                     </ParanjaWrapper>)
                 }
+                { groupChatEditorState && (
+                    <ParanjaWrapper>
+                        <GroupChatCreate />
+                    </ParanjaWrapper>
+                )}
             </Fragment>
         );
     }

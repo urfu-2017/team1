@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import ProfileEditor from '../components/profileEditor';
-import { changeAvatar } from '../actions/actions';
+import { changeAvatar, setProfileEditorState } from '../actions/actions';
 
 const mapStateToProps = (state, props) => ({
     user: state.user
@@ -9,6 +9,9 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = dispatch => ({
     onChangeAvatar: avatarData => {
         dispatch(changeAvatar(avatarData));
+    },
+    setProfileEditorState: state => {
+        dispatch(setProfileEditorState(state));
     }
 });
 

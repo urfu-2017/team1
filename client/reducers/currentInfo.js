@@ -5,7 +5,8 @@ import {
     MESSAGE_SAVED,
     SEND_NEW_MESSAGE,
     SAVED_AVATAR,
-    CHANGE_PROFILE_EDITOR_STATE
+    CHANGE_PROFILE_EDITOR_STATE,
+    CHANGED_GROUP_CHAT_EDITOR_STATE
 } from '../actions/actions';
 
 const initialStateStub = {
@@ -16,7 +17,8 @@ const initialStateStub = {
     },
     currentChat: {},
     isOpenParanja: false,
-    profileEditorState: false
+    profileEditorState: false,
+    groupChatEditorState: false
 };
 
 export default function createMetaReducer(currentUser) {
@@ -39,6 +41,10 @@ export default function createMetaReducer(currentUser) {
         }
         case CHANGE_PROFILE_EDITOR_STATE: {
             state.profileEditorState = action.state;
+            return Object.assign({}, state);
+        }
+        case CHANGED_GROUP_CHAT_EDITOR_STATE: {
+            state.groupChatEditorState = action.state;
             return Object.assign({}, state);
         }
         case MESSAGE_SAVED: {

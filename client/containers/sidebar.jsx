@@ -5,9 +5,7 @@ import {
     setVisibilityChat,
     selectChat,
     setVisibilityParanja,
-    asyncCreateChat,
     addChatFromContacts,
-    setProfileEditorState,
     fetchChats,
     fetchContacts
 } from '../actions/actions';
@@ -15,7 +13,6 @@ import {
 const mapStateToProps = (state, props) => ({
     chats: state.chats,
     isOpenParanja: state.currentInfo.isOpenParanja,
-    profileEditorState: state.currentInfo.profileEditorState,
     selectedChatId: state.currentInfo.selectedChatId,
     user: state.currentInfo.currentUser,
     contacts: state.contacts,
@@ -30,9 +27,6 @@ const mapDispatchToProps = dispatch => (
         },
         showParanja: visibility => {
             dispatch(setVisibilityParanja(visibility));
-        },
-        setProfileEditorState: state => {
-            dispatch(setProfileEditorState(state));
         },
         addChatFromContacts: chat => {
             dispatch(addChatFromContacts(chat));

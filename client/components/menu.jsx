@@ -7,7 +7,8 @@ export default class Menu extends Component {
         user: PropTypes.shape(),
         showContacts: PropTypes.func,
         setHeader: PropTypes.func,
-        setProfileEditorState: PropTypes.func
+        setProfileEditorState: PropTypes.func,
+        setGroupChatEditorState: PropTypes.func
     }
 
     static defaultProps = {
@@ -22,7 +23,7 @@ export default class Menu extends Component {
     }
 
     render() {
-        const { user, showContacts, setProfileEditorState, setHeader } = this.props;
+        const { user, showContacts, setProfileEditorState, setGroupChatEditorState, setHeader } = this.props;
         return (
             <MenuRoot>
                 <div className="profile">
@@ -41,14 +42,13 @@ export default class Menu extends Component {
                     >
                         Контакты
                     </p>
-                    {/* <p
-                        // ref={this.getRef}
+                    { <p
                         role="presentation"
                         className="menu__item"
-                        onClick={() => { showContacts(true); setHeader('Создание чата'); }}
-                    >
-                        Новый чат
-                    </p> */}
+                        onClick={() => { setGroupChatEditorState(true); }}
+                     >
+                        Создать чат
+                    </p> }
                     <p
                         role="presentation"
                         className="menu__item"

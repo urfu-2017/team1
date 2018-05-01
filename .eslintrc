@@ -22,6 +22,7 @@
         "max-len": ["error", 120],
         // Не нужно проверять аргументы функций
         "no-unused-vars": ["error", {"args": "none"}],
+        "class-methods-use-this": "off",
         // Все равно этому никто не следует :)
         "no-underscore-dangle": "off",
         "react/require-default-props": "off"

@@ -7,6 +7,8 @@ export const SELECT_CHAT = 'SELECT_CHAT';
 export const MESSAGE_SAVED = 'MESSAGE_SAVED';
 export const SEND_NEW_CHAT = 'SEND_NEW_CHAT';
 
+export const CHANGED_GROUP_CHAT_EDITOR_STATE = 'CHANGED_GROUP_CHAT_EDITOR_STATE';
+
 export const ADD_CHAT_TO_CHAT_LIST = 'ADD_CHAT_TO_CHAT_LIST';
 export const UPDATE_CHAT_LIST = 'UPDATE_CHAT_LIST';
 export const UPDATE_CONTACT_LIST = 'UPDATE_CONTACT_LIST';
@@ -22,7 +24,6 @@ export const setVisibilityChat = chat => ({ type: VISIBILITY_CHAT, chat });
 
 export const addMessageFromSocket = (message, currentUserId, sender) =>
     ({ type: RECEIVED_NEW_MESSAGE, info: { message, currentUserId, sender } });
-
 
 export const cursorIsPressedFromBelow = () => {
     const messages = document.querySelector('#messages');
@@ -48,7 +49,9 @@ export const updateContacts = contacts => ({ type: UPDATE_CONTACT_LIST, contacts
 
 export const setAvatar = avatar => ({ type: SAVED_AVATAR, avatar });
 
-export const setProfileEditorState = state => ({ type: CHANGE_PROFILE_EDITOR_STATE, state }); 
+export const setProfileEditorState = state => ({ type: CHANGE_PROFILE_EDITOR_STATE, state });
+
+export const setGroupChatEditorState = state => ({ type: CHANGED_GROUP_CHAT_EDITOR_STATE, state });
 
 export const saveMessage = (chat, isSuccess, dumbMessage, message) =>
     ({ type: MESSAGE_SAVED, chat, isSuccess, dumbMessage, message });

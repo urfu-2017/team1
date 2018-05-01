@@ -10,6 +10,7 @@ const chatSchema = new Schema({
     lastMessage: messageSchema,
     contacts: [contactSchema],
     avatar: { type: String },
+    type: { type: String }, // p2p or group
     link: { type: String, unique: true }
 }, { timestamps: true });
 
