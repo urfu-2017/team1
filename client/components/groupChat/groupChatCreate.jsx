@@ -2,17 +2,15 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
-import ChangedInput from './changedInput';
-import SelectContactsList from './selectContactsList';
+import SelectContactsList from '../selectContactsList';
 
-import { Header } from '../styles/messages';
-import { GroupChatCreateWrapper } from '../styles/groupChat';
+import { Header } from '../../styles/messages';
+import { GroupChatWrapper } from '../../styles/groupChat';
 
-export default class GroupChatCreate extends React.Component { // eslint-disable-line
-
+export default class GroupChatCreate extends React.Component {
     static propTypes = {
         contacts: PropTypes.arrayOf(PropTypes.shape()),
-        setGroupChatEditorState: PropTypes.func,
+        setGroupChatCreatorState: PropTypes.func,
         createGroupChat: PropTypes.func
     }
 
@@ -37,27 +35,27 @@ export default class GroupChatCreate extends React.Component { // eslint-disable
     }
 
     render() {
-        const { contacts, setGroupChatEditorState } = this.props;
-        return (<GroupChatCreateWrapper>
+        const { contacts, setGroupChatCreatorState } = this.props;
+        return (<GroupChatWrapper>
             <div>
-                <Header className="group-chat-create-header">
-                    <div className="group-chat-create-header__button button--left" 
-                        onClick={() => { setGroupChatEditorState(false) }}>Назад</div>
-                    <div className="group-chat-create-header__button">Создание чата</div>
-                    <div className="group-chat-create-header__button button--right"
+                <Header className="group-chat-header">
+                    <div className="group-chat-header__button button--left" 
+                        onClick={() => { setGroupChatCreatorState(false) }}>Назад</div>
+                    <div className="group-chat-header__button">Создание чата</div>
+                    <div className="group-chat-header__button button--right"
                         onClick={() => { this.createChat() }}>Создать</div>
                 </Header>
                 <div>
                     <input
                         type="text"
                         placeholder="Имя чата"
-                        className="group-chat-create__input"
+                        className="group-chat__input"
                         value={this.state.name}
                         onChange={(e) => { this.onChangeHandler(e); }}
                     />
                     <SelectContactsList ref={scl => { this.scl = scl; }} contacts={contacts} />
                 </div>
             </div>
-        </GroupChatCreateWrapper>);
+        </GroupChatWrapper>);
     }
 };

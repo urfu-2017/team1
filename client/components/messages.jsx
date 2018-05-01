@@ -47,6 +47,7 @@ export default class Messages extends Component {
         user: PropTypes.shape(),
         onReceiveMessage: PropTypes.func,
         setReactionToMessage: PropTypes.func,
+        setGroupChatEditorState: PropTypes.func,
         socketURL: PropTypes.string
     };
 
@@ -117,11 +118,20 @@ export default class Messages extends Component {
         ));
     }
 
+    getHeader() {
+        const { chat, title, setGroupChatEditorState } = this.props;
+
+        if (chat.type === 'group') {
+            return <Header className="header-chat-edit" onClick={() => { setGroupChatEditorState(chat); }}>{title}</Header>;
+        } else {
+            return <Header>{title}</Header>;
+        }
+    }
+
     render() {
-        const { title } = this.props;
         return (
             <React.Fragment>
-                <Header>{title}</Header>
+                { this.getHeader() }
                 <MessagesList id="messages" ref={this.getSectionRef}>
                     <ScrollButton scrollStepInPx="50" delayInMs="16.66" />
                     {this.getMessagesList()}

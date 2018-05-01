@@ -16,6 +16,16 @@ export const Header = styled.section`
     align-items: center;
     justify-content: center;
     background-color: rgba(255,255,255, .7);
+    &.header-chat-edit {
+        cursor: pointer;
+    }
+    &.header-chat-edit::after {
+        font-family: FontAwesome5;
+        font-weight: 900;
+        content: '\f303';
+        padding-left: 5px;
+        font-size: 10px;
+    }
 `;
 
 export const Button = styled.div`

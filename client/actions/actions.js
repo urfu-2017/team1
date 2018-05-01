@@ -7,6 +7,7 @@ export const SELECT_CHAT = 'SELECT_CHAT';
 export const MESSAGE_SAVED = 'MESSAGE_SAVED';
 export const SEND_NEW_CHAT = 'SEND_NEW_CHAT';
 
+export const CHANGED_GROUP_CHAT_CREATOR_STATE = 'CHANGED_GROUP_CHAT_CREATOR_STATE';
 export const CHANGED_GROUP_CHAT_EDITOR_STATE = 'CHANGED_GROUP_CHAT_EDITOR_STATE';
 
 export const ADD_CHAT_TO_CHAT_LIST = 'ADD_CHAT_TO_CHAT_LIST';
@@ -51,7 +52,8 @@ export const setAvatar = avatar => ({ type: SAVED_AVATAR, avatar });
 
 export const setProfileEditorState = state => ({ type: CHANGE_PROFILE_EDITOR_STATE, state });
 
-export const setGroupChatEditorState = state => ({ type: CHANGED_GROUP_CHAT_EDITOR_STATE, state });
+export const setGroupChatCreatorState = state => ({ type: CHANGED_GROUP_CHAT_CREATOR_STATE, state });
+export const setGroupChatEditorState = chat => ({ type: CHANGED_GROUP_CHAT_EDITOR_STATE, chat });
 
 export const saveMessage = (chat, isSuccess, dumbMessage, message) =>
     ({ type: MESSAGE_SAVED, chat, isSuccess, dumbMessage, message });

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { setGroupChatEditorState, setProfileEditorState } from '../actions/actions';
+import { setGroupChatCreatorState, setProfileEditorState } from '../actions/actions';
 
 import Menu from '../components/menu';
 
@@ -10,8 +10,8 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    setGroupChatEditorState: state => {
-        dispatch(setGroupChatEditorState(state));
+    setGroupChatCreatorState: state => {
+        dispatch(setGroupChatCreatorState(state));
     },
     setProfileEditorState: state => {
         dispatch(setProfileEditorState(state));

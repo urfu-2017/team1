@@ -4,7 +4,6 @@ import Menu from '../containers/menu';
 
 import Contacts from '../containers/contacts';
 import ProfileEditor from '../containers/profileEditor';
-import GroupChatCreate from '../containers/groupChatCreate';
 
 import { ParanjaWrapper } from '../styles/paranja';
 

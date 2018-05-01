@@ -6,7 +6,8 @@ const mapStateToProps = state => ({
     user: state.currentInfo.currentUser,
     chat: state.currentInfo.currentChat,
     socketURL: state.socketURL,
-    groupChatEditorState: state.currentInfo.groupChatEditorState
+    groupChatEditorState: state.currentInfo.groupChatEditorState,
+    editedChat: state.currentInfo.editedChat
 });
 
 const mapDispatchToProps = dispatch => ({

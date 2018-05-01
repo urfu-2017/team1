@@ -6,7 +6,7 @@ export const SelectContactListWrapper = styled.div`
         cursor: pointer;
     }
     .selected-contact__name {
-        min-width: 600px;
+        min-width: 700px;
     }
     .selected-contact__active::before {
         font-family: FontAwesome5;

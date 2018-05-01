@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ChatWindowWrapper from '../styles/chatWindow';
 
-import Messages from '../components/messages';
+import Messages from '../containers/messages';
 import ChatWindowInput from './chatWindowInput';
 
-import GroupChatCreate from '../containers/groupChatCreate';
+import GroupChatCreate from '../containers/groupChat/groupChatCreate';
+import GroupChatEdit from '../containers/groupChat/groupChatEdit';
 
 import { getChatName } from '../utils/chats';
 
@@ -15,6 +16,7 @@ export default class ChatWindow extends Component {
         addMessageFromChatInput: PropTypes.func,
         setReactionToMessage: PropTypes.func,
         groupChatEditorState: PropTypes.bool,
+        editedChat: PropTypes.shape(),
         user: PropTypes.shape(),
         chat: PropTypes.shape(),
         socketURL: PropTypes.string
@@ -31,13 +33,15 @@ export default class ChatWindow extends Component {
     }
 
     getChatWindowComponent() {
-        const { groupChatEditorState, chat, user, sendMessage, addMessageFromChatInput, socketURL, setReactionToMessage } = this.props;
+        const { groupChatEditorState, chat, user, sendMessage, addMessageFromChatInput, socketURL, setReactionToMessage, editedChat } = this.props;
 
         if (groupChatEditorState) {
             return <GroupChatCreate />;
         }
+        if (editedChat != null) {
+            return <GroupChatEdit />
+        }
         if (chat._id) {
-            console.log(chat);
             return (<ChatWindowWrapper>
                 <Messages
                     title={getChatName(chat, user)}

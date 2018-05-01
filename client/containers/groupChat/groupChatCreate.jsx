@@ -1,16 +1,16 @@
 import { connect } from 'react-redux';
 
-import { setGroupChatEditorState, createGroupChat } from '../actions/actions';
+import { setGroupChatCreatorState, createGroupChat } from '../../actions/actions';
 
-import GroupChatCreate from '../components/groupChatCreate';
+import GroupChatCreate from '../../components/groupChat/groupChatCreate';
 
 const mapStateToProps = (state, props) => ({
     contacts: state.contacts
 });
 
 const mapDispatchToProps = dispatch => ({
-    setGroupChatEditorState: state => {
-        dispatch(setGroupChatEditorState(state));
+    setGroupChatCreatorState: state => {
+        dispatch(setGroupChatCreatorState(state));
     },
     createGroupChat: (name, userIds) => {
         dispatch(createGroupChat(name, userIds));
