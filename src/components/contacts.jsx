@@ -1,6 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Mutation, Query, graphql} from 'react-apollo';
+import {Tabs, Tab} from 'material-ui/Tabs';
+
+import List from 'material-ui/List/List';
+import ListItem from 'material-ui/List/ListItem';
+import Avatar from 'material-ui/Avatar';
 
 import ContactsList from './contactsList';
 import {GetUserChats} from '../graphqlQueries/queries';
@@ -31,7 +36,6 @@ const getNewChat = (currentUser, contact) => ({
 export default class Contacts extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = { showAllUsers: false };
     }
 
@@ -89,8 +93,12 @@ export default class Contacts extends React.Component {
         </Query>
     );
 
-    contactsFilter = ({ currentUser }, contact) => this.currentUserFilter({ currentUser }, contact) &&
-        !this.props.contacts.find(u => u.id === contact.id);
+    contactsFilter = ({ currentUser }, contact) => {
+        console.log(this.props);
+        return this.currentUserFilter({ currentUser }, contact) &&
+            !this.props.contacts.find(u => u.id === contact.id);
+        
+    }
 
     allUsers = ({ allUsers, loading, error }) => (
         <Mutation
@@ -113,7 +121,7 @@ export default class Contacts extends React.Component {
                         variables: { userId: currentUser.id }
                     });
 
-                    this.hideAllUsers();
+                    // this.hideAllUsers();
                 }
             }
         >{
@@ -139,13 +147,28 @@ export default class Contacts extends React.Component {
     render() {
         // TODO: refactor this, PLEEEEEASE11111
         return <React.Fragment>
-            <span onClick={this.hideAllUsers}>Контакты</span>
+            <Tabs
+                style={{ width: '100%' }}
+                tabTemplateStyle={{ height: '100%' }}
+                contentContainerStyle={{ height: '100%' }}
+                tabItemContainerStyle={{ height: '60px' }}
+            >
+            
+                <Tab label="Контакты" value="contacts">
+                    { this.withContacts(this.myContacts) }
+                    
+                </Tab>
+                <Tab  label="Все пользователи" value="allUsers">
+                    {  this.withAllUsers(this.allUsers) }
+                </Tab>
+            </Tabs>
+            {/* <span onClick={this.hideAllUsers}>Контакты</span>
             <span onClick={this.showAllUsers}>Все пользователи</span>
             {
                 this.state.showAllUsers ?
                     this.withAllUsers(this.allUsers) :
                     this.withContacts(this.myContacts)
-            }
+            } */}
         </React.Fragment>;
     }
 }

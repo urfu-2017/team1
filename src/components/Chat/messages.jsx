@@ -30,11 +30,7 @@ export default class Messages extends React.Component {
         data: {}
     };
 
-    componentDidMount() {
-        this.scroll.scrollToBottom();
-    }
-
-    componentWillUpdate() {
+    componentDidUpdate() {
         this.scroll.scrollToBottom();
     }
 
@@ -69,7 +65,6 @@ export default class Messages extends React.Component {
             // Значит, можно подписываться на обновления
             this.subscribe();
         }
-
         return (
             <React.Fragment>
                 <Scrollbars
