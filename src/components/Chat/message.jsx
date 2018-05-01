@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
-import { Emoji, emojiIndex } from 'emoji-mart';
+import {Emoji, emojiIndex} from 'emoji-mart';
 
 import {MessageWrapper} from '../../styles/message';
 import {GetUser} from '../../graphqlQueries/queries';
-import {UpdateMessageReactions} from '../../graphqlQueries/mutations'
-import { Reactions } from '../../styles/reaction';
+import {UpdateMessageReactions} from '../../graphqlQueries/mutations';
+import {Reactions} from '../../styles/reaction';
 import Reaction from './reaction';
-import { getNewReactions } from '../../helpers/reactionsHelper';
+import {getNewReactions} from '../../helpers/reactionsHelper';
+
 
 @graphql(
     GetUser.query,
@@ -66,7 +67,7 @@ export default class Message extends React.PureComponent {
                 />
             );
         });
-    }
+    };
 
     openReactions = () => this.setState({ emoji: true });
 
@@ -89,7 +90,7 @@ export default class Message extends React.PureComponent {
                     >
                         &#x274C;
                     </div>
-                    <hr />
+                    <hr/>
                     <div>
                         {this.getReactions()}
                     </div>
@@ -99,21 +100,22 @@ export default class Message extends React.PureComponent {
             picker = '';
         }
         return picker;
-    }
+    };
 
     createReactionComponents = (reactions) => {
         let reactionComponents = [];
 
         if (reactions) {
-            reactionComponents = reactions.map(x => (<Reaction key={Math.random()} 
-            count={x.users.length} 
-            isCurrentUser={x.users.includes(this.props.user.id)} 
-            reaction={x.emoji}
-            onReactionClick={() => this.updateMessageReactions(x.emoji)} />)); 
+            // TODO: что за хрень?
+            reactionComponents = reactions.map(x => (<Reaction key={Math.random()}
+                                                               count={x.users.length}
+                                                               isCurrentUser={x.users.includes(this.props.user.id)}
+                                                               reaction={x.emoji}
+                                                               onReactionClick={() => this.updateMessageReactions(x.emoji)}/>));
         }
 
         return reactionComponents;
-    }
+    };
 
     static formatDate = new Intl.DateTimeFormat('ru', {
         hour: 'numeric',
@@ -135,13 +137,13 @@ export default class Message extends React.PureComponent {
         return (
             <MessageWrapper isFromSelf={isFromSelf}>
                 <div className="messageBlock">
-                    <img src={user && user.avatarUrl} width="30px" />
+                    <img src={user && user.avatarUrl} width="30px"/>
                     <span>{user && user.name + delivered}</span>
                     {/*TODO: у сообщения есть также поле modifiedAt, равное null, если оно не менялось */}
 
                     <div onClick={this.openReactions} className="addReactions">
-                            &#x263A;
-                        </div>
+                        &#x263A;
+                    </div>
                     <div className="messageBlock__time">{createdAt}</div>
 
                     <div
@@ -152,8 +154,8 @@ export default class Message extends React.PureComponent {
                     {ogdata && ogdata.url && Object.keys(ogdata).length !== 0 &&
                     <div className="metadata">
                         <a href={ogdata.url} className="metadata-container">
-                            { ogdata.image && <img className="metadata-container__img"
-                                                   src={ogdata.image.url} alt={ogdata.title} /> }
+                            {ogdata.image && <img className="metadata-container__img"
+                                                  src={ogdata.image.url} alt={ogdata.title}/>}
                             <div className="metadata-container__title">{ogdata.title}</div>
                         </a>
                     </div>}
