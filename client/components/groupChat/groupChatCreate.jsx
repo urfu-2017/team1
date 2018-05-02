@@ -23,6 +23,10 @@ export default class GroupChatCreate extends React.Component {
         };
     }
 
+    componentDidMount() {
+        this.scl.state.selectedIds = [];
+    }
+
     onChangeHandler(e) {
         this.setState({ name: e.target.value });
     }

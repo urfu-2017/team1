@@ -8,6 +8,13 @@ const streamToPromise = require('stream-to-promise');
 const fs = require('fs');
 const path = require('path');
 
+const cloudinary = require('cloudinary');
+
+const getPictureInBase64 = (usedId, opts = retricon.style.github) => {
+    const stream = generateAvatar(usedId, opts);
+
+    return encodeToBase64(stream);
+};
 
 /**
  * @param {String} strForHash - произвольная строка
@@ -43,11 +50,7 @@ function saveToDisk(stream, pathToSave) {
  * (https://www.npmjs.com/package/retricon-without-canvas)
  * @return {Promise}
  */
-module.exports.getPictureInBase64 = (usedId, opts = retricon.style.github) => {
-    const stream = generateAvatar(usedId, opts);
-
-    return encodeToBase64(stream);
-};
+module.exports.getPictureInBase64 = getPictureInBase64;
 
 /**
  * @param {String} usedId
@@ -61,4 +64,14 @@ module.exports.getPathToGeneratedPicture = (pathToSave, usedId, opts = retricon.
     const stream = generateAvatar(usedId, opts);
 
     return saveToDisk(stream, pathToSave);
+};
+
+module.exports.generateAndUpload = async (id, opts = retricon.style.github) => {
+    const avatarData = `data:image/png;base64,${await getPictureInBase64(id)}`;
+    const promise = new Promise((resolve, reject) => {
+        cloudinary.uploader.upload(avatarData, data => {
+            resolve(data);
+        });
+    });
+    return promise;
 };

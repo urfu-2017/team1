@@ -7,6 +7,8 @@ const { User } = require('../../../schemas/user');
 
 const { getMetadata } = require('../../../lib/metadata');
 
+const { generateAndUpload } = require('../../../lib/avatar-generation');
+
 const _ = require('lodash');
 
 class ChatController {
@@ -50,7 +52,8 @@ class ChatController {
     static async groupPost(req, res) {
         const { userIds } = req.body;
         userIds.push(req.user._id);
-        const chat = await ChatManager.create(userIds, null, 'group');
+        const data = await generateAndUpload(Math.random().toString());
+        const chat = await ChatManager.create(userIds, data.secure_url, 'group');
         res.status(200).send(chat);
     }
 
