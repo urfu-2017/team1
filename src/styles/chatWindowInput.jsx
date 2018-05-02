@@ -50,6 +50,15 @@ const Textarea = styled.div`
         padding: 5px;
         cursor: pointer;
     }
+
+    .clip {
+        cursor: pointer;
+        display: inline-block;
+        margin: 10px 0;
+        width: 25px;
+        text-align: center;
+        vertical-align: top;
+   }
 `;
 
 export default Textarea;

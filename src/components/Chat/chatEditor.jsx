@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {graphql, Mutation} from 'react-apollo';
-import {Scrollbars} from 'react-custom-scrollbars';
+import { graphql, Mutation } from 'react-apollo';
+import { Scrollbars } from 'react-custom-scrollbars';
 
-import {GetChatMembers, GetUserContacts} from '../../graphqlQueries/queries';
-import {AddUserToChat} from '../../graphqlQueries/mutations';
-import {Editor, AddButton, UserList, Contact} from '../../styles/chatEditor';
+import { GetChatMembers, GetUserContacts } from '../../graphqlQueries/queries';
+import { AddUserToChat } from '../../graphqlQueries/mutations';
+import { Editor, AddButton, UserList, Contact } from '../../styles/chatEditor';
 import ContactsList from '../contactsList';
-import {withCurrentUser} from '../../lib/currentUserContext';
+import { withCurrentUser } from '../../lib/currentUserContext';
+import ChatImageSender from './chatImageSender';
+import { UpdateChatPicture } from '../../graphqlQueries/mutations';
 
 
 @withCurrentUser
@@ -20,6 +22,7 @@ import {withCurrentUser} from '../../lib/currentUserContext';
     options: ({ currentUser }) => ({ variables: { userId: currentUser.id } }),
     props: GetUserContacts.map
 })
+@graphql(UpdateChatPicture.mutation, { props: UpdateChatPicture.map })
 export default class ChatEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -59,6 +62,22 @@ export default class ChatEditor extends React.Component {
     toggleUsersList = () => this.props.members &&
         this.setState(prev => ({ usersListOpened: !prev.usersListOpened }));
 
+    getImageUploadWindow = () => {
+        return (this.state.uploadWindow) ?
+            (<ChatImageSender onSendImage={this.onSendImage} closeImageSender={this.openOrCloseChatImageUploadWindow} />) : '';
+    }
+
+    onSendImage = (urlInBase64) => {
+        this.props.updateChatPicture({
+            chatId: this.props.currentChat.id,
+            picture: urlInBase64
+        });
+    }
+
+    openOrCloseChatImageUploadWindow = () => {
+        this.setState({ uploadWindow: !this.state.uploadWindow });
+    }
+
     render() {
         const { currentChat, members } = this.props;
 
@@ -67,7 +86,7 @@ export default class ChatEditor extends React.Component {
                 this.state.usersListOpened && members
                     ? this.usersList()
                     : <React.Fragment>
-                        <img className="image" src={currentChat.picture} alt="Изображение чата"/>
+                        <img className="image" onClick={this.openOrCloseChatImageUploadWindow} src={currentChat.picture} alt="Изображение чата" />
                         <div className="chat-editor">
                             <h1 className="chat-editor__header">{currentChat.title}</h1>
                             <AddButton
@@ -85,6 +104,7 @@ export default class ChatEditor extends React.Component {
                                 {members && this.getMembersList()}
                             </Scrollbars>
                         </UserList>
+                        {this.getImageUploadWindow()}
                     </React.Fragment>
             }</Editor>
         );

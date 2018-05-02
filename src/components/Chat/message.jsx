@@ -84,6 +84,21 @@ export default class Message extends React.PureComponent {
         return reactionComponents;
     }
 
+    createPicturesComponets = (pictures) => {
+        let picturesComponents = [];
+        if (pictures) {
+            picturesComponents = pictures.map(x => (
+                <img
+                    src={x}
+                    className="messageBlock__picture"
+                    alt=""
+                />
+            ));
+        }
+
+        return picturesComponents;
+    }
+
     static formatDate = new Intl.DateTimeFormat('ru', {
         hour: 'numeric',
         minute: 'numeric',
@@ -101,7 +116,7 @@ export default class Message extends React.PureComponent {
         if (!user) {
             return '';
         }
-
+        let picturesComponents = this.createPicturesComponets(message.pictures);
         let reactionComponents = this.createReactionComponents(message.reactions, currentUser.id);
         const createdAt = Message.formatDate(new Date(message.createdAt));
 
@@ -130,6 +145,7 @@ export default class Message extends React.PureComponent {
                                 <div className="metadata-container__title">{ogdata.title}</div>
                             </a>
                         </div>}
+                    {picturesComponents.length > 0 && picturesComponents}
                     {reactionComponents.length > 0 && <Reactions>{reactionComponents}</Reactions>}
                 </div>
                 {this.getPicker()}

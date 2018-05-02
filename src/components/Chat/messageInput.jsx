@@ -14,6 +14,7 @@ import Textarea from '../../styles/chatWindowInput';
 import { addNewMessage } from '../../lib/dataHandlers';
 import { CreateMessage } from '../../graphqlQueries/mutations';
 import { GetChatMessages } from '../../graphqlQueries/queries';
+import MessageImageSender from './messageImageSender';
 
 
 @withCurrentUser
@@ -116,7 +117,22 @@ export default class MessageInput extends React.Component {
     onEmojiClick = (_, val) => this.addEmojiIntoText(val.name);
 
     getPicker = () => (this.state.emoji) ?
-    (<EmojiPicker onEmojiClick={this.onEmojiClick} disableDiversityPicker />) : '';
+        (<EmojiPicker onEmojiClick={this.onEmojiClick} disableDiversityPicker />) : '';
+
+    getImageUploadWindow = () => (this.state.uploadWindow) ?
+        (<MessageImageSender onSendImage={this.onSendImage} closeImageSender={this.openOrCloseUploadWindow} />) : '';
+    
+
+    onSendImage = (urlInBase64) => {
+        const message = this.getMessage();
+        message.pictures.push(urlInBase64);
+
+        this.props.createMessage(message, {
+            optimisticResponse: this.optimisticResponse(message),
+            update: this.updateCache
+        });
+        this.openOrCloseUploadWindow();
+    }
 
     getButtonWithSmile = () => (
         <div onClick={this.openOrCloseEmojies}
@@ -126,6 +142,18 @@ export default class MessageInput extends React.Component {
             &#x263A;
         </div>
     );
+
+    getButtonWithImageUpload = () => (
+        <div onClick={() => { this.openOrCloseUploadWindow(); }}
+            className="clip"
+            title="Send picture">
+            📎
+    </div>
+    )
+
+    openOrCloseUploadWindow = () => {
+        this.setState({ uploadWindow: !this.state.uploadWindow });
+    }
 
     render() {
         return (
@@ -138,7 +166,11 @@ export default class MessageInput extends React.Component {
                         placeholder="Сообщение..."
                         value={this.state.message}
                         required />
+                    {this.getButtonWithImageUpload()}
                     {this.getButtonWithSmile()}
+                </div>
+                <div>
+                    {this.getImageUploadWindow()}
                 </div>
                 <div class="picker__style">
                     {this.getPicker()}
