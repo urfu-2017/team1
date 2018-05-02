@@ -15,5 +15,6 @@ router.get('/invite/:id', ChatController.invite);
 router.get('/contacts', ContactController.get);
 
 router.post('/upload/avatar', UploadController.avatar);
+router.post('/upload/picture', UploadController.sendPicture);
 
 module.exports = router;

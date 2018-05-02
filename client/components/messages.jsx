@@ -106,6 +106,7 @@ export default class Messages extends Component {
                 messageId={message._id}
                 chat={chat}
                 message={message.message}
+                picture={message.picture}
                 creationTime={message.createdAt}
                 fromMe={message.sender.userId === user._id}
                 isSuccess={message.isSuccess == null ? true : message.isSuccess}

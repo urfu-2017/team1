@@ -8,7 +8,9 @@ import {
     CHANGE_PROFILE_EDITOR_STATE,
     CHANGED_GROUP_CHAT_CREATOR_STATE,
     CHANGED_GROUP_CHAT_EDITOR_STATE,
-    UPDATE_CHAT
+    UPDATE_CHAT,
+    CHANGE_IMAGE_SENDER_STATE,
+    MESSAGE_PICTURE_SAVED
 } from '../actions/actions';
 
 const initialStateStub = {
@@ -21,7 +23,8 @@ const initialStateStub = {
     editedChat: null,
     isOpenParanja: false,
     profileEditorState: false,
-    groupChatEditorState: false
+    groupChatEditorState: false,
+    imageSenderState: false
 };
 
 export default function createMetaReducer(currentUser) {
@@ -62,6 +65,10 @@ export default function createMetaReducer(currentUser) {
             }
             return Object.assign({}, state);
         }
+        case CHANGE_IMAGE_SENDER_STATE: {
+            state.imageSenderState = action.state;
+            return Object.assign({}, state);
+        }
         case MESSAGE_SAVED: {
             const { chat, dumbMessage, message } = action;
             for (const messageIndex in chat.messages) { // eslint-disable-line
@@ -73,6 +80,11 @@ export default function createMetaReducer(currentUser) {
             state.currentChat = Object.assign({}, chat);
             return Object.assign({}, state);
         }
+        case MESSAGE_PICTURE_SAVED:
+            const { chat, message } = action;
+            chat.messages.push(message);
+            state.currentChat = Object.assign({}, chat);
+            return Object.assign({}, state);
         case SELECT_CHAT:
             state.selectedChatId = action.id;
             return Object.assign({}, state);

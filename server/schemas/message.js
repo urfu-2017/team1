@@ -14,7 +14,8 @@ const messageSchema = new Schema({
     sender: senderSchema,
     message: { type: String, required: true },
     metadata: { type: Object },
-    reactions: [reactionSchema]
+    reactions: [reactionSchema],
+    picture: { type: String }
 }, { timestamps: true });
 
 module.exports = { Message: mongoose.model('Message', messageSchema), messageSchema };

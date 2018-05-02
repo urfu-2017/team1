@@ -13,7 +13,9 @@ class ChatWindowInput extends Component {
         addMessageFromChatInput: PropTypes.func,
         sendMessage: PropTypes.func,
         chat: PropTypes.shape(),
-        user: PropTypes.shape()
+        user: PropTypes.shape(),
+        setImageSenderState: PropTypes.func,
+        showParanja: PropTypes.func
     }
 
     constructor(props) {
@@ -86,8 +88,12 @@ class ChatWindowInput extends Component {
         this.setState({ message: `${this.state.message}${this.findEmoji(emoji.id)}` });
 
     render() {
-        let picker = '';
-        if (this.state.emoji) {
+        const { setImageSenderState } = this.props;
+
+        let picker;
+        if (!this.state.emoji) {
+            picker = '';
+        } else {
             picker = (
                 <div className="picker__style">
                     <span>
@@ -106,9 +112,8 @@ class ChatWindowInput extends Component {
                     </div>
                 </div>
             );
-        } else {
-            picker = '';
         }
+
         return (
             <Textarea>
                 <div className="inputField__style">
@@ -121,7 +126,13 @@ class ChatWindowInput extends Component {
                         value={this.state.message}
                         required
                     />
-                    <div onClick={this.openEmojies}
+                    <div
+                        title="Send picture"
+                        className="clip"
+                        onClick={() => { setImageSenderState(true); }}
+                    />
+                    <div
+                        onClick={this.openEmojies}
                         className="openEmojiButton__style"
                         title="Emoji"
                     >

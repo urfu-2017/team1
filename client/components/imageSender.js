@@ -5,11 +5,11 @@ import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../st
 import ImageHandler from './imageHandler';
 
 
-class ProfileEditor extends ImageHandler {
+class ImageSender extends ImageHandler {
     static propTypes = {
-        showParanja: PropTypes.func,
-        onChangeAvatar: PropTypes.func,
-        setProfileEditorState: PropTypes.func
+        onSendImage: PropTypes.func,
+        setImageSenderState: PropTypes.func,
+        chat: PropTypes.shape()
     };
 
     constructor(props) {
@@ -17,23 +17,26 @@ class ProfileEditor extends ImageHandler {
         this.state = {};
     }
 
-    saveAvatar = () => {
-        const { onChangeAvatar } = this.props;
+    sendImage = () => {
+        const { onSendImage, chat } = this.props;
         const reader = new window.FileReader();
 
         this.readPictureFromInput(reader, async () => {
-            onChangeAvatar(reader.result);
+            onSendImage(chat, reader.result);
         });
     };
 
+
     render() {
-        const { showParanja, setProfileEditorState } = this.props;
+        const { setImageSenderState } = this.props;
+
         return (
             <Editor>
-                <Exit onClick={() => { showParanja(false); setProfileEditorState(false); }}>
+                <div className="header">Отправить картинку в чат</div>
+                <Exit onClick={() => { setImageSenderState(false); }}>
                     &#10006;
                 </Exit>
-                <div className="header">Загрузить аватар</div>
+                
                 <DownloadImage
                     onDrop={this.drop}
                     onDragOver={this.dragover}
@@ -43,7 +46,7 @@ class ProfileEditor extends ImageHandler {
                         className="text"
                         id="download_image_text"
                     >
-                        Загрузить фото
+                        Загрузить картинку
                     </p>
                 </DownloadImage>
                 <div className="buttons">
@@ -56,8 +59,8 @@ class ProfileEditor extends ImageHandler {
                     <CreateButton
                         id="saveAvatar"
                         type="button"
-                        value="Сохранить"
-                        onClick={this.saveAvatar}
+                        value="Отправить"
+                        onClick={this.sendImage}
                     />
                 </div>
             </Editor >
@@ -65,4 +68,4 @@ class ProfileEditor extends ImageHandler {
     }
 }
 
-export default ProfileEditor;
+export default ImageSender;

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ChatWindowWrapper from '../styles/chatWindow';
+import { ParanjaWrapper } from '../styles/paranja';
 
 import Messages from '../containers/messages';
 import ChatWindowInput from './chatWindowInput';
+import ImageSender from '../containers/imageSender';
 
 import GroupChatCreate from '../containers/groupChat/groupChatCreate';
 import GroupChatEdit from '../containers/groupChat/groupChatEdit';
@@ -19,12 +21,15 @@ export default class ChatWindow extends Component {
         editedChat: PropTypes.shape(),
         user: PropTypes.shape(),
         chat: PropTypes.shape(),
-        socketURL: PropTypes.string
+        socketURL: PropTypes.string,
+        setImageSenderState: PropTypes.func,
+        imageSenderState: PropTypes.bool
     };
 
     static defaultProps = {
         chat: {},
-        user: {}
+        user: {},
+        imageSenderState: false
     };
 
     constructor(props) {
@@ -33,13 +38,31 @@ export default class ChatWindow extends Component {
     }
 
     getChatWindowComponent() {
-        const { groupChatEditorState, chat, user, sendMessage, addMessageFromChatInput, socketURL, setReactionToMessage, editedChat } = this.props;
+        const {
+            groupChatEditorState,
+            chat,
+            user,
+            sendMessage,
+            addMessageFromChatInput,
+            socketURL,
+            setReactionToMessage,
+            editedChat,
+            imageSenderState,
+            setImageSenderState
+        } = this.props;
 
         if (groupChatEditorState) {
             return <GroupChatCreate />;
         }
         if (editedChat != null) {
-            return <GroupChatEdit />
+            return <GroupChatEdit />;
+        }
+        if (imageSenderState) {
+            return (<ImageSender
+                user={user}
+                chat={chat}
+                setImageSenderState={setImageSenderState}
+            />);
         }
         if (chat._id) {
             return (<ChatWindowWrapper>
@@ -56,6 +79,7 @@ export default class ChatWindow extends Component {
                     addMessageFromChatInput={addMessageFromChatInput}
                     chat={chat}
                     user={user}
+                    setImageSenderState={setImageSenderState}
                 />
             </ChatWindowWrapper >);
         }

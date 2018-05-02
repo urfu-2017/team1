@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
 import ChatWindow from '../components/chatWindow';
-import { addMessageFromChatInput, sendMessage, setReactionToMessage } from '../actions/actions';
+import { addMessageFromChatInput, sendMessage, setReactionToMessage, setImageSenderState } from '../actions/actions';
 
 const mapStateToProps = state => ({
     user: state.currentInfo.currentUser,
     chat: state.currentInfo.currentChat,
     socketURL: state.socketURL,
     groupChatEditorState: state.currentInfo.groupChatEditorState,
-    editedChat: state.currentInfo.editedChat
+    editedChat: state.currentInfo.editedChat,
+    imageSenderState: state.currentInfo.imageSenderState
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -19,6 +20,9 @@ const mapDispatchToProps = dispatch => ({
     },
     setReactionToMessage: (chat, message, reactionId) => {
         dispatch(setReactionToMessage(chat, message, reactionId));
+    },
+    setImageSenderState: state => {
+        dispatch(setImageSenderState(state));
     }
 });
 

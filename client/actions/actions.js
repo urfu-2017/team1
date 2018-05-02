@@ -6,6 +6,7 @@ export const SEND_NEW_MESSAGE = 'SEND_NEW_MESSAGE';
 export const SELECT_CHAT = 'SELECT_CHAT';
 export const MESSAGE_SAVED = 'MESSAGE_SAVED';
 export const SEND_NEW_CHAT = 'SEND_NEW_CHAT';
+export const MESSAGE_PICTURE_SAVED = 'MESSAGE_PICTURE_SAVED';
 
 export const CHANGED_GROUP_CHAT_CREATOR_STATE = 'CHANGED_GROUP_CHAT_CREATOR_STATE';
 export const CHANGED_GROUP_CHAT_EDITOR_STATE = 'CHANGED_GROUP_CHAT_EDITOR_STATE';
@@ -17,6 +18,8 @@ export const UPDATE_CONTACT_LIST = 'UPDATE_CONTACT_LIST';
 export const SAVED_AVATAR = 'SAVED_AVATAR';
 
 export const CHANGE_PROFILE_EDITOR_STATE = 'CHANGE_PROFILE_EDITOR_STATE';
+
+export const CHANGE_IMAGE_SENDER_STATE = 'CHANGE_IMAGE_SENDER_STATE';
 
 export const VISIBILITY_PARANJA = 'VISIBILITY_PARANJA';
 
@@ -57,9 +60,13 @@ export const setProfileEditorState = state => ({ type: CHANGE_PROFILE_EDITOR_STA
 
 export const setGroupChatCreatorState = state => ({ type: CHANGED_GROUP_CHAT_CREATOR_STATE, state });
 export const setGroupChatEditorState = chat => ({ type: CHANGED_GROUP_CHAT_EDITOR_STATE, chat });
+export const setImageSenderState = state => ({ type: CHANGE_IMAGE_SENDER_STATE, state });
 
 export const saveMessage = (chat, isSuccess, dumbMessage, message) =>
     ({ type: MESSAGE_SAVED, chat, isSuccess, dumbMessage, message });
+
+export const savePictureMessage = (chat, isSuccess, message) =>
+    ({ type: MESSAGE_PICTURE_SAVED, chat, isSuccess, message });
 
 export const sendMessage = (chat, message) => dispatch => {
     fetch(`api/v1/chats/${chat._id}/send`, makeRequestOptions({ body: { message }, method: 'POST' }))
@@ -133,6 +140,18 @@ export const changeAvatar = avatarData => dispatch => {
             dispatch(setProfileEditorState(false));
             dispatch(setAvatar(response.avatar));
         });
+};
+
+export const sendImage = (chat, imageData) => dispatch => {
+    fetch('/api/v1/upload/picture', makeRequestOptions({ method: 'POST', body: { imageData, chatId: chat._id } }))
+        .then(response => response.json())
+        .then(message => {
+            dispatch(setImageSenderState(false));
+            if (message.picture) {
+                dispatch(savePictureMessage(chat, true, message));
+            }
+        })
+        .catch(() => alert('Слишком много запросов на сервере, подождите'));
 };
 
 export const setReactionToMessage = (chat, messageId, reactionId) => dispatch => {

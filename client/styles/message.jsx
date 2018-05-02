@@ -79,4 +79,8 @@ export const MessageWrapper = styled.article`
         margin: 0 5px;
         border-radius: 50%;
     }
+    .messageBlock__picture {
+        padding: 5%;
+        width: 90%;
+    }
 `;

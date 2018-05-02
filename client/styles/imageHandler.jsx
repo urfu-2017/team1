@@ -9,11 +9,16 @@ export const Editor = styled.article`
     display: flex;
     align-items: center;
     flex-direction: column;
-    justify-content: space-around;
     transform: translate(-50%, -50%);
     background: #fff;
     .header {
-        padding: 0 30px;
+        text-align: center;
+        z-index: -1;
+        background: #639eca;
+        color: white;
+        width: 100%;
+        padding: 20px 0;
+        margin-bottom: 10px;
     }
     .buttons {
         width: 100%;
@@ -21,6 +26,7 @@ export const Editor = styled.article`
         display: flex;
         justify-content: space-around;
         align-items: center;
+        margin-top: 20px;
     }
 `;
 
@@ -34,9 +40,13 @@ export const DownloadImage = styled.div`
     align-items: center;
     justify-content: center;
     border: 2px dashed;
+    margin-top: 15px;
+    color: #639eca;
     .text {
+        text-align: center;
         font-size: 20px;
         background: #fff;
+        width: 180px;
     }
 `;
 
@@ -64,4 +74,7 @@ export const Exit = styled.div`
     right: 5px;
     top: 0;
     font-size: 22px;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
 `;

@@ -10,7 +10,7 @@ export const MessagesList = styled.section`
 `;
 
 export const Header = styled.section`
-    height: 55px;
+    min-height: 55px;
     width: 100%;
     display: flex;
     font-weight: 600;

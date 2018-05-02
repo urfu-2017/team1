@@ -1,4 +1,3 @@
-
 import styled from 'styled-components';
 
 const Textarea = styled.div`
@@ -51,6 +50,16 @@ const Textarea = styled.div`
         padding: 5px;
         cursor: pointer;
     }
+
+   .clip {
+        cursor: pointer;
+        display: inline-block;
+        margin: 7px;
+        width: 25px;
+        height: 25px;
+        background-image: url("/static/images/clip.ico");
+        background-size: contain;
+   }
 `;
 
 export default Textarea;
