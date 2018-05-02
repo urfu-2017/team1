@@ -110,7 +110,7 @@ export const asyncCreateChat = (sourceUserId, targetUserId, callback) => dispatc
 };
 
 export const createGroupChat = (name, userIds) => dispatch => {
-    fetch('/api/v1/chats/group', makeRequestOptions({ method: 'POST', body: { userIds, name }}))
+    fetch('/api/v1/chats/group', makeRequestOptions({ method: 'POST', body: { userIds, name } }))
         .then(response => response.json())
         .then(response => {
             dispatch(addChatToChatList(response));
