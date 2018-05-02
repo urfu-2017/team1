@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const GroupChatWrapper = styled.div`
     width: 900px;
+    background-color: #ffffff;
     .group-chat-header {
         justify-content: space-between;
     }
@@ -12,12 +13,13 @@ export const GroupChatWrapper = styled.div`
         padding: 0 15px;
     }
     .group-chat__input {
-        border-radius: 4px 4px;
-        margin: 15px;
+        margin: 20px;
         font-size: 15px;
-        margin-bottom: 10px;
         width: 300px;
         padding: 5px;
+    }
+    .group-chat-edit__label {
+        margin: 5px 15px 5px;
     }
     .button--left::before {
         font-family: FontAwesome5;

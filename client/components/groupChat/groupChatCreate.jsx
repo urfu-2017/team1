@@ -2,6 +2,8 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
+import { Scrollbars } from 'react-custom-scrollbars';
+
 import SelectContactsList from '../selectContactsList';
 
 import { Header } from '../../styles/messages';

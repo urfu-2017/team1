@@ -44,6 +44,7 @@ const Textarea = styled.div`
         display: inline-block;
         font-size: 25px;
         vertical-align: top;
+        padding: 8px;
     }
 
     .emoji__style {

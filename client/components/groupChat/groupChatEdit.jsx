@@ -41,7 +41,18 @@ export default class GroupChatEdit extends React.Component {
 
     render() {
         const { setGroupChatEditorState, contacts, chat } = this.props;
+        const usersInChat = [];
+        const candidates = [];
         const userInChatIds = chat.contacts.map(c => c.userId);
+
+        for (let contact of contacts) {
+            if (userInChatIds.includes(contact.userId)) {
+                usersInChat.push(contact);
+            } else {
+                candidates.push(contact);
+            }
+        }
+
         return (<GroupChatWrapper>
             <div>
                 <Header className="group-chat-header">
@@ -61,9 +72,18 @@ export default class GroupChatEdit extends React.Component {
                         onKeyPress={e => { this.onKeyPressHandler(e); }}
                     />
                 </div>
-                <Scrollbars universal style={{ 'min-height': '600px' }}>
-                    <SelectContactsList ref={scl => { this.scl = scl; }} selectedIds={userInChatIds} contacts={contacts} />
-                </Scrollbars>
+                <div>
+                    <div className="group-chat-edit__label">Пользователи в чате</div>
+                    <Scrollbars universal style={{ 'min-height': '200px' }}>
+                        <SelectContactsList ref={scl => { this.scl = scl; }} selectedIds={userInChatIds} contacts={usersInChat} />
+                    </Scrollbars>
+                </div>
+                <div>
+                    <div className="group-chat-edit__label">Добавить пользователей</div>
+                    <Scrollbars universal style={{ 'min-height': '400px' }}>
+                        <SelectContactsList ref={scl => { this.scl = scl; }} selectedIds={userInChatIds} contacts={candidates} />
+                    </Scrollbars>
+                </div>
             </div>
         </GroupChatWrapper>);
     }

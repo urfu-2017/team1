@@ -26,7 +26,7 @@ export default class SelectContactList extends React.Component {
             return (<Contact
                 key={contact.userId + Math.random()}
                 onClick={() => { this.selectContact(contact); }}
-                className="selected-contact"
+                className={`selected-contact ${isSelectedContact ? 'active' : ''}`}
             >
                 <img src={contact.avatar} alt="ава" className="contact__image" />
                 <div className="selected-contact__name">{contact.name}</div>
