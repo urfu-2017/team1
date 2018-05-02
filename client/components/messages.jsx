@@ -123,7 +123,9 @@ export default class Messages extends Component {
         const { chat, title, setGroupChatEditorState } = this.props;
 
         if (chat.type === 'group') {
-            return <Header className="header-chat-edit" onClick={() => { setGroupChatEditorState(chat); }}>{title}</Header>;
+            return <Header className="header-chat-edit">
+                <div className="header-chat-edit__name" onClick={() => { setGroupChatEditorState(chat); }}>{title}</div>
+            </Header>;
         } else {
             return <Header>{title}</Header>;
         }

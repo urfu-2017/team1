@@ -8,5 +8,12 @@ export const getChatName = (chat, user) => {
 };
 
 export const getChatAvatar = (chat, user) => {
-    return chat.avatar || chat.contacts.filter(contact => contact.userId !== user._id)[0].avatar;
+    if (!chat.avatar) {
+        const contactInChatExcludeCurrent = chat.contacts.filter(contact => contact.userId !== user._id);
+        if (contactInChatExcludeCurrent.length > 0) {
+            return contactInChatExcludeCurrent[0].avatar;
+        }
+        return user.avatar;
+    }
+    return chat.avatar;
 };

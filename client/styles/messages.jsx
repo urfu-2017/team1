@@ -18,15 +18,22 @@ export const Header = styled.section`
     justify-content: center;
     color: white;
     background-color: #639eca;
-    &.header-chat-edit {
+    .header-chat-edit__name {
         cursor: pointer;
     }
-    &.header-chat-edit::after {
+    .header-chat-edit__name::after {
         font-family: FontAwesome5;
         font-weight: 900;
         content: '\f303';
         padding-left: 5px;
         font-size: 10px;
+    }
+    .header-chat-edit__name {
+        text-align: center;
+        width: 600px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 `;
 

@@ -27,6 +27,10 @@ export const ChatWrapper = styled.article`
 
 export const ChatHeader = styled.p`
     margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 240px;
     font-weight: bold;
 `;
 
