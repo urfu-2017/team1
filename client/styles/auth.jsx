@@ -12,7 +12,7 @@ export const AuthWrapper = styled.section`
         text-align: center;
         padding: 10px;
     }
-    .inner__image: {
+    .inner__image {
         width: 35px;
         height: 35px;
         margin-left: 40%;
