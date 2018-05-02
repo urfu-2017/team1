@@ -5,7 +5,7 @@ import { setGroupChatCreatorState, setProfileEditorState } from '../actions/acti
 import Menu from '../components/menu';
 
 const mapStateToProps = (state, props) => ({
-    user: state.currentInfo.user,
+    user: state.currentInfo.currentUser,
     groupChatEditorState: state.currentInfo.groupChatEditorState
 });
 
