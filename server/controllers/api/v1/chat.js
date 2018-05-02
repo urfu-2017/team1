@@ -69,14 +69,14 @@ class ChatController {
     }
 
     static async invite(req, res) {
+        const { user } = req;
         const chat = await ChatManager.findByInviteId(req.params.id);
         if (!chat || chat.type !== 'group') {
             res.status(404).send();
             return;
         }
-        if (!chat.contacts.find(c => c.userId === req.user._id)) {
-            chat.contacts.push(req.user._id);
-            await chat.save();
+        if (!chat.contacts.find(c => c.userId === user._id)) {
+            await ChatManager.addUserToChat(chat, user);
         }
         res.redirect('/');
     }

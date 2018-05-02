@@ -27,6 +27,16 @@ class ChatManager {
         return await Chat.findOne({ _id: chatId });
     }
 
+    static async addUserToChat(chat, user) {
+        const contact = {
+            userId: user._id,
+            name: user.name,
+            avatar: user.avatar
+        };
+        chat.contacts.push(contact);
+        return await chat.save();
+    }
+
     static async addMessageToChat(chat, message) {
         chat.messages.push(message);
         return await chat.save();

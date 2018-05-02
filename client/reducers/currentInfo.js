@@ -27,8 +27,9 @@ const initialStateStub = {
     imageSenderState: false
 };
 
-export default function createMetaReducer(currentUser) {
+export default function createMetaReducer(currentUser, serverURL) {
     initialStateStub.currentUser = currentUser;
+    initialStateStub.serverURL = serverURL;
     const initialState = Object.assign({}, initialStateStub);
     return (state = initialState, action) => {
         switch (action.type) {

@@ -10,8 +10,6 @@ router.post('/chats/:id/edit', ChatController.editChat);
 router.post('/chats/:id/:messageId/reaction', ChatController.setReactionToMessage);
 router.get('/chats', ChatController.get);
 
-router.get('/invite/:id', ChatController.invite);
-
 router.get('/contacts', ContactController.get);
 
 router.post('/upload/avatar', UploadController.avatar);

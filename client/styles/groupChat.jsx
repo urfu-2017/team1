@@ -21,6 +21,12 @@ export const GroupChatWrapper = styled.div`
     .group-chat-edit__label {
         margin: 5px 15px 5px;
     }
+    .invite-container {
+        margin: 10px 15px 10px;
+    }
+    .invite-container__link {
+        color: #639eca;
+    }
     .button--left::before {
         font-family: FontAwesome5;
         font-weight: 900;

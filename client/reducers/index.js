@@ -8,7 +8,7 @@ export default function makeReducer(initialProps) {
     return combineReducers({
         chats: chatReducer,
         contacts: contactsReducer,
-        currentInfo: createCurrentInfo(initialProps.user),
+        currentInfo: createCurrentInfo(initialProps.user, initialProps.serverURL),
         socketURL: initialProps.socketURL
     });
 }

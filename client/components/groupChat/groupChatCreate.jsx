@@ -59,7 +59,7 @@ export default class GroupChatCreate extends React.Component {
                         value={this.state.name}
                         onChange={(e) => { this.onChangeHandler(e); }}
                     />
-                    <Scrollbars universal style={{ 'min-height': '600px' }}>
+                    <Scrollbars universal style={{ 'minHeight': '600px' }}>
                         <SelectContactsList ref={scl => { this.scl = scl; }} contacts={contacts} />
                     </Scrollbars>
                 </div>

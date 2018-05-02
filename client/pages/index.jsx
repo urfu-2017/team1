@@ -27,7 +27,8 @@ export default class KilogrammApp extends React.Component {
         return {
             user: req.user,
             socketURL: req.serverURL,
-            users: req.users
+            users: req.users,
+            serverURL: req.serverURL
         };
     }
 

@@ -3,6 +3,8 @@
 const passport = require('passport');
 const apiRouter = require('./controllers/api/routes');
 
+const { ChatController } = require('./controllers/api/v1/chat');
+
 module.exports = app => {
     app.get('/auth/github', passport.authenticate('github'));
     app.get(
@@ -14,4 +16,6 @@ module.exports = app => {
     );
 
     app.use('/api', apiRouter);
+
+    app.get('/invite/:id', ChatController.invite);
 };

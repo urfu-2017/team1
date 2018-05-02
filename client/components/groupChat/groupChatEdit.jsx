@@ -13,6 +13,7 @@ import { GroupChatWrapper } from '../../styles/groupChat';
 
 export default class GroupChatEdit extends React.Component {
     static propTypes = {
+        serverURL: PropTypes.string,
         chat: PropTypes.shape(),
         contacts: PropTypes.arrayOf(PropTypes.shape()),
         setGroupChatEditorState: PropTypes.func,
@@ -40,7 +41,7 @@ export default class GroupChatEdit extends React.Component {
     }
 
     render() {
-        const { setGroupChatEditorState, contacts, chat } = this.props;
+        const { setGroupChatEditorState, contacts, chat, serverURL } = this.props;
         const usersInChat = [];
         const candidates = [];
         const userInChatIds = chat.contacts.map(c => c.userId);
@@ -52,6 +53,8 @@ export default class GroupChatEdit extends React.Component {
                 candidates.push(contact);
             }
         }
+
+        const inviteLink = `${serverURL}/invite/${chat._id}`;
 
         return (<GroupChatWrapper>
             <div>
@@ -72,15 +75,16 @@ export default class GroupChatEdit extends React.Component {
                         onKeyPress={e => { this.onKeyPressHandler(e); }}
                     />
                 </div>
+                <div className="invite-container">Ссылка на добавления в чат: <span className="invite-container__link">{inviteLink}</span></div>
                 <div>
                     <div className="group-chat-edit__label">Пользователи в чате</div>
-                    <Scrollbars universal style={{ 'min-height': '200px' }}>
+                    <Scrollbars universal style={{ 'minHeight': '200px' }}>
                         <SelectContactsList ref={scl => { this.scl = scl; }} selectedIds={userInChatIds} contacts={usersInChat} />
                     </Scrollbars>
                 </div>
                 <div>
                     <div className="group-chat-edit__label">Добавить пользователей</div>
-                    <Scrollbars universal style={{ 'min-height': '400px' }}>
+                    <Scrollbars universal style={{ 'minHeight': '400px' }}>
                         <SelectContactsList ref={scl => { this.scl = scl; }} selectedIds={userInChatIds} contacts={candidates} />
                     </Scrollbars>
                 </div>

@@ -6,7 +6,8 @@ import GroupChatEdit from '../../components/groupChat/groupChatEdit';
 
 const mapStateToProps = (state, props) => ({
     chat: state.currentInfo.editedChat,
-    contacts: state.contacts
+    contacts: state.contacts,
+    serverURL: state.currentInfo.serverURL
 });
 
 const mapDispatchToProps = dispatch => ({
