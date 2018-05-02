@@ -2,14 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../../styles/imageHandler';
-<<<<<<< 33781bea0447617a68ba0901eb6cb107c2bd1239
-import ImageHandler from '../../lib/imageHandler';
-=======
 import ImageHandler from '../imageHandler';
->>>>>>> add imageHandler
 
 
-class MessageImageSender extends ImageHandler {
+class ChatImageSender extends ImageHandler {
     static propTypes = {
         onSendImage: PropTypes.func,
         closeImageSender: PropTypes.func
@@ -37,7 +33,7 @@ class MessageImageSender extends ImageHandler {
                 <Exit onClick={() => { closeImageSender(false); }}>
                     &#10006;
                 </Exit>
-                <h1 className="header">Отправить картинку в чат</h1>
+                <h1 className="header">Изменить картинку чата</h1>
                 <DownloadImage
                     onDrop={this.drop}
                     onDragOver={this.dragover}
@@ -69,4 +65,4 @@ class MessageImageSender extends ImageHandler {
     }
 }
 
-export default MessageImageSender;
+export default ChatImageSender;

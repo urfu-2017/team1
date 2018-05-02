@@ -2,17 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 
+<<<<<<< 33781bea0447617a68ba0901eb6cb107c2bd1239
 //import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../styles/imageHandler';
 import {Editor, DownloadImage, DownloadButton, CreateButton, Exit} from '../styles/profile';
 import {UpdateUserAvatar} from '../graphqlQueries/mutations';
 import {withCurrentUser} from '../lib/currentUserContext';
 import ImageHandler from '../lib/imageHandler';
+=======
+import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../styles/imageHandler';
+import {UpdateUserAvatar} from '../graphqlQueries/mutations';
+import {withCurrentUser} from '../lib/currentUserContext';
+import ImageHandler from './imageHandler';
+>>>>>>> add imageHandler
 
 
 @withCurrentUser
 @graphql(UpdateUserAvatar.mutation, { props: UpdateUserAvatar.map })
+<<<<<<< 33781bea0447617a68ba0901eb6cb107c2bd1239
 export default class ProfileEditor extends ImageHandler {
     static isSaved = false;
+=======
+export default class Profile extends ImageHandler {
+>>>>>>> add imageHandler
     static propTypes = {
         currentUser: PropTypes.object,
         mainComponentChanger: PropTypes.func
@@ -39,7 +50,10 @@ export default class ProfileEditor extends ImageHandler {
                 avatarUrl: avatarData
             });
         });
+<<<<<<< 33781bea0447617a68ba0901eb6cb107c2bd1239
         ProfileEditor.isSaved = true;
+=======
+>>>>>>> add imageHandler
     };
 
     render() {

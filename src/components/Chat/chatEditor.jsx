@@ -99,8 +99,7 @@ export default class ChatEditor extends React.Component {
                 {this.state.usersListOpened && members
                     ? this.usersList()
                     : <React.Fragment>
-                        <img className="image" onClick={this.openOrCloseChatImageUploadWindow} src={currentChat.picture}
-                             alt="Изображение чата"/>
+                        <img className="image" onClick={this.openOrCloseChatImageUploadWindow} src={currentChat.picture} alt="Изображение чата" />
                         <div className="chat-editor">
                             <h1 className="chat-editor__header">{currentChat.title}</h1>
                             <AddButton

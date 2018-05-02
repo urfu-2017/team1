@@ -17,12 +17,9 @@ export const Header = styled.section`
 `;
 
 export const ScrollButton = styled.div`
-<<<<<<< 9d149547b4c263f631a4194cfee60ca22e153afd
     display: flex;
     justify-content: center;
     align-items: center;
-=======
->>>>>>> add styles
     background-color: white;
     position: fixed;
     padding: 0;
