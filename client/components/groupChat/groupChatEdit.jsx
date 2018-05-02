@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 
 import { getChatName } from '../../utils/chats';
 
+import { Scrollbars } from 'react-custom-scrollbars';
+
 import SelectContactsList from '../selectContactsList';
 
 import { Header } from '../../styles/messages';
@@ -59,7 +61,9 @@ export default class GroupChatEdit extends React.Component {
                         onKeyPress={e => { this.onKeyPressHandler(e); }}
                     />
                 </div>
-                <SelectContactsList ref={scl => { this.scl = scl; }} selectedIds={userInChatIds} contacts={contacts} />
+                <Scrollbars universal style={{ 'min-height': '600px' }}>
+                    <SelectContactsList ref={scl => { this.scl = scl; }} selectedIds={userInChatIds} contacts={contacts} />
+                </Scrollbars>
             </div>
         </GroupChatWrapper>);
     }
