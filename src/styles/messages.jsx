@@ -33,18 +33,9 @@ export const ScrollButton = styled.div`
     left: 92%;
     cursor: pointer;
     &::before {
-<<<<<<< 9d149547b4c263f631a4194cfee60ca22e153afd
         content: '▼';
         font-weight: 900;
         font-size: 20px;
-=======
-        font-family: FontAwesome5;
-        content: '\f107';
-        font-weight: 900;
-        position: absolute;
-        top: 4px;
-        left: 7px;
-        font-size: 24px;
->>>>>>> add styles
+
     }
 `;

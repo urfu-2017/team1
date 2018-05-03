@@ -2,28 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 
-<<<<<<< 33781bea0447617a68ba0901eb6cb107c2bd1239
-//import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../styles/imageHandler';
-import {Editor, DownloadImage, DownloadButton, CreateButton, Exit} from '../styles/profile';
-import {UpdateUserAvatar} from '../graphqlQueries/mutations';
-import {withCurrentUser} from '../lib/currentUserContext';
-import ImageHandler from '../lib/imageHandler';
-=======
 import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../styles/imageHandler';
 import {UpdateUserAvatar} from '../graphqlQueries/mutations';
 import {withCurrentUser} from '../lib/currentUserContext';
 import ImageHandler from './imageHandler';
->>>>>>> add imageHandler
 
 
 @withCurrentUser
 @graphql(UpdateUserAvatar.mutation, { props: UpdateUserAvatar.map })
-<<<<<<< 33781bea0447617a68ba0901eb6cb107c2bd1239
-export default class ProfileEditor extends ImageHandler {
+
+export default class ProfileEditor extends React.PureComponent {
     static isSaved = false;
-=======
-export default class Profile extends ImageHandler {
->>>>>>> add imageHandler
     static propTypes = {
         currentUser: PropTypes.object,
         mainComponentChanger: PropTypes.func
@@ -50,10 +39,29 @@ export default class Profile extends ImageHandler {
                 avatarUrl: avatarData
             });
         });
-<<<<<<< 33781bea0447617a68ba0901eb6cb107c2bd1239
         ProfileEditor.isSaved = true;
-=======
->>>>>>> add imageHandler
+    };
+
+    drawBackground = () => {
+        const reader = new window.FileReader();
+        this.readPictureFromInput(reader, () => {
+            const dataUrl = reader.result;
+            console.log(dataUrl);
+            const area = document.getElementById('area-for-drop');
+            area.style.backgroundImage = `url(${dataUrl})`;
+        });
+    };
+
+    readPictureFromInput = (reader, cb) => {
+        reader.onloadend = async () => {
+            cb();
+        };
+        const avatar = this.getFirstFile();
+        if (!avatar) {
+            console.log('не подгружен файл');
+            return;
+        }
+        reader.readAsDataURL(avatar);
     };
 
     render() {
@@ -74,13 +82,21 @@ export default class Profile extends ImageHandler {
                     >
                         &#10006;
                     </Exit>
+<<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
                     <h1
+=======
+                    <h1 
+>>>>>>> change design
                         style={{ margin: "0" }}
                         className="header"
                         >
                             Загрузить аватар
                     </h1>
+<<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
                 </div>
+=======
+                </div>    
+>>>>>>> change design
                 <DownloadImage
                     style={{ marginTop: "50" }}
                     onDrop={this.drop}

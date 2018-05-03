@@ -146,17 +146,21 @@ export default class Contacts extends React.Component {
         // TODO: refactor this, PLEEEEEASE11111
         return <React.Fragment>
             <Tabs
-                style={{ width: '100%' }}
+                style={{ width: "100%", background: "#fff" }}
                 tabTemplateStyle={{ height: '100%' }}
                 contentContainerStyle={{ height: '100%' }}
                 tabItemContainerStyle={{ height: '60px' }}
             >
+<<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
 <<<<<<< 724d9cae2dcc6ae08426775fdeafbb814b9f5659
+=======
+>>>>>>> change design
                 <Tab
                     label="Контакты"
                     value="contacts"
                     onActive={this.hideAllUsers}
                     style={{ width: "100%", background: "#5682a3" }} >
+<<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
                     { !this.state.showAllUsers && this.withContacts(this.myContacts) }
                     
                 </Tab>
@@ -170,10 +174,16 @@ export default class Contacts extends React.Component {
             </Tabs> 
 =======
                 <Tab label="Контакты" value="contacts" onActive={this.hideAllUsers} >
+=======
+>>>>>>> change design
                     { !this.state.showAllUsers && this.withContacts(this.myContacts) }
                     
                 </Tab>
-                <Tab  label="Все пользователи" value="allUsers" onActive={this.showAllUsers}>
+                <Tab
+                    label="Все пользователи"
+                    value="allUsers"
+                    onActive={this.showAllUsers}
+                    style={{ width: "100%", background: "#5682a3" }} >
                     { this.state.showAllUsers && this.withAllUsers(this.allUsers) }
                 </Tab>
             </Tabs>

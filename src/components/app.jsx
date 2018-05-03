@@ -8,10 +8,14 @@ import SideBar from './SideBar';
 import Contacts from './contacts';
 import {GetCurrentUser} from '../graphqlQueries/queries';
 import Profile from './profile';
+<<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
 <<<<<<< 9d149547b4c263f631a4194cfee60ca22e153afd
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 =======
 >>>>>>> add styles
+=======
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+>>>>>>> change design
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Provider as CurrentUserProvider} from '../lib/currentUserContext';
 import withLocalState from '../lib/withLocalState';
@@ -73,6 +77,7 @@ export default class App extends React.Component {
         const { currentUser } = this.props;
         !currentUser.error && !currentUser.loading && this.subscribe();
         return (
+<<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
 <<<<<<< 9d149547b4c263f631a4194cfee60ca22e153afd
             <MuiThemeProvider muiTheme={muiTheme}>
                 <Wrapper>
@@ -80,6 +85,9 @@ export default class App extends React.Component {
                     currentUser.loading && App.LoadScreen ||
 =======
             <MuiThemeProvider>
+=======
+            <MuiThemeProvider muiTheme={muiTheme}>
+>>>>>>> change design
                 <Wrapper>
                     {currentUser.error && <p>Error</p> ||
                     currentUser.loading && <p>Loading</p> ||
