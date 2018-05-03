@@ -125,7 +125,7 @@ export default class MessageInput extends React.Component {
 
     onSendImage = urlInBase64 => {
         const message = this.getMessage();
-        message.pictures.push(urlInBase64);
+        message.pictures = [urlInBase64];
 
         this.props.createMessage(message, {
             optimisticResponse: this.optimisticResponse(message),
