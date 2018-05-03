@@ -6,6 +6,7 @@ const escape = require('html-escape');
 const marked = require('marked');
 const cloudinary = require('cloudinary');
 
+
 const savePictureOnCloudinary = async (srcInBase64) => {
     const promise = new Promise(resolve => {
         cloudinary.uploader.upload(srcInBase64, data => {
@@ -15,12 +16,13 @@ const savePictureOnCloudinary = async (srcInBase64) => {
     const data = await promise;
 
     return data.secure_url;
-}
+};
+
 
 module.exports = async body => {
     if (body.operationName === 'CreateMessage') {
         const { variables } = body;
-        let { text, pictures }  = variables;
+        let { text, pictures } = variables;
         variables.metadata = await getMetadata(text);
         text = escape(text);
         variables.text = emoji.emojify(marked(text));

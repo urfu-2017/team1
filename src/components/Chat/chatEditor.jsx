@@ -35,8 +35,7 @@ export default class ChatEditor extends React.Component {
 
     getMembersList() {
         const { members } = this.props;
-        console.log(members);
-        
+
         return members
             .map(user => (
                 <ListItem
