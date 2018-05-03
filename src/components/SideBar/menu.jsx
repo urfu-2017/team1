@@ -59,8 +59,9 @@ export default class Menu extends React.Component {
         const { currentUser, mainComponentChanger } = this.props;
         return (
             <MenuRoot>
-                <List>
+                <List style={{padding: "0"}}>
                     <ListItem
+                        style={{color: "#fff", background: "#5682a3", height: "18px"}}
                         disabled
                         onClick={mainComponentChanger('Profile')}
                         leftAvatar={
@@ -70,17 +71,23 @@ export default class Menu extends React.Component {
                         {currentUser.name}
                     </ListItem>
                     <ListItem
-                       onClick={mainComponentChanger('Contacts')}
+                        style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
+                            display: "flex", alignItems: "center"}}
+                        onClick={mainComponentChanger('Contacts')}
                     >
                         Контакты
                     </ListItem>
                     <ListItem
+                        style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
+                            display: "flex", alignItems: "center"}}
                         onClick={mainComponentChanger('Profile')}
                     >
                         Редактирование профиля
                     </ListItem>
                     {this.createChatMutation(currentUser, (onClick) => (
                         <ListItem
+                            style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
+                                display: "flex", alignItems: "center"}}
                             onClick={onClick} 
                         >
                             Создать чат

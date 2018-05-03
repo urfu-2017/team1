@@ -7,15 +7,19 @@ export const MessagesList = styled.section`
 `;
 
 export const Header = styled.section`
-    height: 45px;
+    height: 65px !important;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(255,255,255, .7);
+    color: #fff;
+    background-color: #5682a3;
 `;
 
 export const ScrollButton = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: white;
     position: fixed;
     padding: 0;
@@ -29,12 +33,8 @@ export const ScrollButton = styled.div`
     left: 92%;
     cursor: pointer;
     &::before {
-        font-family: FontAwesome5;
-        content: '\f107';
+        content: '▼';
         font-weight: 900;
-        position: absolute;
-        top: 4px;
-        left: 7px;
-        font-size: 24px;
+        font-size: 20px;
     }
 `;

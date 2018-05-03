@@ -64,8 +64,13 @@ export default class ContactsList extends React.Component {
         const { title, closeAction } = this.props;
         return (
             <ContactsWrapper>
-                <h1 className="header">{title}</h1>
+                <h1
+                    className="header"
+                    style={{ background: "#fff" }}>
+                    {title}
+                </h1>
                 <Search
+                    style={{ background: "#fff", outline: "none" }}
                     type="search"
                     placeholder="Поиск"
                 />

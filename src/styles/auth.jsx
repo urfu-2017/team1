@@ -3,20 +3,45 @@ import styled from 'styled-components';
 export const AuthWrapper = styled.section`
     width: 100%;
     overflow: hidden;
+    .blocks-wrapper {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        background: #e7ebf0;
+    }
+    .block-header {
+        height: 30%;
+        width: 100%;
+        background: #5682a3;
+    }
+    .block-inner {
+        position: absolute;
+        border-radius: 5px 5px;
+        top: 25%;
+        background: #fff;
+        width: 30%;
+        left: 35%;
+    }
     .inner {
-        margin: 15% 40%;
         box-sizing: border-box;
-        background: #f2f3ee;
-        border-radius: 10px 10px;
         text-align: center;
-        padding: 10px;
+        padding: 20px;
     }
     .inner__image {
+        cursor: pointer;
         width: 35px;
         height: 35px;
-        margin-left: 40%;
+        margin: auto;
         margin-top: 10px;
-        background-size:  contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
         background-image: url("/static/images/github_icon.png");
+    }
+    .footer {
+        text-align: center;
+        margin: 100px;
     }
 `;

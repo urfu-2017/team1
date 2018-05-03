@@ -76,6 +76,7 @@ export default class Contacts extends React.Component {
         >{
             createChat => (
                 <ContactsList
+                    style={{background: "#fff"}}
                     title="Начать чат:"
                     clickHandler={this.contactClickHandler.bind(this, createChat)}
                     contactsFilter={this.currentUserFilter}
@@ -118,6 +119,7 @@ export default class Contacts extends React.Component {
         >{
             addUserToContacts => (
                 <ContactsList
+                    style={{background: "#fff"}}
                     title="Добавить в контакты:"
                     contactsFilter={this.contactsFilter}
                     clickHandler={this.userClickHandler.bind(this, addUserToContacts)}
@@ -139,16 +141,24 @@ export default class Contacts extends React.Component {
         // TODO: refactor this, PLEEEEEASE11111
         return <React.Fragment>
             <Tabs
-                style={{ width: '100%' }}
+                style={{ width: "100%", background: "#fff" }}
                 tabTemplateStyle={{ height: '100%' }}
                 contentContainerStyle={{ height: '100%' }}
                 tabItemContainerStyle={{ height: '60px' }}
             >
-                <Tab label="Контакты" value="contacts" onActive={this.hideAllUsers} >
+                <Tab
+                    label="Контакты"
+                    value="contacts"
+                    onActive={this.hideAllUsers}
+                    style={{ width: "100%", background: "#5682a3" }} >
                     { !this.state.showAllUsers && this.withContacts(this.myContacts) }
                     
                 </Tab>
-                <Tab  label="Все пользователи" value="allUsers" onActive={this.showAllUsers}>
+                <Tab
+                    label="Все пользователи"
+                    value="allUsers"
+                    onActive={this.showAllUsers}
+                    style={{ width: "100%", background: "#5682a3" }} >
                     { this.state.showAllUsers && this.withAllUsers(this.allUsers) }
                 </Tab>
             </Tabs>

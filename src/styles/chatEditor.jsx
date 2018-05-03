@@ -7,13 +7,16 @@ export const Editor = styled.article`
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    background: #f2f3dE;
+    background: #fff;
     .image {
+        height: 130px;
         width: 130px;
         margin: 20px 50px;
-        border: 1px solid;
+        border-radius: 50% 50%;
     }
     .chat-editor {
+        height: 130px;
+        border-left: 1px solid lavender;
         text-align: center;
         width: 60%;
         display: flex;
@@ -21,7 +24,14 @@ export const Editor = styled.article`
         align-items: center;
     }
     .link {
+        border-top: 1px solid lavender;
+        border-bottom: 1px solid lavender;
+        padding: 5px;
         width: 77%;
+    }
+    .link a {
+        text-decoration: none;
+        color: deeppink;
     }
     .chat-editor__header {
         width: 190px;
@@ -31,10 +41,13 @@ export const Editor = styled.article`
 `;
 
 export const AddButton = styled.input`
+    width: 77%;
+    background: lavender;
+    border: none;
+    cursor: pointer;
     padding: 7px;
     margin: 10px;
     border-radius: 5px;
-    background: #e4e0dc;
 `;
 
 export const UserList = styled.section`

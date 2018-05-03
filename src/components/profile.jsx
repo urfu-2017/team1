@@ -10,6 +10,7 @@ import {withCurrentUser} from '../lib/currentUserContext';
 @withCurrentUser
 @graphql(UpdateUserAvatar.mutation, { props: UpdateUserAvatar.map })
 export default class ProfileEditor extends React.PureComponent {
+    static isSaved = false;
     static propTypes = {
         currentUser: PropTypes.object,
         mainComponentChanger: PropTypes.func
@@ -49,6 +50,7 @@ export default class ProfileEditor extends React.PureComponent {
                 avatarUrl: avatarData
             });
         });
+        ProfileEditor.isSaved = true;
     };
 
     drawBackground = () => {
@@ -74,14 +76,32 @@ export default class ProfileEditor extends React.PureComponent {
     };
 
     render() {
+        if (ProfileEditor.isSaved) {
+            ProfileEditor.isSaved = false;
+            return null;
+        }
         const { mainComponentChanger } = this.props;
         return (
             <Editor>
-                <Exit onClick={mainComponentChanger('Chat')}>
-                    &#10006;
-                </Exit>
-                <h1 className="header">Загрузить аватар</h1>
+                <div
+                    className="editorName"
+                    style={{ position: "absolute", justifyContent: "center", alignItems: "center",
+                        display: "flex", background: "#5682a3", color: "#fff", width: "100%", top: "0" }}>
+                    <Exit
+                        style= {{ top: 0 }}
+                        onClick={mainComponentChanger('Chat')}
+                    >
+                        &#10006;
+                    </Exit>
+                    <h1 
+                        style={{ margin: "0" }}
+                        className="header"
+                        >
+                            Загрузить аватар
+                    </h1>
+                </div>    
                 <DownloadImage
+                    style={{ marginTop: "50" }}
                     onDrop={this.drop}
                     onDragOver={this.dragover}
                     id="area-for-drop">
