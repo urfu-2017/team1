@@ -11,7 +11,7 @@ export const Editor = styled.article`
     flex-direction: column;
     justify-content: space-around;
     transform: translate(-50%, -50%);
-    background: #f2f3dE;
+    background: #fff;
     .header {
         padding: 0 30px;
     }

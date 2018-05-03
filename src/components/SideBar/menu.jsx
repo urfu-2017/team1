@@ -3,6 +3,10 @@ import {Mutation} from 'react-apollo';
 import PropTypes from 'prop-types';
 
 import {MenuRoot} from '../../styles/menu';
+import List from 'material-ui/List/List';
+import ListItem from 'material-ui/List/ListItem';
+import Avatar from 'material-ui/Avatar';
+
 import Contacts from '../contacts';
 import {GetUserChats} from '../../graphqlQueries/queries';
 import {CreateGroupChat} from '../../graphqlQueries/mutations';
@@ -55,38 +59,41 @@ export default class Menu extends React.Component {
         const { currentUser, mainComponentChanger } = this.props;
         return (
             <MenuRoot>
-                <div className="profile" onClick={mainComponentChanger('Profile')}>
-                    <img
-                        alt="Изображение аватарки"
-                        className="profile__avatar"
-                        src={currentUser.avatarUrl}
-                    />
-                    <div className="profile__name">{currentUser.name}</div>
-                </div>
-                <main>
-                    <p
-                        role="presentation"
-                        className="menu__item"
+                <List style={{padding: "0"}}>
+                    <ListItem
+                        style={{color: "#fff", background: "#5682a3", height: "18px"}}
+                        disabled
+                        onClick={mainComponentChanger('Profile')}
+                        leftAvatar={
+                            <Avatar src={currentUser.avatarUrl} />
+                        }
+                    >
+                        {currentUser.name}
+                    </ListItem>
+                    <ListItem
+                        style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
+                            display: "flex", alignItems: "center"}}
                         onClick={mainComponentChanger('Contacts')}
                     >
                         Контакты
-                    </p>
-                    <p
-                        role="presentation"
-                        className="menu__item"
+                    </ListItem>
+                    <ListItem
+                        style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
+                            display: "flex", alignItems: "center"}}
                         onClick={mainComponentChanger('Profile')}
                     >
                         Редактирование профиля
-                    </p>
+                    </ListItem>
                     {this.createChatMutation(currentUser, (onClick) => (
-                        <p
-                            role="presentation"
-                            className="menu__item"
-                            onClick={onClick}>
+                        <ListItem
+                            style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
+                                display: "flex", alignItems: "center"}}
+                            onClick={onClick} 
+                        >
                             Создать чат
-                        </p>
+                        </ListItem>
                     ))}
-                </main>
+                </List>
             </MenuRoot>
         );
     }

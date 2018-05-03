@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 
 export const Header = styled.header`
-    height: 60px;
+    height: 49px;
+    background-color: #5682a3;
     display: flex;
     align-items: center;
     justify-content: space-around;
     .header__menu-icon {
         cursor: pointer;
+        color: #fff;
     }
 `;
 
@@ -22,7 +24,15 @@ export const ChatsList = styled.section`
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    background: #f2f3dE;
+    background: #fff;
+    border-right: 1.5px solid lavender;
+`;
+
+export const AppBar = styled.section`
+    background-color: #5682a3 !important;
+    .menuHeader {
+        background-color: #5682a3;
+    }
 `;
 
 export const Paranja = styled.section`
@@ -43,7 +53,7 @@ export const Contacts = styled.section`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #f2f3dE;
+    background: #f2f3de;
     .contacts__list {
         width: 360px;
         height: 400px;

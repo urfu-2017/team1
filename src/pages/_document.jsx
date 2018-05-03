@@ -9,6 +9,7 @@ injectGlobal`
         margin: 0;
     }
     body {
+        font-family: 'Roboto Condensed';
         width: 100%;
         height: 100%;
         margin: 0;
@@ -32,6 +33,7 @@ export default class MyDocument extends Document {
         return (
             <html lang='ru'>
                 <Head>
+                    <link rel="stylesheet" type="text/css" href="/static/css/font.css" />
                     <title>Team 1 Kilogram</title>
                     {this.props.styleTags}
                 </Head>

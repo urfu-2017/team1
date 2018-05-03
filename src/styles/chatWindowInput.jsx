@@ -7,13 +7,12 @@ const Textarea = styled.div`
         bottom: 60px;
         right: 30px;
         background: #b7c5f5;
-        padding: 5px;
-        borderRadius: 5px;
-        border: 1px solid #b7c5f5;
+        border-radius: 5px;
         cursor: pointer;
     }
 
     .inputField__style {
+        border-top: 1.5px solid #e7ebf0;
         display: flex;
         justify-content: flex-end;
         align-items: center;
@@ -21,6 +20,8 @@ const Textarea = styled.div`
     }
 
     .textarea__style {
+        border: none;
+        border-right: 1.5px solid #e7ebf0;
         width: 97%;
         resize: none;
         height: 45px;
