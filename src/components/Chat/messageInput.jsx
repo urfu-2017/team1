@@ -67,7 +67,7 @@ export default class MessageInput extends React.Component {
         text: this.state.message,
         chatId: this.props.currentChatId,
         senderId: this.props.currentUserId,
-        pictures: []
+        pictures: null
     });
 
     clearState = () => {
@@ -100,7 +100,7 @@ export default class MessageInput extends React.Component {
             variables
         }, true);
         const updated = addNewMessage(createMessage, data);
-        cache.writeQuery({ query, data: updated }, true);
+        cache.writeQuery({ query, data: updated });
         this.props.updateMessages((_, { variables }) => updated);
     };
 

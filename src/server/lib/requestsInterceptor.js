@@ -26,7 +26,9 @@ module.exports = async body => {
         variables.metadata = await getMetadata(text);
         text = escape(text);
         variables.text = emoji.emojify(marked(text));
-        pictures[0] = await savePictureOnCloudinary(pictures[0]);
+        if (pictures) {
+            pictures[0] = await savePictureOnCloudinary(pictures[0]);
+        }
 
         return body;
     }

@@ -17,7 +17,7 @@ const mapper = (mutation, funcName) => ({
 
 
 const CREATE_MESSAGE_ql = gql`
-mutation CreateMessage($text: String!, $chatId: ID!, $senderId: ID!, $pictures: [String!], $metadata: Json = null) {
+mutation CreateMessage($text: String!, $chatId: ID!, $senderId: ID!, $pictures: [String!] = null, $metadata: Json = null) {
   createMessage(text: $text, chatId: $chatId, senderId: $senderId, pictures: $pictures, metadata: $metadata) {
     id
     ...messageData
@@ -113,7 +113,7 @@ mutation updateMessageReactions($messageId: ID!, $reactions: Json) {
     reactions
   }
 }
-`
+`;
 
 export const UpdateMessageReactions = mapper(UPDATE_MESSAGE_REACTIONS_ql, 'updateMessageReactions');
 
