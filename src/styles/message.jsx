@@ -78,4 +78,8 @@ export const MessageWrapper = styled.article`
         width: auto;
         height: 78px;
     }
+     .messageBlock__picture {
+        padding: 5%;
+        width: 90%;
+    }
 `;
