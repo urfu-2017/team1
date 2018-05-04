@@ -41,6 +41,10 @@ const Textarea = styled.div`
     }
 
     .openEmojiButton__style {
+        background-image: url("/static/images/happy.svg");
+        width: 20px;
+        height: 20px;
+        background-repeat: no-repeat;
         cursor: pointer;
         display: inline-block;
         font-size: 25px;

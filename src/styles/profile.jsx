@@ -16,6 +16,13 @@ export const Editor = styled.article`
     border-radius: 5px;
     background: #fff;
     .header {
+        height: 65px !important;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        background-color: #5682a3;
         padding: 0 30px;
     }
     .buttons {

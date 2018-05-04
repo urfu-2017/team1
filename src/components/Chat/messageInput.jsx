@@ -140,7 +140,6 @@ export default class MessageInput extends React.Component {
              className="openEmojiButton__style"
              title="Emoji"
         >
-            &#x263A;
         </div>
     );
 

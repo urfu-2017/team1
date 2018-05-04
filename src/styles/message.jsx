@@ -16,12 +16,16 @@ export const MessageWrapper = styled.article`
         background-size: contain;
     }
     .messageBlock {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
         max-width: 51%;
         border-radius: 5px;
         min-height: 25px;
         height:auto;
         float: ${props => (props.isFromSelf ? 'right' : 'left')};
-        background-color: ${props => (props.isFromSelf ? '#92d7ef' : '#a2eae0')};
+        background-color: ${props => (props.isFromSelf ? '#92d7ef' : 'rgb(231, 235, 240)')};
+        box-shadow: ${props => (props.isFromSelf ? '0px 0px 11px 0px rgba(146,215,239,1)' : 'rgb(200, 217, 230) 0px 0px 11px 0px')};
     }
     .msgFromBlock {
         padding: 8px;
@@ -31,12 +35,16 @@ export const MessageWrapper = styled.article`
         align-items: center;
     }
     .addReactions {
+        background-image: url("/static/images/happy.svg");
+        background-repeat: no-repeat;
+        width: 20px;
+        height: 20px;
         padding: 0 5px;
         cursor: pointer;
     }
     .msgFromUserName {
         margin: 5px;
-        color: #fff;
+        color: ${props => (props.isFromSelf ? '#fff' : '#454648')};
     }
     .msgTimeReactionBlock {
         align-items: center;
@@ -44,6 +52,7 @@ export const MessageWrapper = styled.article`
         justify-content: space-between;
     }
     .msgFromUserPic {
+        padding: 8px;
         width: 40px;
         height: 40px;
         border-radius: 50% 50%;
@@ -56,6 +65,7 @@ export const MessageWrapper = styled.article`
         padding: 6px 4px 6px 6px;
     }
     .messageBlock__time {
+        color: ${props => (props.isFromSelf ? '#fff' : '#454648')};
         padding: 0 11px;
         font-size: 0.8em;
     }
@@ -77,5 +87,10 @@ export const MessageWrapper = styled.article`
         max-width: 178px;
         width: auto;
         height: 78px;
+    }
+    .pickerStyle {
+        position: absolute;
+        right: ${props => (props.isFromSelf ? '' : '0')};
+        left: ${props => (props.isFromSelf ? '0' : '')};
     }
 `;
