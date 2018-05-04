@@ -64,10 +64,11 @@ export default class MessageInput extends React.Component {
     };
 
     getMessage = () => ({
-        text: this.state.message,
-        chatId: this.props.currentChatId,
-        senderId: this.props.currentUserId,
-        pictures: null
+            clientSideId: -Math.floor(Math.random() * 1000),
+            text: this.state.message,
+            chatId: this.props.currentChatId,
+            senderId: this.props.currentUserId,
+            pictures: null
     });
 
     clearState = () => {
@@ -77,7 +78,7 @@ export default class MessageInput extends React.Component {
     optimisticResponse = message => ({
         __typename: 'Mutation',
         createMessage: {
-            id: -Math.floor(Math.random() * 1000),
+            id: message.clientSideId,
             createdAt: (new Date()).toISOString(),
             modifiedAt: null,
             sender: {

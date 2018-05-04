@@ -5,10 +5,11 @@ export const addNewMessage = (message, target) => {
     if (messages.find(msg => msg.id === message.id)) {
         return target;
     }
-    const lastMessage = messages[messages.length - 1];
     // результат optimistic response:
-    if (lastMessage && (lastMessage.id < 0)) {
-        message.pictures = lastMessage.pictures;
+    const optimisticResponse = messages.find(
+        msg => msg.id < 0 && msg.clientSideId === message.clientSideId);
+    if (optimisticResponse) {
+        message.pictures = optimisticResponse.pictures;
     }
     messages = messages.filter(msg => !(msg.id < 0));
     messages.push(message);
