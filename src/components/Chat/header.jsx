@@ -28,9 +28,11 @@ export default class ChatHeader extends React.Component {
         if (event.key === 'Enter') {
             event.preventDefault();
 
-            const chatId = this.props.chat.id;
-            this.props.updateChatTitle({ title, chatId },
-                { update: this.updateCache });
+            if (this.props.chat.title !== title) {
+                const chatId = this.props.chat.id;
+                this.props.updateChatTitle({ title, chatId },
+                    { update: this.updateCache });
+            }
 
             this.props.toggleEditor();
         }
@@ -53,7 +55,7 @@ export default class ChatHeader extends React.Component {
         const prefix = (
             <span
                 onClick={this.props.toggleEditor}
-                style={{ fontSize: "16px" }} >
+                style={{ fontSize: "16px" }}>
                 {switcher + (!editorOpened ? title : '')}
             </span>
         );
@@ -62,15 +64,15 @@ export default class ChatHeader extends React.Component {
             <React.Fragment>
                 {prefix}
                 {editorOpened &&
-                    <input
-                        value={this.state.title}
-                        size={title.length}
-                        style={{ outline: "none", border: "none" }}
-                        onChange={this.handleChange}
-                        onKeyPress={this.handleSubmit}
-                        autoFocus
-                        onFocus={e => e.target.select()}
-                    />
+                <input
+                    value={this.state.title}
+                    size={title.length}
+                    style={{ outline: "none", border: "none" }}
+                    onChange={this.handleChange}
+                    onKeyPress={this.handleSubmit}
+                    autoFocus
+                    onFocus={e => e.target.select()}
+                />
                 }
             </React.Fragment>
         );
@@ -87,7 +89,7 @@ export default class ChatHeader extends React.Component {
     render() {
         const { chat, editorOpened, loading } = this.props;
         return (
-            <Header style={{height: "65px"}}>
+            <Header style={{ height: "65px" }}>
                 {loading && 'Загрузка...' ||
                 chat.groupchat && this.groupChatHeader(chat.title, editorOpened) ||
                 this.personalChatHeader(chat.title)}
