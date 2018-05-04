@@ -5,7 +5,7 @@ import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../..
 import ImageHandler from '../../lib/imageHandler';
 
 
-class MessageImageSender extends ImageHandler {
+class ChatImageSender extends ImageHandler {
     static propTypes = {
         onSendImage: PropTypes.func,
         closeImageSender: PropTypes.func
@@ -33,7 +33,7 @@ class MessageImageSender extends ImageHandler {
                 <Exit onClick={() => { closeImageSender(false); }}>
                     &#10006;
                 </Exit>
-                <h1 className="header">Отправить картинку в чат</h1>
+                <h1 className="header">Изменить картинку чата</h1>
                 <DownloadImage
                     onDrop={this.drop}
                     onDragOver={this.dragover}
@@ -65,4 +65,4 @@ class MessageImageSender extends ImageHandler {
     }
 }
 
-export default MessageImageSender;
+export default ChatImageSender;

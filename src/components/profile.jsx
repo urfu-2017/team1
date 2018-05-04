@@ -6,7 +6,7 @@ import {graphql} from 'react-apollo';
 import {Editor, DownloadImage, DownloadButton, CreateButton, Exit} from '../styles/profile';
 import {UpdateUserAvatar} from '../graphqlQueries/mutations';
 import {withCurrentUser} from '../lib/currentUserContext';
-import ImageHandler from './imageHandler';
+import ImageHandler from '../lib/imageHandler';
 
 
 @withCurrentUser
@@ -60,7 +60,7 @@ export default class ProfileEditor extends ImageHandler {
                     >
                         &#10006;
                     </Exit>
-                    <h1 
+                    <h1
                         style={{ margin: "0" }}
                         className="header"
                         >
