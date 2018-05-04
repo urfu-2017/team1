@@ -2,35 +2,39 @@ import styled from 'styled-components';
 
 export const MessagesList = styled.section`
     width: 100%;
-    overflow-y: scroll;
     display: flex;
-    flex: 1;
     flex-direction: column;
-    background-color: #ffffff;
 `;
 
 export const Header = styled.section`
-    height: 45px;
+    height: 65px !important;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(255,255,255, .7);
+    color: #fff;
+    background-color: #5682a3;
 `;
 
-export const Button = styled.input`
-    backgroundColor: white;
-    position: absolute;
+export const ScrollButton = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    position: fixed;
     padding: 0;
-    marginRight: 128px;
-    marginBottom: 10px;
+    margin-bottom: 10px;
     bottom: 50px;
     width: 30px;
     height: 30px;
+    border: 2px solid #b7c5f5;
     border-radius: 50%;
-    borderColor: #b7c5f5;
     color: #b7c5f5;
-    right: 30px;
+    left: 92%;
     cursor: pointer;
+    &::before {
+        content: '▼';
+        font-weight: 900;
+        font-size: 20px;
+    }
 `;
-

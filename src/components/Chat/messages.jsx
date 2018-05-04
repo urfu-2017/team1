@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { Scrollbars } from 'react-custom-scrollbars';
+
 import LoadScreen from '../ui/loadScreen';
 import MessageInput from './messageInput';
-import ScrollButton from './scrollButton';
 import Message from './message';
 import {messagesSubscriptionDataHandler} from '../../lib/dataHandlers';
-import {MessagesList} from '../../styles/messages';
+import {MessagesList, ScrollButton } from '../../styles/messages';
 import {SubscribeToMessages} from '../../graphqlQueries/subscriptions';
 
 
@@ -30,22 +31,15 @@ export default class Messages extends React.Component {
     };
 
     componentDidMount() {
-        this.node.scrollTop = this.node.scrollHeight;
-    }
-
-    componentWillUpdate() {
-        this.shouldScrollBottom = this.node.scrollTop +
-            this.node.offsetHeight === this.node.scrollHeight;
+        this.scroll.scrollToBottom();
     }
 
     componentDidUpdate() {
-        if (this.shouldScrollBottom) {
-            this.node.scrollTop = this.node.scrollHeight;
-        }
+        this.scroll.scrollToBottom();
     }
 
     // Не создаём новую функцию при каждом рендере
-    getSectionRef = node => (this.node = node);
+    setScroll = node => (this.scroll = node);
 
     Message = message =>
         <Message
@@ -63,7 +57,11 @@ export default class Messages extends React.Component {
         } else {
             content = (
                 <React.Fragment>
-                    <ScrollButton scrollStepInPx="50" delayInMs="16.66"/>
+                    <ScrollButton
+                        type="button"
+                        className="scroll"
+                        onClick={() => this.scroll.scrollToBottom()}
+                    />
                     {messages.map(this.Message)}
                 </React.Fragment>
             );
@@ -71,12 +69,16 @@ export default class Messages extends React.Component {
             // Значит, можно подписываться на обновления
             this.subscribe();
         }
-
         return (
             <React.Fragment>
-                <MessagesList id="messages" ref={this.getSectionRef}>
-                    {content}
-                </MessagesList>
+                <Scrollbars
+                    style={{ 'background-color': 'rgba(255,255,255, .7)' }}
+                    ref={this.setScroll}
+                >
+                    <MessagesList >
+                        {content}
+                    </MessagesList>
+                </Scrollbars>
                 <MessageInput
                     currentChatId={currentChatId}
                     currentUserId={currentUserId}
@@ -99,6 +101,6 @@ export default class Messages extends React.Component {
         }
     };
 
-    static LoadScreen = <LoadScreen offsetPercentage={50} opacity={1} />;
+    static LoadScreen = <LoadScreen offsetPercentage={100} opacity={1} />;
     static ErrorScreen = <p>Encountered unknown error while loading messages :(</p>;
 }

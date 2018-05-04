@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-
 export const Editor = styled.article`
     width: 340px;
     height: 350px;
@@ -12,9 +11,7 @@ export const Editor = styled.article`
     flex-direction: column;
     justify-content: space-around;
     transform: translate(-50%, -50%);
-    border: 1.5px solid #e6e6fa;
-    border-radius: 5px;
-    background: #fff;
+    background: #f2f3dE;
     .header {
         padding: 0 30px;
     }
@@ -28,48 +25,39 @@ export const Editor = styled.article`
 `;
 
 export const DownloadImage = styled.div`
+    position: relative;
+    background: #fff;
     background-size: cover;
-    margin-top: 60px;
-    color: #5682a3;
-    opacity: 0.3;
     width: 200px;
     height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1.5px #5682a3 dashed;
+    border: 1px dashed;
     .text {
         font-size: 20px;
         background: #fff;
+        width: 180px;
     }
 `;
 
 export const DownloadButton = styled.input`
-    outline:none;
-    cursor: pointer;
     width: 225px;
     padding: 7px;
     border-radius: 5px;
-    background: #5682a3;
-    height: 22px;
-    color: #fff;
+    background: #e4e0dc;
 `;
 
 export const CreateButton = DownloadButton.extend`
-    outline:none;
-    cursor: pointer;
-    border: none;
     width: 85px;
     padding: 7px;
     border-radius: 5px;
-    height: 36px;
-    color: #fff;
-`;    
-
+    background: #e4e0dc;
+`;
 
 export const Exit = styled.div`
-    cursor: pointer;
     position: absolute;
     right: 5px;
-    font-size: 22px;
+    top: 0;
+    font-size: 30px;
 `;

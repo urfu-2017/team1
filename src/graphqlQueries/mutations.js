@@ -17,8 +17,8 @@ const mapper = (mutation, funcName) => ({
 
 
 const CREATE_MESSAGE_ql = gql`
-mutation CreateMessage($text: String!, $chatId: ID!, $senderId: ID!, $pictures: [String!], $metadata: Json = null) {
-  createMessage(text: $text, chatId: $chatId, senderId: $senderId, pictures: $pictures, metadata: $metadata) {
+mutation CreateMessage($text: String!, $chatId: ID!, $senderId: ID!, $clientSideId: Int!, $pictures: [String!] = null, $metadata: Json = null) {
+  createMessage(text: $text, chatId: $chatId, senderId: $senderId, clientSideId: $clientSideId, pictures: $pictures, metadata: $metadata) {
     id
     ...messageData
     sender {
@@ -113,7 +113,7 @@ mutation updateMessageReactions($messageId: ID!, $reactions: Json) {
     reactions
   }
 }
-`
+`;
 
 export const UpdateMessageReactions = mapper(UPDATE_MESSAGE_REACTIONS_ql, 'updateMessageReactions');
 
@@ -129,7 +129,6 @@ ${fragments.chatTitle_ql}
 `;
 
 export const UpdateChatTitle = mapper(UPDATE_CHAT_TITLE_ql, 'updateChatTitle');
-
 
 const ADD_USER_TO_CONTACTS_ql = gql`
 mutation AddToContacts($userId1: ID!, $userId2: ID!) {
@@ -153,3 +152,14 @@ ${fragments.userData_ql}
 `;
 
 export const AddUserToContacts = mapper(ADD_USER_TO_CONTACTS_ql, 'addUserToContacts');
+
+
+const UPDATE_CHAT_PICTURE_ql = gql`
+mutation UpdateChatPicture($chatId: ID!, $picture: String!) {
+  updateChat(id: $chatId, picture: $picture) {
+    picture
+  }
+}
+`;
+
+export const UpdateChatPicture = mapper(UPDATE_CHAT_PICTURE_ql, 'updateChatPicture');

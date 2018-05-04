@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MenuIcon from 'react-icons/lib/fa/list';
+import AppBar from 'material-ui/AppBar';
 import {Scrollbars} from 'react-custom-scrollbars';
 
 import LoadScreen from '../ui/loadScreen';
@@ -58,12 +59,13 @@ export default class SideBar extends React.Component {
                     />
                 }
                 <ChatsList>
-                    <Header>
-                        <div className="header__menu-icon">
-                            <MenuIcon onClick={this.toggleParanja}/>
-                        </div>
-                        <SearchInput placeholder="Поиск" type="search"/>
-                    </Header>
+
+                    <AppBar className="menuHeader"
+                        style={{ background: "#5682a3", height: "65px" }}
+                        onClick={this.toggleParanja}
+                        iconClassNameRight="muidocs-icon-navigation-expand-more"
+                    />
+          
                     <Scrollbars universal>
                         { currentUser.chats && this.getChatsList(currentUser) }
                     </Scrollbars>

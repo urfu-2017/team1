@@ -84,6 +84,21 @@ export default class Message extends React.PureComponent {
         return reactionComponents;
     }
 
+    createPicturesComponets = (pictures) => {
+        let picturesComponents = [];
+        if (pictures) {
+            picturesComponents = pictures.map(x => (
+                <img
+                    src={x}
+                    className="messageBlock__picture"
+                    alt=""
+                />
+            ));
+        }
+
+        return picturesComponents;
+    }
+
     static formatDate = new Intl.DateTimeFormat('ru', {
         hour: 'numeric',
         minute: 'numeric',
@@ -101,22 +116,24 @@ export default class Message extends React.PureComponent {
         if (!user) {
             return '';
         }
-
+        let picturesComponents = this.createPicturesComponets(message.pictures);
         let reactionComponents = this.createReactionComponents(message.reactions, currentUser.id);
         const createdAt = Message.formatDate(new Date(message.createdAt));
 
         return (
             <MessageWrapper isFromSelf={isFromSelf}>
                 <div className="messageBlock">
-                    <img src={user && user.avatarUrl} width="30px" />
-                    <span>{user && user.name + delivered}</span>
-                    {/*TODO: у сообщения есть также поле modifiedAt, равное null, если оно не менялось */}
-
-                    <div onClick={this.openOrCloseReactions} className="addReactions">
-                        &#x263A;
+                    <div className="msgFromBlock">
+                        <img className="msgFromUserPic" src={user && user.avatarUrl} width="30px" />
+                        <span className="msgFromUserName">{user && user.name + delivered}</span>
+                        {/*TODO: у сообщения есть также поле modifiedAt, равное null, если оно не менялось */}
                     </div>
-                    <div className="messageBlock__time">{createdAt}</div>
-
+                    <div className="msgTimeReactionBlock">
+                        <div onClick={this.openOrCloseReactions} className="addReactions">
+                            &#x263A;
+                        </div>
+                        <div className="messageBlock__time">{createdAt}</div>
+                    </div>
                     <div
                         className="messageBlock__text"
                         isFromSelf={isFromSelf}
@@ -130,6 +147,7 @@ export default class Message extends React.PureComponent {
                                 <div className="metadata-container__title">{ogdata.title}</div>
                             </a>
                         </div>}
+                    {picturesComponents.length > 0 && picturesComponents}
                     {reactionComponents.length > 0 && <Reactions>{reactionComponents}</Reactions>}
                 </div>
                 {this.getPicker()}

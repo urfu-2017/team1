@@ -9,10 +9,11 @@ fragment messageData on Message {
   createdAt
   modifiedAt
   metadata
+  clientSideId
+  reactions
   sender {
     id
   }
-  reactions
 }
 `;
 

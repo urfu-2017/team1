@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const ChatWrapper = styled.article`
-    background-color: ${props => (props.select ? '#b7c5f5' : '#f2f3dE')};
+    background-color: ${props => (props.select ? '#b7c5f5' : '#e6e6fa')};
     margin: 4px 0;
     padding: 4px 25px;
     display:flex;
@@ -9,6 +9,7 @@ export const ChatWrapper = styled.article`
     .chat-avatar {
         width: 50px;
         height: 50px;
+        border-radius: 5px;
     }
     .chat-avatar__img {
         margin-bottom: 4px;

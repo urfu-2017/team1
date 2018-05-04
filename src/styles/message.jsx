@@ -23,14 +23,40 @@ export const MessageWrapper = styled.article`
         float: ${props => (props.isFromSelf ? 'right' : 'left')};
         background-color: ${props => (props.isFromSelf ? '#92d7ef' : '#a2eae0')};
     }
+    .msgFromBlock {
+        padding: 8px;
+        display: flex;
+        height: 40px;
+        justify-content: end;
+        align-items: center;
+    }
+    .addReactions {
+        padding: 0 5px;
+        cursor: pointer;
+    }
+    .msgFromUserName {
+        margin: 5px;
+        color: #fff;
+    }
+    .msgTimeReactionBlock {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+    }
+    .msgFromUserPic {
+        width: 40px;
+        height: 40px;
+        border-radius: 50% 50%;
+    }
     .messageBlock__text {
         white-space: pre-wrap;
         width: fit-content;
         word-wrap: break-word;
+        word-break: break-word;
         padding: 6px 4px 6px 6px;
     }
     .messageBlock__time {
-        padding: 2px;
+        padding: 0 11px;
         font-size: 0.8em;
     }
     .metadata {
@@ -51,5 +77,9 @@ export const MessageWrapper = styled.article`
         max-width: 178px;
         width: auto;
         height: 78px;
+    }
+     .messageBlock__picture {
+        padding: 5%;
+        width: 90%;
     }
 `;

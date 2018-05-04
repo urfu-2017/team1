@@ -51,7 +51,9 @@ export default class ChatHeader extends React.Component {
     groupChatHeader = (title, editorOpened) => {
         const switcher = editorOpened ? '✖' : '✎';
         const prefix = (
-            <span onClick={this.props.toggleEditor}>
+            <span
+                onClick={this.props.toggleEditor}
+                style={{ fontSize: "16px" }} >
                 {switcher + (!editorOpened ? title : '')}
             </span>
         );
@@ -60,12 +62,14 @@ export default class ChatHeader extends React.Component {
             <React.Fragment>
                 {prefix}
                 {editorOpened &&
-                    <input value={this.state.title}
-                           size={title.length}
-                           onChange={this.handleChange}
-                           onKeyPress={this.handleSubmit}
-                           autoFocus
-                           onFocus={e => e.target.select()}
+                    <input
+                        value={this.state.title}
+                        size={title.length}
+                        style={{ outline: "none", border: "none" }}
+                        onChange={this.handleChange}
+                        onKeyPress={this.handleSubmit}
+                        autoFocus
+                        onFocus={e => e.target.select()}
                     />
                 }
             </React.Fragment>
@@ -83,7 +87,7 @@ export default class ChatHeader extends React.Component {
     render() {
         const { chat, editorOpened, loading } = this.props;
         return (
-            <Header>
+            <Header style={{height: "65px"}}>
                 {loading && 'Загрузка...' ||
                 chat.groupchat && this.groupChatHeader(chat.title, editorOpened) ||
                 this.personalChatHeader(chat.title)}

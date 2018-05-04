@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
+import List from 'material-ui/List/List';
+import RaisedButton from 'material-ui/RaisedButton';
+import ListItem from 'material-ui/List/ListItem';
+import Avatar from 'material-ui/Avatar';
+import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import {Scrollbars} from 'react-custom-scrollbars';
 
 import LoadScreen from './ui/loadScreen';
 import {
     Search,
-    Contact,
     CloseButton,
-    ContactsList as ContactsListStyle,
     CreateButton,
     ContactsWrapper
 } from '../styles/contacts';
@@ -47,32 +50,38 @@ export default class ContactsList extends React.Component {
     }
 
     static getContactsItem = (clickHandler, currentUser, contact) => (
-        <Contact
-            key={contact.id}
-            onClick={() => clickHandler(currentUser, contact)}
-        >
-            <img src={contact.avatarUrl} alt="ава" className="contact__image"/>
-            <p>{contact.name}</p>
-        </Contact>
+            <ListItem
+                insetChildren
+                primaryText={contact.name}
+                key={contact.name + Math.random()}
+                leftAvatar={<Avatar src={contact.avatarUrl} />}
+                rightIcon={<CommunicationChatBubble />}
+                onClick={() => clickHandler(currentUser, contact)}
+            />
     );
 
     render() {
         const { title, closeAction } = this.props;
         return (
             <ContactsWrapper>
-                <h1 className="header">{title}</h1>
+                <h1
+                    className="header"
+                    style={{ background: "#fff" }}>
+                    {title}
+                </h1>
                 <Search
+                    style={{ background: "#fff", outline: "none" }}
                     type="search"
                     placeholder="Поиск"
                 />
-                <ContactsListStyle>
-                    <Scrollbars universal>
+                <Scrollbars universal>
+                    <List>
                         {this.getContactsList()}
-                    </Scrollbars>
-                </ContactsListStyle>
+                    </List>
+                </Scrollbars>
                 {closeAction &&
                 <div className="buttons">
-                    <CloseButton type="button" value="Закрыть" onClick={closeAction} />
+                    <RaisedButton label="Закрыть" onClick={closeAction} />
                 </div>}
             </ContactsWrapper>
         );

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
-import { Emoji, emojiIndex } from 'emoji-mart';
+import {graphql} from 'react-apollo';
+import {emojiIndex} from 'emoji-mart';
 import dynamic from 'next/dynamic';
 
 const EmojiPicker = dynamic(
@@ -9,11 +9,12 @@ const EmojiPicker = dynamic(
     { ssr: false }
 );
 
-import { withCurrentUser } from '../../lib/currentUserContext';
+import {withCurrentUser} from '../../lib/currentUserContext';
 import Textarea from '../../styles/chatWindowInput';
-import { addNewMessage } from '../../lib/dataHandlers';
-import { CreateMessage } from '../../graphqlQueries/mutations';
-import { GetChatMessages } from '../../graphqlQueries/queries';
+import {addNewMessage} from '../../lib/dataHandlers';
+import {CreateMessage} from '../../graphqlQueries/mutations';
+import {GetChatMessages} from '../../graphqlQueries/queries';
+import MessageImageSender from './messageImageSender';
 
 
 @withCurrentUser
@@ -63,10 +64,11 @@ export default class MessageInput extends React.Component {
     };
 
     getMessage = () => ({
-        text: this.state.message,
-        chatId: this.props.currentChatId,
-        senderId: this.props.currentUserId,
-        pictures: []
+            clientSideId: -Math.floor(Math.random() * 1000),
+            text: this.state.message,
+            chatId: this.props.currentChatId,
+            senderId: this.props.currentUserId,
+            pictures: null
     });
 
     clearState = () => {
@@ -76,7 +78,7 @@ export default class MessageInput extends React.Component {
     optimisticResponse = message => ({
         __typename: 'Mutation',
         createMessage: {
-            id: -Math.floor(Math.random() * 1000),
+            id: message.clientSideId,
             createdAt: (new Date()).toISOString(),
             modifiedAt: null,
             sender: {
@@ -97,7 +99,7 @@ export default class MessageInput extends React.Component {
         const data = cache.readQuery({
             query,
             variables
-        });
+        }, true);
         const updated = addNewMessage(createMessage, data);
         cache.writeQuery({ query, data: updated });
         this.props.updateMessages((_, { variables }) => updated);
@@ -116,16 +118,45 @@ export default class MessageInput extends React.Component {
     onEmojiClick = (_, val) => this.addEmojiIntoText(val.name);
 
     getPicker = () => (this.state.emoji) ?
-    (<EmojiPicker onEmojiClick={this.onEmojiClick} disableDiversityPicker />) : '';
+        (<EmojiPicker onEmojiClick={this.onEmojiClick} disableDiversityPicker/>) : '';
+
+    getImageUploadWindow = () => (this.state.uploadWindow) ?
+        (<MessageImageSender onSendImage={this.onSendImage} closeImageSender={this.openOrCloseUploadWindow}/>) : '';
+
+
+    onSendImage = urlInBase64 => {
+        const message = this.getMessage();
+        message.pictures = [urlInBase64];
+
+        this.props.createMessage(message, {
+            optimisticResponse: this.optimisticResponse(message),
+            update: this.updateCache
+        });
+        this.openOrCloseUploadWindow();
+    };
 
     getButtonWithSmile = () => (
         <div onClick={this.openOrCloseEmojies}
-            className="openEmojiButton__style"
-            title="Emoji"
+             className="openEmojiButton__style"
+             title="Emoji"
         >
             &#x263A;
         </div>
     );
+
+    getButtonWithImageUpload = () => (
+        <div onClick={() => {
+            this.openOrCloseUploadWindow();
+        }}
+             className="clip"
+             title="Send picture">
+            📎
+        </div>
+    );
+
+    openOrCloseUploadWindow = () => {
+        this.setState({ uploadWindow: !this.state.uploadWindow });
+    };
 
     render() {
         return (
@@ -137,10 +168,14 @@ export default class MessageInput extends React.Component {
                         onChange={this.handleChange}
                         placeholder="Сообщение..."
                         value={this.state.message}
-                        required />
+                        required/>
+                    {this.getButtonWithImageUpload()}
                     {this.getButtonWithSmile()}
                 </div>
-                <div class="picker__style">
+                <div>
+                    {this.getImageUploadWindow()}
+                </div>
+                <div className="picker__style">
                     {this.getPicker()}
                 </div>
             </Textarea>

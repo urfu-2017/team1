@@ -5,6 +5,13 @@ export const addNewMessage = (message, target) => {
     if (messages.find(msg => msg.id === message.id)) {
         return target;
     }
+    // результат optimistic response:
+    const optimisticResponse = messages.find(
+        msg => msg.id < 0 && msg.clientSideId === message.clientSideId);
+    if (optimisticResponse) {
+        message.pictures = optimisticResponse.pictures;
+    }
+    messages = messages.filter(msg => !(msg.id < 0));
     messages.push(message);
     return { Chat: { ...target.Chat, messages } };
 };
@@ -32,7 +39,6 @@ export const messagesSubscriptionDataHandler = (previousResult, { subscriptionDa
         return previousResult;
     }
     const { mutation, node } = subscriptionData.data.Message;
-    console.log(node.chat.id);
     variables.chatId = node.chat.id;
     switch (mutation) {
         case 'CREATED':
