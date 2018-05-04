@@ -9,8 +9,8 @@ const mapper = (query, selector, name) => ({
     map: (req) => {
         const props = {
             data: req.data,
-            loading: req.data.loading,
-            error: req.data.error
+            loading: req.data && req.data.loading || true,
+            error: req.data && req.data.error || null
         };
         if (req.data) {
             props[name] = selector(req.data);
