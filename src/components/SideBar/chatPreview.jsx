@@ -27,12 +27,13 @@ export default class ChatPreview extends React.PureComponent {
 
     render() {
         const { lastMessage, chat } = this.props;
-        const background = this.isSelected() ? '#00bcd4' : '';
-        const border = '1px solid lavender';
+        const background = this.isSelected() ? '#e7ebf0' : '';
+        const borderTop = '1px solid lavender';
+        const borderBottom = '1px solid lavender';
         return (
-            <ListItem className="listitem"
+            <ListItem 
                 onClick={this.selectThisChat}
-                innerDivStyle={{ background, border }}
+                innerDivStyle={{ background, borderTop, borderBottom }}
                 leftAvatar={<Avatar src={chat.picture} />}
                 primaryText={chat.title}
                 secondaryText={

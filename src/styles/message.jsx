@@ -21,7 +21,8 @@ export const MessageWrapper = styled.article`
         min-height: 25px;
         height:auto;
         float: ${props => (props.isFromSelf ? 'right' : 'left')};
-        background-color: ${props => (props.isFromSelf ? '#92d7ef' : '#a2eae0')};
+        box-shadow: rgb(200, 217, 230) 0px 0px 11px 0px;
+        background-color: ${props => (props.isFromSelf ? '#e7ebf0' : '#e7ebf0')};
     }
     .msgFromBlock {
         padding: 8px;
@@ -36,7 +37,6 @@ export const MessageWrapper = styled.article`
     }
     .msgFromUserName {
         margin: 5px;
-        color: #fff;
     }
     .msgTimeReactionBlock {
         align-items: center;

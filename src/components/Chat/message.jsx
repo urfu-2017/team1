@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import { Emoji, emojiIndex } from 'emoji-mart';
+import Mood from 'material-ui/svg-icons/social/mood';
 import dynamic from 'next/dynamic';
 
 import { MessageWrapper } from '../../styles/message';
@@ -130,7 +131,7 @@ export default class Message extends React.PureComponent {
                     </div>
                     <div className="msgTimeReactionBlock">
                         <div onClick={this.openOrCloseReactions} className="addReactions">
-                            &#x263A;
+                            <Mood />
                         </div>
                         <div className="messageBlock__time">{createdAt}</div>
                     </div>

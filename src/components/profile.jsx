@@ -74,31 +74,22 @@ export default class ProfileEditor extends React.PureComponent {
             <Editor>
                 <div
                     className="editorName"
-                    style={{ position: "absolute", justifyContent: "center", alignItems: "center",
-                        display: "flex", background: "#5682a3", color: "#fff", width: "100%", top: "0" }}>
+                >
                     <Exit
                         style= {{ top: 0 }}
                         onClick={mainComponentChanger('Chat')}
                     >
                         &#10006;
                     </Exit>
-<<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
-                    <h1
-=======
+
                     <h1 
->>>>>>> change design
-                        style={{ margin: "0" }}
+
                         className="header"
                         >
                             Загрузить аватар
                     </h1>
-<<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
-                </div>
-=======
                 </div>    
->>>>>>> change design
                 <DownloadImage
-                    style={{ marginTop: "50" }}
                     onDrop={this.drop}
                     onDragOver={this.dragover}
                     id="area-for-drop">

@@ -38,10 +38,9 @@ const getNewChat = (currentUser, contact) => ({
 export default class Contacts extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = { showAllUsers: false };
+        this.state = { showAllUsers: false, value: 'contacts' };
     }
-
+    handleChange = value => { this.setState({ value }); };
     contactClickHandler = (createChat, currentUser, contact) => {
         const existingChat = currentUser.chats
             .find(chat => !chat.groupchat && chat.members.find(u => u.id === contact.id));
@@ -127,6 +126,7 @@ export default class Contacts extends React.Component {
                     style={{background: "#fff"}}
                     title="Добавить в контакты:"
                     contactsFilter={this.contactsFilter}
+                    handleChange={this.handleChange}
                     clickHandler={this.userClickHandler.bind(this, addUserToContacts)}
                     contacts={allUsers}
                     {...{ loading, error }} />
@@ -144,12 +144,16 @@ export default class Contacts extends React.Component {
 
     render() {
         // TODO: refactor this, PLEEEEEASE11111
+        // console.log(this.state.value);
+        
         return <React.Fragment>
             <Tabs
                 style={{ width: "100%", background: "#fff" }}
                 tabTemplateStyle={{ height: '100%' }}
                 contentContainerStyle={{ height: '100%' }}
                 tabItemContainerStyle={{ height: '60px' }}
+                value={this.state.value}
+                onChange={this.handleChange}
             >
 <<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
 <<<<<<< 724d9cae2dcc6ae08426775fdeafbb814b9f5659

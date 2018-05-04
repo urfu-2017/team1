@@ -9,7 +9,11 @@ const EmojiPicker = dynamic(
     { ssr: false }
 );
 
-import {withCurrentUser} from '../../lib/currentUserContext';
+
+import Attachfile from 'material-ui/svg-icons/editor/attach-file';
+import Mood from 'material-ui/svg-icons/social/mood';
+
+import { withCurrentUser } from '../../lib/currentUserContext';
 import Textarea from '../../styles/chatWindowInput';
 import { addNewMessage } from '../../lib/dataHandlers';
 import { CreateMessage } from '../../graphqlQueries/mutations';
@@ -126,7 +130,6 @@ export default class MessageInput extends React.Component {
     onEmojiClick = (_, val) => this.addEmojiIntoText(val.name);
 
     getPicker = () => (this.state.emoji) ?
-<<<<<<< 33781bea0447617a68ba0901eb6cb107c2bd1239
         (<EmojiPicker onEmojiClick={this.onEmojiClick} disableDiversityPicker/>) : '';
 
     getImageUploadWindow = () => (this.state.uploadWindow) ?
@@ -136,40 +139,24 @@ export default class MessageInput extends React.Component {
     onSendImage = urlInBase64 => {
         const message = this.getMessage();
         message.pictures = [urlInBase64];
-=======
-        (<EmojiPicker onEmojiClick={this.onEmojiClick} disableDiversityPicker />) : '';
-
-    getImageUploadWindow = () => (this.state.uploadWindow) ?
-        (<MessageImageSender onSendImage={this.onSendImage} closeImageSender={this.openOrCloseUploadWindow} />) : '';
-    
-
-    onSendImage = (urlInBase64) => {
-        const message = this.getMessage();
-        message.pictures.push(urlInBase64);
->>>>>>> add imageHandler
 
         this.props.createMessage(message, {
             optimisticResponse: this.optimisticResponse(message),
             update: this.updateCache
         });
         this.openOrCloseUploadWindow();
-<<<<<<< 33781bea0447617a68ba0901eb6cb107c2bd1239
     };
-=======
-    }
->>>>>>> add imageHandler
 
     getButtonWithSmile = () => (
         <div onClick={this.openOrCloseEmojies}
              className="openEmojiButton__style"
              title="Emoji"
         >
-            &#x263A;
+            <Mood />
         </div>
     );
 
     getButtonWithImageUpload = () => (
-<<<<<<< 33781bea0447617a68ba0901eb6cb107c2bd1239
         <div onClick={() => {
             this.openOrCloseUploadWindow();
         }}
@@ -182,18 +169,6 @@ export default class MessageInput extends React.Component {
     openOrCloseUploadWindow = () => {
         this.setState({ uploadWindow: !this.state.uploadWindow });
     };
-=======
-        <div onClick={() => { this.openOrCloseUploadWindow(); }}
-            className="clip"
-            title="Send picture">
-            📎
-    </div>
-    )
-
-    openOrCloseUploadWindow = () => {
-        this.setState({ uploadWindow: !this.state.uploadWindow });
-    }
->>>>>>> add imageHandler
 
     render() {
         return (
@@ -205,22 +180,14 @@ export default class MessageInput extends React.Component {
                         onChange={this.handleChange}
                         placeholder="Сообщение..."
                         value={this.state.message}
-<<<<<<< 33781bea0447617a68ba0901eb6cb107c2bd1239
                         required/>
-=======
-                        required />
->>>>>>> add imageHandler
                     {this.getButtonWithImageUpload()}
                     {this.getButtonWithSmile()}
                 </div>
                 <div>
                     {this.getImageUploadWindow()}
                 </div>
-<<<<<<< 33781bea0447617a68ba0901eb6cb107c2bd1239
                 <div className="picker__style">
-=======
-                <div class="picker__style">
->>>>>>> add imageHandler
                     {this.getPicker()}
                 </div>
             </Textarea>

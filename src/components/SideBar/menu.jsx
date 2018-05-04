@@ -74,10 +74,14 @@ export default class Menu extends React.Component {
                         {currentUser.name}
                     </ListItem>
                     <ListItem
+<<<<<<< 0dcee9116265153799b7f493cc6a37aec680cdff
 <<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
                         leftIcon={<Person />}
 =======
 >>>>>>> change design
+=======
+                        leftIcon={<Person />}
+>>>>>>> editing styles
                         style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
                             display: "flex", alignItems: "center"}}
                         onClick={mainComponentChanger('Contacts')}
@@ -85,24 +89,14 @@ export default class Menu extends React.Component {
                         Контакты
                     </ListItem>
                     <ListItem
-<<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
                         leftIcon={<ModeEdit />}
-=======
->>>>>>> change design
-                        style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
-                            display: "flex", alignItems: "center"}}
                         onClick={mainComponentChanger('Profile')}
                     >
                         Редактирование профиля
                     </ListItem>
                     {this.createChatMutation(currentUser, (onClick) => (
                         <ListItem
-<<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
                             leftIcon={<Group />}
-=======
->>>>>>> change design
-                            style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
-                                display: "flex", alignItems: "center"}}
                             onClick={onClick} 
                         >
                             Создать чат

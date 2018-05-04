@@ -1,6 +1,7 @@
 import React from 'react';
 import {graphql} from 'react-apollo';
-
+import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
+import Close from 'material-ui/svg-icons/navigation/close';
 import {Header} from '../../styles/messages';
 import {UpdateChatTitle} from '../../graphqlQueries/mutations';
 import {chatTitle_ql} from '../../graphqlQueries/fragments';
@@ -51,10 +52,13 @@ export default class ChatHeader extends React.Component {
     };
 
     groupChatHeader = (title, editorOpened) => {
-        const switcher = editorOpened ? '✖' : '✎';
+        const switcher = editorOpened ? 
+            <Close className="header__img" style={{color: '#fff'}}/> :
+            <ModeEdit className="header__img" style={{color: '#fff'}}/>;
         const prefix = (
-            <span
+            <div className="header__editor"
                 onClick={this.props.toggleEditor}
+<<<<<<< 0dcee9116265153799b7f493cc6a37aec680cdff
 <<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
                 style={{ fontSize: "16px" }}>
 =======
@@ -62,6 +66,12 @@ export default class ChatHeader extends React.Component {
 >>>>>>> change design
                 {switcher + (!editorOpened ? title : '')}
             </span>
+=======
+            >
+                {switcher}
+                <span> {!editorOpened ? title : ''} </span>
+            </div>
+>>>>>>> editing styles
         );
 
         return (
@@ -105,11 +115,15 @@ export default class ChatHeader extends React.Component {
     render() {
         const { chat, editorOpened, loading } = this.props;
         return (
+<<<<<<< 0dcee9116265153799b7f493cc6a37aec680cdff
 <<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
             <Header style={{ height: "65px" }}>
 =======
             <Header style={{height: "65px"}}>
 >>>>>>> change design
+=======
+            <Header>
+>>>>>>> editing styles
                 {loading && 'Загрузка...' ||
                 chat.groupchat && this.groupChatHeader(chat.title, editorOpened) ||
                 this.personalChatHeader(chat.title)}

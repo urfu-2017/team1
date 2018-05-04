@@ -24,7 +24,10 @@ import {SubscribeToCurrentUser, SubscribeToUserChats, SubscribeToUsersHavingPers
 import {userSubscriptionDataHandler, chatSubscriptionDataHandler} from '../lib/dataHandlers';
 
 const muiTheme = getMuiTheme({
-    fontFamily: 'Roboto Condensed'
+    fontFamily: 'Roboto Condensed',
+    appBar: {
+        height: 65
+    }
 });
 
 const Wrapper = styled.main`

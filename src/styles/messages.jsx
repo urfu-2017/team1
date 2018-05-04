@@ -7,13 +7,22 @@ export const MessagesList = styled.section`
 `;
 
 export const Header = styled.section`
-    height: 65px !important;
+    height: 71px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
     background-color: #5682a3;
+    .header__editor {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .header__img {
+        color: #fff;
+        margin: 0 15px 0 0;
+    }
 `;
 
 export const ScrollButton = styled.div`
