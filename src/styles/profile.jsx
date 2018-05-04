@@ -15,17 +15,17 @@ export const Editor = styled.article`
     .header {
     }
     .editorName {
-        position: relative;
         justifyContent: center;
         alignItems: center;
         display: flex;
         background: #5682a3;
+        position: relative;
         color: #fff;
-        width: 100%;
-        height: 59px;
+        width: 100%
         align-items: center;
-        justify-content: center;
+        height: 59px;
         top: -2px;
+        justify-content: center;
     }
     .buttons {
         width: 100%;

@@ -160,9 +160,9 @@ export default class MessageInput extends React.Component {
         <div onClick={() => {
             this.openOrCloseUploadWindow();
         }}
-             className="clip"
-             title="Send picture">
-            📎
+            className="clip"
+            title="Send picture">
+            <Attachfile />
         </div>
     );
 

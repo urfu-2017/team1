@@ -58,37 +58,17 @@ export default class ChatHeader extends React.Component {
         const prefix = (
             <div className="header__editor"
                 onClick={this.props.toggleEditor}
-<<<<<<< 0dcee9116265153799b7f493cc6a37aec680cdff
-<<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
-                style={{ fontSize: "16px" }}>
-=======
-                style={{ fontSize: "16px" }} >
->>>>>>> change design
-                {switcher + (!editorOpened ? title : '')}
-            </span>
-=======
+                style={{ fontSize: "16px" }}
             >
                 {switcher}
                 <span> {!editorOpened ? title : ''} </span>
             </div>
->>>>>>> editing styles
         );
 
         return (
             <React.Fragment>
                 {prefix}
                 {editorOpened &&
-<<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
-                <input
-                    value={this.state.title}
-                    size={title.length}
-                    style={{ outline: "none", border: "none" }}
-                    onChange={this.handleChange}
-                    onKeyPress={this.handleSubmit}
-                    autoFocus
-                    onFocus={e => e.target.select()}
-                />
-=======
                     <input
                         value={this.state.title}
                         size={title.length}
@@ -98,7 +78,6 @@ export default class ChatHeader extends React.Component {
                         autoFocus
                         onFocus={e => e.target.select()}
                     />
->>>>>>> change design
                 }
             </React.Fragment>
         );
@@ -115,15 +94,8 @@ export default class ChatHeader extends React.Component {
     render() {
         const { chat, editorOpened, loading } = this.props;
         return (
-<<<<<<< 0dcee9116265153799b7f493cc6a37aec680cdff
-<<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
             <Header style={{ height: "65px" }}>
-=======
-            <Header style={{height: "65px"}}>
->>>>>>> change design
-=======
-            <Header>
->>>>>>> editing styles
+
                 {loading && 'Загрузка...' ||
                 chat.groupchat && this.groupChatHeader(chat.title, editorOpened) ||
                 this.personalChatHeader(chat.title)}

@@ -1,11 +1,5 @@
-
 import React from 'react';
 import PropTypes from 'prop-types';
-<<<<<<< 724d9cae2dcc6ae08426775fdeafbb814b9f5659
-import {Tabs, Tab} from 'material-ui/Tabs';
-import {Mutation, Query, graphql} from 'react-apollo';
-=======
->>>>>>> editor chats
 import {Tabs, Tab} from 'material-ui/Tabs';
 import {Mutation, Query, graphql} from 'react-apollo';
 
@@ -155,31 +149,11 @@ export default class Contacts extends React.Component {
                 value={this.state.value}
                 onChange={this.handleChange}
             >
-<<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
-<<<<<<< 724d9cae2dcc6ae08426775fdeafbb814b9f5659
-=======
->>>>>>> change design
                 <Tab
                     label="Контакты"
                     value="contacts"
                     onActive={this.hideAllUsers}
                     style={{ width: "100%", background: "#5682a3" }} >
-<<<<<<< e5fc3fb7e1c8d2d9c84aad1d1afc8ede303a9dcc
-                    { !this.state.showAllUsers && this.withContacts(this.myContacts) }
-                    
-                </Tab>
-                <Tab
-                    label="Все пользователи"
-                    value="allUsers"
-                    onActive={this.showAllUsers}
-                    style={{ width: "100%", background: "#5682a3" }} >
-                    { this.state.showAllUsers && this.withAllUsers(this.allUsers) }
-                </Tab>
-            </Tabs> 
-=======
-                <Tab label="Контакты" value="contacts" onActive={this.hideAllUsers} >
-=======
->>>>>>> change design
                     { !this.state.showAllUsers && this.withContacts(this.myContacts) }
                     
                 </Tab>
@@ -191,7 +165,6 @@ export default class Contacts extends React.Component {
                     { this.state.showAllUsers && this.withAllUsers(this.allUsers) }
                 </Tab>
             </Tabs>
->>>>>>> editor chats
         </React.Fragment>;
     }
 }

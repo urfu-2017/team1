@@ -1,12 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../../styles/imageHandler';
-<<<<<<< 33781bea0447617a68ba0901eb6cb107c2bd1239
-import ImageHandler from '../../lib/imageHandler';
-=======
+import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../../styles/profile';
 import ImageHandler from '../imageHandler';
->>>>>>> add imageHandler
 
 
 class MessageImageSender extends ImageHandler {

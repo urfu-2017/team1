@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../../styles/imageHandler';
+import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../../styles/profile';
 import ImageHandler from '../imageHandler';
 
 
@@ -30,10 +30,14 @@ class ChatImageSender extends ImageHandler {
 
         return (
             <Editor>
-                <Exit onClick={() => { closeImageSender(false); }}>
-                    &#10006;
-                </Exit>
-                <h1 className="header">Изменить картинку чата</h1>
+                <div
+                    className="editorName"
+                >
+                    <Exit onClick={() => { closeImageSender(false); }}>
+                        &#10006;
+                    </Exit>
+                    <h1 className="header">Изменить картинку чата</h1>
+                </div>
                 <DownloadImage
                     onDrop={this.drop}
                     onDragOver={this.dragover}

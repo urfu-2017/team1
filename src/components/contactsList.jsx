@@ -1,16 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
-<<<<<<< 724d9cae2dcc6ae08426775fdeafbb814b9f5659
-import List from 'material-ui/List/List';
-import RaisedButton from 'material-ui/RaisedButton';
-import ListItem from 'material-ui/List/ListItem';
-import Avatar from 'material-ui/Avatar';
-import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
-import {Scrollbars} from 'react-custom-scrollbars';
-
-=======
->>>>>>> editor chats
 import List from 'material-ui/List/List';
 import RaisedButton from 'material-ui/RaisedButton';
 import ListItem from 'material-ui/List/ListItem';
@@ -59,10 +49,7 @@ export default class ContactsList extends React.Component {
             .map(contact => ContactsList.getContactsItem(clickHandler, currentUser, contact, handleChange));
     }
 
-    static getContactsItem = (clickHandler, currentUser, contact, handleChange) => {
-        console.log(handleChange);
-        
-        return (
+    static getContactsItem = (clickHandler, currentUser, contact, handleChange) => (
             <ListItem
                 insetChildren
                 primaryText={contact.name}
@@ -71,7 +58,7 @@ export default class ContactsList extends React.Component {
                 rightIcon={<CommunicationChatBubble />}
                 onClick={() => { clickHandler(currentUser, contact); handleChange('contacts'); }}
             />
-    )};
+    );
 
     render() {
         const { title, closeAction } = this.props;
