@@ -21,16 +21,21 @@ export const ScrollButton = styled.div`
     justify-content: center;
     align-items: center;
     background-color: white;
-    position: fixed;
     padding: 0;
     margin-bottom: 10px;
-    bottom: 50px;
     width: 30px;
     height: 30px;
     border: 2px solid #b7c5f5;
     border-radius: 50%;
     color: #b7c5f5;
-    left: 92%;
+    position: fixed;
+    bottom: 50px;
+    @media screen and (max-width: 1260px) {
+        right: 50px;
+    }
+    @media screen and (min-width: 1261px) {
+        right: calc((100% - 1260px) / 2 + 50px);
+    }
     cursor: pointer;
     &::before {
         content: '▼';
