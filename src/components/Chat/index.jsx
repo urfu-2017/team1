@@ -49,13 +49,16 @@ export default class Chat extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.state = { editorOpened: false };
     }
 
     componentWillReceiveProps(props) {
-        const { editorOpened } = props;
-        this.setState({ editorOpened });
+        const { editorOpened, localState } = props;
+        console.log(this.state);
+        console.log(editorOpened);
+        if (this.props.editorOpened !== editorOpened ||
+            localState.currentChatId !== this.props.localState.currentChatId)
+            this.setState({ editorOpened });
     }
 
     getMainComponent(chat, currentUser) {
