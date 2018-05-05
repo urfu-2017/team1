@@ -66,7 +66,7 @@ export default class ProfileEditor extends ImageHandler {
                         >
                             Загрузить аватар
                     </h1>
-                </div>
+                </div>    
                 <DownloadImage
                     style={{ marginTop: "50" }}
                     onDrop={this.drop}
