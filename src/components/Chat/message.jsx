@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
-import { Emoji, emojiIndex } from 'emoji-mart';
+import {graphql} from 'react-apollo';
+import {Emoji, emojiIndex} from 'emoji-mart';
 import Mood from 'material-ui/svg-icons/social/mood';
 import dynamic from 'next/dynamic';
 
-import { MessageWrapper } from '../../styles/message';
-import { GetUser } from '../../graphqlQueries/queries';
-import { UpdateMessageReactions } from '../../graphqlQueries/mutations';
-import { Reactions } from '../../styles/reaction';
+import {MessageWrapper} from '../../styles/message';
+import {GetUser} from '../../graphqlQueries/queries';
+import {UpdateMessageReactions} from '../../graphqlQueries/mutations';
+import {Reactions} from '../../styles/reaction';
 import Reaction from './reaction';
-import { getNewReactions } from '../../helpers/reactionsHelper';
-import { withCurrentUser } from '../../lib/currentUserContext';
+import {getNewReactions} from '../../helpers/reactionsHelper';
+import {withCurrentUser} from '../../lib/currentUserContext';
 
 const EmojiPicker = dynamic(
     import('emoji-picker-react'),
@@ -60,7 +60,7 @@ export default class Message extends React.PureComponent {
 
     onEmojiClick = (_, val) => {
         this.updateMessageReactions(val.name);
-    }
+    };
 
     findEmoji = id => emojiIndex.search(id)
         .filter(x => x.id === id)
@@ -68,26 +68,26 @@ export default class Message extends React.PureComponent {
 
     getPicker = () => (this.state.emoji) ?
         (
-        <EmojiPicker
-            onEmojiClick={this.onEmojiClick}
-            disableDiversityPicker
-        />) : '';
+            <EmojiPicker
+                onEmojiClick={this.onEmojiClick}
+                disableDiversityPicker
+            />) : '';
 
     createReactionComponents = (reactions, currentUserId) => {
         let reactionComponents = [];
         if (reactions) {
             reactionComponents = reactions.map(x =>
                 (<Reaction key={Math.random()}
-                    count={x.users.length}
-                    isCurrentUser={x.users.includes(currentUserId)}
-                    reaction={x.emoji}
-                    onReactionClick={() => this.updateMessageReactions(x.emoji)}
-                    emojiNative={this.findEmoji(x.emoji)}
+                           count={x.users.length}
+                           isCurrentUser={x.users.includes(currentUserId)}
+                           reaction={x.emoji}
+                           onReactionClick={() => this.updateMessageReactions(x.emoji)}
+                           emojiNative={this.findEmoji(x.emoji)}
                 />));
         }
 
         return reactionComponents;
-    }
+    };
 
     createPicturesComponets = (pictures) => {
         let picturesComponents = [];
@@ -102,7 +102,7 @@ export default class Message extends React.PureComponent {
         }
 
         return picturesComponents;
-    }
+    };
 
     static formatDate = new Intl.DateTimeFormat('ru', {
         hour: 'numeric',
@@ -130,14 +130,15 @@ export default class Message extends React.PureComponent {
                 <div className="messageBlock">
                     <div
                         style={{ flexWrap: "wrap", display: "flex", width: "100%", borderBottom: "1px solid #b7efe7" }}>
-                        <img className="msgFromUserPic" src={user && user.avatarUrl} width="30px" />
+                        <img className="msgFromUserPic" src={user && user.avatarUrl} width="30px"/>
                         <div className="msgFromBlock">
                             <span className="msgFromUserName">{user && user.name + delivered}</span>
                             {/*TODO: у сообщения есть также поле modifiedAt, равное null, если оно не менялось */}
                         </div>
                         <div className="msgTimeReactionBlock">
-                            <div onClick={this.openOrCloseReactions} className="addReactions" title="Срочно реагировать">
-                                {/* &#x263A; */}
+                            <div onClick={this.openOrCloseReactions} className="addReactions"
+                                 title="Срочно реагировать">
+                                 <Mood />
                             </div>
                             <div className="messageBlock__time">{createdAt}</div>
                         </div>
@@ -148,18 +149,18 @@ export default class Message extends React.PureComponent {
                         dangerouslySetInnerHTML={{ __html: message.text }}
                     />
                     {ogdata && ogdata.url && Object.keys(ogdata).length !== 0 &&
-                        <div className="metadata">
-                            <a href={ogdata.url} className="metadata-container">
-                                {ogdata.image && <img className="metadata-container__img"
-                                    src={ogdata.image.url} alt={ogdata.title} />}
-                                <div className="metadata-container__title">{ogdata.title}</div>
-                            </a>
-                        </div>}
+                    <div className="metadata">
+                        <a href={ogdata.url} className="metadata-container">
+                            {ogdata.image && <img className="metadata-container__img"
+                                                  src={ogdata.image.url} alt={ogdata.title}/>}
+                            <div className="metadata-container__title">{ogdata.title}</div>
+                        </a>
+                    </div>}
                     {picturesComponents.length > 0 && picturesComponents}
                     {reactionComponents.length > 0 && <Reactions>{reactionComponents}</Reactions>}
                 </div>
                 <div
-                    class="pickerStyle" >
+                    class="pickerStyle">
                     {this.getPicker()}
                 </div>
             </MessageWrapper>
