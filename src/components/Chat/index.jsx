@@ -54,8 +54,6 @@ export default class Chat extends React.Component {
 
     componentWillReceiveProps(props) {
         const { editorOpened, localState } = props;
-        console.log(this.state);
-        console.log(editorOpened);
         if (this.props.editorOpened !== editorOpened ||
             localState.currentChatId !== this.props.localState.currentChatId)
             this.setState({ editorOpened });

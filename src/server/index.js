@@ -11,17 +11,7 @@ const memoryStore = require('session-memory-store')(session)();
 const Express = require('express');
 const cloudinary = require('cloudinary');
 
-// TODO: КАК НЕИСПОЛЬЗУЕМЫЕ ИМПОРТЫ ВЛИЯЮТ НА РАБОТУ СЕРВЕРА?!
-const request = require('request');
-const { ApolloClient } = require('apollo-client');
-const { HttpLink } = require('apollo-link-http');
-const gql = require('graphql-tag');
-const fetch = require('node-fetch');
-const { createHttpLink } = require('apollo-link-http');
-const { InMemoryCache } = require('apollo-cache-inmemory');
-
 const DynamicConfig = require('./dynamicConfig');
-const GraphqlApi = require('./db/graphqlApi');
 const authMiddleware = require('./middleware/auth');
 const proxyMiddleware = require('./middleware/proxy');
 const inviteMiddleware = require('./middleware/invite');
