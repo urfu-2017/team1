@@ -9,9 +9,7 @@ const EmojiPicker = dynamic(
     { ssr: false }
 );
 
-
 import Attachfile from 'material-ui/svg-icons/editor/attach-file';
-import Mood from 'material-ui/svg-icons/social/mood';
 
 import { withCurrentUser } from '../../lib/currentUserContext';
 import Textarea from '../../styles/chatWindowInput';
@@ -152,7 +150,6 @@ export default class MessageInput extends React.Component {
              className="openEmojiButton__style"
              title="Emoji"
         >
-            <Mood />
         </div>
     );
 
