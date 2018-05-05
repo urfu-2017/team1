@@ -54,11 +54,11 @@ export const DownloadImage = styled.div`
 export const DownloadButton = styled.input`
     outline:none;
     cursor: pointer;
-    width: 225px;
+    width: auto;
+    height: auto;
     padding: 7px;
     border-radius: 5px;
     background: #5682a3;
-    height: 22px;
     color: #fff;
     margin-bottom: 40px;
 `;
@@ -67,10 +67,10 @@ export const CreateButton = DownloadButton.extend`
     outline:none;
     cursor: pointer;
     border: none;
-    width: 85px;
+    width: auto;
+    height: 31px;
     padding: 7px;
     border-radius: 5px;
-    height: 36px;
     color: #fff;
 `;    
 
