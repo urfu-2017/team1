@@ -31,7 +31,7 @@ function main(isProduction, port) {
 
     server.use(cookieParser())
         .use(Express.urlencoded({ extended: true }))
-        .use(Express.json())
+        .use(Express.json({ limit: "2mb" }))
         .use(`/${process.env.PROXY_SECRET}/proxy`, proxyMiddleware(requestInterceptor))
         .use(`/${process.env.PROXY_SECRET_SWITCH}/open-the-pod-bay-doors-hal`,
             dynamicConfig.proxySwitcher(true))

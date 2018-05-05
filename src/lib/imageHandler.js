@@ -49,7 +49,7 @@ class ImageHandler extends Component {
             return;
         }
         if (image.size >= MAX_FILE_SIZE) {
-            this.setTextDownloadArea('Размер вашей фотографии не должен превышать 100 KB. ' +
+            this.setTextDownloadArea('Размер вашей фотографии не должен превышать 1 MB. ' +
                 'Для снятия ограничения переведите $15 на hakaton2018team1@yandex.ru');
             const dropArea = document.getElementById('area-for-drop');
             dropArea.style.backgroundImage = 'none';
