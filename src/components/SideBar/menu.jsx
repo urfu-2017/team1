@@ -75,12 +75,16 @@ export default class Menu extends React.Component {
                     </ListItem>
                     <ListItem
                         leftIcon={<Person />}
+                        style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
+                            display: "flex", alignItems: "center"}}
                         onClick={mainComponentChanger('Contacts')}
                     >
                         Контакты
                     </ListItem>
                     <ListItem
                         leftIcon={<ModeEdit />}
+                        style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
+                            display: "flex", alignItems: "center"}}
                         onClick={mainComponentChanger('Profile')}
                     >
                         Редактирование профиля
@@ -88,6 +92,8 @@ export default class Menu extends React.Component {
                     {this.createChatMutation(currentUser, (onClick) => (
                         <ListItem
                             leftIcon={<Group />}
+                            style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
+                            display: "flex", alignItems: "center"}}
                             onClick={onClick} 
                         >
                             Создать чат

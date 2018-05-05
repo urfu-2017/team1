@@ -1,17 +1,27 @@
 import styled from 'styled-components';
 
-
 export const Editor = styled.article`
-    width: 65%;
+    width: 100%;
     height: 100%;
+    top: 0
+    left: 50%;
+    position: absolute;
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: space-between;
-    border: 1.5px solid #e6e6fa;
-    border-radius: 5px;
-    border-left: none;
+    transform: translateX(-50%);
     background: #fff;
+    .header {
+        padding: 0 30px;
+    }
+    .buttons {
+        width: 100%;
+        height: 40px;
+        display: flex;
+        justify-content: space-around
+        align-items: center;
+    }
     .editorName {
         justifyContent: center;
         alignItems: center;
@@ -21,16 +31,9 @@ export const Editor = styled.article`
         color: #fff;
         width: 100%
         align-items: center;
-        height: 59px;
-        top: -2px;
+        min-height: 64px;
+        top: -5px;
         justify-content: center;
-    }
-    .buttons {
-        width: 100%;
-        height: 40px;
-        display: flex;
-        justify-content: space-around
-        align-items: center;
     }
 `;
 

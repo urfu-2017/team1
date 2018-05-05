@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../../styles/profile';
+import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../../styles/imageHandler';
 import ImageHandler from '../../lib/imageHandler';
 
 
@@ -64,7 +64,7 @@ class ChatImageSender extends ImageHandler {
                         onClick={this.sendImage}
                     />
                 </div>
-            </Editor >
+            </Editor>
         );
     }
 }

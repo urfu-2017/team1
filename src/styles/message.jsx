@@ -4,6 +4,7 @@ import styled from 'styled-components';
 export const MessageWrapper = styled.article`
     height:auto;
     padding: 10px;
+    
     p {
         display: table; 
         white-space: pre-wrap;
