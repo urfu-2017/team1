@@ -60,8 +60,8 @@ export default class Message extends React.PureComponent {
     openOrCloseReactions = () => this.setState({ emoji: !this.state.emoji });
 
     onEmojiClick = (_, val) => {
-        this.state.emoji = false;
-        console.info(' this.state.emoji = false;',  this.state.emoji)
+        // this.state.emoji = false;
+        // console.info(' this.state.emoji = false;',  this.state.emoji)
         this.updateMessageReactions(val.name);
     };
 
