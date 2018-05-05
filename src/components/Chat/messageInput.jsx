@@ -68,6 +68,7 @@ export default class MessageInput extends React.Component {
             // }
 
             this.clearState();
+            localStorage.setItem(this.storageKey, '');
         }
     };
 
