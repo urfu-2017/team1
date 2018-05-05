@@ -16,7 +16,7 @@ export const MessageWrapper = styled.article`
         background-size: contain;
     }
     .messageBlock {
-        max-width: 51%;
+        max-width: 338px;
         border-radius: 5px;
         min-height: 25px;
         height:auto;
