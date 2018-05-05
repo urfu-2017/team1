@@ -38,6 +38,8 @@ export const Editor = styled.article`
 `;
 
 export const DownloadImage = styled.div`
+    text-align: center;
+    min-width: 300px;
     background-size: cover;
     margin-top: 10px;
     color: #5682a3;
