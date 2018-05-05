@@ -87,10 +87,9 @@ export const MessageWrapper = styled.article`
     }
     .pickerStyle {
         z-index: 2;
-        top: 60px;
-        position: fixed;
-        right: ${props => (props.isFromSelf ? '10px' : '')};
-        left: ${props => (props.isFromSelf ? '' : '35%')};
+        height: 10px;
+        position: relative;
+        float: ${props => (props.isFromSelf ? 'right' : 'left')};
     }
     .messageBlock__picture {
         padding: 5%;
