@@ -66,7 +66,11 @@ export default class Message extends React.PureComponent {
         .map(x => x.native);
 
     getPicker = () => (this.state.emoji) ?
-        (<EmojiPicker onEmojiClick={this.onEmojiClick} disableDiversityPicker />) : '';
+        (
+        <EmojiPicker
+            onEmojiClick={this.onEmojiClick}
+            disableDiversityPicker
+        />) : '';
 
     createReactionComponents = (reactions, currentUserId) => {
         let reactionComponents = [];
@@ -123,17 +127,20 @@ export default class Message extends React.PureComponent {
         return (
             <MessageWrapper isFromSelf={isFromSelf}>
                 <div className="messageBlock">
-                    <div className="msgFromBlock">
+                    <div
+                        style={{ flexWrap: "wrap", display: "flex", width: "100%", borderBottom: "1px solid #b7efe7" }}>
                         <img className="msgFromUserPic" src={user && user.avatarUrl} width="30px" />
-                        <span className="msgFromUserName">{user && user.name + delivered}</span>
-                        {/*TODO: у сообщения есть также поле modifiedAt, равное null, если оно не менялось */}
-                    </div>
-                    <div className="msgTimeReactionBlock">
-                        <div onClick={this.openOrCloseReactions} className="addReactions">
-                            &#x263A;
+                        <div className="msgFromBlock">
+                            <span className="msgFromUserName">{user && user.name + delivered}</span>
+                            {/*TODO: у сообщения есть также поле modifiedAt, равное null, если оно не менялось */}
                         </div>
-                        <div className="messageBlock__time">{createdAt}</div>
-                    </div>
+                        <div className="msgTimeReactionBlock">
+                            <div onClick={this.openOrCloseReactions} className="addReactions" title="Срочно реагировать">
+                                {/* &#x263A; */}
+                            </div>
+                            <div className="messageBlock__time">{createdAt}</div>
+                        </div>
+                    </div>    
                     <div
                         className="messageBlock__text"
                         isFromSelf={isFromSelf}
@@ -150,8 +157,13 @@ export default class Message extends React.PureComponent {
                     {picturesComponents.length > 0 && picturesComponents}
                     {reactionComponents.length > 0 && <Reactions>{reactionComponents}</Reactions>}
                 </div>
-                {this.getPicker()}
+                <div 
+                    class="pickerStyle" >
+                    {this.getPicker()}
+                </div>    
             </MessageWrapper>
         );
     }
 }
+
+// style={{ width: "100px", height: "100px", position: "absolute" }}

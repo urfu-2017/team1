@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 
 export const Reactions = styled.div`
+    flex-wrap: wrap;
     padding: 2px 5px;
     display: flex;
 `;
 
 export const ReactionWrapper = styled.div`
+    display: flex;
+    flexWrap: wrap;
     .reaction {
         display: flex;
         align-items: center;
@@ -19,7 +22,7 @@ export const ReactionWrapper = styled.div`
         -moz-border-radius: 4px;
     }
     .reaction.reaction-current {
-        border-color: blue;
+        border-color: #5682a3;
     }
     .reaction .reaction__emoji {
         margin-right: 2px;
