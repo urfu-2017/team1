@@ -8,9 +8,9 @@ import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
 import Avatar from 'material-ui/Avatar';
 
-import { GetChatMembers, GetUserContacts } from '../../graphqlQueries/queries';
-import { AddUserToChat } from '../../graphqlQueries/mutations';
-import { Editor, AddButton, UserList, Contact } from '../../styles/chatEditor';
+import {GetChatMembers, GetUserContacts} from '../../graphqlQueries/queries';
+import {AddUserToChat} from '../../graphqlQueries/mutations';
+import {Editor, AddButton, UserList, Contact} from '../../styles/chatEditor';
 import ContactsList from '../contactsList';
 import {withCurrentUser} from '../../lib/currentUserContext';
 import ChatImageSender from './chatImageSender';
@@ -84,7 +84,6 @@ export default class ChatEditor extends React.Component {
             chatId: this.props.currentChat.id,
             picture: urlInBase64
         });
-
     };
 
     openOrCloseChatImageUploadWindow = () => {

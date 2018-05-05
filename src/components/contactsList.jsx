@@ -37,26 +37,26 @@ export default class ContactsList extends React.Component {
     };
 
     getContactsList() {
-        const { clickHandler, currentUser, contacts, contactsFilter, error, loading } = this.props;
+        const { clickHandler, currentUser, contacts, contactsFilter, error, loading, handleChange } = this.props;
         if (loading) {
             return ContactsList.LoadScreen;
         }
         if (error || !contacts) {
             return ContactsList.ErrorScreen;
-        }
+        }        
         return contacts
             .filter(contactsFilter.bind(null, this.props))
-            .map(contact => ContactsList.getContactsItem(clickHandler, currentUser, contact));
+            .map(contact => ContactsList.getContactsItem(clickHandler, currentUser, contact, handleChange));
     }
 
-    static getContactsItem = (clickHandler, currentUser, contact) => (
+    static getContactsItem = (clickHandler, currentUser, contact, handleChange) => (
             <ListItem
                 insetChildren
                 primaryText={contact.name}
                 key={contact.name + Math.random()}
                 leftAvatar={<Avatar src={contact.avatarUrl} />}
                 rightIcon={<CommunicationChatBubble />}
-                onClick={() => clickHandler(currentUser, contact)}
+                onClick={() => { clickHandler(currentUser, contact); handleChange('contacts'); }}
             />
     );
 
@@ -69,11 +69,6 @@ export default class ContactsList extends React.Component {
                     style={{ background: "#fff" }}>
                     {title}
                 </h1>
-                <Search
-                    style={{ background: "#fff", outline: "none" }}
-                    type="search"
-                    placeholder="Поиск"
-                />
                 <Scrollbars universal>
                     <List>
                         {this.getContactsList()}

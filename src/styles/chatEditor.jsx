@@ -17,6 +17,18 @@ export const Editor = styled.article`
     .chat-editor {
         height: 130px;
         border-left: 1px solid lavender;
+        background: #f2f3dE;
+    }
+
+    .image {
+        height: 130px;
+        width: 130px;
+        margin: 20px 50px;
+        border-radius: 50% 50%;
+    }
+    .chat-editor {
+        height: 130px;
+        border-left: 1px solid lavender;
         text-align: center;
         width: 60%;
         display: flex;
@@ -24,6 +36,15 @@ export const Editor = styled.article`
         align-items: center;
     }
     .link {
+        border-top: 1px solid lavender;
+        border-bottom: 1px solid lavender;
+        padding: 5px;
+        width: 77%;
+    }
+    .link a {
+        text-decoration: none;
+        color: deeppink;
+
         border-top: 1px solid lavender;
         border-bottom: 1px solid lavender;
         padding: 5px;

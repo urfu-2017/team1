@@ -6,7 +6,6 @@ const escape = require('html-escape');
 const marked = require('marked');
 const cloudinary = require('cloudinary');
 
-
 const savePictureOnCloudinary = async (srcInBase64) => {
     const promise = new Promise(resolve => {
         cloudinary.uploader.upload(srcInBase64, data => {

@@ -16,16 +16,13 @@ export const MessageWrapper = styled.article`
         background-size: contain;
     }
     .messageBlock {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
         max-width: 51%;
         border-radius: 5px;
         min-height: 25px;
         height:auto;
         float: ${props => (props.isFromSelf ? 'right' : 'left')};
+        box-shadow: rgb(200, 217, 230) 2px 2px 5px 0px;
         background-color: ${props => (props.isFromSelf ? '#92d7ef' : 'rgb(231, 235, 240)')};
-        box-shadow: ${props => (props.isFromSelf ? '0px 0px 11px 0px rgba(146,215,239,1)' : 'rgb(200, 217, 230) 0px 0px 11px 0px')};
     }
     .msgFromBlock {
         padding: 8px;
@@ -35,10 +32,6 @@ export const MessageWrapper = styled.article`
         align-items: center;
     }
     .addReactions {
-        background-image: url("/static/images/happy.svg");
-        background-repeat: no-repeat;
-        width: 20px;
-        height: 20px;
         padding: 0 5px;
         cursor: pointer;
     }

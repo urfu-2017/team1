@@ -26,6 +26,7 @@ export const ChatsList = styled.section`
     box-sizing: border-box;
     background: #fff;
     border-right: 1.5px solid lavender;
+    border-left: 1.5px solid lavender;
 `;
 
 export const AppBar = styled.section`
