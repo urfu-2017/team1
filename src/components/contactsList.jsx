@@ -43,7 +43,7 @@ export default class ContactsList extends React.Component {
         }
         if (error || !contacts) {
             return ContactsList.ErrorScreen;
-        }        
+        }
         return contacts
             .filter(contactsFilter.bind(null, this.props))
             .map(contact => ContactsList.getContactsItem(clickHandler, currentUser, contact, handleChange));
@@ -56,7 +56,7 @@ export default class ContactsList extends React.Component {
                 key={contact.name + Math.random()}
                 leftAvatar={<Avatar src={contact.avatarUrl} />}
                 rightIcon={<CommunicationChatBubble />}
-                onClick={() => { clickHandler(currentUser, contact); handleChange('contacts'); }}
+                onClick={() => { clickHandler(currentUser, contact); handleChange && handleChange('contacts'); }}
             />
     );
 

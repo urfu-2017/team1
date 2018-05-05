@@ -17,17 +17,18 @@ import ChatImageSender from './chatImageSender';
 import {UpdateChatPicture} from '../../graphqlQueries/mutations';
 
 
+
 @withCurrentUser
-@graphql(GetChatMembers.query, {
-    options: ({ currentChat }) => ({ variables: { chatId: currentChat.id } }),
-    props: GetChatMembers.map
-})
 @graphql(GetUserContacts.query, {
     skip: ({ currentUser }) => !currentUser,
     options: ({ currentUser }) => ({ variables: { userId: currentUser.id } }),
     props: GetUserContacts.map
 })
 @graphql(UpdateChatPicture.mutation, { props: UpdateChatPicture.map })
+@graphql(GetChatMembers.query, {
+    options: ({ currentChat }) => ({ variables: { chatId: currentChat.id } }),
+    props: GetChatMembers.map
+})
 export default class ChatEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -50,7 +51,8 @@ export default class ChatEditor extends React.Component {
     clickHandler = (addUserToChat, currentUser, contact) => {
         const { currentChat, data } = this.props;
         addUserToChat({ variables: { chatId: currentChat.id, userId: contact.id } });
-        setTimeout(data.refetch, 700);
+        console.log(data);
+        setTimeout(data.refetch, 1000);
         this.toggleUsersList();
     };
 
