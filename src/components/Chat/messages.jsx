@@ -32,12 +32,19 @@ export default class Messages extends React.Component {
 
 
     componentDidMount() {
-        this.scroll.scrollToBottom();
+        this.scroll.isBottom = true;
     }
 
     componentDidUpdate() {
-        this.scroll.scrollToBottom();
+        if (this.scroll.isBottom) {
+            this.scroll.scrollToBottom();
+        }
     }
+
+    changePositionScroll = () => {
+        this.scroll.isBottom =
+            (this.scroll.getScrollHeight() === this.scroll.getScrollTop() + this.scroll.getClientHeight());
+    };
 
     // Не создаём новую функцию при каждом рендере
     setScroll = node => (this.scroll = node);
@@ -75,6 +82,7 @@ export default class Messages extends React.Component {
                 <Scrollbars
                     style={{ 'background-color': 'rgba(255,255,255, .7)' }}
                     ref={this.setScroll}
+                    onScrollStop={this.changePositionScroll}
                 >
                     <MessagesList >
                         {content}
