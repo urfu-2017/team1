@@ -79,7 +79,7 @@ export const MessageWrapper = styled.article`
         padding-right: 8px;
         max-width: 178px;
         width: auto;
-        height: 78px;
+        height: auto;
     }
     .pickerStyle {
         position: absolute;
