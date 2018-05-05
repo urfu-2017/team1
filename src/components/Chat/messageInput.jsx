@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 import {emojiIndex} from 'emoji-mart';
 import dynamic from 'next/dynamic';
+import Mood from 'material-ui/svg-icons/social/mood';
 
 const EmojiPicker = dynamic(
     import('emoji-picker-react'),
@@ -151,6 +152,7 @@ export default class MessageInput extends React.Component {
              className="openEmojiButton__style"
              title="Emoji"
         >
+            <Mood />
         </div>
     );
 
