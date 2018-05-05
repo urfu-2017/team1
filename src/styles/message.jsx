@@ -32,6 +32,10 @@ export const MessageWrapper = styled.article`
         align-items: center;
     }
     .addReactions {
+        background-image: url('/static/images/happy.svg');
+        background-repeat: no-repeat;
+        width: 20px;
+        height: 20px;
         padding: 0 5px;
         cursor: pointer;
     }
@@ -82,9 +86,11 @@ export const MessageWrapper = styled.article`
         height: auto;
     }
     .pickerStyle {
-        position: absolute;
-        right: ${props => (props.isFromSelf ? '' : '0')};
-        left: ${props => (props.isFromSelf ? '0' : '')};
+        z-index: 2;
+        top: 60px;
+        position: fixed;
+        right: ${props => (props.isFromSelf ? '10px' : '')};
+        left: ${props => (props.isFromSelf ? '' : '35%')};
     }
     .messageBlock__picture {
         padding: 5%;

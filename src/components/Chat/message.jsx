@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 import {Emoji, emojiIndex} from 'emoji-mart';
-import Mood from 'material-ui/svg-icons/social/mood';
 import dynamic from 'next/dynamic';
 
+import { ParanjaWrapper } from '../../styles/paranja';
 import {MessageWrapper} from '../../styles/message';
 import {GetUser} from '../../graphqlQueries/queries';
 import {UpdateMessageReactions} from '../../graphqlQueries/mutations';
@@ -31,6 +31,7 @@ const EmojiPicker = dynamic(
 @graphql(UpdateMessageReactions.mutation, { props: UpdateMessageReactions.map })
 export default class Message extends React.PureComponent {
     static propTypes = {
+        toggleParanja: PropTypes.func,
         isFromSelf: PropTypes.bool,
         message: PropTypes.object,
         sender: PropTypes.object,
@@ -59,6 +60,8 @@ export default class Message extends React.PureComponent {
     openOrCloseReactions = () => this.setState({ emoji: !this.state.emoji });
 
     onEmojiClick = (_, val) => {
+        this.state.emoji = false;
+        console.info(' this.state.emoji = false;',  this.state.emoji)
         this.updateMessageReactions(val.name);
     };
 
@@ -138,7 +141,6 @@ export default class Message extends React.PureComponent {
                         <div className="msgTimeReactionBlock">
                             <div onClick={this.openOrCloseReactions} className="addReactions"
                                  title="Срочно реагировать">
-                                 <Mood />
                             </div>
                             <div className="messageBlock__time">{createdAt}</div>
                         </div>
