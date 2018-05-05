@@ -9,7 +9,7 @@ const mapper = (query, selector, name) => ({
     map: (req) => {
         const props = {
             data: req.data,
-            loading: req.data && req.data.loading || true,
+            loading: req.data && req.data.loading || !req.data && true,
             error: req.data && req.data.error || null
         };
         if (req.data) {

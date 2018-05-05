@@ -140,7 +140,7 @@ export default class Message extends React.PureComponent {
                             </div>
                             <div className="messageBlock__time">{createdAt}</div>
                         </div>
-                    </div>    
+                    </div>
                     <div
                         className="messageBlock__text"
                         isFromSelf={isFromSelf}
@@ -157,10 +157,10 @@ export default class Message extends React.PureComponent {
                     {picturesComponents.length > 0 && picturesComponents}
                     {reactionComponents.length > 0 && <Reactions>{reactionComponents}</Reactions>}
                 </div>
-                <div 
+                <div
                     class="pickerStyle" >
                     {this.getPicker()}
-                </div>    
+                </div>
             </MessageWrapper>
         );
     }
