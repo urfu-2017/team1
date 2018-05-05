@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {graphql} from 'react-apollo';
 
+import LoadScreen from './ui/loadScreen';
 import Chat from './Chat';
 import SideBar from './SideBar';
 import Contacts from './contacts';
@@ -72,7 +73,7 @@ export default class App extends React.Component {
             <MuiThemeProvider muiTheme={muiTheme}>
                 <Wrapper>
                     {currentUser.error && <p>Error</p> ||
-                    currentUser.loading && <p>Loading</p> ||
+                    currentUser.loading && App.LoadScreen ||
                     (
                         <CurrentUserProvider value={currentUser}>
                             <SideBar mainComponentChanger={this.changeMainComponent}/>
@@ -113,4 +114,6 @@ export default class App extends React.Component {
         //     });
         // }
     };
+
+    static LoadScreen = <LoadScreen />;
 }

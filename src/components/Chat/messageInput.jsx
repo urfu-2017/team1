@@ -37,7 +37,11 @@ export default class MessageInput extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { message: '' };
+        this.state = { message: localStorage.getItem(this.storageKey) || '' };
+    }
+
+    get storageKey() {
+        return `input_${this.props.currentChatId}`;
     }
 
     handleSubmit = event => {
@@ -105,7 +109,11 @@ export default class MessageInput extends React.Component {
         this.props.updateMessages((_, { variables }) => updated);
     };
 
-    handleChange = event => this.setState({ message: event.target.value });
+    handleChange = event => {
+        const message = event.target.value;
+        this.setState({ message });
+        localStorage.setItem(this.storageKey, message);
+    };
 
     openOrCloseEmojies = () => this.setState({ emoji: !this.state.emoji });
 

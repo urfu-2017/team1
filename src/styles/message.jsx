@@ -93,4 +93,8 @@ export const MessageWrapper = styled.article`
         right: ${props => (props.isFromSelf ? '' : '0')};
         left: ${props => (props.isFromSelf ? '0' : '')};
     }
+     .messageBlock__picture {
+        padding: 5%;
+        width: 90%;
+    }
 `;
