@@ -52,23 +52,18 @@ export default class ProfileEditor extends ImageHandler {
             <Editor>
                 <div
                     className="editorName"
-                    style={{ position: "absolute", justifyContent: "center", alignItems: "center",
-                        display: "flex", background: "#5682a3", color: "#fff", width: "100%", top: "0" }}>
+                >
                     <Exit
                         style= {{ top: 0 }}
                         onClick={mainComponentChanger('Chat')}
                     >
                         &#10006;
                     </Exit>
-                    <h1
-                        style={{ margin: "0" }}
-                        className="header"
-                        >
-                            Загрузить аватар
+                    <h1 className="header">
+                        Загрузить аватар
                     </h1>
                 </div>    
                 <DownloadImage
-                    style={{ marginTop: "50" }}
                     onDrop={this.drop}
                     onDragOver={this.dragover}
                     id="area-for-drop">

@@ -2,28 +2,28 @@ import styled from 'styled-components';
 
 
 export const Editor = styled.article`
-    width: 340px;
-    height: 350px;
-    top: 50%;
-    left: 50%;
-    position: absolute;
+    width: 65%;
+    height: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
-    justify-content: space-around;
-    transform: translate(-50%, -50%);
+    justify-content: space-between;
     border: 1.5px solid #e6e6fa;
     border-radius: 5px;
+    border-left: none;
     background: #fff;
-    .header {
-        height: 65px !important;
-        width: 100%;
+    .editorName {
+        justifyContent: center;
+        alignItems: center;
         display: flex;
-        align-items: center;
-        justify-content: center;
+        background: #5682a3;
+        position: relative;
         color: #fff;
-        background-color: #5682a3;
-        padding: 0 30px;
+        width: 100%
+        align-items: center;
+        height: 59px;
+        top: -2px;
+        justify-content: center;
     }
     .buttons {
         width: 100%;
@@ -36,11 +36,11 @@ export const Editor = styled.article`
 
 export const DownloadImage = styled.div`
     background-size: cover;
-    margin-top: 60px;
+    margin-top: 10px;
     color: #5682a3;
     opacity: 0.3;
-    width: 200px;
-    height: 200px;
+    width: 50%;
+    height: 60%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -60,6 +60,7 @@ export const DownloadButton = styled.input`
     background: #5682a3;
     height: 22px;
     color: #fff;
+    margin-bottom: 40px;
 `;
 
 export const CreateButton = DownloadButton.extend`

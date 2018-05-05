@@ -30,6 +30,7 @@ export default class Messages extends React.Component {
         data: {}
     };
 
+
     componentDidMount() {
         this.scroll.scrollToBottom();
     }
@@ -102,5 +103,6 @@ export default class Messages extends React.Component {
     };
 
     static LoadScreen = <LoadScreen offsetPercentage={100} opacity={1} />;
+
     static ErrorScreen = <p>Encountered unknown error while loading messages :(</p>;
 }

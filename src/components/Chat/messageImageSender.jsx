@@ -30,10 +30,14 @@ class MessageImageSender extends ImageHandler {
 
         return (
             <Editor>
-                <Exit onClick={() => { closeImageSender(false); }}>
-                    &#10006;
-                </Exit>
-                <h1 className="header">Отправить картинку в чат</h1>
+                <div
+                    className="editorName"
+                >
+                    <Exit onClick={() => { closeImageSender(false); }}>
+                        &#10006;
+                    </Exit>
+                    <h1 className="header">Отправить картинку в чат</h1>
+                </div>
                 <DownloadImage
                     onDrop={this.drop}
                     onDragOver={this.dragover}
@@ -60,7 +64,7 @@ class MessageImageSender extends ImageHandler {
                         onClick={this.sendImage}
                     />
                 </div>
-            </Editor >
+            </Editor>
         );
     }
 }

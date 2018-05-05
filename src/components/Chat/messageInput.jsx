@@ -9,11 +9,15 @@ const EmojiPicker = dynamic(
     { ssr: false }
 );
 
-import {withCurrentUser} from '../../lib/currentUserContext';
+
+import Attachfile from 'material-ui/svg-icons/editor/attach-file';
+import Mood from 'material-ui/svg-icons/social/mood';
+
+import { withCurrentUser } from '../../lib/currentUserContext';
 import Textarea from '../../styles/chatWindowInput';
-import {addNewMessage} from '../../lib/dataHandlers';
-import {CreateMessage} from '../../graphqlQueries/mutations';
-import {GetChatMessages} from '../../graphqlQueries/queries';
+import { addNewMessage } from '../../lib/dataHandlers';
+import { CreateMessage } from '../../graphqlQueries/mutations';
+import { GetChatMessages } from '../../graphqlQueries/queries';
 import MessageImageSender from './messageImageSender';
 
 
@@ -148,6 +152,7 @@ export default class MessageInput extends React.Component {
              className="openEmojiButton__style"
              title="Emoji"
         >
+            <Mood />
         </div>
     );
 
@@ -155,9 +160,9 @@ export default class MessageInput extends React.Component {
         <div onClick={() => {
             this.openOrCloseUploadWindow();
         }}
-             className="clip"
-             title="Send picture">
-            📎
+            className="clip"
+            title="Send picture">
+            <Attachfile />
         </div>
     );
 

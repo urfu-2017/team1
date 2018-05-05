@@ -25,6 +25,7 @@ export const AuthWrapper = styled.section`
         left: 35%;
     }
     .inner {
+        box-shadow: rgba(82, 79, 79, 0.26) 0px 0px 22px 0px;
         box-sizing: border-box;
         text-align: center;
         padding: 20px;

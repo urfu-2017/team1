@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import { Emoji, emojiIndex } from 'emoji-mart';
+import Mood from 'material-ui/svg-icons/social/mood';
 import dynamic from 'next/dynamic';
 
 import { MessageWrapper } from '../../styles/message';
@@ -165,5 +166,3 @@ export default class Message extends React.PureComponent {
         );
     }
 }
-
-// style={{ width: "100px", height: "100px", position: "absolute" }}

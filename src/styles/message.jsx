@@ -4,6 +4,7 @@ import styled from 'styled-components';
 export const MessageWrapper = styled.article`
     height:auto;
     padding: 10px;
+    
     p {
         display: table; 
         white-space: pre-wrap;
@@ -24,8 +25,8 @@ export const MessageWrapper = styled.article`
         min-height: 25px;
         height:auto;
         float: ${props => (props.isFromSelf ? 'right' : 'left')};
-        background-color: ${props => (props.isFromSelf ? '#92d7ef' : 'rgb(231, 235, 240)')};
-        box-shadow: ${props => (props.isFromSelf ? '0px 0px 11px 0px rgba(146,215,239,1)' : 'rgb(200, 217, 230) 0px 0px 11px 0px')};
+        box-shadow: rgb(200, 217, 230) 0px 0px 11px 0px;
+        background-color: ${props => (props.isFromSelf ? '#e7ebf0' : '#e7ebf0')};
     }
     .msgFromBlock {
         padding: 8px;
