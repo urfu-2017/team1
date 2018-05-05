@@ -17,7 +17,6 @@ export const Editor = styled.article`
     .chat-editor {
         height: 130px;
         border-left: 1px solid lavender;
-        background: #f2f3dE;
     }
 
     .image {
