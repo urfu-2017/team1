@@ -33,6 +33,7 @@ export default class Messages extends React.Component {
 
     componentDidMount() {
         this.scroll.isBottom = true;
+        this.scroll.scrollToBottom();
     }
 
     componentDidUpdate() {

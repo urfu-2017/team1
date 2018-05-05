@@ -43,7 +43,7 @@ export const ScrollButton = styled.div`
         right: 50px;
     }
     @media screen and (min-width: 1261px) {
-        right: calc((100% - 1260px) / 2 + 50px);
+        right: calc((100vw - 1260px) / 2 + 50px);
     }
     cursor: pointer;
     &::before {
