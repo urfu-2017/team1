@@ -1,14 +1,13 @@
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
-import { withClientState } from 'apollo-link-state';
 import { BatchHttpLink } from 'apollo-link-batch-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { getMainDefinition } from 'apollo-utilities';
 import fetch from 'isomorphic-unfetch';
 
-import resolvers from '../resolvers/index';
-import initialState from '../initialState';  // TODO: pass values directly from server to client
+// import resolvers from '../resolvers/index';
+// import initialState from '../initialState';  // TODO: pass values directly from server to client
 
 
 const isOnServer = !process.browser;
@@ -27,12 +26,12 @@ function create(httpUrl, wsUrl) {
         //     (contentId ? `${__typename}:${contentId}` : null)
     });
 
-    cache.restore(initialState || {});
-    const stateLink = withClientState({
-        cache,
-        resolvers,
-        defaults: initialState
-    });
+    // cache.restore(initialState || {});
+    // const stateLink = withClientState({
+    //     cache,
+    //     resolvers,
+    //     defaults: initialState
+    // });
 
     const middlewareAuthLink = new ApolloLink((operation, forward) => {
         const token = localStorage.getItem('user_token');
@@ -61,8 +60,6 @@ function create(httpUrl, wsUrl) {
         });
 
         link = ApolloLink.from([
-            stateLink,
-            // auth
             ApolloLink.split(
                 ({ query }) => {
                     const { kind, operation } = getMainDefinition(query);
@@ -78,7 +75,7 @@ function create(httpUrl, wsUrl) {
     return new ApolloClient({
         connectToDevTools: isOnServer,
         ssrMode: isOnServer, // Disables forceFetch on the server (so queries are only run once)
-        link: ApolloLink.from([stateLink, link]),
+        link: link,
         cache,
         queryDeduplication: true
     });

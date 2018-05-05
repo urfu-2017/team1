@@ -11,8 +11,10 @@ import Profile from './profile';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Provider as CurrentUserProvider} from '../lib/currentUserContext';
-import withLocalState from '../lib/withLocalState';
-import {SubscribeToCurrentUser, SubscribeToUserChats, SubscribeToUsersHavingPersonalChats}
+import {ChatIdProvider, ChatUpdateProvider} from '../lib/withLocalState';
+import {
+    SubscribeToCurrentUser, SubscribeToUserChats, SubscribeToUsersHavingPersonalChats
+}
     from '../graphqlQueries/subscriptions';
 import {userSubscriptionDataHandler, chatSubscriptionDataHandler} from '../lib/dataHandlers';
 
@@ -32,7 +34,7 @@ const Wrapper = styled.main`
 `;
 
 
-@withLocalState
+// @withLocalState
 @graphql(
     GetCurrentUser.query,
     {
@@ -45,13 +47,18 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
 
-        const { currentChatId, updateCurrentChatId } = this.props;
-        if (currentChatId) updateCurrentChatId(currentChatId);
+        const { currentChatId } = this.props;
+        if (currentChatId) {
+            this.updateCurrentChatId(currentChatId);
+        }
         this.state = {
             mainComponentName: 'Chat',
-            mainComponentProps: null
+            mainComponentProps: null,
+            currentChatId: ''
         };
     }
+
+    updateCurrentChatId = id => this.setState({ currentChatId: id });
 
     components = {
         Chat,
@@ -63,7 +70,7 @@ export default class App extends React.Component {
         event && event.target && event.preventDefault();
         this.setState({ mainComponentName, mainComponentProps });
         if (mainComponentName !== 'Chat') {
-            this.props.updateCurrentChatId(null);
+            this.updateCurrentChatId(null);
         }
     };
 
@@ -78,11 +85,16 @@ export default class App extends React.Component {
                     {currentUser.error && <p>Error</p> ||
                     currentUser.loading && App.LoadScreen ||
                     (
-                        <CurrentUserProvider value={currentUser}>
-                            <SideBar mainComponentChanger={this.changeMainComponent}/>
-                            <MainComponent {...this.state.mainComponentProps}
-                                        mainComponentChanger={this.changeMainComponent}/>
-                        </CurrentUserProvider>)
+                        <ChatIdProvider value={this.state.currentChatId}>
+                            <ChatUpdateProvider value={this.updateCurrentChatId}>
+                                <CurrentUserProvider value={currentUser}>
+                                    <SideBar mainComponentChanger={this.changeMainComponent}/>
+                                    <MainComponent {...this.state.mainComponentProps}
+                                                   mainComponentChanger={this.changeMainComponent}/>
+                                </CurrentUserProvider>
+                            </ChatUpdateProvider>
+                        </ChatIdProvider>
+                    )
                     }
                 </Wrapper>
             </MuiThemeProvider>
@@ -118,5 +130,5 @@ export default class App extends React.Component {
         // }
     };
 
-    static LoadScreen = <LoadScreen />;
+    static LoadScreen = <LoadScreen/>;
 }

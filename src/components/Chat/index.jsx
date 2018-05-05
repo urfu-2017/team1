@@ -8,7 +8,7 @@ import Messages from './messages';
 import {GetChatInfo, GetChatMessages} from '../../graphqlQueries/queries';
 import {withCurrentUser} from '../../lib/currentUserContext';
 import ChatEditor from './chatEditor';
-import withLocalState from '../../lib/withLocalState';
+import {withLocalState} from '../../lib/withLocalState';
 import {processChat, userSubscriptionDataHandler} from '../../lib/dataHandlers';
 import {SubscribeToUsersInChat} from '../../graphqlQueries/subscriptions';
 

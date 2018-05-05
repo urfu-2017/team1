@@ -13,7 +13,7 @@ import Avatar from 'material-ui/Avatar';
 import Contacts from '../contacts';
 import {GetUserChats} from '../../graphqlQueries/queries';
 import {CreateGroupChat} from '../../graphqlQueries/mutations';
-import withLocalState from '../../lib/withLocalState';
+import {withLocalState} from '../../lib/withLocalState';
 
 
 const getNewChat = currentUser => ({
@@ -94,7 +94,7 @@ export default class Menu extends React.Component {
                             leftIcon={<Group />}
                             style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
                             display: "flex", alignItems: "center"}}
-                            onClick={onClick} 
+                            onClick={onClick}
                         >
                             Создать чат
                         </ListItem>

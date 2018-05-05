@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ListItem from 'material-ui/List/ListItem';
 import Avatar from 'material-ui/Avatar';
 import {ChatWrapper, ChatHeader, LastMessage, Sender} from '../../styles/chat';
-import withLocalState from '../../lib/withLocalState';
+import {withLocalState} from '../../lib/withLocalState';
 
 
 @withLocalState
@@ -31,7 +31,7 @@ export default class ChatPreview extends React.PureComponent {
         const borderTop = '1px solid lavender';
         const borderBottom = '1px solid lavender';
         return (
-            <ListItem 
+            <ListItem
                 onClick={this.selectThisChat}
                 innerDivStyle={{ background, borderTop, borderBottom }}
                 leftAvatar={<Avatar src={chat.picture} />}

@@ -6,7 +6,7 @@ import {Mutation, Query, graphql} from 'react-apollo';
 import ContactsList from './contactsList';
 import {GetUserChats} from '../graphqlQueries/queries';
 import {AddUserToContacts, CreateChat} from '../graphqlQueries/mutations';
-import withLocalState from '../lib/withLocalState';
+import { withLocalState } from '../lib/withLocalState';
 import {getTitleForPersonalChat} from '../lib/dataHandlers';
 import {GetUserContacts, GetAllUsers} from '../graphqlQueries/queries';
 import {withCurrentUser} from '../lib/currentUserContext';
@@ -139,7 +139,7 @@ export default class Contacts extends React.Component {
     render() {
         // TODO: refactor this, PLEEEEEASE11111
         // console.log(this.state.value);
-        
+
         return <React.Fragment>
             <Tabs
                 style={{ width: "100%", background: "#fff" }}
@@ -155,7 +155,7 @@ export default class Contacts extends React.Component {
                     onActive={this.hideAllUsers}
                     style={{ width: "100%", background: "#5682a3" }} >
                     { !this.state.showAllUsers && this.withContacts(this.myContacts) }
-                    
+
                 </Tab>
                 <Tab
                     label="Все пользователи"
