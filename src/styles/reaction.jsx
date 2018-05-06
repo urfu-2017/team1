@@ -40,7 +40,7 @@ export const ReactionParanja = styled.div`
         left: calc((100vw - 1260px) / 2 + 441px);
     }
     top: 58px;
-    bottom: 49.5px;
+    bottom: 0;
     z-index: 1500;
     background: rgba(0,0,0,.2);
 `;
