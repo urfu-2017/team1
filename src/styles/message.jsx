@@ -42,7 +42,7 @@ export const MessageWrapper = styled.article`
     }
     .msgFromUserName {
         margin: 5px;
-        color: ${props => (props.isFromSelf ? '#fff' : '#454648')};
+        // color: ${props => (props.isFromSelf ? '#fff' : '#454648')};
     }
     .msgTimeReactionBlock {
         align-items: center;
@@ -63,14 +63,13 @@ export const MessageWrapper = styled.article`
         padding: 6px 4px 6px 6px;
     }
     .messageBlock__time {
-        color: ${props => (props.isFromSelf ? '#fff' : '#454648')};
+        // color: ${props => (props.isFromSelf ? '#fff' : '#454648')};
         padding: 0 11px;
         font-size: 0.8em;
     }
     .metadata {
         margin: 7px;
         border: 2px solid #b2ebff;
-        background-color: #ffffff;
     }
     .metadata-container {
         padding: 8px;

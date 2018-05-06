@@ -24,7 +24,6 @@ export const ChatsList = styled.section`
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    background: #fff;
     border-right: 1.5px solid lavender;
     border-left: 1.5px solid lavender;
 `;
@@ -75,3 +74,4 @@ export const Contact = styled.div`
         margin: 0 15px;
     }
 `;
+

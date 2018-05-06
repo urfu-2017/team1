@@ -61,7 +61,7 @@ export default class SideBar extends React.Component {
                 <ChatsList>
 
                     <AppBar className="menuHeader"
-                        style={{ background: "#5682a3", 'min-height': '58px', 'max-height': '58px' }}
+                        style={{'min-height': '59px', 'max-height': '59px' }}
                         onClick={this.toggleParanja}
                         iconClassNameRight="muidocs-icon-navigation-expand-more"
                     />

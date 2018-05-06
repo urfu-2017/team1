@@ -20,16 +20,6 @@ export const ContactsWrapper = styled.article`
     }
 `;
 
-export const Search = styled.input`
-    width: 100%;
-    height: 45px;
-    background: #f2f3dE;
-    padding: 0 0 0 30px;
-    border: none;
-    border-bottom: 1px solid;
-`;
-
-
 export const CreateButton = styled.input`
     padding: 7px;
     border-radius: 5px;

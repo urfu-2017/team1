@@ -11,7 +11,6 @@ export const Editor = styled.article`
     border: 1.5px solid #e6e6fa;
     border-radius: 5px;
     border-left: none;
-    background: #fff;
     .editorName {
         justifyContent: center;
         alignItems: center;

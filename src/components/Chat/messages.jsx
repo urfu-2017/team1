@@ -50,14 +50,18 @@ export default class Messages extends React.Component {
     // Не создаём новую функцию при каждом рендере
     setScroll = node => (this.scroll = node);
 
-    Message = message =>
+    Message = message => {
         <Message
             key={message.id}
             message={message}
-            isFromSelf={message.sender.id === this.props.currentUserId}/>;
+            isFromSelf={message.sender.id === this.props.currentUserId}
+        />;
+    }
+       
 
     render() {
-        const { loading, error, messages, currentChatId, currentUserId } = this.props;
+        const { loading, error, messages, currentChatId, currentUserId, isNightTheme } = this.props;
+        console.log(isNightTheme);
         let content = null;
         if (loading) {
             content = Messages.LoadScreen;
@@ -81,7 +85,6 @@ export default class Messages extends React.Component {
         return (
             <React.Fragment>
                 <Scrollbars
-                    style={{ 'background-color': 'rgba(255,255,255, .7)' }}
                     ref={this.setScroll}
                     onScrollStop={this.changePositionScroll}
                 >

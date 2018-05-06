@@ -2,14 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 import {graphql} from 'react-apollo';
 
+import { grey800 } from 'material-ui/styles/colors';
 import LoadScreen from './ui/loadScreen';
+import {GetCurrentUser} from '../graphqlQueries/queries';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
 import Chat from './Chat';
 import SideBar from './SideBar';
 import Contacts from './contacts';
-import {GetCurrentUser} from '../graphqlQueries/queries';
 import Profile from './profile';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
 import {Provider as CurrentUserProvider} from '../lib/currentUserContext';
 import {ChatIdProvider, ChatUpdateProvider} from '../lib/withLocalState';
 import {
@@ -18,8 +22,15 @@ import {
     from '../graphqlQueries/subscriptions';
 import {userSubscriptionDataHandler, chatSubscriptionDataHandler} from '../lib/dataHandlers';
 
+const isNightTheme = true;
+
 const muiTheme = getMuiTheme({
     fontFamily: 'Roboto Condensed',
+    palette: {
+        primary1Color: isNightTheme ? '#5682a3' : '#37474F',
+        primary2Color: isNightTheme ? '#5682a3' : '#37474F',
+        textColor: isNightTheme ? '#fff' : '#000'
+    },
     appBar: {
         'min-height': '58px',
         'max-height': '58px'
@@ -32,6 +43,8 @@ const Wrapper = styled.main`
     display: flex;
     margin: 0 auto;
     overflow: hidden;
+    background: ${props => (props.isNightTheme ? '#212121;' : '#fff')};
+    color:  ${props => (props.isNightTheme ? '#fff': '#000')};
 `;
 
 
@@ -82,16 +95,17 @@ export default class App extends React.Component {
         !currentUser.error && !currentUser.loading && this.subscribe();
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
-                <Wrapper>
+                <Wrapper isNightTheme>
                     {currentUser.error && <p>Error</p> ||
                     currentUser.loading && App.LoadScreen ||
                     (
                         <ChatIdProvider value={this.state.currentChatId}>
                             <ChatUpdateProvider value={this.updateCurrentChatId}>
                                 <CurrentUserProvider value={currentUser}>
-                                    <SideBar mainComponentChanger={this.changeMainComponent}/>
+                                    <SideBar isNightTheme={isNightTheme} mainComponentChanger={this.changeMainComponent}/>
                                     <MainComponent {...this.state.mainComponentProps}
-                                                   mainComponentChanger={this.changeMainComponent}/>
+                                        isNightTheme={isNightTheme}
+                                        mainComponentChanger={this.changeMainComponent}/>
                                 </CurrentUserProvider>
                             </ChatUpdateProvider>
                         </ChatIdProvider>

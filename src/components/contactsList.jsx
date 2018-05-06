@@ -51,6 +51,7 @@ export default class ContactsList extends React.Component {
 
     static getContactsItem = (clickHandler, currentUser, contact, handleChange) => (
             <ListItem
+                disabled
                 insetChildren
                 primaryText={contact.name}
                 key={contact.name + Math.random()}

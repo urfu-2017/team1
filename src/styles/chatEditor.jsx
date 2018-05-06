@@ -7,7 +7,6 @@ export const Editor = styled.article`
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    background: #fff;
     .image {
         height: 130px;
         width: 130px;

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 import {Emoji, emojiIndex} from 'emoji-mart';
 import dynamic from 'next/dynamic';
+import Mood from 'material-ui/svg-icons/social/mood';
 
 import { ParanjaWrapper } from '../../styles/paranja';
 import {MessageWrapper} from '../../styles/message';
@@ -132,15 +133,12 @@ export default class Message extends React.PureComponent {
                 <div className="messageBlock">
                     <div
                         style={{ flexWrap: "wrap", display: "flex", width: "100%", borderBottom: "1px solid #b7efe7" }}>
-                        <img className="msgFromUserPic" src={user && user.avatarUrl} width="30px"/>
                         <div className="msgFromBlock">
                             <span className="msgFromUserName">{user && user.name + delivered}</span>
                             {/*TODO: у сообщения есть также поле modifiedAt, равное null, если оно не менялось */}
                         </div>
                         <div className="msgTimeReactionBlock">
-                            <div onClick={this.openOrCloseReactions} className="addReactions"
-                                 title="Срочно реагировать">
-                            </div>
+                            <Mood onClick={this.openOrCloseReactions}/>
                             <div className="messageBlock__time">{createdAt}</div>
                         </div>
                     </div>
