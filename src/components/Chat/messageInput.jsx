@@ -154,6 +154,7 @@ export default class MessageInput extends React.Component {
     };
 
     render() {
+        const { groupChat } = this.props;
         return (
             <Textarea>
                 <div className="inputField__style">
@@ -166,7 +167,7 @@ export default class MessageInput extends React.Component {
                         placeholder="Сообщение..."
                         value={this.state.message}
                     />
-                    <Timer /> 
+                    { !groupChat && <Timer /> }
                     <Microphone /> 
                     <Mood onClick={ this.openOrCloseEmojies } /> 
                 </div>

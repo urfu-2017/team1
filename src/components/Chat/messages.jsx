@@ -57,7 +57,7 @@ export default class Messages extends React.Component {
             isFromSelf={message.sender.id === this.props.currentUserId}/>;
 
     render() {
-        const { loading, error, messages, currentChatId, currentUserId } = this.props;
+        const { loading, error, messages, currentChatId, currentUserId, groupChat } = this.props;
         let content = null;
         if (loading) {
             content = Messages.LoadScreen;
@@ -90,9 +90,11 @@ export default class Messages extends React.Component {
                     </MessagesList>
                 </Scrollbars>
                 <MessageInput
+                    groupChat={groupChat}
                     currentChatId={currentChatId}
                     currentUserId={currentUserId}
-                    updateMessages={this.props.data.updateQuery} />
+                    updateMessages={this.props.data.updateQuery}
+                />
             </React.Fragment>
         );
     }

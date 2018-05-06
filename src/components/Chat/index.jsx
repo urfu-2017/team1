@@ -68,7 +68,7 @@ export default class Chat extends React.Component {
                     toggleEditor={this.toggleEditor}/>
             );
         }
-
+        
         // Nothing to see here...
         const MessagesWithData = graphql(
             GetChatMessages.query(chat.id),
@@ -81,7 +81,9 @@ export default class Chat extends React.Component {
         return (
             <MessagesWithData
                 currentChatId={chat.id || null}
-                currentUserId={currentUser.id}/>
+                currentUserId={currentUser.id}
+                groupChat={chat.groupchat}
+            />
         );
 
     }
