@@ -21,7 +21,8 @@ import {userSubscriptionDataHandler, chatSubscriptionDataHandler} from '../lib/d
 const muiTheme = getMuiTheme({
     fontFamily: 'Roboto Condensed',
     appBar: {
-        height: 65
+        'min-height': '58px',
+        'max-height': '58px'
     }
 });
 
