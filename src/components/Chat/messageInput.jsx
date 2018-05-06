@@ -1,184 +1,182 @@
-import React from 'react'; 
-import PropTypes from 'prop-types'; 
-import {graphql} from 'react-apollo'; 
-import {emojiIndex} from 'emoji-mart'; 
-import dynamic from 'next/dynamic'; 
+import React from 'react';
+import PropTypes from 'prop-types';
+import {graphql} from 'react-apollo';
+import {emojiIndex} from 'emoji-mart';
+import dynamic from 'next/dynamic';
 import Mood from 'material-ui/svg-icons/social/mood'; 
 import AddPhoto from 'material-ui/svg-icons/image/add-a-photo'; 
 import Location from 'material-ui/svg-icons/communication/location-on'; 
 import Microphone from 'material-ui/svg-icons/av/mic'; 
-import Timer from 'material-ui/svg-icons/image/timer'; 
+import Timer from 'material-ui/svg-icons/image/timer';
 
-const EmojiPicker = dynamic( 
-    import('emoji-picker-react'), 
-    { ssr: false } 
-); 
+const EmojiPicker = dynamic(
+    import('emoji-picker-react'),
+    { ssr: false }
+);
 
-import Attachfile from 'material-ui/svg-icons/editor/attach-file'; 
-
-import { withCurrentUser } from '../../lib/currentUserContext'; 
-import Textarea from '../../styles/chatWindowInput'; 
-import { addNewMessage } from '../../lib/dataHandlers'; 
-import { CreateMessage } from '../../graphqlQueries/mutations'; 
-import { GetChatMessages } from '../../graphqlQueries/queries'; 
-import MessageImageSender from './messageImageSender'; 
+import { withCurrentUser } from '../../lib/currentUserContext';
+import Textarea from '../../styles/chatWindowInput';
+import { addNewMessage } from '../../lib/dataHandlers';
+import { CreateMessage } from '../../graphqlQueries/mutations';
+import { GetChatMessages } from '../../graphqlQueries/queries';
+import MessageImageSender from './messageImageSender';
 
 
-@withCurrentUser 
-@graphql(CreateMessage.mutation, { props: CreateMessage.map }) 
-export default class MessageInput extends React.Component { 
-    static propTypes = { 
-        currentChatId: PropTypes.string, 
-        currentUserId: PropTypes.string, 
-        emoji: PropTypes.bool, 
-        updateMessages: PropTypes.func 
-    }; 
+@withCurrentUser
+@graphql(CreateMessage.mutation, { props: CreateMessage.map })
+export default class MessageInput extends React.Component {
+    static propTypes = {
+        currentChatId: PropTypes.string,
+        currentUserId: PropTypes.string,
+        emoji: PropTypes.bool,
+        updateMessages: PropTypes.func
+    };
 
-    static defaultProps = { 
-        currentChatId: '', 
-        currentUserId: '', 
-        emoji: false, 
-        updateMessages: () => {} 
-    }; 
+    static defaultProps = {
+        currentChatId: '',
+        currentUserId: '',
+        emoji: false,
+        updateMessages: () => {
+        }
+    };
 
-    constructor(props) { 
-        super(props); 
-        this.state = { message: localStorage.getItem(this.storageKey) || '' }; 
-    } 
+    constructor(props) {
+        super(props);
+        this.state = { message: localStorage.getItem(this.storageKey) || '' };
+    }
 
-    get storageKey() { 
-        return `input_${this.props.currentChatId}`; 
-    } 
+    get storageKey() {
+        return `input_${this.props.currentChatId}`;
+    }
 
-    handleSubmit = event => { 
-        if (this.state.message.trim().length === 0) { 
-            return; 
-        } // TODO: review later 
-        if (event.key === 'Enter' && !event.shiftKey) { 
-            event.preventDefault(); 
-            const message = this.getMessage(); 
-        // Что это? О_о 
-        // const cursorInBottom = cursorIsPressedFromBelow(); 
+    handleSubmit = event => {
+        if (this.state.message.trim().length === 0) {
+            return;
+        }  // TODO: review later
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            const message = this.getMessage();
+            // Что это? О_о
+            // const cursorInBottom = cursorIsPressedFromBelow();
 
-            this.props.createMessage(message, { 
-                optimisticResponse: this.optimisticResponse(message), 
-                update: this.updateCache 
-            }); 
+            this.props.createMessage(message, {
+                optimisticResponse: this.optimisticResponse(message),
+                update: this.updateCache
+            });
 
-        // if (cursorInBottom) { 
-        // moveCursorDown(); 
-        // } 
+            // if (cursorInBottom) {
+            //     moveCursorDown();
+            // }
 
-            this.clearState(); 
-            localStorage.setItem(this.storageKey, ''); 
-        } 
-    }; 
+            this.clearState();
+            localStorage.setItem(this.storageKey, '');
+        }
+    };
 
-    getMessage = () => ({ 
-        clientSideId: -Math.floor(Math.random() * 1000), 
-        text: this.state.message, 
-        chatId: this.props.currentChatId, 
-        senderId: this.props.currentUserId, 
-        pictures: null 
-    }); 
+    getMessage = () => ({
+            clientSideId: -Math.floor(Math.random() * 1000),
+            text: this.state.message,
+            chatId: this.props.currentChatId,
+            senderId: this.props.currentUserId,
+            pictures: null
+    });
 
-    clearState = () => { 
-        this.setState({ message: '' }); 
-    }; 
+    clearState = () => {
+        this.setState({ message: '' });
+    };
 
-    optimisticResponse = message => ({ 
-        __typename: 'Mutation', 
-        createMessage: { 
-            id: message.clientSideId, 
-            createdAt: (new Date()).toISOString(), 
-            modifiedAt: null, 
-            sender: { 
-                id: this.props.currentUserId, 
-                __typename: 'User' 
-            }, 
-            metadata: null, 
-            reactions: null, 
-            ...message, 
-            __typename: 'Message' 
-        } 
-    }); 
+    optimisticResponse = message => ({
+        __typename: 'Mutation',
+        createMessage: {
+            id: message.clientSideId,
+            createdAt: (new Date()).toISOString(),
+            modifiedAt: null,
+            sender: {
+                id: this.props.currentUserId,
+                __typename: 'User'
+            },
+            metadata: null,
+            reactions: null,
+            ...message,
+            __typename: 'Message'
+        }
+    });
 
-    updateCache = (cache, { data: { createMessage } }) => { 
-        const chatId = this.props.currentChatId; 
-        const query = GetChatMessages.query(chatId); 
-        const variables = { chatId }; 
-        const data = cache.readQuery({ 
-            query, 
-            variables 
-            }, true); 
-        const updated = addNewMessage(createMessage, data); 
-        cache.writeQuery({ query, data: updated }); 
-        this.props.updateMessages((_, { variables }) => updated); 
-    }; 
+    updateCache = (cache, { data: { createMessage } }) => {
+        const chatId = this.props.currentChatId;
+        const query = GetChatMessages.query(chatId);
+        const variables = { chatId };
+        const data = cache.readQuery({
+            query,
+            variables
+        }, true);
+        const updated = addNewMessage(createMessage, data);
+        cache.writeQuery({ query, data: updated });
+        this.props.updateMessages((_, { variables }) => updated);
+    };
 
-    handleChange = event => { 
-        const message = event.target.value; 
-        this.setState({ message }); 
-        localStorage.setItem(this.storageKey, message); 
-    }; 
+    handleChange = event => {
+        const message = event.target.value;
+        this.setState({ message });
+        localStorage.setItem(this.storageKey, message);
+    };
 
-    openOrCloseEmojies = () => this.setState({ emoji: !this.state.emoji }); 
+    openOrCloseEmojies = () => this.setState({ emoji: !this.state.emoji });
 
-    findEmoji = id => emojiIndex.search(id) 
-        .filter(x => x.id === id) 
-        .map(x => x.native); 
+    findEmoji = id => emojiIndex.search(id)
+        .filter(x => x.id === id)
+        .map(x => x.native);
 
-    addEmojiIntoText = emoji => this.setState({ message: `${this.state.message}${this.findEmoji(emoji)}` }); 
+    addEmojiIntoText = emoji => this.setState({ message: `${this.state.message}${this.findEmoji(emoji)}` });
 
-    onEmojiClick = (_, val) => this.addEmojiIntoText(val.name); 
+    onEmojiClick = (_, val) => this.addEmojiIntoText(val.name);
 
-    getPicker = () => (this.state.emoji) ? 
-        (<EmojiPicker onEmojiClick={this.onEmojiClick} disableDiversityPicker/>) : ''; 
+    getPicker = () => (this.state.emoji) ?
+        (<EmojiPicker onEmojiClick={this.onEmojiClick} disableDiversityPicker/>) : '';
 
-    getImageUploadWindow = () => (this.state.uploadWindow) ? 
-        (<MessageImageSender onSendImage={this.onSendImage} closeImageSender={this.openOrCloseUploadWindow}/>) : ''; 
+    getImageUploadWindow = () => (this.state.uploadWindow) ?
+        (<MessageImageSender onSendImage={this.onSendImage} closeImageSender={this.openOrCloseUploadWindow}/>) : '';
 
 
-    onSendImage = urlInBase64 => { 
-        const message = this.getMessage(); 
-        message.pictures = [urlInBase64]; 
+    onSendImage = urlInBase64 => {
+        const message = this.getMessage();
+        message.pictures = [urlInBase64];
 
-        this.props.createMessage(message, { 
-            optimisticResponse: this.optimisticResponse(message), 
-            update: this.updateCache 
-        }); 
-        this.openOrCloseUploadWindow(); 
-    }; 
+        this.props.createMessage(message, {
+            optimisticResponse: this.optimisticResponse(message),
+            update: this.updateCache
+        });
+        this.openOrCloseUploadWindow();
+    };
 
-    openOrCloseUploadWindow = () => { 
-        this.setState({ uploadWindow: !this.state.uploadWindow }); 
-    }; 
+    openOrCloseUploadWindow = () => {
+        this.setState({ uploadWindow: !this.state.uploadWindow });
+    };
 
     render() {
-        console.log(this.props);
-        
-        return ( 
-            <Textarea> 
-                <div className="inputField__style"> 
+        return (
+            <Textarea>
+                <div className="inputField__style">
                     <AddPhoto onClick={ this.openOrCloseUploadWindow } /> 
                     <Location /> 
-                    <textarea 
-                        className="textarea__style" 
-                        onKeyPress={this.handleSubmit} 
-                        onChange={this.handleChange} 
-                        placeholder="Сообщение..." 
-                        value={this.state.message} 
-                    /> 
+                    <textarea
+                        className="textarea__style"
+                        onKeyPress={this.handleSubmit}
+                        onChange={this.handleChange}
+                        placeholder="Сообщение..."
+                        value={this.state.message}
+                    />
                     <Timer /> 
                     <Microphone /> 
                     <Mood onClick={ this.openOrCloseEmojies } /> 
-                    <div> 
-                        {this.getImageUploadWindow()} 
-                    </div> 
-                    <div className="picker__style"> 
-                        {this.getPicker()} 
-                    </div> 
-                </div> 
-            </Textarea> 
-    )} 
-} 
+                </div>
+                <div>
+                    {this.getImageUploadWindow()}
+                </div>
+                <div className="picker__style">
+                    {this.getPicker()}
+                </div>
+            </Textarea>
+        );
+    }
+}
