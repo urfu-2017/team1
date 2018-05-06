@@ -87,10 +87,17 @@ export const MessageWrapper = styled.article`
         height: auto;
     }
     .pickerStyle {
-        z-index: 2;
-        height: 10px;
-        position: relative;
-        float: ${props => (props.isFromSelf ? 'right' : 'left')};
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        @media screen and (max-width: 1260px) {
+            right: ${props => (props.isFromSelf ? '' : '0')};
+            left: ${props => (props.isFromSelf ? '35%' : '')};
+        }
+        @media screen and (min-width: 1261px) {
+            right: ${props => (props.isFromSelf ? '' : 'calc((100vw - 1260px) / 2)')};
+            left: ${props => (props.isFromSelf ? 'calc((100vw - 1260px) / 2 + 441px)' : '')};
+        }
     }
     .messageBlock__picture {
         padding: 5%;

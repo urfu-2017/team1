@@ -28,3 +28,15 @@ export const ReactionWrapper = styled.div`
         margin-right: 2px;
     }
 `;
+
+export const ReactionParanja = styled.div`
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    margin: 0 auto;
+    z-index: 1500;
+    background: rgba(0,0,0,.2);
+    max-width: 1260px;
+    height: 100vh;
+`;

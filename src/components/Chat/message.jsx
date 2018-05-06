@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
-import {Emoji, emojiIndex} from 'emoji-mart';
+import {emojiIndex} from 'emoji-mart';
 import dynamic from 'next/dynamic';
 
-import { ParanjaWrapper } from '../../styles/paranja';
 import {MessageWrapper} from '../../styles/message';
 import {GetUser} from '../../graphqlQueries/queries';
 import {UpdateMessageReactions} from '../../graphqlQueries/mutations';
-import {Reactions} from '../../styles/reaction';
+import {Reactions, ReactionParanja} from '../../styles/reaction';
 import Reaction from './reaction';
 import {getNewReactions} from '../../helpers/reactionsHelper';
 import {withCurrentUser} from '../../lib/currentUserContext';
@@ -31,7 +30,6 @@ const EmojiPicker = dynamic(
 @graphql(UpdateMessageReactions.mutation, { props: UpdateMessageReactions.map })
 export default class Message extends React.PureComponent {
     static propTypes = {
-        toggleParanja: PropTypes.func,
         isFromSelf: PropTypes.bool,
         message: PropTypes.object,
         sender: PropTypes.object,
@@ -68,12 +66,25 @@ export default class Message extends React.PureComponent {
         .filter(x => x.id === id)
         .map(x => x.native);
 
-    getPicker = () => (this.state.emoji) ?
-        (
-            <EmojiPicker
-                onEmojiClick={this.onEmojiClick}
-                disableDiversityPicker
-            />) : '';
+    getPicker = () => this.state.emoji ? (
+            <ReactionParanja
+                onClick={() => {
+                    this.setState({ emoji: false })
+                }}
+            >
+                <div
+                    onClick={event => {
+                        event.stopPropagation();
+                    }}
+                    class="pickerStyle">
+                    <EmojiPicker
+                        onEmojiClick={this.onEmojiClick}
+                        disableDiversityPicker
+                    />
+                </div>
+            </ReactionParanja>
+        )
+        : '';
 
     createReactionComponents = (reactions, currentUserId) => {
         let reactionComponents = [];
@@ -160,8 +171,7 @@ export default class Message extends React.PureComponent {
                     {picturesComponents.length > 0 && picturesComponents}
                     {reactionComponents.length > 0 && <Reactions>{reactionComponents}</Reactions>}
                 </div>
-                <div
-                    class="pickerStyle">
+                <div>
                     {this.getPicker()}
                 </div>
             </MessageWrapper>
