@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {graphql} from 'react-apollo';
 import List from 'material-ui/List/List';
 import RaisedButton from 'material-ui/RaisedButton';
 import ListItem from 'material-ui/List/ListItem';
@@ -49,14 +48,14 @@ export default class ContactsList extends React.Component {
             .map(contact => ContactsList.getContactsItem(clickHandler, currentUser, contact, handleChange));
     }
 
-    static getContactsItem = (clickHandler, currentUser, contact, handleChange) => (
+    static getContactsItem = (clickHandler, currentUser, contact) => (
             <ListItem
                 insetChildren
                 primaryText={contact.name}
-                key={contact.name + Math.random()}
+                key={contact.id}
                 leftAvatar={<Avatar src={contact.avatarUrl} />}
                 rightIcon={<CommunicationChatBubble />}
-                onClick={() => { clickHandler(currentUser, contact); handleChange && handleChange('contacts'); }}
+                onClick={() => clickHandler(currentUser, contact)}
             />
     );
 
