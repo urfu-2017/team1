@@ -90,7 +90,9 @@ export default class Chat extends React.Component {
     toggleEditor = () => this.setState(prev => ({ editorOpened: !prev.editorOpened }));
 
     render() {
-        let { localState, loading, error, chat, currentUser } = this.props;
+        let { localState, loading, error, chat, currentUser, isNightTheme } = this.props;
+        console.log(isNightTheme);
+        
         // const {id, title, picture, createdAt, members, groupchat} = chat;
         let content = null;
         if (!currentUser || !currentChatSet(localState)) {

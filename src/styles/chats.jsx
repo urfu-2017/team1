@@ -24,8 +24,8 @@ export const ChatsList = styled.section`
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    border-right: 1.5px solid lavender;
-    border-left: 1.5px solid lavender;
+    border-right: 1.5px solid ${props => !props.isNightTheme ? 'lavender' : '#424242' };
+    border-left: 1.5px solid ${props => !props.isNightTheme ? 'lavender' : '#424242' };
 `;
 
 export const AppBar = styled.section`

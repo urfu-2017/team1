@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const MenuRoot = styled.section`
     width: 300px;
     height: 100%;
-    background: #fff;
     .profile {
         background: #5682a3;
         padding: 5px;

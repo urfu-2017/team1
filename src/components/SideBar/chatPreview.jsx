@@ -26,14 +26,26 @@ export default class ChatPreview extends React.PureComponent {
     isSelected = () => this.props.chat.id === this.props.localState.currentChatId;
 
     render() {
-        const { lastMessage, chat } = this.props;
-        const background = this.isSelected() ? '#e7ebf0' : '';
-        const borderTop = '1px solid lavender';
-        const borderBottom = '1px solid lavender';
+        const { lastMessage, chat, isNightTheme } = this.props;
+        let background = '';
+        console.log(isNightTheme);
+        
+        if (this.isSelected()) {
+           background = !isNightTheme ? '#e7ebf0' : '#616161';
+        }
+        const borderColor = isNightTheme ? '#424242' : 'lavender';
+        console.log(background);
+        
         return (
             <ListItem
                 onClick={this.selectThisChat}
-                innerDivStyle={{ background, borderTop, borderBottom }}
+                innerDivStyle={
+                    { 
+                        background,
+                        borderTop: `1px solid ${borderColor}`,
+                        borderBottom: `1px solid ${borderColor}`
+                    }
+                }
                 leftAvatar={<Avatar src={chat.picture} />}
                 primaryText={chat.title}
                 secondaryText={

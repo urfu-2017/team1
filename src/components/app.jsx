@@ -22,14 +22,15 @@ import {
     from '../graphqlQueries/subscriptions';
 import {userSubscriptionDataHandler, chatSubscriptionDataHandler} from '../lib/dataHandlers';
 
-const isNightTheme = true;
+const isNightTheme = false;
 
 const muiTheme = getMuiTheme({
     fontFamily: 'Roboto Condensed',
     palette: {
         primary1Color: isNightTheme ? '#5682a3' : '#37474F',
         primary2Color: isNightTheme ? '#5682a3' : '#37474F',
-        textColor: isNightTheme ? '#fff' : '#000'
+        textColor: isNightTheme ? '#fff' : '#000',
+        canvasColor: isNightTheme ? '#000' : '#fff',
     },
     appBar: {
         'min-height': '58px',
@@ -95,7 +96,7 @@ export default class App extends React.Component {
         !currentUser.error && !currentUser.loading && this.subscribe();
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
-                <Wrapper isNightTheme>
+                <Wrapper isNightTheme={isNightTheme}>
                     {currentUser.error && <p>Error</p> ||
                     currentUser.loading && App.LoadScreen ||
                     (

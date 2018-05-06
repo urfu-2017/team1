@@ -32,12 +32,14 @@ export default class SideBar extends React.Component {
 
     getChatsList(currentUser) {
         const { chats } = currentUser;
+        const { isNightTheme } =this.props;
         return chats
             .map(chat => (
                 <ChatPreview
                     key={chat.id}
                     chat={chat}
                     user={currentUser}
+                    isNightTheme={isNightTheme}
                     mainComponentChanger={this.props.mainComponentChanger('Chat')}
                 />
             ));
@@ -47,7 +49,8 @@ export default class SideBar extends React.Component {
         this.setState(prev => ({ paranjaOpened: !prev.paranjaOpened }));
 
     render() {
-        const { currentUser } = this.props;
+        const { currentUser, isNightTheme } = this.props;
+
         return (
             <React.Fragment>
                 {
@@ -58,8 +61,7 @@ export default class SideBar extends React.Component {
                         mainComponentChanger={this.props.mainComponentChanger}
                     />
                 }
-                <ChatsList>
-
+                <ChatsList isNightTheme >
                     <AppBar className="menuHeader"
                         style={{'min-height': '59px', 'max-height': '59px' }}
                         onClick={this.toggleParanja}
