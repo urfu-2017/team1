@@ -31,12 +31,16 @@ export const ReactionWrapper = styled.div`
 
 export const ReactionParanja = styled.div`
     position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    margin: 0 auto;
+    @media screen and (max-width: 1260px) {
+        right: 0;
+        left: 35%;
+    }
+    @media screen and (min-width: 1261px) {
+        right: calc((100vw - 1260px) / 2);
+        left: calc((100vw - 1260px) / 2 + 441px);
+    }
+    top: 58px;
+    bottom: 49.5px;
     z-index: 1500;
     background: rgba(0,0,0,.2);
-    max-width: 1260px;
-    height: 100vh;
 `;
