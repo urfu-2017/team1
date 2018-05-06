@@ -71,7 +71,7 @@ export default class App extends React.Component {
         event && event.target && event.preventDefault();
         // Да здравствуют if
         if (mainComponentName === 'Chat') {
-            mainComponentProps = Object.assign({}, { serverUrl: this.props.serverUrl });
+            mainComponentProps = Object.assign({}, mainComponentProps, { serverUrl: this.props.serverUrl });
         }
         this.setState({ mainComponentName, mainComponentProps });
         if (mainComponentName !== 'Chat') {
