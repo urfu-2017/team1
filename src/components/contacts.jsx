@@ -6,7 +6,7 @@ import {Mutation, Query, graphql} from 'react-apollo';
 import ContactsList from './contactsList';
 import {GetUserChats} from '../graphqlQueries/queries';
 import {AddUserToContacts, CreateChat} from '../graphqlQueries/mutations';
-import { withLocalState } from '../lib/withLocalState';
+import {withLocalState} from '../lib/withLocalState';
 import {getTitleForPersonalChat} from '../lib/dataHandlers';
 import {GetUserContacts, GetAllUsers} from '../graphqlQueries/queries';
 import {withCurrentUser} from '../lib/currentUserContext';
@@ -34,7 +34,10 @@ export default class Contacts extends React.Component {
         super(props);
         this.state = { showAllUsers: false, value: 'contacts' };
     }
-    handleChange = value => { this.setState({ value }); };
+
+    handleChange = value => {
+        this.setState({ value });
+    };
     contactClickHandler = (createChat, currentUser, contact) => {
         const existingChat = currentUser.chats
             .find(chat => !chat.groupchat && chat.members.find(u => u.id === contact.id));
@@ -42,8 +45,45 @@ export default class Contacts extends React.Component {
             this.setActiveChat(existingChat.id);
         } else {
             const newChat = getNewChat(currentUser, contact);
-            createChat({ variables: { ...newChat } });
+            createChat({
+                variables: { ...newChat },
+                optimisticResponse: this.optimisticResponse(currentUser, contact)
+            });
         }
+    };
+
+    optimisticResponse = (currentUser, contact) => {
+        const id = -Math.floor(Math.random() * 1000);
+        const chat = {
+            id,
+            title: contact.name,
+            'private': false,
+            picture: contact.avatarUrl,
+            createdAt: (new Date()).toISOString(),
+            groupchat: false,
+            members: [currentUser, contact].map(
+                ({ id, name, avatarUrl }) => ({ id, name, avatarUrl, __typename: 'User' })),
+            __typename: 'Chat'
+        };
+        const updatedCurrentUser = {
+            ...currentUser,
+            chats: [...currentUser.chats].concat([chat])
+        };
+        return {
+            __typename: 'Mutation',
+            createChat: {
+                id,
+                __typename: 'Chat'
+            },
+            currentUser: {
+                ...updatedCurrentUser,
+                __typename: 'User'
+            },
+            contact: {
+                id: contact.id,
+                __typename: 'User'
+            }
+        };
     };
 
     setActiveChat = chatId => {
@@ -74,7 +114,7 @@ export default class Contacts extends React.Component {
         >{
             createChat => (
                 <ContactsList
-                    style={{background: "#fff"}}
+                    style={{ background: "#fff" }}
                     title="Начать чат:"
                     clickHandler={this.contactClickHandler.bind(this, createChat)}
                     contactsFilter={this.currentUserFilter}
@@ -85,7 +125,7 @@ export default class Contacts extends React.Component {
     );
 
     withAllUsers = Inner => (
-        <Query query={GetAllUsers.query}>
+        <Query query={GetAllUsers.query} fetchPolicy='network-only'>
             {req => <Inner {...GetAllUsers.map(req)} />}
         </Query>
     );
@@ -117,7 +157,7 @@ export default class Contacts extends React.Component {
         >{
             addUserToContacts => (
                 <ContactsList
-                    style={{background: "#fff"}}
+                    style={{ background: "#fff" }}
                     title="Добавить в контакты:"
                     contactsFilter={this.contactsFilter}
                     handleChange={this.handleChange}
@@ -140,7 +180,7 @@ export default class Contacts extends React.Component {
         // TODO: refactor this, PLEEEEEASE11111
         // console.log(this.state.value);
 
-        return <React.Fragment>
+        return (<React.Fragment>
             <Tabs
                 style={{ width: "100%", background: "#fff" }}
                 tabTemplateStyle={{ height: '100%' }}
@@ -153,18 +193,19 @@ export default class Contacts extends React.Component {
                     label="Контакты"
                     value="contacts"
                     onActive={this.hideAllUsers}
-                    style={{ width: "100%", background: "#5682a3" }} >
-                    { !this.state.showAllUsers && this.withContacts(this.myContacts) }
+                    style={{ width: "100%", background: "#5682a3" }}>
+                    {!this.state.showAllUsers && this.withContacts(this.myContacts)}
 
                 </Tab>
                 <Tab
                     label="Все пользователи"
                     value="allUsers"
                     onActive={this.showAllUsers}
-                    style={{ width: "100%", background: "#5682a3" }} >
-                    { this.state.showAllUsers && this.withAllUsers(this.allUsers) }
+                    style={{ width: "100%", background: "#5682a3" }}>
+                    {this.state.showAllUsers && this.withAllUsers(this.allUsers)}
                 </Tab>
             </Tabs>
-        </React.Fragment>;
-    }
+        </React.Fragment>);
+    };
+
 }
