@@ -22,6 +22,7 @@ export const MessageWrapper = styled.article`
         border-radius: 5px;
         min-height: 25px;
         height:auto;
+        color: ${props => (props.isFromSelf || props.isNightTheme ? '#EEE' : '#454648')};
         float: ${props => (props.isFromSelf ? 'right' : 'left')};
         box-shadow: ${props => props.isNightTheme ? '#546E7A' :'rgb(200, 217, 230)'} 2px 2px 5px 0px;
         background-color: ${props => props.isNightTheme ? '#607D8B' : (props.isFromSelf ?  '#92d7ef' : 'rgb(231, 235, 240)')};
@@ -31,9 +32,6 @@ export const MessageWrapper = styled.article`
         display: flex;
         width: 100%;
         border-bottom: 1px solid ${props => props.isNightTheme ? '#CFD8DC' : '#b7efe7'};
-    }
-    .smiley {
-        color: ${props => (props.isFromSelf || props.isNightTheme ? '#EEE' : '#000')};
     }
     .msgFromBlock {
         padding: 8px;

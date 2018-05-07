@@ -55,8 +55,8 @@ export default class ChatHeader extends React.Component {
         const { isNightTheme } = this.props;
 
         const switcher = editorOpened ? 
-            <Close className="header__img" /> :
-            <ModeEdit className="header__img" />;
+            <Close style={{color: '#fff'}} className="header__img" /> :
+            <ModeEdit style={{color: '#fff'}} className="header__img" />;
         const prefix = (
             <React.Fragment>
                 {switcher}

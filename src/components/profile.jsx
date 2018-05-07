@@ -47,9 +47,11 @@ export default class ProfileEditor extends ImageHandler {
             ProfileEditor.isSaved = false;
             return null;
         }
-        const { mainComponentChanger } = this.props;
+        const { mainComponentChanger, isNightTheme } = this.props;
+        console.log(isNightTheme);
+        
         return (
-            <Editor>
+            <Editor isNightTheme={isNightTheme}>
                 <div
                     className="editorName"
                 >
@@ -65,6 +67,7 @@ export default class ProfileEditor extends ImageHandler {
                 </div>    
                 <DownloadImage
                     onDrop={this.drop}
+                    isNightTheme={isNightTheme}
                     onDragOver={this.dragover}
                     id="area-for-drop">
                     <p className="text" id="download_image_text">Загрузить фото</p>
@@ -74,12 +77,14 @@ export default class ProfileEditor extends ImageHandler {
                         id="upload"
                         type="file"
                         accept="image/*"
+                        isNightTheme={isNightTheme}
                         onChange={this.drawBackground}
                     />
                     <CreateButton
                         id="saveAvatar"
                         type="button"
                         value="Сохранить"
+                        isNightTheme={isNightTheme}
                         onClick={this.saveAvatar}
                     />
                 </div>

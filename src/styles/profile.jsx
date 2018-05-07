@@ -15,12 +15,13 @@ export const Editor = styled.article`
         justifyContent: center;
         alignItems: center;
         display: flex;
-        background: #5682a3;
+        background: ${props => !props.isNightTheme ? '#5682a3' : '#37474F'};
         position: relative;
         color: #fff;
         width: 100%
         align-items: center;
-        height: 59px;
+        max-height: 59px;
+        min-height: 59px;
         top: -2px;
         justify-content: center;
     }
@@ -48,7 +49,8 @@ export const DownloadImage = styled.div`
     border: 1.5px #5682a3 dashed;
     .text {
         font-size: 20px;
-        background: #fff;
+        color: ${props => props.isNightTheme ? '#fff' : '#454648'}
+        background:  ${props => props.isNightTheme ? 'none' : '#fff'};
     }
 `;
 
@@ -59,12 +61,14 @@ export const DownloadButton = styled.input`
     height: auto;
     padding: 7px;
     border-radius: 5px;
-    background: #5682a3;
-    color: #fff;
+    background: ${props => props.isNightTheme ? 'lavender' : '#5682a3'};
+    color: ${props => props.isNightTheme ? '#000': '#fff'};
     margin-bottom: 40px;
 `;
 
 export const CreateButton = DownloadButton.extend`
+    background: ${props => props.isNightTheme ? 'lavender' : '#5682a3'};
+    color: ${props => props.isNightTheme ? '#000': '#fff'};
     outline:none;
     cursor: pointer;
     border: none;
@@ -72,7 +76,6 @@ export const CreateButton = DownloadButton.extend`
     height: 31px;
     padding: 7px;
     border-radius: 5px;
-    color: #fff;
 `;    
 
 

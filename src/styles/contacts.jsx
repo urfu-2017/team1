@@ -18,6 +18,7 @@ export const ContactsWrapper = styled.article`
         align-items: center;
     }
     .button_close {
+        cursor: pointer;
         padding: 7px 15px;
         border-radius: 5px;
         background: lavender;

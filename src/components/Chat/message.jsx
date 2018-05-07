@@ -129,6 +129,7 @@ export default class Message extends React.PureComponent {
         let picturesComponents = this.createPicturesComponets(message.pictures);
         let reactionComponents = this.createReactionComponents(message.reactions, currentUser.id);
         const createdAt = Message.formatDate(new Date(message.createdAt));
+        const color = isFromSelf || isNightTheme ? '#EEE' : '#000';
 
         return (
             <MessageWrapper isFromSelf={isFromSelf} isNightTheme={isNightTheme}>
@@ -141,7 +142,7 @@ export default class Message extends React.PureComponent {
                             {/*TODO: у сообщения есть также поле modifiedAt, равное null, если оно не менялось */}
                         </div>
                         <div className="msgTimeReactionBlock">
-                            <Mood className="smiley" onClick={this.openOrCloseReactions}/>
+                            <Mood color={color} onClick={this.openOrCloseReactions}/>
                             <div className="messageBlock__time">{createdAt}</div>
                         </div>
                     </div>

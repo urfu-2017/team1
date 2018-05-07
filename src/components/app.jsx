@@ -13,6 +13,7 @@ import Chat from './Chat';
 import SideBar from './SideBar';
 import Contacts from './contacts';
 import Profile from './profile';
+import { Wrapper } from '../styles/app'
 
 import {Provider as CurrentUserProvider} from '../lib/currentUserContext';
 import {ChatIdProvider, ChatUpdateProvider} from '../lib/withLocalState';
@@ -33,20 +34,10 @@ const muiTheme = getMuiTheme({
         canvasColor: isNightTheme ? '#000' : '#fff',
     },
     appBar: {
-        'min-height': '58px',
-        'max-height': '58px'
+        'min-height': '59px',
+        'max-height': '59px'
     }
 });
-
-const Wrapper = styled.main`
-    height: 100%;
-    max-width: 1260px;
-    display: flex;
-    margin: 0 auto;
-    overflow: hidden;
-    background: ${props => (props.isNightTheme ? '#212121;' : '#fff')};
-    color:  ${props => (props.isNightTheme ? '#EEE': '#000')};
-`;
 
 
 // @withLocalState

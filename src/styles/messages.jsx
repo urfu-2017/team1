@@ -21,7 +21,6 @@ export const Header = styled.section`
         justify-content: space-between;
     }
     .header__img {
-        color: #fff;
         margin: 0 15px 0 0;
     }
 `;

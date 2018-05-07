@@ -62,12 +62,13 @@ export default class Menu extends React.Component {
     render() {
         const { currentUser, mainComponentChanger, isNightTheme } = this.props;
         const borderColor = isNightTheme ? '#424242' : 'lavender';
+        const background = isNightTheme ? '#37474F': '#5682a3';
 
         return (
             <MenuRoot isNightTheme={isNightTheme}>
                 <List style={{padding: "0"}}>
                     <ListItem
-                        style={{color: "#fff", height: "18px"}}
+                        style={{background, height: "18px", color: '#fff'}}
                         disabled
                         onClick={mainComponentChanger('Profile')}
                         leftAvatar={
@@ -79,15 +80,15 @@ export default class Menu extends React.Component {
                     <ListItem
                         leftIcon={<Person />}
                         style={{height: "58px", border: `2px solid ${borderColor}`, borderBottom: "none",
-                            display: "flex", alignItems: "center"}}
+                            borderLeft: "none", display: "flex", alignItems: "center"}}
                         onClick={mainComponentChanger('Contacts')}
                     >
                         Контакты
                     </ListItem>
                     <ListItem
                         leftIcon={<ModeEdit />}
-                        style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
-                            display: "flex", alignItems: "center"}}
+                        style={{height: "58px", border: `2px solid ${borderColor}`, borderBottom: "none",
+                            borderLeft: "none", display: "flex", alignItems: "center"}}
                         onClick={mainComponentChanger('Profile')}
                     >
                         Редактирование профиля
@@ -95,15 +96,21 @@ export default class Menu extends React.Component {
                     {this.createChatMutation(currentUser, (onClick) => (
                         <ListItem
                             leftIcon={<Group />}
+<<<<<<< 392ca0cd1db14b6ab95d17038c5e7dd225e0158d
                             style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
                             display: "flex", alignItems: "center"}}
                             onClick={onClick}
+=======
+                            style={{height: "58px", border: `2px solid ${borderColor}`,
+                                borderLeft: "none",display: "flex", alignItems: "center"}}
+                            onClick={onClick} 
+>>>>>>> night theme v_3
                         >
                             Создать чат
                         </ListItem>
                     ))}
                 </List>
-                <RaisedButton label="Сменить тему" />
+                <input type="button" className="button" value="Сменить тему" />
             </MenuRoot>
         );
     }

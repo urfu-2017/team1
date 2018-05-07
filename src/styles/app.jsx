@@ -6,6 +6,6 @@ export const Wrapper = styled.main`
     display: flex;
     margin: 0 auto;
     overflow: hidden;
-    background: ${props => (props.isNightTheme ? '#212121;' : '#fff')};
-    color:  ${props => (props.isNightTheme ? '#fff': '#000')};
+    background: ${props => (props.isNightTheme ? '#212121' : '#fff')};
+    color:  ${props => (props.isNightTheme ? '#EEE': '#000')};
 `;

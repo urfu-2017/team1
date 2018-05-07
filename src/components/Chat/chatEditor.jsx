@@ -41,6 +41,7 @@ export default class ChatEditor extends React.Component {
         return members
             .map(user => (
                 <ListItem
+                    disabled
                     key={user.id}
                     primaryText={user.name}
                     rightAvatar={<Avatar src={user.avatarUrl}/>}
@@ -93,7 +94,7 @@ export default class ChatEditor extends React.Component {
     };
 
     render() {
-        const { currentChat, members } = this.props;
+        const { currentChat, members, isNightTheme } = this.props;
 
         return (
             <Editor>
