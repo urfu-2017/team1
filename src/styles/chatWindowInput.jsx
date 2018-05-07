@@ -2,6 +2,7 @@
 import styled from 'styled-components';
 
 const Textarea = styled.div`
+    background: ${props => props.isNightTheme ? '#37474F' : ''}
     .picker__style {
         position: absolute;
         bottom: 60px;
@@ -33,7 +34,7 @@ const Textarea = styled.div`
         padding: 16px 0 0 16px;
         box-sizing: border-box;
         display: inline-block;
-        background: ${props =>  props.isNightTheme ? '#5682a3' : '#fff'}
+        background: ${props =>  props.isNightTheme ? '#37474F' : '#fff'}
     }
 
     .closeEmojiButton__style {

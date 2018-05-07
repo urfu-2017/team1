@@ -17,6 +17,12 @@ export const ContactsWrapper = styled.article`
         justify-content: space-around
         align-items: center;
     }
+    .button_close {
+        padding: 7px 15px;
+        border-radius: 5px;
+        background: lavender;
+        color: #000;
+    }
 `;
 
 export const CreateButton = styled.input`

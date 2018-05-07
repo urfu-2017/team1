@@ -141,7 +141,7 @@ export default class Message extends React.PureComponent {
                             {/*TODO: у сообщения есть также поле modifiedAt, равное null, если оно не менялось */}
                         </div>
                         <div className="msgTimeReactionBlock">
-                            <Mood onClick={this.openOrCloseReactions}/>
+                            <Mood className="smiley" onClick={this.openOrCloseReactions}/>
                             <div className="messageBlock__time">{createdAt}</div>
                         </div>
                     </div>

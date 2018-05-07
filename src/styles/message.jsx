@@ -33,7 +33,7 @@ export const MessageWrapper = styled.article`
         border-bottom: 1px solid ${props => props.isNightTheme ? '#CFD8DC' : '#b7efe7'};
     }
     .smiley {
-        color: ${props => (props.isFromSelf ? '#fff' : '#000')};
+        color: ${props => (props.isFromSelf || props.isNightTheme ? '#EEE' : '#000')};
     }
     .msgFromBlock {
         padding: 8px;
@@ -52,7 +52,7 @@ export const MessageWrapper = styled.article`
     }
     .msgFromUserName {
         margin: 5px;
-        color: ${props => (props.isFromSelf || props.isNightTheme ? '#fff' : '#454648')};
+        color: ${props => (props.isFromSelf || props.isNightTheme ? '#EEE' : '#454648')};
     }
     .msgTimeReactionBlock {
         align-items: center;
@@ -73,7 +73,7 @@ export const MessageWrapper = styled.article`
         padding: 6px 4px 6px 6px;
     }
     .messageBlock__time {
-        color: ${props => (props.isFromSelf || props.isNightTheme ? '#fff' : '#454648')};
+        color: ${props => (props.isFromSelf || props.isNightTheme ? '#EEE' : '#454648')};
         padding: 0 11px;
         font-size: 0.8em;
     }

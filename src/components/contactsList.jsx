@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 import List from 'material-ui/List/List';
-import RaisedButton from 'material-ui/RaisedButton';
 import ListItem from 'material-ui/List/ListItem';
 import Avatar from 'material-ui/Avatar';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
@@ -76,7 +75,7 @@ export default class ContactsList extends React.Component {
                 </Scrollbars>
                 {closeAction &&
                 <div className="buttons">
-                    <RaisedButton label="Закрыть" onClick={closeAction} />
+                    <input type="button" className="button_close" value="Закрыть" onClick={closeAction} />
                 </div>}
             </ContactsWrapper>
         );

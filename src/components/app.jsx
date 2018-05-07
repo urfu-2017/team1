@@ -22,7 +22,7 @@ import {
     from '../graphqlQueries/subscriptions';
 import {userSubscriptionDataHandler, chatSubscriptionDataHandler} from '../lib/dataHandlers';
 
-const isNightTheme = false;
+const isNightTheme = true;
 
 const muiTheme = getMuiTheme({
     fontFamily: 'Roboto Condensed',
@@ -45,7 +45,7 @@ const Wrapper = styled.main`
     margin: 0 auto;
     overflow: hidden;
     background: ${props => (props.isNightTheme ? '#212121;' : '#fff')};
-    color:  ${props => (props.isNightTheme ? '#fff': '#000')};
+    color:  ${props => (props.isNightTheme ? '#EEE': '#000')};
 `;
 
 

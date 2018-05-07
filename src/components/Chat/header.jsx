@@ -58,29 +58,31 @@ export default class ChatHeader extends React.Component {
             <Close className="header__img" /> :
             <ModeEdit className="header__img" />;
         const prefix = (
-            <Header
-                isNightTheme={isNightTheme}
-                onClick={this.props.toggleEditor}
-            >
+            <React.Fragment>
                 {switcher}
                 <span> {!editorOpened ? title : ''} </span>
-            </Header>
+            </React.Fragment>
         );
 
         return (
             <React.Fragment>
-                {prefix}
-                {editorOpened &&
-                    <input
-                        value={this.state.title}
-                        size={title.length}
-                        style={{ outline: "none", border: "none" }}
-                        onChange={this.handleChange}
-                        onKeyPress={this.handleSubmit}
-                        autoFocus
-                        onFocus={e => e.target.select()}
-                    />
-                }
+                <Header
+                    isNightTheme={isNightTheme}
+                    onClick={this.props.toggleEditor}
+                >
+                    {prefix}
+                    {editorOpened &&
+                        <input
+                            value={this.state.title}
+                            size={title.length}
+                            style={{ outline: "none", border: "none" }}
+                            onChange={this.handleChange}
+                            onKeyPress={this.handleSubmit}
+                            autoFocus
+                            onFocus={e => e.target.select()}
+                        />
+                    }
+                </Header>
             </React.Fragment>
         );
     };

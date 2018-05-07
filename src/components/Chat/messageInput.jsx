@@ -154,8 +154,9 @@ export default class MessageInput extends React.Component {
     };
 
     render() {
+        const { isNightTheme } = this.props;
         return (
-            <Textarea>
+            <Textarea isNightTheme={isNightTheme}>
                 <div className="inputField__style">
                     <AddPhoto className="icon" onClick={ this.openOrCloseUploadWindow } /> 
                     <Location className="icon" /> 
