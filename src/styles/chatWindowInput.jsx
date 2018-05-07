@@ -12,7 +12,7 @@ const Textarea = styled.div`
     }
 
     .inputField__style {
-        border-top: 1.5px solid #e7ebf0;
+        border-top: 1.5px solid ${props =>  props.isNightTheme ? '#424242': '#e7ebf0'};
         display: flex;
         justify-content: flex-end;
         align-items: center;
@@ -33,6 +33,7 @@ const Textarea = styled.div`
         padding: 16px 0 0 16px;
         box-sizing: border-box;
         display: inline-block;
+        background: ${props =>  props.isNightTheme ? '#5682a3' : '#fff'}
     }
 
     .closeEmojiButton__style {

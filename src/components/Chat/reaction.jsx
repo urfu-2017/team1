@@ -19,13 +19,13 @@ export default class Reaction extends React.Component {
     }
     
     render() {
-        const { reaction, count, isCurrentUser, onReactionClick, emojiNative } = this.props;
+        const { reaction, count, isCurrentUser, onReactionClick, emojiNative, isNightTheme } = this.props;
         const classes = ['reaction'];
         if (isCurrentUser) {
             classes.push('reaction-current');
         }
 
-        return (<ReactionWrapper>
+        return (<ReactionWrapper isNightTheme={isNightTheme}>
             <div className={classes.join(' ')} onClick={onReactionClick}> 
                 <div className="reaction__emoji"/>
                     {emojiNative}

@@ -80,12 +80,14 @@ export default class Message extends React.PureComponent {
         let reactionComponents = [];
         if (reactions) {
             reactionComponents = reactions.map(x =>
-                (<Reaction key={Math.random()}
-                           count={x.users.length}
-                           isCurrentUser={x.users.includes(currentUserId)}
-                           reaction={x.emoji}
-                           onReactionClick={() => this.updateMessageReactions(x.emoji)}
-                           emojiNative={this.findEmoji(x.emoji)}
+                (<Reaction 
+                    key={Math.random()}
+                    count={x.users.length}
+                    isCurrentUser={x.users.includes(currentUserId)}
+                    reaction={x.emoji}
+                    isNightTheme={this.props.isNightTheme}
+                    onReactionClick={() => this.updateMessageReactions(x.emoji)}
+                        emojiNative={this.findEmoji(x.emoji)}
                 />));
         }
 
@@ -115,7 +117,7 @@ export default class Message extends React.PureComponent {
     }).format;
 
     render() {
-        const { loading, error, message, user, currentUser, isFromSelf } = this.props;
+        const { loading, error, message, user, currentUser, isFromSelf, isNightTheme } = this.props;
         // небольшой костыль: optimistic response присваивает сообщениям
         // рандомный отрицательный id, чтобы не хранить лишнее поле
         const delivered = isFromSelf ? (message.id < 0 ? '  ' : ' ✓') : '';
@@ -129,10 +131,11 @@ export default class Message extends React.PureComponent {
         const createdAt = Message.formatDate(new Date(message.createdAt));
 
         return (
-            <MessageWrapper isFromSelf={isFromSelf}>
+            <MessageWrapper isFromSelf={isFromSelf} isNightTheme={isNightTheme}>
                 <div className="messageBlock">
                     <div
-                        style={{ flexWrap: "wrap", display: "flex", width: "100%", borderBottom: "1px solid #b7efe7" }}>
+                        className="message__header"
+                    >
                         <div className="msgFromBlock">
                             <span className="msgFromUserName">{user && user.name + delivered}</span>
                             {/*TODO: у сообщения есть также поле modifiedAt, равное null, если оно не менялось */}

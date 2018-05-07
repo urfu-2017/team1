@@ -52,17 +52,19 @@ export default class ChatHeader extends React.Component {
     };
 
     groupChatHeader = (title, editorOpened) => {
+        const { isNightTheme } = this.props;
+
         const switcher = editorOpened ? 
-            <Close className="header__img" style={{color: '#fff'}}/> :
-            <ModeEdit className="header__img" style={{color: '#fff'}}/>;
+            <Close className="header__img" /> :
+            <ModeEdit className="header__img" />;
         const prefix = (
-            <div className="header__editor"
+            <Header
+                isNightTheme={isNightTheme}
                 onClick={this.props.toggleEditor}
-                style={{ fontSize: "16px" }}
             >
                 {switcher}
                 <span> {!editorOpened ? title : ''} </span>
-            </div>
+            </Header>
         );
 
         return (
@@ -92,10 +94,9 @@ export default class ChatHeader extends React.Component {
     };
 
     render() {
-        const { chat, editorOpened, loading } = this.props;
+        const { chat, editorOpened, loading, isNightTheme } = this.props;
         return (
-            <Header style={{ height: "65px" }}>
-
+            <Header isNightTheme={isNightTheme}>
                 {loading && 'Загрузка...' ||
                 chat.groupchat && this.groupChatHeader(chat.title, editorOpened) ||
                 this.personalChatHeader(chat.title)}

@@ -28,13 +28,11 @@ export default class ChatPreview extends React.PureComponent {
     render() {
         const { lastMessage, chat, isNightTheme } = this.props;
         let background = '';
-        console.log(isNightTheme);
         
         if (this.isSelected()) {
            background = !isNightTheme ? '#e7ebf0' : '#616161';
         }
         const borderColor = isNightTheme ? '#424242' : 'lavender';
-        console.log(background);
         
         return (
             <ListItem

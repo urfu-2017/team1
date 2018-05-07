@@ -114,7 +114,6 @@ export default class Contacts extends React.Component {
         >{
             createChat => (
                 <ContactsList
-                    style={{ background: "#fff" }}
                     title="Начать чат:"
                     clickHandler={this.contactClickHandler.bind(this, createChat)}
                     contactsFilter={this.currentUserFilter}
@@ -182,7 +181,7 @@ export default class Contacts extends React.Component {
 
         return (<React.Fragment>
             <Tabs
-                style={{ width: "100%", background: "#fff" }}
+                style={{ width: "100%" }}
                 tabTemplateStyle={{ height: '100%' }}
                 contentContainerStyle={{ height: '100%' }}
                 tabItemContainerStyle={{ height: '60px' }}
@@ -193,16 +192,16 @@ export default class Contacts extends React.Component {
                     label="Контакты"
                     value="contacts"
                     onActive={this.hideAllUsers}
-                    style={{ width: "100%", background: "#5682a3" }}>
-                    {!this.state.showAllUsers && this.withContacts(this.myContacts)}
-
+                    style={{ width: "100%" }} >
+                    { !this.state.showAllUsers && this.withContacts(this.myContacts) }
+                    
                 </Tab>
                 <Tab
                     label="Все пользователи"
                     value="allUsers"
                     onActive={this.showAllUsers}
-                    style={{ width: "100%", background: "#5682a3" }}>
-                    {this.state.showAllUsers && this.withAllUsers(this.allUsers)}
+                    style={{ width: "100%" }} >
+                    { this.state.showAllUsers && this.withAllUsers(this.allUsers) }
                 </Tab>
             </Tabs>
         </React.Fragment>);

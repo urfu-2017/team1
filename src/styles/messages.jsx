@@ -14,7 +14,7 @@ export const Header = styled.section`
     align-items: center;
     justify-content: center;
     color: #fff;
-    background-color: #5682a3;
+    background: ${props => !props.isNightTheme ? '#5682a3' : '#37474F'};
     .header__editor {
         display: flex;
         align-items: center;

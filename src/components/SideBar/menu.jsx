@@ -60,12 +60,14 @@ export default class Menu extends React.Component {
     );
 
     render() {
-        const { currentUser, mainComponentChanger } = this.props;
+        const { currentUser, mainComponentChanger, isNightTheme } = this.props;
+        const borderColor = isNightTheme ? '#424242' : 'lavender';
+
         return (
-            <MenuRoot>
+            <MenuRoot isNightTheme={isNightTheme}>
                 <List style={{padding: "0"}}>
                     <ListItem
-                        style={{color: "#fff", background: "#5682a3", height: "18px"}}
+                        style={{color: "#fff", height: "18px"}}
                         disabled
                         onClick={mainComponentChanger('Profile')}
                         leftAvatar={
@@ -76,7 +78,7 @@ export default class Menu extends React.Component {
                     </ListItem>
                     <ListItem
                         leftIcon={<Person />}
-                        style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
+                        style={{height: "58px", border: `2px solid ${borderColor}`, borderBottom: "none",
                             display: "flex", alignItems: "center"}}
                         onClick={mainComponentChanger('Contacts')}
                     >

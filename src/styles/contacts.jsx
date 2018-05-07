@@ -5,7 +5,6 @@ export const ContactsWrapper = styled.article`
     width: 100%;
     display: flex;
     flex-direction: column;
-    background: #fff;
     .header {
         padding: 0 0 0 20px;
         margin: 30px 0 0 0;

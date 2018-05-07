@@ -27,8 +27,8 @@ const isNightTheme = false;
 const muiTheme = getMuiTheme({
     fontFamily: 'Roboto Condensed',
     palette: {
-        primary1Color: isNightTheme ? '#5682a3' : '#37474F',
-        primary2Color: isNightTheme ? '#5682a3' : '#37474F',
+        primary1Color: !isNightTheme ? '#5682a3' : '#37474F',
+        primary2Color: !isNightTheme ? '#5682a3' : '#37474F',
         textColor: isNightTheme ? '#fff' : '#000',
         canvasColor: isNightTheme ? '#000' : '#fff',
     },

@@ -7,6 +7,7 @@ const ChatWindowWrapper = styled.section`
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    background: ${props => (props.isNightTheme ? '#212121;' : '#fff')};
 `;
 
 export default ChatWindowWrapper;

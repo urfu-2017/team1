@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Header = styled.header`
     height: 49px;
-    background-color: #5682a3;
+    background: ${props => !props.isNightTheme ? '#5682a3' : '#37474F'};
     display: flex;
     align-items: center;
     justify-content: space-around;

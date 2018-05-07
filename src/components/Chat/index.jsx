@@ -60,6 +60,7 @@ export default class Chat extends React.Component {
     }
 
     getMainComponent(chat, currentUser) {
+        const { isNightTheme } = this.props;
         if (this.state.editorOpened) {
             return (
                 <ChatEditor
@@ -80,6 +81,7 @@ export default class Chat extends React.Component {
         )(Messages);
         return (
             <MessagesWithData
+                isNightTheme={isNightTheme}
                 currentChatId={chat.id || null}
                 currentUserId={currentUser.id}
             />
@@ -91,7 +93,6 @@ export default class Chat extends React.Component {
 
     render() {
         let { localState, loading, error, chat, currentUser, isNightTheme } = this.props;
-        console.log(isNightTheme);
         
         // const {id, title, picture, createdAt, members, groupchat} = chat;
         let content = null;
@@ -102,7 +103,7 @@ export default class Chat extends React.Component {
         } else if (loading || !chat) {
             content = (
                 <React.Fragment>
-                    <Header loading={true}/>
+                    <Header isNightTheme={isNightTheme} loading={true}/>
                     {this.getMainComponent(chat, currentUser)}
                 </React.Fragment>
             );
@@ -111,17 +112,19 @@ export default class Chat extends React.Component {
             chat = processChat(currentUser.id, chat);
             content = (
                 <React.Fragment>
-                    <Header chat={chat}
-                            loading={false}
-                            toggleEditor={this.toggleEditor}
-                            editorOpened={this.state.editorOpened}/>
+                    <Header
+                        chat={chat}
+                        loading={false}
+                        isNightTheme={isNightTheme}
+                        toggleEditor={this.toggleEditor}
+                        editorOpened={this.state.editorOpened}/>
                     {this.getMainComponent(chat, currentUser)}
                 </React.Fragment>
             );
         }
 
         return (
-            <ChatWindowWrapper>
+            <ChatWindowWrapper isNightTheme={isNightTheme}>
                 {content}
             </ChatWindowWrapper>
         );

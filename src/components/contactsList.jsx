@@ -51,7 +51,6 @@ export default class ContactsList extends React.Component {
 
     static getContactsItem = (clickHandler, currentUser, contact, handleChange) => (
             <ListItem
-                disabled
                 insetChildren
                 primaryText={contact.name}
                 key={contact.name + Math.random()}
@@ -67,7 +66,7 @@ export default class ContactsList extends React.Component {
             <ContactsWrapper>
                 <h1
                     className="header"
-                    style={{ background: "#fff" }}>
+                >
                     {title}
                 </h1>
                 <Scrollbars universal>
