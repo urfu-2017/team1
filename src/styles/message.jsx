@@ -32,6 +32,18 @@ export const MessageWrapper = styled.article`
         justify-content: end;
         align-items: center;
     }
+    .messageBlock__citation {
+        border-left: 2px solid #555;
+        padding-left: 5px;
+        margin: 2px 0 0 6px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    .messageBlock__citation a {
+        text-decoration: none;
+        color: #000;
+    }
     .addReactions {
         background-image: url('/static/images/happy.svg');
         background-repeat: no-repeat;
@@ -66,6 +78,16 @@ export const MessageWrapper = styled.article`
         color: ${props => (props.isFromSelf ? '#fff' : '#454648')};
         padding: 0 11px;
         font-size: 0.8em;
+    }
+    .messageBlock__reply {
+        color: ${props => (props.isFromSelf ? '#fff' : '#454648')};
+        padding: 0 11px;
+        font-size: 0.8em;
+        cursor: pointer;
+        align: right;
+    }
+    .messageBlock__reply:hover {
+        text-decoration: underline;
     }
     .metadata {
         margin: 7px;

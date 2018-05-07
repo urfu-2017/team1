@@ -68,6 +68,7 @@ export default class MessageInput extends React.Component {
 
             this.clearState();
             localStorage.setItem(this.storageKey, '');
+            this.props.resetReply();
         }
     };
 
@@ -76,7 +77,8 @@ export default class MessageInput extends React.Component {
             text: this.state.message,
             chatId: this.props.currentChatId,
             senderId: this.props.currentUserId,
-            pictures: null
+            pictures: null,
+            citationId: this.props.citedMessage && this.props.citedMessage.id
     });
 
     clearState = () => {
@@ -96,6 +98,9 @@ export default class MessageInput extends React.Component {
             metadata: null,
             reactions: null,
             ...message,
+            citation: message.citationId && {
+                ...this.props.citedMessage
+            },
             __typename: 'Message'
         }
     });

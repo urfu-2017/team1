@@ -17,10 +17,13 @@ const mapper = (mutation, funcName) => ({
 
 
 const CREATE_MESSAGE_ql = gql`
-mutation CreateMessage($text: String!, $chatId: ID!, $senderId: ID!, $clientSideId: Int!, $pictures: [String!] = null, $metadata: Json = null) {
-  createMessage(text: $text, chatId: $chatId, senderId: $senderId, clientSideId: $clientSideId, pictures: $pictures, metadata: $metadata) {
+mutation CreateMessage($text: String!, $chatId: ID!, $senderId: ID!, $clientSideId: Int!, 
+    $pictures: [String!] = null, $metadata: Json = null, $citationId: ID = null) {
+  createMessage(text: $text, chatId: $chatId, senderId: $senderId, clientSideId: $clientSideId, 
+    pictures: $pictures, metadata: $metadata, citationId: $citationId) {
     id
     ...messageData
+    ...messageCitation
     sender {
       id
     }
@@ -28,6 +31,7 @@ mutation CreateMessage($text: String!, $chatId: ID!, $senderId: ID!, $clientSide
 }
 
 ${fragments.messageData_ql}
+${fragments.messageCitation_ql}
 `;
 
 export const CreateMessage = mapper(CREATE_MESSAGE_ql, 'createMessage');

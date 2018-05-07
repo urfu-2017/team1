@@ -4,7 +4,7 @@ import {graphql} from 'react-apollo';
 import {Emoji, emojiIndex} from 'emoji-mart';
 import dynamic from 'next/dynamic';
 
-import { ParanjaWrapper } from '../../styles/paranja';
+import {ParanjaWrapper} from '../../styles/paranja';
 import {MessageWrapper} from '../../styles/message';
 import {GetUser} from '../../graphqlQueries/queries';
 import {UpdateMessageReactions} from '../../graphqlQueries/mutations';
@@ -12,6 +12,7 @@ import {Reactions} from '../../styles/reaction';
 import Reaction from './reaction';
 import {getNewReactions} from '../../helpers/reactionsHelper';
 import {withCurrentUser} from '../../lib/currentUserContext';
+import stripHtml from '../../lib/stripHtml';
 
 const EmojiPicker = dynamic(
     import('emoji-picker-react'),
@@ -35,13 +36,18 @@ export default class Message extends React.PureComponent {
         isFromSelf: PropTypes.bool,
         message: PropTypes.object,
         sender: PropTypes.object,
-        currentUser: PropTypes.object
+        currentUser: PropTypes.object,
+        replyToMessage: PropTypes.func
     };
 
     constructor(props) {
         super(props);
-        this.state = { emoji: false };
+        this.state = { emoji: false, mouseOver: false };
     }
+
+    setMouseOver = () => this.setState({ mouseOver: true });
+
+    unsetMouseOver = () => this.setState({ mouseOver: false });
 
     static defaultProps = { isFromSelf: false, message: {}, sender: {}, currentUser: {} };
 
@@ -113,6 +119,17 @@ export default class Message extends React.PureComponent {
         month: 'long'
     }).format;
 
+    get messageWithSender() {
+        // TODO: что, если user ещё нет?
+        const { message, user: sender } = this.props;
+        return {
+            ...message,
+            sender
+        };
+    }
+
+    replyToThisMessage = () => this.props.replyToMessage(this.messageWithSender);
+
     render() {
         const { loading, error, message, user, currentUser, isFromSelf } = this.props;
         // небольшой костыль: optimistic response присваивает сообщениям
@@ -129,7 +146,8 @@ export default class Message extends React.PureComponent {
 
         return (
             <MessageWrapper isFromSelf={isFromSelf}>
-                <div className="messageBlock">
+                <div id={message.id} className="messageBlock"
+                    onMouseEnter={this.setMouseOver} onMouseLeave={this.unsetMouseOver}>
                     <div
                         style={{ flexWrap: "wrap", display: "flex", width: "100%", borderBottom: "1px solid #b7efe7" }}>
                         <img className="msgFromUserPic" src={user && user.avatarUrl} width="30px"/>
@@ -141,9 +159,21 @@ export default class Message extends React.PureComponent {
                             <div onClick={this.openOrCloseReactions} className="addReactions"
                                  title="Срочно реагировать">
                             </div>
-                            <div className="messageBlock__time">{createdAt}</div>
+                            {this.state.mouseOver
+                                ? <div onClick={this.replyToThisMessage} className="messageBlock__reply">
+                                    Ответить
+                                  </div>
+                                : <div className="messageBlock__time">{createdAt}</div>
+                            }
                         </div>
                     </div>
+                    {message.citation &&
+                    <div className="messageBlock__citation">
+                        <a href={`#${message.citation.id}`}>
+                            <p><strong>{message.citation.sender.name}</strong></p>
+                            <span>{stripHtml(message.citation.text)}</span>
+                        </a>
+                    </div>}
                     <div
                         className="messageBlock__text"
                         isFromSelf={isFromSelf}

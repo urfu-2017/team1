@@ -5,6 +5,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 
 import LoadScreen from '../ui/loadScreen';
 import MessageInput from './messageInput';
+import ReplyPreview from './replyPreview';
 import Message from './message';
 import {messagesSubscriptionDataHandler} from '../../lib/dataHandlers';
 import {MessagesList, ScrollButton } from '../../styles/messages';
@@ -30,6 +31,17 @@ export default class Messages extends React.Component {
         data: {}
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = { citedMessage: null };
+    }
+
+    // действие "ответить на сообщение" называет данное сообщение "циируемым"
+    replyToMessage = (message = null) => {
+        console.log(message);
+        this.setState({ citedMessage: message });
+    };
 
     componentDidMount() {
         this.scroll.isBottom = true;
@@ -54,7 +66,9 @@ export default class Messages extends React.Component {
         <Message
             key={message.id}
             message={message}
-            isFromSelf={message.sender.id === this.props.currentUserId}/>;
+            isFromSelf={message.sender.id === this.props.currentUserId}
+            replyToMessage={this.replyToMessage}
+        />;
 
     render() {
         const { loading, error, messages, currentChatId, currentUserId } = this.props;
@@ -89,9 +103,13 @@ export default class Messages extends React.Component {
                         {content}
                     </MessagesList>
                 </Scrollbars>
+                {this.state.citedMessage &&
+                    <ReplyPreview message={this.state.citedMessage} resetReply={this.replyToMessage} />}
                 <MessageInput
                     currentChatId={currentChatId}
                     currentUserId={currentUserId}
+                    citedMessage={this.state.citedMessage}
+                    resetReply={this.replyToMessage}
                     updateMessages={this.props.data.updateQuery} />
             </React.Fragment>
         );
