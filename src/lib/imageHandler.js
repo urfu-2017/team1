@@ -23,13 +23,13 @@ class ImageHandler extends Component {
         e.preventDefault();
         e.stopPropagation();
         const inputUpload = document.getElementById('upload');
-        inputUpload.files = e.dataTransfer.files;
+        inputUpload.value = e.dataTransfer.files;
     };
 
     drawBackground = () => {
         const reader = new window.FileReader();
         this.readPictureFromInput(reader, () => {
-            this.setTextDownloadArea('');
+            this.setTextDownloadArea('Сохраните фотографию');
             const dataUrl = reader.result;
             const area = document.getElementById('area-for-drop');
             area.style.backgroundImage = `url(${dataUrl})`;

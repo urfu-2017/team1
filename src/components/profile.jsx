@@ -2,17 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 
-//import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../styles/imageHandler';
 import {Editor, DownloadImage, DownloadButton, CreateButton, Exit} from '../styles/profile';
 import {UpdateUserAvatar} from '../graphqlQueries/mutations';
 import {withCurrentUser} from '../lib/currentUserContext';
 import ImageHandler from '../lib/imageHandler';
+import LoadScreen from '../components/ui/loadScreen';
 
 
 @withCurrentUser
 @graphql(UpdateUserAvatar.mutation, { props: UpdateUserAvatar.map })
 export default class ProfileEditor extends ImageHandler {
-    static isSaved = false;
     static propTypes = {
         currentUser: PropTypes.object,
         mainComponentChanger: PropTypes.func
@@ -25,7 +24,7 @@ export default class ProfileEditor extends ImageHandler {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = { isDownloading: false };
     }
 
     saveAvatar = () => {
@@ -34,19 +33,19 @@ export default class ProfileEditor extends ImageHandler {
 
         this.readPictureFromInput(reader, async () => {
             const avatarData = reader.result;
-            this.props.updateUserAvatar({
+            const promiseDownloads = this.props.updateUserAvatar({
                 userId: userId,
                 avatarUrl: avatarData
             });
+            this.setState({ isDownloading: true });
+            promiseDownloads.then(() => {
+                this.setState({ isDownloading: false });
+                this.setTextDownloadArea('Аватарка обновлена');
+            })
         });
-        ProfileEditor.isSaved = true;
     };
 
     render() {
-        if (ProfileEditor.isSaved) {
-            ProfileEditor.isSaved = false;
-            return null;
-        }
         const { mainComponentChanger } = this.props;
         return (
             <Editor>
@@ -68,6 +67,11 @@ export default class ProfileEditor extends ImageHandler {
                     onDragOver={this.dragover}
                     id="area-for-drop">
                     <p className="text" id="download_image_text">Загрузить фото</p>
+                    {
+                        this.state.isDownloading ?
+                            <LoadScreen/>
+                            : ''
+                    }
                 </DownloadImage>
                 <div className="buttons">
                     <DownloadButton
@@ -75,6 +79,8 @@ export default class ProfileEditor extends ImageHandler {
                         type="file"
                         accept="image/*"
                         onChange={this.drawBackground}
+                        files.bind="selectedFiles"
+                        change.delegate="onSelectFile($event)"
                     />
                     <CreateButton
                         id="saveAvatar"
