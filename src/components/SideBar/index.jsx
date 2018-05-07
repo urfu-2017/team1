@@ -61,11 +61,11 @@ export default class SideBar extends React.Component {
                 <ChatsList>
 
                     <AppBar className="menuHeader"
-                        style={{ background: "#5682a3" }}
+                        style={{ background: "#5682a3", 'min-height': '58px', 'max-height': '58px' }}
                         onClick={this.toggleParanja}
                         iconClassNameRight="muidocs-icon-navigation-expand-more"
                     />
-          
+
                     <Scrollbars universal>
                         { currentUser.chats && this.getChatsList(currentUser) }
                     </Scrollbars>
