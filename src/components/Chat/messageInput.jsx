@@ -154,12 +154,11 @@ export default class MessageInput extends React.Component {
     };
 
     render() {
-        const { groupChat } = this.props;
         return (
             <Textarea>
                 <div className="inputField__style">
-                    <AddPhoto onClick={ this.openOrCloseUploadWindow } /> 
-                    <Location /> 
+                    <AddPhoto className="icon" onClick={ this.openOrCloseUploadWindow } /> 
+                    <Location className="icon" /> 
                     <textarea
                         className="textarea__style"
                         onKeyPress={this.handleSubmit}
@@ -167,9 +166,9 @@ export default class MessageInput extends React.Component {
                         placeholder="Сообщение..."
                         value={this.state.message}
                     />
-                    { !groupChat && <Timer /> }
-                    <Microphone /> 
-                    <Mood onClick={ this.openOrCloseEmojies } /> 
+                    <Timer className="icon" />
+                    <Microphone className="icon" /> 
+                    <Mood className="icon" onClick={ this.openOrCloseEmojies } /> 
                 </div>
                 <div>
                     {this.getImageUploadWindow()}
