@@ -7,15 +7,21 @@ const REQUEST_TIMEOUT = 7000;
 
 const getMetadata = async message => {
     const urls = Array.from(getUrls(message));
+    let allMetadata = {};
     let metadata = {};
-
     const url = urls && urls[0];
     if (url) {
-        metadata = await scrape(url);
+        allMetadata = await scrape(url);
     }
-
+    if (allMetadata.openGraph && allMetadata.openGraph.url) {
+        metadata = allMetadata.openGraph;
+    }
+    else {
+        metadata = allMetadata.general;
+    }
+    
     return {
-        ogdata: metadata && metadata.openGraph
+        ogdata: metadata
     };
 };
 

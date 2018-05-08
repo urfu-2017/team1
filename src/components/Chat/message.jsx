@@ -105,6 +105,10 @@ export default class Message extends React.PureComponent {
 
         return picturesComponents;
     };
+    
+    ogdataExists = (ogdata) => {
+        return ogdata && Object.keys(ogdata).length !== 0;
+    };
 
     static formatDate = new Intl.DateTimeFormat('ru', {
         hour: 'numeric',
@@ -149,14 +153,27 @@ export default class Message extends React.PureComponent {
                         isFromSelf={isFromSelf}
                         dangerouslySetInnerHTML={{ __html: message.text }}
                     />
-                    {ogdata && ogdata.url && Object.keys(ogdata).length !== 0 &&
-                    <div className="metadata">
-                        <a href={ogdata.url} className="metadata-container">
-                            {ogdata.image && <img className="metadata-container__img"
-                                                  src={ogdata.image.url} alt={ogdata.title}/>}
-                            <div className="metadata-container__title">{ogdata.title}</div>
-                        </a>
-                    </div>}
+                    { this.ogdataExists(ogdata) &&
+                        <div className="metadata">
+                            <a href={ogdata.url || ogdata.canonical} className="metadata-container">
+                                <div className="metadata-container-info">
+                                    {(ogdata.site_name || ogdata.canonical) &&
+                                        <div className="info__siteName">
+                                            {ogdata.site_name || String(ogdata.canonical).slice(8)}
+                                        </div>
+                                    }
+                                    {ogdata.title !== ogdata.site_name &&
+                                        <div className="info__title">{ogdata.title}</div>
+                                    }
+                                    <div className="info__description">{ogdata.description}</div>
+                                </div>
+                                {ogdata.image && 
+                                    <img className="metadata-container__img"
+                                    src={ogdata.image.url} alt={ogdata.title}/>
+                                }
+                            </a>
+                        </div>
+                    }
                     {picturesComponents.length > 0 && picturesComponents}
                     {reactionComponents.length > 0 && <Reactions>{reactionComponents}</Reactions>}
                 </div>

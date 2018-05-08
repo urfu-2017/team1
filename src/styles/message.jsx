@@ -75,16 +75,22 @@ export const MessageWrapper = styled.article`
     .metadata-container {
         padding: 8px;
         display: flex;
-        color: #42648b;
+        color: black;
         align-items: center;
         text-decoration: none; 
     }
+    .info__siteName {
+        color: ${props => (props.isFromSelf ? '#2499f6' : '#9a989f')};
+    }
+    .info__title {
+        font-weight: 800;
+    }
     .metadata-container__img {
-        flex-basis: 100%;
+        margin-left: 5%;
         padding-right: 8px;
-        max-width: 178px;
         width: auto;
         height: auto;
+        max-height: 65px;
     }
     .pickerStyle {
         z-index: 2;
