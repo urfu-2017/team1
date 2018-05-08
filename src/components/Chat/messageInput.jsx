@@ -8,11 +8,13 @@ import AddPhoto from 'material-ui/svg-icons/image/add-a-photo';
 import Location from 'material-ui/svg-icons/communication/location-on'; 
 import Microphone from 'material-ui/svg-icons/av/mic'; 
 import Timer from 'material-ui/svg-icons/image/timer';
+import Select from 'react-select';
 
 const EmojiPicker = dynamic(
     import('emoji-picker-react'),
     { ssr: false }
 );
+
 
 import { withCurrentUser } from '../../lib/currentUserContext';
 import Textarea from '../../styles/chatWindowInput';
@@ -153,9 +155,43 @@ export default class MessageInput extends React.Component {
         this.setState({ uploadWindow: !this.state.uploadWindow });
     };
 
+    openOrCloseTiming = () => {
+        console.log('+++++');
+        this.setState({ selectTiming: !this.state.selectTiming});
+    }
+
+    getTiming = () => {
+        return (this.state.selectTiming) ?
+            <Select
+                onBlurResetsInput={false}
+				onSelectResetsInput={false}
+				autoFocus
+                value={'off'}
+                onChange={this.handleSelectLifeTime}
+                options={[
+                { value: 'off', label: 'Off' },
+                { value: '1 s', label: '1 second' },
+                { value: '2 s', label: '2 seconds' },
+                ]}
+            /> :
+            ''
+    }
+
+    handleSelectLifeTime = (option) => {
+        this.setState({ lifeTime: option.value});
+        this.openOrCloseTiming();
+      }
+
+    getTimerOrLifeTime = () => {
+        let lifeTime = this.state.lifeTime;
+        return (!lifeTime || lifeTime === 'off') ?
+        (<Timer className="icon" />) : (lifeTime)
+    }
+
     render() {
         return (
             <Textarea>
+                {this.getTiming()}
                 <div className="inputField__style">
                     <AddPhoto className="icon" onClick={ this.openOrCloseUploadWindow } /> 
                     <Location className="icon" /> 
@@ -166,7 +202,9 @@ export default class MessageInput extends React.Component {
                         placeholder="Сообщение..."
                         value={this.state.message}
                     />
-                    <Timer className="icon" />
+                    <div onClick={ this.openOrCloseTiming }>
+                        {this.getTimerOrLifeTime()}
+                    </div>
                     <Microphone className="icon" /> 
                     <Mood className="icon" onClick={ this.openOrCloseEmojies } /> 
                 </div>

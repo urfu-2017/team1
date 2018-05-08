@@ -167,3 +167,13 @@ ${fragments.chatData_ql}
 `;
 
 export const GetAllChats = mapper(GET_ALL_CHATS_ql, data => data.allChats, 'allChats');
+
+const DELETE_MESSAGE_ql = gql`
+query DeleteMessage($messageId: ID!) {
+  deleteMessage(id: $messageId) {
+    id
+  }
+}
+`;
+
+export const DeleteMessage = mapper(DELETE_MESSAGE_ql, data => data.messageId, 'deleteMessage');
