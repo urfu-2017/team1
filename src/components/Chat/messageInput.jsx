@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 import {emojiIndex} from 'emoji-mart';
 import dynamic from 'next/dynamic';
-import Mood from 'material-ui/svg-icons/social/mood'; 
-import AddPhoto from 'material-ui/svg-icons/image/add-a-photo'; 
-import Location from 'material-ui/svg-icons/communication/location-on'; 
-import Microphone from 'material-ui/svg-icons/av/mic'; 
+import Mood from 'material-ui/svg-icons/social/mood';
+import AddPhoto from 'material-ui/svg-icons/image/add-a-photo';
+import Location from 'material-ui/svg-icons/communication/location-on';
+import Microphone from 'material-ui/svg-icons/av/mic';
 import Timer from 'material-ui/svg-icons/image/timer';
 import { Map, Marker, MarkerLayout } from 'yandex-map-react';
 
@@ -98,6 +98,7 @@ export default class MessageInput extends React.Component {
             },
             metadata: null,
             reactions: null,
+            map: null,  // TODO
             ...message,
             __typename: 'Message'
         }
@@ -146,7 +147,7 @@ export default class MessageInput extends React.Component {
         } else {
             return '';
         }
-    } 
+    }
 
     onSendImage = urlInBase64 => {
         const message = this.getMessage();
@@ -171,8 +172,8 @@ export default class MessageInput extends React.Component {
         return (
             <Textarea>
                 <div className="inputField__style">
-                    <AddPhoto className="icon" onClick={ this.openOrCloseUploadWindow } /> 
-                    <Location className="icon" onClick={ this.openOrCloseMap } /> 
+                    <AddPhoto className="icon" onClick={ this.openOrCloseUploadWindow } />
+                    <Location className="icon" onClick={ this.openOrCloseMap } />
                     <textarea
                         className="textarea__style"
                         onKeyPress={this.handleSubmit}
@@ -181,8 +182,8 @@ export default class MessageInput extends React.Component {
                         value={this.state.message}
                     />
                     <Timer className="icon" />
-                    <Microphone className="icon" /> 
-                    <Mood className="icon" onClick={ this.openOrCloseEmojies } /> 
+                    <Microphone className="icon" />
+                    <Mood className="icon" onClick={ this.openOrCloseEmojies } />
                 </div>
                 <div>
                     {this.getImageUploadWindow()}

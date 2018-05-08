@@ -11,6 +11,7 @@ fragment messageData on Message {
   metadata
   clientSideId
   reactions
+  map
   sender {
     id
   }
