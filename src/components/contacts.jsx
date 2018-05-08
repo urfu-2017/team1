@@ -26,7 +26,6 @@ const personalChatOptimisticResponse = (currentUser, contact) => {
     const chat = {
         id,
         title: contact.name,
-        'private': false,
         picture: contact.avatarUrl,
         createdAt: (new Date()).toISOString(),
         groupchat: false,
@@ -80,21 +79,21 @@ export default class Contacts extends React.Component {
                 tabTemplateStyle={{ height: '100%' }}
                 contentContainerStyle={{ height: '100%' }}
                 tabItemContainerStyle={{ height: '60px' }}
-                value={showAllUsers ? 'allUsers' : 'contacts'}
+                value={showAllUsers ? 'allUsersTab' : 'contacts'}
                 onChange={this.toggleAllUsers}
             >
                 <Tab
                     label="Контакты"
                     value="contacts"
                     style={{ width: "100%", background: "#5682a3" }}>
-                    {showAllUsers || this.withCreateChat(this.myContacts)}
+                    {showAllUsers || this.withCreateChat(this.myContactsTab)}
 
                 </Tab>
                 <Tab
                     label="Все пользователи"
                     value="allUsers"
                     style={{ width: "100%", background: "#5682a3" }}>
-                    {showAllUsers && this.withCreateChat(this.withAllUsers(this.allUsers))}
+                    {showAllUsers && this.withCreateChat(this.withAddToContacts(this.allUsersTab))}
                 </Tab>
             </Tabs>
         );
@@ -143,8 +142,7 @@ export default class Contacts extends React.Component {
             createChat => <Inner createChat={createChat} />
         }</Mutation>;
 
-
-    myContacts = ({ createChat }) => {
+    myContactsTab = ({ createChat }) => {
         const { loading, error, contacts } = this.props;
 
         return <ContactsList
@@ -187,7 +185,7 @@ export default class Contacts extends React.Component {
         this.toggleAllUsers();
     };
 
-    withAllUsers = Inner => ({ createChat }) => (
+    withAddToContacts = Inner => ({ createChat }) => (
         <Query query={GetAllUsers.query} fetchPolicy='network-only'>{
             response =>
                 <Mutation
@@ -200,7 +198,7 @@ export default class Contacts extends React.Component {
         }</Query>
     );
 
-    allUsers = ({ addUserToContacts, createChat, allUsers, loading, error }) => (
+    allUsersTab = ({ addUserToContacts, createChat, allUsers, loading, error }) => (
         <ContactsList
             style={{ background: "#fff" }}
             title="Добавить в контакты:"
