@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 
 export const MessageWrapper = styled.article`
+    z-index: ${props => (props.emoji ? '20' : '0')};
     height:auto;
     padding: 10px;
     p {
@@ -21,7 +22,9 @@ export const MessageWrapper = styled.article`
         border-radius: 5px;
         min-height: 25px;
         height:auto;
-        float: ${props => (props.isFromSelf ? 'right' : 'left')};
+        position: relative;
+        left: ${props => (props.isFromSelf ? 'calc(100% - 10px)' : '0')};
+        transform: ${props => (props.isFromSelf ? 'translateX(-100%);' : '0')};
         box-shadow: rgb(200, 217, 230) 2px 2px 5px 0px;
         background-color: ${props => (props.isFromSelf ? '#92d7ef' : 'rgb(231, 235, 240)')};
     }
@@ -92,7 +95,7 @@ export const MessageWrapper = styled.article`
         transform: translateY(-50%);
         @media screen and (max-width: 1260px) {
             right: ${props => (props.isFromSelf ? '' : '0')};
-            left: ${props => (props.isFromSelf ? '35%' : '')};
+            left: ${props => (props.isFromSelf ? '35vw' : '')};
         }
         @media screen and (min-width: 1261px) {
             right: ${props => (props.isFromSelf ? '' : 'calc((100vw - 1260px) / 2)')};

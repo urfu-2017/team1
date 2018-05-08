@@ -55,7 +55,7 @@ export default class Message extends React.PureComponent {
         });
     };
 
-    openOrCloseReactions = () => this.setState({ emoji: !this.state.emoji });
+    toggleReactions = () => this.setState({ emoji: !this.state.emoji });
 
     onEmojiClick = (_, val) => {
         this.state.emoji = false;
@@ -67,24 +67,80 @@ export default class Message extends React.PureComponent {
         .map(x => x.native);
 
     getPicker = () => this.state.emoji ? (
-            <ReactionParanja
-                onClick={() => {
-                    this.setState({ emoji: false })
+            <div
+                onClick={event => {
+                    event.stopPropagation();
                 }}
-            >
-                <div
-                    onClick={event => {
-                        event.stopPropagation();
+                class="pickerStyle">
+                <EmojiPicker
+                    onEmojiClick={(_, val) => {
+                        this.onEmojiClick(_, val);
                     }}
-                    class="pickerStyle">
-                    <EmojiPicker
-                        onEmojiClick={this.onEmojiClick}
-                        disableDiversityPicker
-                    />
-                </div>
-            </ReactionParanja>
+                    disableDiversityPicker
+                />
+            </div>
         )
         : '';
+
+    getParanja = () => this.state.emoji ? (
+            <ReactionParanja
+                onClick={() => {
+                    this.setState({ emoji: false });
+                }}
+            />
+        )
+        : '';
+
+    getMessageBlock = () => {
+        const { message, user, currentUser, isFromSelf } = this.props;
+        // небольшой костыль: optimistic response присваивает сообщениям
+        // рандомный отрицательный id, чтобы не хранить лишнее поле
+        const delivered = isFromSelf ? (message.id < 0 ? '  ' : ' ✓') : '';
+        const ogdata = message.metadata && message.metadata.ogdata || {};
+
+        if (!user) {
+            return '';
+        }
+        let picturesComponents = this.createPicturesComponents(message.pictures);
+        let reactionComponents = this.createReactionComponents(message.reactions, currentUser.id);
+        const createdAt = Message.formatDate(new Date(message.createdAt));
+
+        return (
+            <div className="messageBlock">
+                <div
+                    style={{ flexWrap: "wrap", display: "flex", width: "100%", borderBottom: "1px solid #b7efe7" }}>
+                    <img className="msgFromUserPic" src={user && user.avatarUrl} width="30px"/>
+                    <div className="msgFromBlock">
+                        <span className="msgFromUserName">{user && user.name + delivered}</span>
+                        {/*TODO: у сообщения есть также поле modifiedAt, равное null, если оно не менялось */}
+                    </div>
+                    <div className="msgTimeReactionBlock">
+                        <div
+                            onClick={this.toggleReactions}
+                            className="addReactions"
+                            title="Срочно реагировать">
+                        </div>
+                        <div className="messageBlock__time">{createdAt}</div>
+                    </div>
+                </div>
+                <div
+                    className="messageBlock__text"
+                    isFromSelf={isFromSelf}
+                    dangerouslySetInnerHTML={{ __html: message.text }}
+                />
+                {ogdata && ogdata.url && Object.keys(ogdata).length !== 0 &&
+                <div className="metadata">
+                    <a href={ogdata.url} className="metadata-container">
+                        {ogdata.image && <img className="metadata-container__img"
+                                              src={ogdata.image.url} alt={ogdata.title}/>}
+                        <div className="metadata-container__title">{ogdata.title}</div>
+                    </a>
+                </div>}
+                {picturesComponents.length > 0 && picturesComponents}
+                {reactionComponents.length > 0 && <Reactions>{reactionComponents}</Reactions>}
+            </div>
+        );
+    };
 
     createReactionComponents = (reactions, currentUserId) => {
         let reactionComponents = [];
@@ -102,7 +158,7 @@ export default class Message extends React.PureComponent {
         return reactionComponents;
     };
 
-    createPicturesComponets = (pictures) => {
+    createPicturesComponents = (pictures) => {
         let picturesComponents = [];
         if (pictures) {
             picturesComponents = pictures.map(x => (
@@ -125,56 +181,22 @@ export default class Message extends React.PureComponent {
     }).format;
 
     render() {
-        const { loading, error, message, user, currentUser, isFromSelf } = this.props;
-        // небольшой костыль: optimistic response присваивает сообщениям
-        // рандомный отрицательный id, чтобы не хранить лишнее поле
-        const delivered = isFromSelf ? (message.id < 0 ? '  ' : ' ✓') : '';
-        const ogdata = message.metadata && message.metadata.ogdata || {};
-
+        const { user, isFromSelf } = this.props;
         if (!user) {
             return '';
         }
-        let picturesComponents = this.createPicturesComponets(message.pictures);
-        let reactionComponents = this.createReactionComponents(message.reactions, currentUser.id);
-        const createdAt = Message.formatDate(new Date(message.createdAt));
 
         return (
-            <MessageWrapper isFromSelf={isFromSelf}>
-                <div className="messageBlock">
-                    <div
-                        style={{ flexWrap: "wrap", display: "flex", width: "100%", borderBottom: "1px solid #b7efe7" }}>
-                        <img className="msgFromUserPic" src={user && user.avatarUrl} width="30px"/>
-                        <div className="msgFromBlock">
-                            <span className="msgFromUserName">{user && user.name + delivered}</span>
-                            {/*TODO: у сообщения есть также поле modifiedAt, равное null, если оно не менялось */}
-                        </div>
-                        <div className="msgTimeReactionBlock">
-                            <div onClick={this.openOrCloseReactions} className="addReactions"
-                                 title="Срочно реагировать">
-                            </div>
-                            <div className="messageBlock__time">{createdAt}</div>
-                        </div>
-                    </div>
-                    <div
-                        className="messageBlock__text"
-                        isFromSelf={isFromSelf}
-                        dangerouslySetInnerHTML={{ __html: message.text }}
-                    />
-                    {ogdata && ogdata.url && Object.keys(ogdata).length !== 0 &&
-                    <div className="metadata">
-                        <a href={ogdata.url} className="metadata-container">
-                            {ogdata.image && <img className="metadata-container__img"
-                                                  src={ogdata.image.url} alt={ogdata.title}/>}
-                            <div className="metadata-container__title">{ogdata.title}</div>
-                        </a>
-                    </div>}
-                    {picturesComponents.length > 0 && picturesComponents}
-                    {reactionComponents.length > 0 && <Reactions>{reactionComponents}</Reactions>}
-                </div>
-                <div>
+            <React.Fragment>
+                <MessageWrapper
+                    isFromSelf={isFromSelf}
+                    emoji={this.state.emoji}
+                >
+                    {this.getMessageBlock()}
                     {this.getPicker()}
-                </div>
-            </MessageWrapper>
-        );
+                </MessageWrapper>
+                {this.getParanja()}
+            </React.Fragment>
+        )
     }
 }

@@ -31,6 +31,7 @@ export const ReactionWrapper = styled.div`
 
 export const ReactionParanja = styled.div`
     position: fixed;
+    z-index: 10;
     @media screen and (max-width: 1260px) {
         right: 0;
         left: 35%;
@@ -41,6 +42,5 @@ export const ReactionParanja = styled.div`
     }
     top: 58px;
     bottom: 0;
-    z-index: 1500;
     background: rgba(0,0,0,.2);
 `;
