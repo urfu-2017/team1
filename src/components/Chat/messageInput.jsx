@@ -3,14 +3,16 @@ import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 import {emojiIndex} from 'emoji-mart';
 import dynamic from 'next/dynamic';
-import Mood from 'material-ui/svg-icons/social/mood';
+import Mood from 'material-ui/svg-icons/social/mood'; 
+import AddPhoto from 'material-ui/svg-icons/image/add-a-photo'; 
+import Location from 'material-ui/svg-icons/communication/location-on'; 
+import Microphone from 'material-ui/svg-icons/av/mic'; 
+import Timer from 'material-ui/svg-icons/image/timer';
 
 const EmojiPicker = dynamic(
     import('emoji-picker-react'),
     { ssr: false }
 );
-
-import Attachfile from 'material-ui/svg-icons/editor/attach-file';
 
 import { withCurrentUser } from '../../lib/currentUserContext';
 import Textarea from '../../styles/chatWindowInput';
@@ -152,25 +154,6 @@ export default class MessageInput extends React.Component {
         this.openOrCloseUploadWindow();
     };
 
-    getButtonWithSmile = () => (
-        <div onClick={this.openOrCloseEmojies}
-             className="openEmojiButton__style"
-             title="Emoji"
-        >
-            <Mood />
-        </div>
-    );
-
-    getButtonWithImageUpload = () => (
-        <div onClick={() => {
-            this.openOrCloseUploadWindow();
-        }}
-            className="clip"
-            title="Send picture">
-            <Attachfile />
-        </div>
-    );
-
     openOrCloseUploadWindow = () => {
         this.setState({ uploadWindow: !this.state.uploadWindow });
     };
@@ -179,15 +162,18 @@ export default class MessageInput extends React.Component {
         return (
             <Textarea>
                 <div className="inputField__style">
+                    <AddPhoto className="icon" onClick={ this.openOrCloseUploadWindow } /> 
+                    <Location className="icon" /> 
                     <textarea
                         className="textarea__style"
                         onKeyPress={this.handleSubmit}
                         onChange={this.handleChange}
                         placeholder="Сообщение..."
                         value={this.state.message}
-                        required/>
-                    {this.getButtonWithImageUpload()}
-                    {this.getButtonWithSmile()}
+                    />
+                    <Timer className="icon" />
+                    <Microphone className="icon" /> 
+                    <Mood className="icon" onClick={ this.openOrCloseEmojies } /> 
                 </div>
                 <div>
                     {this.getImageUploadWindow()}
