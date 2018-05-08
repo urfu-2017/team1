@@ -79,16 +79,5 @@
     "babel-preset-stage-2": "^6.24.1",
     "style-loader": "^0.20.3",
     "url-loader": "^1.0.1"
-  },
-  "babel": {
-    "presets": [
-      "env",
-      "react",
-      "stage-2",
-      "next/babel"
-    ],
-    "plugins": [
-      "transform-decorators-legacy"
-    ]
   }
 }
