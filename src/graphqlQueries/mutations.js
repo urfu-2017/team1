@@ -125,14 +125,14 @@ export const UpdateMessageReactions = mapper(UPDATE_MESSAGE_REACTIONS_ql, 'updat
 const UPDATE_CHAT_TITLE_ql = gql`
 mutation UpdateChatTitle($chatId: ID!, $title: String!) {
   updateChat(id: $chatId, title: $title) {
-    ...chatTitle
+    id
+    title
   }
 }
-
-${fragments.chatTitle_ql}
 `;
 
 export const UpdateChatTitle = mapper(UPDATE_CHAT_TITLE_ql, 'updateChatTitle');
+
 
 const ADD_USER_TO_CONTACTS_ql = gql`
 mutation AddToContacts($userId1: ID!, $userId2: ID!) {

@@ -51,7 +51,6 @@ export const chatData_ql = gql`
 fragment chatData on Chat {
   id
   title
-  private
   picture
   createdAt
   groupchat
@@ -60,12 +59,5 @@ fragment chatData on Chat {
     name
     avatarUrl
   }
-}
-`;
-
-export const chatTitle_ql = gql`
-fragment chatTitle on Chat {
-  id
-  title
 }
 `;
