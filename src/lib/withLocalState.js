@@ -15,6 +15,7 @@ import React from 'react';
 
 export const { Provider: ChatUpdateProvider, Consumer: ChatUpdateConsumer } = React.createContext({});
 export const { Provider: ChatIdProvider, Consumer: ChatIdConsumer } = React.createContext({});
+
 export const withLocalState = Decorated => {
     return (props) => (
         <ChatUpdateConsumer>
