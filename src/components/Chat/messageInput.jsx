@@ -8,6 +8,7 @@ import AddPhoto from 'material-ui/svg-icons/image/add-a-photo';
 import Location from 'material-ui/svg-icons/communication/location-on'; 
 import Microphone from 'material-ui/svg-icons/av/mic'; 
 import Timer from 'material-ui/svg-icons/image/timer';
+import { Map, Marker, MarkerLayout } from 'yandex-map-react';
 
 const EmojiPicker = dynamic(
     import('emoji-picker-react'),
@@ -137,6 +138,15 @@ export default class MessageInput extends React.Component {
     getImageUploadWindow = () => (this.state.uploadWindow) ?
         (<MessageImageSender onSendImage={this.onSendImage} closeImageSender={this.openOrCloseUploadWindow}/>) : '';
 
+    getMap = function() {
+        if (this.state.showMap) {
+            return <Map onAPIAvailable={function () { console.info('Map API loaded'); }} width={'100%'} center={[56.81, 60.61]} zoom={13}>
+                <Marker lat={56.8170712} lon={60.61116699999} />
+            </Map>
+        } else {
+            return '';
+        }
+    } 
 
     onSendImage = urlInBase64 => {
         const message = this.getMessage();
@@ -153,12 +163,16 @@ export default class MessageInput extends React.Component {
         this.setState({ uploadWindow: !this.state.uploadWindow });
     };
 
+    openOrCloseMap = () => {
+        this.setState({ showMap: !this.state.showMap });
+    }
+
     render() {
         return (
             <Textarea>
                 <div className="inputField__style">
                     <AddPhoto className="icon" onClick={ this.openOrCloseUploadWindow } /> 
-                    <Location className="icon" /> 
+                    <Location className="icon" onClick={ this.openOrCloseMap } /> 
                     <textarea
                         className="textarea__style"
                         onKeyPress={this.handleSubmit}
@@ -175,6 +189,9 @@ export default class MessageInput extends React.Component {
                 </div>
                 <div className="picker__style">
                     {this.getPicker()}
+                </div>
+                <div className="map__style" style={{ width: "200px", height: "200px", border: "1px solid red" }}>
+                    {this.getMap()}
                 </div>
             </Textarea>
         );
