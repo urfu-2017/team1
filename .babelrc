@@ -1,0 +1,11 @@
+{
+    "presets": [
+        "env",
+        "react",
+        "stage-2",
+        "next/babel"
+    ],
+    "plugins": [
+        "transform-decorators-legacy"
+    ]
+}
