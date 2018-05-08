@@ -92,7 +92,8 @@ export default class Messages extends React.Component {
                 <MessageInput
                     currentChatId={currentChatId}
                     currentUserId={currentUserId}
-                    updateMessages={this.props.data.updateQuery} />
+                    updateMessages={this.props.data.updateQuery}
+                />
             </React.Fragment>
         );
     }
