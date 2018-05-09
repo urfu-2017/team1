@@ -51,7 +51,6 @@ export default class ChatEditor extends React.Component {
     clickHandler = (addUserToChat, currentUser, contact) => {
         const { currentChat, data } = this.props;
         addUserToChat({ variables: { chatId: currentChat.id, userId: contact.id } });
-        console.log(data);
         setTimeout(data.refetch, 1000);
         this.toggleUsersList();
     };

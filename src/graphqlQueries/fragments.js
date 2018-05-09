@@ -11,10 +11,25 @@ fragment messageData on Message {
   metadata
   clientSideId
   reactions
+  lifeTimeInSeconds
   sender {
     id
   }
 }
+`;
+
+export const messageCitation_ql = gql`
+fragment messageCitation on Message {
+  citation {
+    id
+    text
+    pictures
+    sender {
+      id
+      name
+    }
+  }
+}  
 `;
 
 export const userData_ql = gql`
