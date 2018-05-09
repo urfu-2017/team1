@@ -7,6 +7,7 @@ import {Editor, DownloadImage, DownloadButton, CreateButton, Exit} from '../styl
 import {UpdateUserAvatar} from '../graphqlQueries/mutations';
 import {withCurrentUser} from '../lib/currentUserContext';
 import ImageHandler from '../lib/imageHandler';
+import { withUiTheme } from '../lib/withUiTheme';
 
 
 @withCurrentUser
@@ -48,6 +49,7 @@ export default class ProfileEditor extends ImageHandler {
             return null;
         }
         const { mainComponentChanger } = this.props;
+
         return (
             <Editor>
                 <div
@@ -62,7 +64,7 @@ export default class ProfileEditor extends ImageHandler {
                     <h1 className="header">
                         Загрузить аватар
                     </h1>
-                </div>    
+                </div>
                 <DownloadImage
                     onDrop={this.drop}
                     onDragOver={this.dragover}

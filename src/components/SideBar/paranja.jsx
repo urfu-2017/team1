@@ -17,12 +17,13 @@ export default class Paranja extends React.Component {
     };
 
     render() {
-        const { currentUser, toggleParanja, mainComponentChanger } = this.props;
+        const { currentUser, toggleParanja, mainComponentChanger, toggleUiTheme } = this.props;
 
         return (
             <ParanjaWrapper onClick={toggleParanja}>
                 <Menu
                     currentUser={currentUser}
+                    toggleUiTheme={toggleUiTheme}
                     mainComponentChanger={mainComponentChanger}
                 />
             </ParanjaWrapper>

@@ -1,12 +1,13 @@
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
+import { withClientState } from 'apollo-link-state';
 import { BatchHttpLink } from 'apollo-link-batch-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { getMainDefinition } from 'apollo-utilities';
 import fetch from 'isomorphic-unfetch';
 
-// import resolvers from '../resolvers/index';
+import resolvers from '../resolvers/index';
 // import initialState from '../initialState';  // TODO: pass values directly from server to client
 
 
@@ -18,7 +19,7 @@ if (isOnServer) {
 }
 
 
-function create(httpUrl, wsUrl) {
+function create(httpUrl, wsUrl, initialState) {
     const httpLink = new BatchHttpLink({ uri: httpUrl, batchInterval: 30 });
 
     const cache = new InMemoryCache({
@@ -27,11 +28,11 @@ function create(httpUrl, wsUrl) {
     });
 
     // cache.restore(initialState || {});
-    // const stateLink = withClientState({
-    //     cache,
-    //     resolvers,
-    //     defaults: initialState
-    // });
+    const stateLink = withClientState({
+        cache,
+        resolvers,
+        defaults: initialState
+    });
 
     const middlewareAuthLink = new ApolloLink((operation, forward) => {
         const token = localStorage.getItem('user_token');
@@ -60,6 +61,7 @@ function create(httpUrl, wsUrl) {
         });
 
         link = ApolloLink.from([
+            stateLink,
             ApolloLink.split(
                 ({ query }) => {
                     const { kind, operation } = getMainDefinition(query);
@@ -75,7 +77,7 @@ function create(httpUrl, wsUrl) {
     return new ApolloClient({
         connectToDevTools: isOnServer,
         ssrMode: isOnServer, // Disables forceFetch on the server (so queries are only run once)
-        link: link,
+        link: ApolloLink.from([stateLink, link]),
         cache,
         queryDeduplication: true
     });
@@ -86,12 +88,12 @@ export default function initApollo(httpUrl, wsUrl, initialState) {
     // Make sure to create a new client for every server-side request so that data
     // isn't shared between connections (which would be bad)
     if (isOnServer) {
-        return create(httpUrl, wsUrl);
+        return create(httpUrl, wsUrl, initialState);
     }
 
     // Reuse client on the client-side
     if (!apolloClient) {
-        apolloClient = create(httpUrl, wsUrl);
+        apolloClient = create(httpUrl, wsUrl, initialState);
     }
     return apolloClient;
 }

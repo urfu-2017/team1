@@ -1,8 +1,9 @@
 import styled from 'styled-components';
+import { withUiTheme } from '../lib/withUiTheme';
 
 export const Header = styled.header`
     height: 49px;
-    background-color: #5682a3;
+    background: ${props => !props.isNightTheme ? '#5682a3' : '#37474F'};
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -18,16 +19,15 @@ export const SearchInput = styled.input`
     visibility: hidden;
 `;
 
-export const ChatsList = styled.section`
+export const ChatsList = withUiTheme(styled.section`
     width: 35%;
     min-width: 250px;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    background: #fff;
-    border-right: 1.5px solid lavender;
-    border-left: 1.5px solid lavender;
-`;
+    border-right: 1.5px solid ${props => !props.uiTheme.isNightTheme ? 'lavender' : '#424242' };
+    border-left: 1.5px solid ${props => !props.uiTheme.isNightTheme ? 'lavender' : '#424242' };
+`);
 
 export const AppBar = styled.section`
     background-color: #5682a3 !important;
@@ -75,3 +75,4 @@ export const Contact = styled.div`
         margin: 0 15px;
     }
 `;
+

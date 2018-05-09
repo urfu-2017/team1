@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import { withUiTheme } from '../lib/withUiTheme';
 
 
-export const MessageWrapper = styled.article`
+export const MessageWrapper = withUiTheme(styled.article`
     height:auto;
     padding: 10px;
     p {
@@ -18,12 +19,20 @@ export const MessageWrapper = styled.article`
     .messageBlock {
         max-width: 51%;
         min-width: 338px;
+        max-width: 338px;
         border-radius: 5px;
         min-height: 25px;
         height:auto;
+        color: ${props => (props.isFromSelf || props.uiTheme.isNightTheme ? '#EEE' : '#454648')};
         float: ${props => (props.isFromSelf ? 'right' : 'left')};
-        box-shadow: rgb(200, 217, 230) 2px 2px 5px 0px;
-        background-color: ${props => (props.isFromSelf ? '#92d7ef' : 'rgb(231, 235, 240)')};
+        box-shadow: ${props => props.uiTheme.isNightTheme ? '#546E7A' :'rgb(200, 217, 230)'} 2px 2px 5px 0px;
+        background-color: ${props => props.uiTheme.isNightTheme ? '#607D8B' : (props.isFromSelf ?  '#92d7ef' : 'rgb(231, 235, 240)')};
+    }
+    .message__header {
+        flex-wrap: wrap;
+        display: flex;
+        width: 100%;
+        border-bottom: 1px solid ${props => props.uiTheme.isNightTheme ? '#CFD8DC' : '#b7efe7'};
     }
     .msgFromBlock {
         padding: 8px;
@@ -42,7 +51,7 @@ export const MessageWrapper = styled.article`
     }
     .msgFromUserName {
         margin: 5px;
-        color: ${props => (props.isFromSelf ? '#fff' : '#454648')};
+        color: ${props => (props.isFromSelf || props.uiTheme.isNightTheme ? '#EEE' : '#454648')};
     }
     .msgTimeReactionBlock {
         align-items: center;
@@ -63,19 +72,18 @@ export const MessageWrapper = styled.article`
         padding: 6px 4px 6px 6px;
     }
     .messageBlock__time {
-        color: ${props => (props.isFromSelf ? '#fff' : '#454648')};
+        color: ${props => (props.isFromSelf || props.uiTheme.isNightTheme ? '#EEE' : '#454648')};
         padding: 0 11px;
         font-size: 0.8em;
     }
     .metadata {
         margin: 7px;
-        border: 2px solid #b2ebff;
-        background-color: #ffffff;
+        border: 2px solid ${props => props.uiTheme.isNightTheme ? '#CFD8DC' : '#b7efe7'};
     }
     .metadata-container {
         padding: 8px;
         display: flex;
-        color: #42648b;
+        color: ${props => props.uiTheme.isNightTheme ? '#0D47A1' : '#42648b'};
         align-items: center;
         text-decoration: none; 
     }
@@ -98,4 +106,4 @@ export const MessageWrapper = styled.article`
         align-self: center;
         width: 90%;
     }
-`;
+`);

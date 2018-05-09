@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 import {Emoji, emojiIndex} from 'emoji-mart';
 import dynamic from 'next/dynamic';
+import Mood from 'material-ui/svg-icons/social/mood';
 
-import { ParanjaWrapper } from '../../styles/paranja';
 import {MessageWrapper} from '../../styles/message';
 import {GetUser} from '../../graphqlQueries/queries';
 import {UpdateMessageReactions} from '../../graphqlQueries/mutations';
@@ -12,12 +12,14 @@ import {Reactions} from '../../styles/reaction';
 import Reaction from './reaction';
 import {getNewReactions} from '../../helpers/reactionsHelper';
 import {withCurrentUser} from '../../lib/currentUserContext';
+import { withUiTheme } from '../../lib/withUiTheme';
 
 const EmojiPicker = dynamic(
     import('emoji-picker-react'),
     { ssr: false }
 );
 
+@withUiTheme
 @withCurrentUser
 @graphql(
     GetUser.query,
@@ -79,12 +81,13 @@ export default class Message extends React.PureComponent {
         let reactionComponents = [];
         if (reactions) {
             reactionComponents = reactions.map(x =>
-                (<Reaction key={Math.random()}
-                           count={x.users.length}
-                           isCurrentUser={x.users.includes(currentUserId)}
-                           reaction={x.emoji}
-                           onReactionClick={() => this.updateMessageReactions(x.emoji)}
-                           emojiNative={this.findEmoji(x.emoji)}
+                (<Reaction
+                    key={Math.random()}
+                    count={x.users.length}
+                    isCurrentUser={x.users.includes(currentUserId)}
+                    reaction={x.emoji}
+                    onReactionClick={() => this.updateMessageReactions(x.emoji)}
+                        emojiNative={this.findEmoji(x.emoji)}
                 />));
         }
 
@@ -114,7 +117,7 @@ export default class Message extends React.PureComponent {
     }).format;
 
     render() {
-        const { loading, error, message, user, currentUser, isFromSelf } = this.props;
+        const { loading, error, message, user, currentUser, isFromSelf, uiTheme } = this.props;
         // небольшой костыль: optimistic response присваивает сообщениям
         // рандомный отрицательный id, чтобы не хранить лишнее поле
         const delivered = isFromSelf ? (message.id < 0 ? '  ' : ' ✓') : '';
@@ -126,21 +129,20 @@ export default class Message extends React.PureComponent {
         let picturesComponents = this.createPicturesComponets(message.pictures);
         let reactionComponents = this.createReactionComponents(message.reactions, currentUser.id);
         const createdAt = Message.formatDate(new Date(message.createdAt));
+        const color = isFromSelf || uiTheme.isNightTheme ? '#EEE' : '#000';  // TODO: в стили
 
         return (
             <MessageWrapper isFromSelf={isFromSelf}>
                 <div className="messageBlock">
                     <div
-                        style={{ flexWrap: "wrap", display: "flex", width: "100%", borderBottom: "1px solid #b7efe7" }}>
-                        <img className="msgFromUserPic" src={user && user.avatarUrl} width="30px"/>
+                        className="message__header"
+                    >
                         <div className="msgFromBlock">
                             <span className="msgFromUserName">{user && user.name + delivered}</span>
                             {/*TODO: у сообщения есть также поле modifiedAt, равное null, если оно не менялось */}
                         </div>
                         <div className="msgTimeReactionBlock">
-                            <div onClick={this.openOrCloseReactions} className="addReactions"
-                                 title="Срочно реагировать">
-                            </div>
+                            <Mood color={color} onClick={this.openOrCloseReactions}/>
                             <div className="messageBlock__time">{createdAt}</div>
                         </div>
                     </div>

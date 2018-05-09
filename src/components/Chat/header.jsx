@@ -5,6 +5,7 @@ import Close from 'material-ui/svg-icons/navigation/close';
 import {Header} from '../../styles/messages';
 import {UpdateChatTitle} from '../../graphqlQueries/mutations';
 import {chatTitle_ql} from '../../graphqlQueries/fragments';
+import withLocalState from '../../lib/withLocalState';
 
 
 @graphql(UpdateChatTitle.mutation, { props: UpdateChatTitle.map })
@@ -52,33 +53,32 @@ export default class ChatHeader extends React.Component {
     };
 
     groupChatHeader = (title, editorOpened) => {
-        const switcher = editorOpened ? 
-            <Close className="header__img" style={{color: '#fff'}}/> :
-            <ModeEdit className="header__img" style={{color: '#fff'}}/>;
+        const switcher = editorOpened ?
+            <Close style={{color: '#fff'}} className="header__img" /> :
+            <ModeEdit style={{color: '#fff'}} className="header__img" />;
         const prefix = (
-            <div className="header__editor"
-                onClick={this.props.toggleEditor}
-                style={{ fontSize: "16px" }}
-            >
+            <React.Fragment>
                 {switcher}
                 <span> {!editorOpened ? title : ''} </span>
-            </div>
+            </React.Fragment>
         );
 
         return (
             <React.Fragment>
-                {prefix}
-                {editorOpened &&
-                    <input
-                        value={this.state.title}
-                        size={title.length}
-                        style={{ outline: "none", border: "none" }}
-                        onChange={this.handleChange}
-                        onKeyPress={this.handleSubmit}
-                        autoFocus
-                        onFocus={e => e.target.select()}
-                    />
-                }
+                <Header onClick={this.props.toggleEditor}>
+                    {prefix}
+                    {editorOpened &&
+                        <input
+                            value={this.state.title}
+                            size={title.length}
+                            style={{ outline: "none", border: "none" }}
+                            onChange={this.handleChange}
+                            onKeyPress={this.handleSubmit}
+                            autoFocus
+                            onFocus={e => e.target.select()}
+                        />
+                    }
+                </Header>
             </React.Fragment>
         );
     };
@@ -94,8 +94,7 @@ export default class ChatHeader extends React.Component {
     render() {
         const { chat, editorOpened, loading } = this.props;
         return (
-            <Header style={{ height: "65px" }}>
-
+            <Header>
                 {loading && 'Загрузка...' ||
                 chat.groupchat && this.groupChatHeader(chat.title, editorOpened) ||
                 this.personalChatHeader(chat.title)}

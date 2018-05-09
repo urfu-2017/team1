@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { withUiTheme } from '../lib/withUiTheme';
 
 export const MessagesList = styled.section`
     width: 100%;
@@ -6,7 +7,7 @@ export const MessagesList = styled.section`
     flex-direction: column;
 `;
 
-export const Header = styled.section`
+export const Header = withUiTheme(styled.section`
     min-height: 58px;
     max-height: 58px;
     width: 100%;
@@ -14,17 +15,16 @@ export const Header = styled.section`
     align-items: center;
     justify-content: center;
     color: #fff;
-    background-color: #5682a3;
+    background: ${props => !props.uiTheme.isNightTheme ? '#5682a3' : '#37474F'};
     .header__editor {
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
     .header__img {
-        color: #fff;
         margin: 0 15px 0 0;
     }
-`;
+`);
 
 export const ScrollButton = styled.div`
     display: flex;

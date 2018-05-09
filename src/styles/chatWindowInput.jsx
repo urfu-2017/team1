@@ -1,7 +1,9 @@
 
 import styled from 'styled-components';
+import { withUiTheme } from '../lib/withUiTheme';
 
-const Textarea = styled.div`
+const Textarea = withUiTheme(styled.div`
+    background: ${props => props.uiTheme.isNightTheme ? '#37474F' : ''}
     .picker__style {
         position: absolute;
         bottom: 60px;
@@ -12,7 +14,7 @@ const Textarea = styled.div`
     }
 
     .inputField__style {
-        border-top: 1.5px solid #e7ebf0;
+        border-top: 1.5px solid ${props =>  props.uiTheme.isNightTheme ? '#424242': '#e7ebf0'};
         display: flex;
         justify-content: flex-end;
         align-items: center;
@@ -32,8 +34,8 @@ const Textarea = styled.div`
         outline: none;
         padding: 16px 0 0 16px;
         box-sizing: border-box;
-        background-color: rgba(255,255,255,.7);
         display: inline-block;
+        background: ${props =>  props.uiTheme.isNightTheme ? '#37474F' : '#fff'}
     }
 
     .closeEmojiButton__style {
@@ -63,6 +65,6 @@ const Textarea = styled.div`
         text-align: center;
         vertical-align: top;
    }
-`;
+`);
 
 export default Textarea;

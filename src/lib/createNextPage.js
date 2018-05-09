@@ -4,8 +4,8 @@ import {ApolloProvider} from 'react-apollo';
 import createApolloClient from '../lib/createApolloClient';
 
 
-export default (httpUrl, wsUrl, Component, props) => {
-    const client = createApolloClient(httpUrl, wsUrl);
+export default (httpUrl, wsUrl, initialState, Component, props) => {
+    const client = createApolloClient(httpUrl, wsUrl, initialState);
 
     return (
         <ApolloProvider client={client}>
