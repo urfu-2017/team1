@@ -28,42 +28,28 @@ export const updateMessage = (message, target) => {
 
 
 export const deleteMessage = (message, target) => {
-    console.log('deleted___');
     let messages = [...target.Chat.messages]
         .filter(msg => msg.id !== message.id);
-    console.log(target.Chat);
-    console.log(messages);
     return { Chat: { ...target.Chat, messages } };
 };
 
 
-export const messagesSubscriptionDataHandler = (previousResult, { subscriptionData, variables }) => {
-    console.log('$$$$$$$$$$$$$$$$$$$$$$$');
-    console.log(subscriptionData.data.Message.mutation);
-    console.log(previousResult.Chat);
-    console.log('%%%%%%%%%%%%%%%%%%%%%%%%');
-    
+export const messagesSubscriptionDataHandler = (previousResult, { subscriptionData, variables }) => {    
     if (!previousResult.Chat) {
         return previousResult;
     }
 
-    const { mutation, node } = subscriptionData.data.Message;
+    const { mutation, node, previousValues } = subscriptionData.data.Message;
     if (node) {
         variables.chatId = node.chat.id;
     }
     switch (mutation) {
         case 'CREATED':
-        {
-            console.log('********');
             return addNewMessage(node, previousResult);
-        }
         case 'UPDATED':
             return updateMessage(node, previousResult);
-        case 'DELETED': {
-            console.log('********');
-            return deleteMessage(node, previousResult);
-        }
-            
+        case 'DELETED':
+            return deleteMessage(previousValues, previousResult);
         default:
             return previousResult;
     }

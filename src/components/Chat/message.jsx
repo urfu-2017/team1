@@ -4,7 +4,7 @@ import {graphql} from 'react-apollo';
 import {Emoji, emojiIndex} from 'emoji-mart';
 import dynamic from 'next/dynamic';
 
-import { ParanjaWrapper } from '../../styles/paranja';
+import {ParanjaWrapper} from '../../styles/paranja';
 import {MessageWrapper} from '../../styles/message';
 import {GetUser} from '../../graphqlQueries/queries';
 import {UpdateMessageReactions} from '../../graphqlQueries/mutations';
@@ -12,6 +12,7 @@ import {Reactions} from '../../styles/reaction';
 import Reaction from './reaction';
 import {getNewReactions} from '../../helpers/reactionsHelper';
 import {withCurrentUser} from '../../lib/currentUserContext';
+import {DeleteMessage} from '../../graphqlQueries/mutations';
 
 const EmojiPicker = dynamic(
     import('emoji-picker-react'),
@@ -29,6 +30,7 @@ const EmojiPicker = dynamic(
     }
 )
 @graphql(UpdateMessageReactions.mutation, { props: UpdateMessageReactions.map })
+@graphql(DeleteMessage.mutation, { props: DeleteMessage.map })
 export default class Message extends React.PureComponent {
     static propTypes = {
         toggleParanja: PropTypes.func,
@@ -120,9 +122,18 @@ export default class Message extends React.PureComponent {
         const delivered = isFromSelf ? (message.id < 0 ? '  ' : ' ✓') : '';
         const ogdata = message.metadata && message.metadata.ogdata || {};
 
+
         if (!user) {
             return '';
         }
+
+        if (message.lifeTimeInSeconds !== null && !isFromSelf) {
+            this.props.deleteMessage({
+                messageId: message.id,
+                lifeTimeInSeconds: message.lifeTimeInSeconds
+            });
+        }
+
         let picturesComponents = this.createPicturesComponets(message.pictures);
         let reactionComponents = this.createReactionComponents(message.reactions, currentUser.id);
         const createdAt = Message.formatDate(new Date(message.createdAt));

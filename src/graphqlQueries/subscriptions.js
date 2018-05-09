@@ -21,6 +21,9 @@ subscription SubscribeToMessages($filter: MessageSubscriptionFilter!) {
         id
       }
     }
+    previousValues {
+        id
+    }
   }
 }
 

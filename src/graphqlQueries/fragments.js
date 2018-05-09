@@ -11,6 +11,7 @@ fragment messageData on Message {
   metadata
   clientSideId
   reactions
+  lifeTimeInSeconds
   sender {
     id
   }

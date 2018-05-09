@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 import {emojiIndex} from 'emoji-mart';
 import dynamic from 'next/dynamic';
-import Mood from 'material-ui/svg-icons/social/mood'; 
-import AddPhoto from 'material-ui/svg-icons/image/add-a-photo'; 
-import Location from 'material-ui/svg-icons/communication/location-on'; 
-import Microphone from 'material-ui/svg-icons/av/mic'; 
-import Timer from 'material-ui/svg-icons/image/timer';
-import Select from 'react-select';
+import Mood from 'material-ui/svg-icons/social/mood';
+import AddPhoto from 'material-ui/svg-icons/image/add-a-photo';
+import Location from 'material-ui/svg-icons/communication/location-on';
+import Microphone from 'material-ui/svg-icons/av/mic';
 
 const EmojiPicker = dynamic(
     import('emoji-picker-react'),
@@ -16,12 +14,13 @@ const EmojiPicker = dynamic(
 );
 
 
-import { withCurrentUser } from '../../lib/currentUserContext';
+import {withCurrentUser} from '../../lib/currentUserContext';
 import Textarea from '../../styles/chatWindowInput';
-import { addNewMessage } from '../../lib/dataHandlers';
-import { CreateMessage } from '../../graphqlQueries/mutations';
-import { GetChatMessages } from '../../graphqlQueries/queries';
+import {addNewMessage} from '../../lib/dataHandlers';
+import {CreateMessage} from '../../graphqlQueries/mutations';
+import {GetChatMessages} from '../../graphqlQueries/queries';
 import MessageImageSender from './messageImageSender';
+import {getTimerOrLifeTime, getTiming} from '../../helpers/lifeTimeHelper'
 
 
 @withCurrentUser
@@ -44,7 +43,12 @@ export default class MessageInput extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { message: localStorage.getItem(this.storageKey) || '' };
+        this.state = {
+            message: localStorage.getItem(this.storageKey) || '',
+            lifeTime: {
+                seconds: null,
+            }
+        };
     }
 
     get storageKey() {
@@ -80,7 +84,8 @@ export default class MessageInput extends React.Component {
             text: this.state.message,
             chatId: this.props.currentChatId,
             senderId: this.props.currentUserId,
-            pictures: null
+            pictures: null,
+            lifeTimeInSeconds: this.state.lifeTime.seconds
     });
 
     clearState = () => {
@@ -139,7 +144,6 @@ export default class MessageInput extends React.Component {
     getImageUploadWindow = () => (this.state.uploadWindow) ?
         (<MessageImageSender onSendImage={this.onSendImage} closeImageSender={this.openOrCloseUploadWindow}/>) : '';
 
-
     onSendImage = urlInBase64 => {
         const message = this.getMessage();
         message.pictures = [urlInBase64];
@@ -155,46 +159,20 @@ export default class MessageInput extends React.Component {
         this.setState({ uploadWindow: !this.state.uploadWindow });
     };
 
-    openOrCloseTiming = () => {
-        console.log('+++++');
-        this.setState({ selectTiming: !this.state.selectTiming});
-    }
-
-    getTiming = () => {
-        return (this.state.selectTiming) ?
-            <Select
-                onBlurResetsInput={false}
-				onSelectResetsInput={false}
-				autoFocus
-                value={'off'}
-                onChange={this.handleSelectLifeTime}
-                options={[
-                { value: 'off', label: 'Off' },
-                { value: '1 s', label: '1 second' },
-                { value: '2 s', label: '2 seconds' },
-                ]}
-            /> :
-            ''
-    }
+    openOrCloseTiming = () => this.setState({ selectTiming: !this.state.selectTiming });
 
     handleSelectLifeTime = (option) => {
-        this.setState({ lifeTime: option.value});
+        this.setState({ lifeTime: option.value });
         this.openOrCloseTiming();
-      }
-
-    getTimerOrLifeTime = () => {
-        let lifeTime = this.state.lifeTime;
-        return (!lifeTime || lifeTime === 'off') ?
-        (<Timer className="icon" />) : (lifeTime)
     }
 
     render() {
         return (
             <Textarea>
-                {this.getTiming()}
+                {getTiming(this.state.selectTiming, this.handleSelectLifeTime.bind(this))}
                 <div className="inputField__style">
-                    <AddPhoto className="icon" onClick={ this.openOrCloseUploadWindow } /> 
-                    <Location className="icon" /> 
+                    <AddPhoto className="icon" onClick={this.openOrCloseUploadWindow} />
+                    <Location className="icon" />
                     <textarea
                         className="textarea__style"
                         onKeyPress={this.handleSubmit}
@@ -202,11 +180,11 @@ export default class MessageInput extends React.Component {
                         placeholder="Сообщение..."
                         value={this.state.message}
                     />
-                    <div onClick={ this.openOrCloseTiming }>
-                        {this.getTimerOrLifeTime()}
+                    <div onClick={this.openOrCloseTiming}>
+                        {getTimerOrLifeTime(this.state.lifeTime)}
                     </div>
-                    <Microphone className="icon" /> 
-                    <Mood className="icon" onClick={ this.openOrCloseEmojies } /> 
+                    <Microphone className="icon" />
+                    <Mood className="icon" onClick={this.openOrCloseEmojies} />
                 </div>
                 <div>
                     {this.getImageUploadWindow()}
