@@ -33,6 +33,7 @@ const currentChatSet = ({ currentChatId }) =>
 export default class Chat extends React.Component {
     static propTypes = {
         currentUser: PropTypes.object,
+        serverUrl: PropTypes.string,
         localState: PropTypes.object,
         loading: PropTypes.bool,
         error: PropTypes.object,
@@ -64,6 +65,7 @@ export default class Chat extends React.Component {
             return (
                 <ChatEditor
                     currentChat={chat}
+                    serverUrl={this.props.serverUrl}
                     currentUser={currentUser}
                     toggleEditor={this.toggleEditor}/>
             );

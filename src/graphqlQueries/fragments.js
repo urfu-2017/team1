@@ -18,6 +18,20 @@ fragment messageData on Message {
 }
 `;
 
+export const messageCitation_ql = gql`
+fragment messageCitation on Message {
+  citation {
+    id
+    text
+    pictures
+    sender {
+      id
+      name
+    }
+  }
+}  
+`;
+
 export const userData_ql = gql`
 fragment userData on User {
   id

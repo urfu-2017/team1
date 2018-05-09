@@ -101,11 +101,13 @@ query GetChatMessages {
     id
     messages {
       ...messageData
+      ...messageCitation
     }
   }
 }
 
 ${fragments.messageData_ql}
+${fragments.messageCitation_ql}
 `;
 
 export const GetChatMessages = mapper(GET_CHAT_MESSAGES_ql,

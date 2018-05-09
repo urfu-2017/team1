@@ -51,7 +51,6 @@ export default class ChatEditor extends React.Component {
     clickHandler = (addUserToChat, currentUser, contact) => {
         const { currentChat, data } = this.props;
         addUserToChat({ variables: { chatId: currentChat.id, userId: contact.id } });
-        console.log(data);
         setTimeout(data.refetch, 1000);
         this.toggleUsersList();
     };
@@ -92,6 +91,11 @@ export default class ChatEditor extends React.Component {
         this.setState({ uploadWindow: !this.state.uploadWindow });
     };
 
+    getInviteLink() {
+        const { currentChat, serverUrl } = this.props;
+        return `${serverUrl}/invite/${currentChat.id}`;
+    };
+
     render() {
         const { currentChat, members } = this.props;
 
@@ -113,7 +117,7 @@ export default class ChatEditor extends React.Component {
                         </div>
                         <dl className="link">
                             <dt>Инвайт</dt>
-                            <dd><a href={`/invite/${currentChat.id}`}>/invite/{currentChat.id}</a></dd>
+                            <dd>{this.getInviteLink()}</dd>
                         </dl>
                         <UserList>
                             <Scrollbars universal>

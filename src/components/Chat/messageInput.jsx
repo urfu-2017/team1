@@ -20,7 +20,7 @@ import {addNewMessage} from '../../lib/dataHandlers';
 import {CreateMessage} from '../../graphqlQueries/mutations';
 import {GetChatMessages} from '../../graphqlQueries/queries';
 import MessageImageSender from './messageImageSender';
-import {getTimerOrLifeTime, getTiming} from '../../helpers/lifeTimeHelper'
+import LifeTimeDropOutMenu from './lifeTimeDropOutMenu';
 
 
 @withCurrentUser
@@ -45,9 +45,6 @@ export default class MessageInput extends React.Component {
         super(props);
         this.state = {
             message: localStorage.getItem(this.storageKey) || '',
-            lifeTime: {
-                seconds: null,
-            }
         };
     }
 
@@ -76,6 +73,7 @@ export default class MessageInput extends React.Component {
 
             this.clearState();
             localStorage.setItem(this.storageKey, '');
+            this.props.resetReply();
         }
     };
 
@@ -85,7 +83,8 @@ export default class MessageInput extends React.Component {
             chatId: this.props.currentChatId,
             senderId: this.props.currentUserId,
             pictures: null,
-            lifeTimeInSeconds: this.state.lifeTime.seconds
+            citationId: this.props.citedMessage && this.props.citedMessage.id,
+            lifeTimeInSeconds: this.state.lifeTimeInSeconds
     });
 
     clearState = () => {
@@ -105,6 +104,9 @@ export default class MessageInput extends React.Component {
             metadata: null,
             reactions: null,
             ...message,
+            citation: message.citationId && {
+                ...this.props.citedMessage
+            },
             __typename: 'Message'
         }
     });
@@ -128,7 +130,7 @@ export default class MessageInput extends React.Component {
         localStorage.setItem(this.storageKey, message);
     };
 
-    openOrCloseEmojies = () => this.setState({ emoji: !this.state.emoji });
+    openOrCloseEmojies = () => this.setState({ emojiPickerVisible: !this.state.emojiPickerVisible });
 
     findEmoji = id => emojiIndex.search(id)
         .filter(x => x.id === id)
@@ -138,7 +140,7 @@ export default class MessageInput extends React.Component {
 
     onEmojiClick = (_, val) => this.addEmojiIntoText(val.name);
 
-    getPicker = () => (this.state.emoji) ?
+    getPicker = () => (this.state.emojiPickerVisible) ?
         (<EmojiPicker onEmojiClick={this.onEmojiClick} disableDiversityPicker/>) : '';
 
     getImageUploadWindow = () => (this.state.uploadWindow) ?
@@ -159,19 +161,15 @@ export default class MessageInput extends React.Component {
         this.setState({ uploadWindow: !this.state.uploadWindow });
     };
 
-    openOrCloseTiming = () => this.setState({ selectTiming: !this.state.selectTiming });
-
-    handleSelectLifeTime = (option) => {
-        this.setState({ lifeTime: option.value });
-        this.openOrCloseTiming();
-    }
+    setLifeTime = (seconds) => {
+        this.setState({ lifeTimeInSeconds: seconds });
+    } 
 
     render() {
         return (
             <Textarea>
-                {getTiming(this.state.selectTiming, this.handleSelectLifeTime.bind(this))}
                 <div className="inputField__style">
-                    <AddPhoto className="icon" onClick={this.openOrCloseUploadWindow} />
+                    <AddPhoto className="icon" onClick={ this.openOrCloseUploadWindow } />
                     <Location className="icon" />
                     <textarea
                         className="textarea__style"
@@ -180,11 +178,9 @@ export default class MessageInput extends React.Component {
                         placeholder="Сообщение..."
                         value={this.state.message}
                     />
-                    <div onClick={this.openOrCloseTiming}>
-                        {getTimerOrLifeTime(this.state.lifeTime)}
-                    </div>
+                    <LifeTimeDropOutMenu setLifeTime={this.setLifeTime}/>
                     <Microphone className="icon" />
-                    <Mood className="icon" onClick={this.openOrCloseEmojies} />
+                    <Mood className="icon" onClick={ this.openOrCloseEmojies } />
                 </div>
                 <div>
                     {this.getImageUploadWindow()}
