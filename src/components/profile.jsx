@@ -78,7 +78,10 @@ export default class ProfileEditor extends ImageHandler {
                         id="upload"
                         type="file"
                         accept="image/*"
-                        onChange={this.drawBackground}
+                        onChange={() => {
+                            this.backgroundUploaded = false;
+                            this.drawBackground();
+                        }}
                     />
                     <CreateButton
                         id="saveAvatar"

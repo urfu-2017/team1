@@ -4,6 +4,8 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5mb
 
 
 class ImageHandler extends Component {
+    backgroundUploaded = false;
+
     getFirstFile = () => {
         const inputUpload = document.getElementById('upload');
         return inputUpload.files[0];
@@ -23,10 +25,15 @@ class ImageHandler extends Component {
         e.preventDefault();
         e.stopPropagation();
         const inputUpload = document.getElementById('upload');
+        this.backgroundUploaded = false;
         inputUpload.files = e.dataTransfer.files;
+        setTimeout(this.drawBackground, 0);
     };
 
     drawBackground = () => {
+        if (this.backgroundUploaded) {
+            return;
+        }
         const reader = new window.FileReader();
         this.readPictureFromInput(reader, () => {
             this.setTextDownloadArea('Сохраните фотографию');
@@ -34,6 +41,7 @@ class ImageHandler extends Component {
             const area = document.getElementById('area-for-drop');
             area.style.backgroundImage = `url(${dataUrl})`;
         });
+        this.backgroundUploaded = true;
     };
 
     readPictureFromInput = (reader, cb) => {
