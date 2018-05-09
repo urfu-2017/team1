@@ -6,7 +6,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import LoadScreen from '../ui/loadScreen';
 import MessageInput from './messageInput';
 import ReplyPreview from './replyPreview';
-import Message from './message';
+import Message from './Message';
 import {messagesSubscriptionDataHandler} from '../../lib/dataHandlers';
 import {MessagesList, ScrollButton } from '../../styles/messages';
 import {SubscribeToMessages} from '../../graphqlQueries/subscriptions';

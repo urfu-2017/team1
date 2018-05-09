@@ -36,9 +36,22 @@ export const MessageWrapper = styled.article`
         border-left: 2px solid #555;
         padding-left: 5px;
         margin: 2px 0 0 6px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
         overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .messageBlock__citation-text {
+        white-space: nowrap;
+    }
+    .messageBlock__citation-sender {
+        font-weight: bold;
+    }
+    .messageBlock__citation-picture {
+        max-width: 15%;
+        margin-right: 5px;
+    }
+    .messageBlock__citation-wrapper {
+        display: flex;
+        align-items: center;
     }
     .messageBlock__citation a {
         text-decoration: none;
@@ -66,6 +79,12 @@ export const MessageWrapper = styled.article`
         width: 40px;
         height: 40px;
         border-radius: 50% 50%;
+    }
+    .messageBlock__header {
+        flex-wrap: wrap;
+        display: flex;
+        width: 100%;
+        border-bottom: 1px solid #b7efe7;
     }
     .messageBlock__text {
         white-space: pre-wrap;

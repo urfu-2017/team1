@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 import {emojiIndex} from 'emoji-mart';
 import dynamic from 'next/dynamic';
-import Mood from 'material-ui/svg-icons/social/mood'; 
-import AddPhoto from 'material-ui/svg-icons/image/add-a-photo'; 
-import Location from 'material-ui/svg-icons/communication/location-on'; 
-import Microphone from 'material-ui/svg-icons/av/mic'; 
+import Mood from 'material-ui/svg-icons/social/mood';
+import AddPhoto from 'material-ui/svg-icons/image/add-a-photo';
+import Location from 'material-ui/svg-icons/communication/location-on';
+import Microphone from 'material-ui/svg-icons/av/mic';
 import Timer from 'material-ui/svg-icons/image/timer';
 
 const EmojiPicker = dynamic(
@@ -126,7 +126,7 @@ export default class MessageInput extends React.Component {
         localStorage.setItem(this.storageKey, message);
     };
 
-    openOrCloseEmojies = () => this.setState({ emoji: !this.state.emoji });
+    openOrCloseEmojies = () => this.setState({ emojiPickerVisible: !this.state.emojiPickerVisible });
 
     findEmoji = id => emojiIndex.search(id)
         .filter(x => x.id === id)
@@ -136,7 +136,7 @@ export default class MessageInput extends React.Component {
 
     onEmojiClick = (_, val) => this.addEmojiIntoText(val.name);
 
-    getPicker = () => (this.state.emoji) ?
+    getPicker = () => (this.state.emojiPickerVisible) ?
         (<EmojiPicker onEmojiClick={this.onEmojiClick} disableDiversityPicker/>) : '';
 
     getImageUploadWindow = () => (this.state.uploadWindow) ?
@@ -162,8 +162,8 @@ export default class MessageInput extends React.Component {
         return (
             <Textarea>
                 <div className="inputField__style">
-                    <AddPhoto className="icon" onClick={ this.openOrCloseUploadWindow } /> 
-                    <Location className="icon" /> 
+                    <AddPhoto className="icon" onClick={ this.openOrCloseUploadWindow } />
+                    <Location className="icon" />
                     <textarea
                         className="textarea__style"
                         onKeyPress={this.handleSubmit}
@@ -172,8 +172,8 @@ export default class MessageInput extends React.Component {
                         value={this.state.message}
                     />
                     <Timer className="icon" />
-                    <Microphone className="icon" /> 
-                    <Mood className="icon" onClick={ this.openOrCloseEmojies } /> 
+                    <Microphone className="icon" />
+                    <Mood className="icon" onClick={ this.openOrCloseEmojies } />
                 </div>
                 <div>
                     {this.getImageUploadWindow()}

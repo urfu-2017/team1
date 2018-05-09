@@ -10,9 +10,13 @@ export default ({ message, resetReply }) => (
     message && message.sender  // какой-то костыль, но проверка state не работает
         ? <ReplyPreview>
             <p className="replyPreview__sender">{message.sender.name}</p>
-            <Reply className="replyPreview__reply" />
-            <Close className="replyPreview__close-button" onClick={resetReply} />
-            <p className="replyPreview__message">{stripHtml(message.text)}</p>
+            <Close className="replyPreview__close-button" onClick={resetReply}/>
+            <div className="replyPreview__wrapper">
+                <Reply className="replyPreview__reply"/>
+                {message.pictures && message.pictures.length &&
+                <img className="replyPreview__picture" src={message.pictures[0]}/>}
+                <p className="replyPreview__message">{stripHtml(message.text)}</p>
+            </div>
         </ReplyPreview>
-        : <div />
+        : <div/>
 );

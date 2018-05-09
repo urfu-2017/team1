@@ -22,10 +22,10 @@ fragment messageCitation on Message {
   citation {
     id
     text
+    pictures
     sender {
       id
       name
-      avatarUrl
     }
   }
 }  
