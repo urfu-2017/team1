@@ -37,9 +37,8 @@ export default class Messages extends React.Component {
         this.state = { citedMessage: null };
     }
 
-    // действие "ответить на сообщение" называет данное сообщение "циируемым"
+    // действие "ответить на сообщение" называет данное сообщение "цитируемым"
     replyToMessage = (message = null) => {
-        console.log(message);
         this.setState({ citedMessage: message });
     };
 

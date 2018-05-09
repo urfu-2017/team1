@@ -10,7 +10,7 @@ export default ({ message, resetReply }) => (
     message && message.sender  // какой-то костыль, но проверка state не работает
         ? <ReplyPreview>
             <p className="replyPreview__sender">{message.sender.name}</p>
-            <Close className="replyPreview__close-button" onClick={resetReply}/>
+            <Close className="replyPreview__close-button" onClick={() => resetReply()}/>
             <div className="replyPreview__wrapper">
                 <Reply className="replyPreview__reply"/>
                 {message.pictures && message.pictures.length &&

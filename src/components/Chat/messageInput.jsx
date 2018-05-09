@@ -55,21 +55,15 @@ export default class MessageInput extends React.Component {
     handleSubmit = event => {
         if (this.state.message.trim().length === 0) {
             return;
-        }  // TODO: review later
+        }
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
             const message = this.getMessage();
-            // Что это? О_о
-            // const cursorInBottom = cursorIsPressedFromBelow();
 
             this.props.createMessage(message, {
                 optimisticResponse: this.optimisticResponse(message),
                 update: this.updateCache
             });
-
-            // if (cursorInBottom) {
-            //     moveCursorDown();
-            // }
 
             this.clearState();
             localStorage.setItem(this.storageKey, '');
@@ -163,7 +157,7 @@ export default class MessageInput extends React.Component {
 
     setLifeTime = (seconds) => {
         this.setState({ lifeTimeInSeconds: seconds });
-    } 
+    };
 
     render() {
         return (
