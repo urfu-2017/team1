@@ -18,6 +18,9 @@ const Textarea = styled.div`
         align-items: center;
         width: 100%;
     }
+    .icon {
+        padding: 10px
+    }
 
     .textarea__style {
         border: none;

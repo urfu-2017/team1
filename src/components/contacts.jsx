@@ -6,7 +6,7 @@ import {Mutation, Query, graphql} from 'react-apollo';
 import ContactsList from './contactsList';
 import {GetUserChats} from '../graphqlQueries/queries';
 import {AddUserToContacts, CreateChat} from '../graphqlQueries/mutations';
-import { withLocalState } from '../lib/withLocalState';
+import {withLocalState} from '../lib/withLocalState';
 import {getTitleForPersonalChat} from '../lib/dataHandlers';
 import {GetUserContacts, GetAllUsers} from '../graphqlQueries/queries';
 import {withCurrentUser} from '../lib/currentUserContext';
@@ -21,6 +21,40 @@ const getNewChat = (currentUser, contact) => ({
 });
 
 
+const personalChatOptimisticResponse = (currentUser, contact) => {
+    const id = -Math.floor(Math.random() * 1000);
+    const chat = {
+        id,
+        title: contact.name,
+        picture: contact.avatarUrl,
+        createdAt: (new Date()).toISOString(),
+        groupchat: false,
+        members: [currentUser, contact].map(
+            ({ id, name, avatarUrl }) => ({ id, name, avatarUrl, __typename: 'User' })),
+        __typename: 'Chat'
+    };
+    const updatedCurrentUser = {
+        ...currentUser,
+        chats: [...currentUser.chats].concat([chat])
+    };
+    return {
+        __typename: 'Mutation',
+        createChat: {
+            id,
+            __typename: 'Chat'
+        },
+        currentUser: {
+            ...updatedCurrentUser,
+            __typename: 'User'
+        },
+        contact: {
+            id: contact.id,
+            __typename: 'User'
+        }
+    };
+};
+
+
 @withLocalState
 @withCurrentUser
 @graphql(GetUserContacts.query, {
@@ -32,9 +66,43 @@ const getNewChat = (currentUser, contact) => ({
 export default class Contacts extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { showAllUsers: false, value: 'contacts' };
+        this.state = { showAllUsers: false };
     }
-    handleChange = value => { this.setState({ value }); };
+
+    toggleAllUsers = () => this.setState(prev => ({ showAllUsers: !prev.showAllUsers }));
+
+    render() {
+        const { showAllUsers } = this.state;
+        return (
+            <Tabs
+                style={{ width: "100%", background: "#fff" }}
+                tabTemplateStyle={{ height: '100%' }}
+                contentContainerStyle={{ height: '100%' }}
+                tabItemContainerStyle={{ height: '60px' }}
+                value={showAllUsers ? 'allUsersTab' : 'contacts'}
+                onChange={this.toggleAllUsers}
+            >
+                <Tab
+                    label="Контакты"
+                    value="contacts"
+                    style={{ width: "100%", background: "#5682a3" }}>
+                    {showAllUsers || this.withCreateChat(this.myContactsTab)}
+
+                </Tab>
+                <Tab
+                    label="Все пользователи"
+                    value="allUsers"
+                    style={{ width: "100%", background: "#5682a3" }}>
+                    {showAllUsers && this.withCreateChat(this.withAddToContacts(this.allUsersTab))}
+                </Tab>
+            </Tabs>
+        );
+    };
+
+    /*
+     * Contacts
+     */
+
     contactClickHandler = (createChat, currentUser, contact) => {
         const existingChat = currentUser.chats
             .find(chat => !chat.groupchat && chat.members.find(u => u.id === contact.id));
@@ -42,129 +110,101 @@ export default class Contacts extends React.Component {
             this.setActiveChat(existingChat.id);
         } else {
             const newChat = getNewChat(currentUser, contact);
-            createChat({ variables: { ...newChat } });
+            createChat({
+                variables: { ...newChat },
+                optimisticResponse: personalChatOptimisticResponse(currentUser, contact)
+            });
         }
     };
 
     setActiveChat = chatId => {
-        this.props.updateCurrentChatId(chatId);
-        this.props.mainComponentChanger('Chat')();
+        const { updateCurrentChatId, mainComponentChanger } = this.props;
+        updateCurrentChatId(chatId);
+        mainComponentChanger('Chat')();
     };
 
-    withContacts = Inner => {
-        const { loading, error, contacts } = this.props;
-        return <Inner {...{ loading, error, contacts }} />;
+    filterCurrentUser = ({ currentUser }, contact) => contact.id !== currentUser.id;
+
+    updateAfterChatCreation = (cache, { data: { currentUser, createChat } }) => {
+        cache.writeQuery({
+            query: GetUserChats.query,
+            data: { User: { ...currentUser } },
+            variables: { userId: currentUser.id }
+        });
+        this.setActiveChat(createChat.id);
     };
 
-    currentUserFilter = ({ currentUser }, contact) => contact.id !== currentUser.id;
-
-    myContacts = props => (
+    withCreateChat = Inner =>
         <Mutation
             mutation={CreateChat.mutation}
-            update={
-                (cache, { data: { currentUser, createChat } }) => {
-                    cache.writeQuery({
-                        query: GetUserChats.query,
-                        data: { User: { ...currentUser } },
-                        variables: { userId: currentUser.id }
-                    });
-                    this.setActiveChat(createChat.id);
-                }
-            }
+            update={this.updateAfterChatCreation}
         >{
-            createChat => (
-                <ContactsList
-                    style={{background: "#fff"}}
-                    title="Начать чат:"
-                    clickHandler={this.contactClickHandler.bind(this, createChat)}
-                    contactsFilter={this.currentUserFilter}
-                    {...props}
-                />
-            )
-        }</Mutation>
-    );
+            createChat => <Inner createChat={createChat} />
+        }</Mutation>;
 
-    withAllUsers = Inner => (
-        <Query query={GetAllUsers.query}>
-            {req => <Inner {...GetAllUsers.map(req)} />}
-        </Query>
-    );
+    myContactsTab = ({ createChat }) => {
+        const { loading, error, contacts } = this.props;
 
-    contactsFilter = ({ currentUser }, contact) => this.currentUserFilter({ currentUser }, contact) &&
-        !this.props.contacts.find(u => u.id === contact.id);
-
-    allUsers = ({ allUsers, loading, error }) => (
-        <Mutation
-            mutation={AddUserToContacts.mutation}
-            update={
-                (cache, { data: { currentUser, otherUser } }) => {
-                    const user = cache.readQuery({
-                        query: GetUserContacts.query,
-                        variables: {
-                            userId: currentUser.id
-                        }
-                    });
-                    const contacts = [...user.User.contacts];
-                    contacts.push(otherUser);
-                    cache.writeQuery({
-                        query: GetUserContacts.query,
-                        data: { User: { ...user.User, contacts } },
-                        variables: { userId: currentUser.id }
-                    });
-                    this.hideAllUsers();
-                }
-            }
-        >{
-            addUserToContacts => (
-                <ContactsList
-                    style={{background: "#fff"}}
-                    title="Добавить в контакты:"
-                    contactsFilter={this.contactsFilter}
-                    handleChange={this.handleChange}
-                    clickHandler={this.userClickHandler.bind(this, addUserToContacts)}
-                    contacts={allUsers}
-                    {...{ loading, error }} />
-            )
-        }</Mutation>
-    );
-
-    userClickHandler = (addUserToContacts, currentUser, contact) => {
-        addUserToContacts({ variables: { userId1: currentUser.id, userId2: contact.id } });
+        return <ContactsList
+            style={{ background: "#fff" }}
+            title="Начать чат:"
+            clickHandler={this.contactClickHandler.bind(this, createChat)}
+            contactsFilter={this.filterCurrentUser}
+            {...{ loading, error, contacts }}
+        />;
     };
 
-    showAllUsers = () => this.setState({ showAllUsers: true });
+    /*
+     * All users
+     */
 
-    hideAllUsers = () => this.setState({ showAllUsers: false });
+    filterContacts = ({ currentUser }, contact) => (
+        this.filterCurrentUser({ currentUser }, contact) &&
+        !this.props.contacts.find(user => user.id === contact.id)
+    );
 
-    render() {
-        // TODO: refactor this, PLEEEEEASE11111
-        // console.log(this.state.value);
+    userClickHandler = (createChat, addUserToContacts, currentUser, contact) => {
+        addUserToContacts({ variables: { userId1: currentUser.id, userId2: contact.id } });
+        this.contactClickHandler(createChat, currentUser, contact);
+    };
 
-        return <React.Fragment>
-            <Tabs
-                style={{ width: "100%", background: "#fff" }}
-                tabTemplateStyle={{ height: '100%' }}
-                contentContainerStyle={{ height: '100%' }}
-                tabItemContainerStyle={{ height: '60px' }}
-                value={this.state.value}
-                onChange={this.handleChange}
-            >
-                <Tab
-                    label="Контакты"
-                    value="contacts"
-                    onActive={this.hideAllUsers}
-                    style={{ width: "100%", background: "#5682a3" }} >
-                    { !this.state.showAllUsers && this.withContacts(this.myContacts) }
+    updateAfterAdditionToContacts = (cache, { data: { currentUser, otherUser } }) => {
+        const user = cache.readQuery({
+            query: GetUserContacts.query,
+            variables: {
+                userId: currentUser.id
+            }
+        });
+        const contacts = [...user.User.contacts];
+        contacts.push(otherUser);
+        cache.writeQuery({
+            query: GetUserContacts.query,
+            data: { User: { ...user.User, contacts } },
+            variables: { userId: currentUser.id }
+        });
+        this.toggleAllUsers();
+    };
 
-                </Tab>
-                <Tab
-                    label="Все пользователи"
-                    value="allUsers"
-                    onActive={this.showAllUsers}
-                    style={{ width: "100%", background: "#5682a3" }} >
-                    { this.state.showAllUsers && this.withAllUsers(this.allUsers) }
-                </Tab>
-            </Tabs>
-        </React.Fragment>;
-    }
+    withAddToContacts = Inner => ({ createChat }) => (
+        <Query query={GetAllUsers.query} fetchPolicy='network-only'>{
+            response =>
+                <Mutation
+                    mutation={AddUserToContacts.mutation}
+                    update={this.updateAfterAdditionToContacts}
+                >{
+                    addUserToContacts =>
+                        <Inner {...{ addUserToContacts, createChat, ...GetAllUsers.map(response) }} />
+                }</Mutation>
+        }</Query>
+    );
+
+    allUsersTab = ({ addUserToContacts, createChat, allUsers, loading, error }) => (
+        <ContactsList
+            style={{ background: "#fff" }}
+            title="Добавить в контакты:"
+            contactsFilter={this.filterContacts}
+            clickHandler={this.userClickHandler.bind(this, createChat, addUserToContacts)}
+            contacts={allUsers}
+            {...{ loading, error }} />
+    );
 }
