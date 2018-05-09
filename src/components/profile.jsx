@@ -79,8 +79,6 @@ export default class ProfileEditor extends ImageHandler {
                         type="file"
                         accept="image/*"
                         onChange={this.drawBackground}
-                        files.bind="selectedFiles"
-                        change.delegate="onSelectFile($event)"
                     />
                     <CreateButton
                         id="saveAvatar"

@@ -23,7 +23,7 @@ class ImageHandler extends Component {
         e.preventDefault();
         e.stopPropagation();
         const inputUpload = document.getElementById('upload');
-        inputUpload.value = e.dataTransfer.files;
+        inputUpload.files = e.dataTransfer.files;
     };
 
     drawBackground = () => {
