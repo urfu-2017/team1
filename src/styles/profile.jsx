@@ -35,6 +35,7 @@ export const Editor = styled.article`
 `;
 
 export const DownloadImage = styled.div`
+    position: relative;
     text-align: center;
     min-width: 300px;
     background-size: cover;

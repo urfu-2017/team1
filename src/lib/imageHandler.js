@@ -1,9 +1,11 @@
-import { Component } from 'react';
-
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5mb
 
 
-class ImageHandler extends Component {
+class ImageHandler {
+    constructor() {
+        this.state = { backgroundUploaded: false };
+    }
+
     getFirstFile = () => {
         const inputUpload = document.getElementById('upload');
         return inputUpload.files[0];
@@ -23,17 +25,23 @@ class ImageHandler extends Component {
         e.preventDefault();
         e.stopPropagation();
         const inputUpload = document.getElementById('upload');
+        this.state.backgroundUploaded = false;
         inputUpload.files = e.dataTransfer.files;
+        setTimeout(this.drawBackground, 0);
     };
 
     drawBackground = () => {
+        if (this.state.backgroundUploaded) {
+            return;
+        }
         const reader = new window.FileReader();
         this.readPictureFromInput(reader, () => {
-            this.setTextDownloadArea('');
+            this.setTextDownloadArea('Сохраните фотографию');
             const dataUrl = reader.result;
             const area = document.getElementById('area-for-drop');
             area.style.backgroundImage = `url(${dataUrl})`;
         });
+        this.state.backgroundUploaded = true;
     };
 
     readPictureFromInput = (reader, cb) => {
