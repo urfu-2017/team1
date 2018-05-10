@@ -56,6 +56,10 @@ export default class App extends React.Component {
 
     changeMainComponent = mainComponentName => (event, mainComponentProps) => {
         event && event.target && event.preventDefault();
+        // Да здравствуют if
+        if (mainComponentName === 'Chat') {
+            mainComponentProps = {...mainComponentProps, serverUrl: this.props.serverUrl };
+        }
         this.setState({ mainComponentName, mainComponentProps });
         if (mainComponentName !== 'Chat') {
             this.updateCurrentChatId(null);

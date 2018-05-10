@@ -12,7 +12,8 @@ export default class Index extends React.Component {
             currentUser: req.user,
             httpUrl: req.httpUrl,
             wsUrl: req.wsUrl,
-            currentChatId: req.currentChatId
+            currentChatId: req.currentChatId,
+            serverUrl: req.serverUrl
         };
     }
 
@@ -22,8 +23,9 @@ export default class Index extends React.Component {
             wsUrl,
             initialState,
             currentUser: { id: userId },
-            currentChatId
+            currentChatId,
+            serverUrl
         } = this.props;
-        return createNextPage(httpUrl, wsUrl, initialState, App, { userId, currentChatId });
+        return createNextPage(httpUrl, wsUrl, initialState, App, { userId, currentChatId, serverUrl });
     }
 }
