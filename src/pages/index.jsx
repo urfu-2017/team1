@@ -13,7 +13,6 @@ export default class Index extends React.Component {
             httpUrl: req.httpUrl,
             wsUrl: req.wsUrl,
             currentChatId: req.currentChatId,
-            serverUrl: req.serverUrl
         };
     }
 
@@ -24,8 +23,8 @@ export default class Index extends React.Component {
             initialState,
             currentUser: { id: userId },
             currentChatId,
-            serverUrl
         } = this.props;
-        return createNextPage(httpUrl, wsUrl, initialState, App, { userId, currentChatId, serverUrl });
+        console.log(initialState);
+        return createNextPage(httpUrl, wsUrl, initialState, App, { userId, currentChatId });
     }
 }

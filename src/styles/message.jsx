@@ -28,7 +28,7 @@ export const MessageWrapper = withUiTheme(styled.article`
         box-shadow: ${props => props.uiTheme.isNightTheme ? '#546E7A' :'rgb(200, 217, 230)'} 2px 2px 5px 0px;
         background-color: ${props => props.uiTheme.isNightTheme ? '#607D8B' : (props.isFromSelf ?  '#92d7ef' : 'rgb(231, 235, 240)')};
     }
-    .message__header {
+    .messageBlock__header {
         flex-wrap: wrap;
         display: flex;
         width: 100%;
@@ -91,12 +91,6 @@ export const MessageWrapper = withUiTheme(styled.article`
         width: 40px;
         height: 40px;
         border-radius: 50% 50%;
-    }
-    .messageBlock__header {
-        flex-wrap: wrap;
-        display: flex;
-        width: 100%;
-        border-bottom: 1px solid #b7efe7;
     }
     .messageBlock__text {
         white-space: pre-wrap;

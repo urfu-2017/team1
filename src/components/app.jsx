@@ -22,7 +22,9 @@ import {
 }
     from '../graphqlQueries/subscriptions';
 import {userSubscriptionDataHandler, chatSubscriptionDataHandler} from '../lib/dataHandlers';
+import withLocalState from '../lib/withLocalState';
 
+@withLocalState
 @graphql(
     GetCurrentUser.query,
     {
@@ -35,10 +37,6 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
 
-        const { currentChatId, updateCurrentChatId } = this.props;
-        if (currentChatId) {
-            updateCurrentChatId(currentChatId);
-        }
         this.state = {
             mainComponentName: 'Chat',
             mainComponentProps: null,
@@ -56,13 +54,9 @@ export default class App extends React.Component {
 
     changeMainComponent = mainComponentName => (event, mainComponentProps) => {
         event && event.target && event.preventDefault();
-        // Да здравствуют if
-        if (mainComponentName === 'Chat') {
-            mainComponentProps = {...mainComponentProps, serverUrl: this.props.serverUrl };
-        }
         this.setState({ mainComponentName, mainComponentProps });
         if (mainComponentName !== 'Chat') {
-            this.updateCurrentChatId(null);
+            this.props.updateCurrentChatId(null);
         }
     };
 

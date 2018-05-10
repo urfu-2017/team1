@@ -15,6 +15,7 @@ import ContactsList from '../contactsList';
 import {withCurrentUser} from '../../lib/currentUserContext';
 import ChatImageSender from './chatImageSender';
 import {UpdateChatPicture} from '../../graphqlQueries/mutations';
+import withLocalState from '../../lib/withLocalState';
 
 
 
@@ -29,6 +30,7 @@ import {UpdateChatPicture} from '../../graphqlQueries/mutations';
     options: ({ currentChat }) => ({ variables: { chatId: currentChat.id } }),
     props: GetChatMembers.map
 })
+@withLocalState
 export default class ChatEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -93,7 +95,7 @@ export default class ChatEditor extends React.Component {
     };
 
     getInviteLink() {
-        const { currentChat, serverUrl } = this.props;
+        const { currentChat, localState: { serverUrl } } = this.props;
         return `${serverUrl}/invite/${currentChat.id}`;
     };
 

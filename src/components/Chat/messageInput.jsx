@@ -98,6 +98,7 @@ export default class MessageInput extends React.Component {
             metadata: null,
             reactions: null,
             ...message,
+            lifeTimeInSeconds: null,
             citation: message.citationId && {
                 ...this.props.citedMessage
             },
