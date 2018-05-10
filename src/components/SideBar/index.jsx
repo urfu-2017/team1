@@ -54,13 +54,12 @@ export default class SideBar extends React.Component {
                     <Paranja
                         currentUser={currentUser}
                         toggleParanja={this.toggleParanja}
-                        toggleUiTheme={toggleUiTheme}
                         mainComponentChanger={this.props.mainComponentChanger}
                     />
                 }
                 <ChatsList>
-                    <AppBar className="menuHeader"
-                        style={{'min-height': '59px', 'max-height': '59px' }}
+                    <AppBar 
+                        className="menuHeader"
                         onClick={this.toggleParanja}
                         iconClassNameRight="muidocs-icon-navigation-expand-more"
                     />

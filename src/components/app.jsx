@@ -13,7 +13,7 @@ import Chat from './Chat';
 import SideBar from './SideBar';
 import Contacts from './contacts';
 import Profile from './profile';
-import {Wrapper} from '../styles/app';
+import {Wrapper, getTheme} from '../styles/app';
 
 import {Provider as CurrentUserProvider} from '../lib/currentUserContext';
 import {Provider as UiThemeProvider} from '../lib/withUiTheme';
@@ -22,23 +22,6 @@ import {
 }
     from '../graphqlQueries/subscriptions';
 import {userSubscriptionDataHandler, chatSubscriptionDataHandler} from '../lib/dataHandlers';
-
-const isNightTheme = false;
-
-const muiTheme = getMuiTheme({
-    fontFamily: 'Roboto Condensed',
-    palette: {
-        primary1Color: !isNightTheme ? '#5682a3' : '#37474F',
-        primary2Color: !isNightTheme ? '#5682a3' : '#37474F',
-        textColor: isNightTheme ? '#fff' : '#000',
-        canvasColor: isNightTheme ? '#000' : '#fff',
-    },
-    appBar: {
-        'min-height': '59px',
-        'max-height': '59px'
-    }
-});
-
 
 @graphql(
     GetCurrentUser.query,
@@ -60,7 +43,8 @@ export default class App extends React.Component {
             mainComponentName: 'Chat',
             mainComponentProps: null,
             currentChatId: '',
-            isNightTheme: false
+            isNightTheme: false,
+            toggleUiTheme: this.toggleUiTheme
         };
     }
 
@@ -86,15 +70,15 @@ export default class App extends React.Component {
         const { currentUser } = this.props;
         !currentUser.error && !currentUser.loading && this.subscribe();
         return (
-            <UiThemeProvider value={this.state.isNightTheme}>
-                <MuiThemeProvider muiTheme={muiTheme}>
+            <UiThemeProvider value={{isNightTheme: this.state.isNightTheme, toggleUiTheme: this.state.toggleUiTheme}}>
+                <MuiThemeProvider muiTheme={getMuiTheme(getTheme(this.state.isNightTheme))}>
                     <Wrapper>
                         {currentUser.error && <p>Error</p> ||
                         currentUser.loading && App.LoadScreen ||
                         (
                             <CurrentUserProvider value={currentUser}>
                                 <SideBar mainComponentChanger={this.changeMainComponent}
-                                         toggleUiTheme={this.toggleUiTheme}/>
+                                />
                                 <MainComponent {...this.state.mainComponentProps}
                                                mainComponentChanger={this.changeMainComponent}/>
                             </CurrentUserProvider>

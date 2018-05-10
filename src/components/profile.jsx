@@ -56,7 +56,6 @@ export default class ProfileEditor extends ImageHandler {
                     className="editorName"
                 >
                     <Exit
-                        style= {{ top: 0 }}
                         onClick={mainComponentChanger('Chat')}
                     >
                         &#10006;

@@ -54,8 +54,8 @@ export default class ChatHeader extends React.Component {
 
     groupChatHeader = (title, editorOpened) => {
         const switcher = editorOpened ?
-            <Close style={{color: '#fff'}} className="header__img" /> :
-            <ModeEdit style={{color: '#fff'}} className="header__img" />;
+            <Close className="header__img" /> :
+            <ModeEdit className="header__img" />;
         const prefix = (
             <React.Fragment>
                 {switcher}

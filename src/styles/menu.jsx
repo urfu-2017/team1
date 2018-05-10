@@ -34,6 +34,22 @@ export const MenuRoot = withUiTheme(styled.section`
            background: #b7c5f5;
         }
     }
+    .list {
+        padding: 0 !important;
+    }
+    .menu {
+        background: ${props => props.uiTheme.isNightTheme ? "#37474F": "#5682a3"} !important;
+        height: 18px !important;
+        color: #fff !important;
+    }
+    .list__item {
+        height: 58px !important;
+        border: 2px solid ${props => props.uiTheme.isNightTheme ? '#424242' : 'lavender' } !important;
+        borderBottom: none !important;
+        borderLeft: none !important;
+        display: flex !important;
+        alignItems: center !important;
+    }
     .header {
         color: #fff;
         height: 18px;

@@ -19,7 +19,13 @@ export const { Provider, Consumer } = React.createContext({});
 export const withUiTheme = Decorated => {
     return (props) => (
         <Consumer>
-            { isNightTheme => <Decorated {...props} uiTheme={{ isNightTheme }} />}
+            { ({isNightTheme, toggleUiTheme}) => 
+                <Decorated 
+                    {...props} 
+                    toggleUiTheme={toggleUiTheme} 
+                    uiTheme={{ isNightTheme }} 
+                />
+            }
         </Consumer>
     )
 };

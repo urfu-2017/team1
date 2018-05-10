@@ -27,14 +27,11 @@ export const ChatsList = withUiTheme(styled.section`
     box-sizing: border-box;
     border-right: 1.5px solid ${props => !props.uiTheme.isNightTheme ? 'lavender' : '#424242' };
     border-left: 1.5px solid ${props => !props.uiTheme.isNightTheme ? 'lavender' : '#424242' };
-`);
-
-export const AppBar = styled.section`
-    background-color: #5682a3 !important;
     .menuHeader {
-        background-color: #5682a3;
+        min-height: 59px;
+        max-height: 59px; 
     }
-`;
+`);
 
 export const Paranja = styled.section`
     width: 100%;

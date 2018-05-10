@@ -1,5 +1,20 @@
 import styled from 'styled-components';
 
+export const getListItemStyle = (isSelected, isNightTheme) => {
+    let background = '';
+
+    if (isSelected) {
+        background = !isNightTheme ? '#e7ebf0' : '#616161';
+    }
+    const borderColor = isNightTheme ? '#424242' : 'lavender';
+
+    return {
+        background,
+        borderTop: `1px solid ${borderColor}`,
+        borderBottom: `1px solid ${borderColor}`
+    }
+}
+
 export const ChatWrapper = styled.article`
     background-color: ${props => (props.select ? '#b7c5f5' : '#e6e6fa')};
     margin: 4px 0;

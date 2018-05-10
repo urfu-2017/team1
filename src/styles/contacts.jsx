@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+export const tabStyle = { width: '100%' };
+export const InnerBlockStyle = { height: '100%' };
+export const ItemContainerStyle = { height: '60px' };
+
 export const ContactsWrapper = styled.article`
     height: 100%;
     width: 100%;

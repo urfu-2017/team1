@@ -5,6 +5,7 @@ import {Mutation, Query, graphql} from 'react-apollo';
 
 import ContactsList from './contactsList';
 import {GetUserChats} from '../graphqlQueries/queries';
+import {tabStyle, InnerBlockStyle, ItemContainerStyle} from '../styles/contacts';
 import {AddUserToContacts, CreateChat} from '../graphqlQueries/mutations';
 import { withUiTheme } from '../lib/withUiTheme';
 import {getTitleForPersonalChat} from '../lib/dataHandlers';
@@ -182,10 +183,10 @@ export default class Contacts extends React.Component {
 
         return (<React.Fragment>
             <Tabs
-                style={{ width: "100%" }}
-                tabTemplateStyle={{ height: '100%' }}
-                contentContainerStyle={{ height: '100%' }}
-                tabItemContainerStyle={{ height: '60px' }}
+                style={tabStyle}
+                tabTemplateStyle={InnerBlockStyle}
+                contentContainerStyle={InnerBlockStyle}
+                tabItemContainerStyle={ItemContainerStyle}
                 value={this.state.value}
                 onChange={this.handleChange}
             >
@@ -193,7 +194,7 @@ export default class Contacts extends React.Component {
                     label="Контакты"
                     value="contacts"
                     onActive={this.hideAllUsers}
-                    style={{ width: "100%" }} >
+                    style={tabStyle} >
                     { !this.state.showAllUsers && this.withContacts(this.myContacts) }
 
                 </Tab>
@@ -201,7 +202,7 @@ export default class Contacts extends React.Component {
                     label="Все пользователи"
                     value="allUsers"
                     onActive={this.showAllUsers}
-                    style={{ width: "100%" }} >
+                    style={tabStyle} >
                     { this.state.showAllUsers && this.withAllUsers(this.allUsers) }
                 </Tab>
             </Tabs>

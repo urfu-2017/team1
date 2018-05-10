@@ -1,6 +1,20 @@
 import styled from 'styled-components';
 import { withUiTheme } from '../lib/withUiTheme';
 
+export const getTheme = isNightTheme => ({
+    fontFamily: 'Roboto Condensed',
+    palette: {
+        primary1Color: !isNightTheme ? '#5682a3' : '#37474F',
+        primary2Color: !isNightTheme ? '#5682a3' : '#37474F',
+        textColor: isNightTheme ? '#fff' : '#000',
+        canvasColor: isNightTheme ? '#000' : '#fff',
+    },
+    appBar: {
+        'min-height': '59px',
+        'max-height': '59px'
+    }
+});
+
 export const Wrapper = withUiTheme(styled.main`
     height: 100%;
     max-width: 1260px;

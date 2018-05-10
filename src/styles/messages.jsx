@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { withUiTheme } from '../lib/withUiTheme';
 
+
 export const MessagesList = styled.section`
     width: 100%;
     display: flex;
@@ -22,7 +23,8 @@ export const Header = withUiTheme(styled.section`
         justify-content: space-between;
     }
     .header__img {
-        margin: 0 15px 0 0;
+        margin: 0 15px 0 0 !important;
+        color: #fff !important;
     }
 `);
 

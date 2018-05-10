@@ -23,7 +23,7 @@ export const MessageWrapper = withUiTheme(styled.article`
         border-radius: 5px;
         min-height: 25px;
         height:auto;
-        color: ${props => (props.isFromSelf || props.uiTheme.isNightTheme ? '#EEE' : '#454648')};
+        color: ${props => (props.uiTheme.isNightTheme ? '#EEE' : props.isFromSelf ? '#fff' : '#454648')};
         float: ${props => (props.isFromSelf ? 'right' : 'left')};
         box-shadow: ${props => props.uiTheme.isNightTheme ? '#546E7A' :'rgb(200, 217, 230)'} 2px 2px 5px 0px;
         background-color: ${props => props.uiTheme.isNightTheme ? '#607D8B' : (props.isFromSelf ?  '#92d7ef' : 'rgb(231, 235, 240)')};
@@ -41,6 +41,9 @@ export const MessageWrapper = withUiTheme(styled.article`
         justify-content: end;
         align-items: center;
     }
+    .mood {
+        color: ${props => (props.uiTheme.isNightTheme ? '#EEE' : props.isFromSelf ? '#fff' : '#454648')} !important;
+    }
     .addReactions {
         background-image: url('/static/images/happy.svg');
         background-repeat: no-repeat;
@@ -51,7 +54,7 @@ export const MessageWrapper = withUiTheme(styled.article`
     }
     .msgFromUserName {
         margin: 5px;
-        color: ${props => (props.isFromSelf || props.uiTheme.isNightTheme ? '#EEE' : '#454648')};
+        color: ${props => (props.uiTheme.isNightTheme ? '#EEE' : props.isFromSelf ? '#fff' : '#454648')};
     }
     .msgTimeReactionBlock {
         align-items: center;
@@ -72,7 +75,7 @@ export const MessageWrapper = withUiTheme(styled.article`
         padding: 6px 4px 6px 6px;
     }
     .messageBlock__time {
-        color: ${props => (props.isFromSelf || props.uiTheme.isNightTheme ? '#EEE' : '#454648')};
+        color: ${props => (props.uiTheme.isNightTheme ? '#EEE' : props.isFromSelf ? '#fff' : '#454648')};
         padding: 0 11px;
         font-size: 0.8em;
     }

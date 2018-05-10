@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ListItem from 'material-ui/List/ListItem';
 import Avatar from 'material-ui/Avatar';
-import {ChatWrapper, ChatHeader, LastMessage, Sender} from '../../styles/chat';
+import {getListItemStyle, ChatWrapper, ChatHeader, LastMessage, Sender} from '../../styles/chat';
 import { withUiTheme } from '../../lib/withUiTheme';
 import withLocalState from '../../lib/withLocalState';
 
@@ -28,24 +28,11 @@ export default class ChatPreview extends React.PureComponent {
     isSelected = () => this.props.chat.id === this.props.localState.currentChatId;
 
     render() {
-        const { lastMessage, chat, uiTheme } = this.props;
-        let background = '';
-
-        if (this.isSelected()) {
-           background = !uiTheme.isNightTheme ? '#e7ebf0' : '#616161';  // TODO: в стили
-        }
-        const borderColor = uiTheme.isNightTheme ? '#424242' : 'lavender';
-
+        const { lastMessage, chat, uiTheme } = this.props;    
         return (
             <ListItem
                 onClick={this.selectThisChat}
-                innerDivStyle={
-                    {
-                        background,
-                        borderTop: `1px solid ${borderColor}`,
-                        borderBottom: `1px solid ${borderColor}`
-                    }
-                }
+                innerDivStyle={getListItemStyle(this.isSelected(), uiTheme.isNightTheme)}
                 leftAvatar={<Avatar src={chat.picture} />}
                 primaryText={chat.title}
                 secondaryText={
