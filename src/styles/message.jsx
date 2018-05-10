@@ -98,4 +98,11 @@ export const MessageWrapper = styled.article`
         align-self: center;
         width: 90%;
     }
+    .messageBlock__map {
+        margin: 5%;
+        width: 90%;
+        align-self: center;
+        height: 200px;
+        border: 1px solid red;
+    }
 `;

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 import {Emoji, emojiIndex} from 'emoji-mart';
 import dynamic from 'next/dynamic';
+import { Map, Marker } from 'yandex-map-react';
 
 import { ParanjaWrapper } from '../../styles/paranja';
 import {MessageWrapper} from '../../styles/message';
@@ -113,6 +114,20 @@ export default class Message extends React.PureComponent {
         month: 'long'
     }).format;
 
+    createMapComponent = (map) => {
+        if (map) {
+            return <Map
+                width={'100%'}
+                height={'200px'} 
+                className="messageBlock__map"
+                onAPIAvailable={function () { console.info('Map API loaded'); }}
+                center={map.center}
+                zoom={map.zoom}>
+                    <Marker lat={map.lat} lon={map.lon} />
+                </Map>
+        }
+    };
+
     render() {
         const { loading, error, message, user, currentUser, isFromSelf } = this.props;
         // небольшой костыль: optimistic response присваивает сообщениям
@@ -125,6 +140,7 @@ export default class Message extends React.PureComponent {
         }
         let picturesComponents = this.createPicturesComponets(message.pictures);
         let reactionComponents = this.createReactionComponents(message.reactions, currentUser.id);
+        let mapComponent = this.createMapComponent(message.map);
         const createdAt = Message.formatDate(new Date(message.createdAt));
 
         return (
@@ -157,6 +173,9 @@ export default class Message extends React.PureComponent {
                             <div className="metadata-container__title">{ogdata.title}</div>
                         </a>
                     </div>}
+                    <div>
+                        {message.map && mapComponent}
+                    </div>
                     {picturesComponents.length > 0 && picturesComponents}
                     {reactionComponents.length > 0 && <Reactions>{reactionComponents}</Reactions>}
                 </div>

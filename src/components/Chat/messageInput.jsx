@@ -8,7 +8,6 @@ import AddPhoto from 'material-ui/svg-icons/image/add-a-photo';
 import Location from 'material-ui/svg-icons/communication/location-on';
 import Microphone from 'material-ui/svg-icons/av/mic';
 import Timer from 'material-ui/svg-icons/image/timer';
-import { Map, Marker, MarkerLayout } from 'yandex-map-react';
 
 const EmojiPicker = dynamic(
     import('emoji-picker-react'),
@@ -164,16 +163,63 @@ export default class MessageInput extends React.Component {
         this.setState({ uploadWindow: !this.state.uploadWindow });
     };
 
-    openOrCloseMap = () => {
-        this.setState({ showMap: !this.state.showMap });
+    // getMap = () => {
+    //     const message = this.getMessage();
+    //     message.map = {
+    //         lat: 50,
+    //         lon: 50,                    
+    //         center: [50, 50],
+    //         zoom: 5
+    //     };
+
+    //     this.props.createMessage(message, {
+    //         optimisticResponse: this.optimisticResponse(message),
+    //         update: this.updateCache
+    //     });
+    // } 
+
+    getUserLocation = () => {
+        return new Promise((resolve, reject) => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    resolve(position.coords);
+                });
+            } else {
+                reject()
+            }
+        })
     }
+
+    getMap = () => this.getUserLocation()
+        .then(
+            position => {
+                const lat = position.latitude;
+                const lon = position.longitude;
+
+                const message = this.getMessage();
+                message.map = {
+                    lat,
+                    lon,                    
+                    center: [lat, lon],
+                    zoom: 10
+                };
+
+                this.props.createMessage(message, {
+                    optimisticResponse: this.optimisticResponse(message),
+                    update: this.updateCache
+                });
+            },
+            error => {
+                console.info(`Rejected: ${error}! Sorry, your browser does not support geolocation services.`)
+            }
+        );
 
     render() {
         return (
             <Textarea>
                 <div className="inputField__style">
                     <AddPhoto className="icon" onClick={ this.openOrCloseUploadWindow } />
-                    <Location className="icon" onClick={ this.openOrCloseMap } />
+                    <Location className="icon" onClick={ this.getMap } />
                     <textarea
                         className="textarea__style"
                         onKeyPress={this.handleSubmit}
@@ -190,9 +236,6 @@ export default class MessageInput extends React.Component {
                 </div>
                 <div className="picker__style">
                     {this.getPicker()}
-                </div>
-                <div className="map__style" style={{ width: "200px", height: "200px", border: "1px solid red" }}>
-                    {this.getMap()}
                 </div>
             </Textarea>
         );
