@@ -3,6 +3,8 @@ import { withUiTheme } from '../lib/withUiTheme';
 
 
 export const MessageWrapper = withUiTheme(styled.article`
+    z-index: ${props => (props.emojiPickerVisible ? '20' : '0')};
+    position: relative;
     height:auto;
     padding: 10px;
     p {
@@ -17,6 +19,7 @@ export const MessageWrapper = withUiTheme(styled.article`
         background-size: contain;
     }
     .messageBlock {
+        z-index: 10;
         max-width: 51%;
         min-width: 338px;
         max-width: 338px;
@@ -24,7 +27,9 @@ export const MessageWrapper = withUiTheme(styled.article`
         min-height: 25px;
         height:auto;
         color: ${props => (props.uiTheme.isNightTheme ? '#EEE' : props.isFromSelf ? '#fff' : '#454648')};
-        float: ${props => (props.isFromSelf ? 'right' : 'left')};
+        position: relative;
+        left: ${props => (props.isFromSelf ? 'calc(100% - 10px)' : '0')};
+        transform: ${props => (props.isFromSelf ? 'translateX(-100%);' : '0')};
         box-shadow: ${props => props.uiTheme.isNightTheme ? '#546E7A' :'rgb(200, 217, 230)'} 2px 2px 5px 0px;
         background-color: ${props => props.uiTheme.isNightTheme ? '#607D8B' : (props.isFromSelf ?  '#92d7ef' : 'rgb(231, 235, 240)')};
     }
@@ -133,10 +138,26 @@ export const MessageWrapper = withUiTheme(styled.article`
         height: auto;
     }
     .pickerStyle {
-        z-index: 2;
-        height: 10px;
-        position: relative;
-        float: ${props => (props.isFromSelf ? 'right' : 'left')};
+        z-index: 10;
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        @media screen and (max-width: 1260px) {
+            right: ${props => (props.isFromSelf ? '' : '0')};
+            left: ${props => (props.isFromSelf ? '35vw' : '')};
+        }
+        @media screen and (min-width: 1261px) {
+            right: ${props => (props.isFromSelf ? '' : 'calc((100vw - 1260px) / 2)')};
+            left: ${props => (props.isFromSelf ? 'calc((100vw - 1260px) / 2 + 441px)' : '')};
+        }
+    }
+    .message__paranja {
+        position: absolute;
+        z-index: 5;
+        height: 100%;
+        top: 0;
+        right: 0;
+        left: 0;
     }
     .messageBlock__picture {
         padding: 5%;
