@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 
@@ -11,7 +11,7 @@ import LoadScreen from '../components/ui/loadScreen';
 
 @withCurrentUser
 @graphql(UpdateUserAvatar.mutation, { props: UpdateUserAvatar.map })
-export default class ProfileEditor extends ImageHandler {
+export default class ProfileEditor extends Component {
     static propTypes = {
         currentUser: PropTypes.object,
         mainComponentChanger: PropTypes.func
@@ -24,25 +24,31 @@ export default class ProfileEditor extends ImageHandler {
 
     constructor(props) {
         super(props);
-        this.state = { isDownloading: false };
+        this.imageHandler = new ImageHandler();
+        this.state = { isUploading: false };
     }
 
     saveAvatar = () => {
         const userId = this.props.currentUser.id;
         const reader = new window.FileReader();
 
-        this.readPictureFromInput(reader, async () => {
+        this.imageHandler.readPictureFromInput(reader, async () => {
             const avatarData = reader.result;
-            const promiseDownloads = this.props.updateUserAvatar({
+            const uploadTask = this.props.updateUserAvatar({
                 userId: userId,
                 avatarUrl: avatarData
             });
-            this.setState({ isDownloading: true });
-            promiseDownloads.then(() => {
-                this.setState({ isDownloading: false });
-                this.setTextDownloadArea('Аватарка обновлена');
-            })
+            this.setState({ isUploading: true });
+
+            await uploadTask;
+            this.setState({ isUploading: false });
+            this.imageHandler.setTextDownloadArea('Аватарка обновлена');
         });
+    };
+
+    changeBackground = () => {
+        this.imageHandler.state.backgroundUploaded = false;
+        this.imageHandler.drawBackground();
     };
 
     render() {
@@ -63,25 +69,18 @@ export default class ProfileEditor extends ImageHandler {
                     </h1>
                 </div>    
                 <DownloadImage
-                    onDrop={this.drop}
-                    onDragOver={this.dragover}
+                    onDrop={this.imageHandler.drop}
+                    onDragOver={this.imageHandler.dragover}
                     id="area-for-drop">
                     <p className="text" id="download_image_text">Загрузить фото</p>
-                    {
-                        this.state.isDownloading ?
-                            <LoadScreen/>
-                            : ''
-                    }
+                    {this.state.isUploading && <LoadScreen/>}
                 </DownloadImage>
                 <div className="buttons">
                     <DownloadButton
                         id="upload"
                         type="file"
                         accept="image/*"
-                        onChange={() => {
-                            this.backgroundUploaded = false;
-                            this.drawBackground();
-                        }}
+                        onChange={this.changeBackground}
                     />
                     <CreateButton
                         id="saveAvatar"
