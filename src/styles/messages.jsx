@@ -54,3 +54,43 @@ export const ScrollButton = styled.div`
 
     }
 `;
+
+
+export const ReplyPreview = styled.div`
+    padding: 10px 20px 5px 40px;
+    z-index: 5000;
+    background: #fff;
+    border-top: 1px solid #ddd;
+    position: relative;
+    max-width: 100%;
+    
+    .replyPreview__sender {
+        font-weight: bold;
+        margin: 0;
+    }
+    
+    .replyPreview__message {
+        width: 95%;
+        margin: 0;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    
+    .replyPreview__picture {
+        max-width: 5%;
+        margin: 0 5px;
+    }
+    .replyPreview__wrapper {
+        margin-left: -25px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .replyPreview__close-button {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        cursor: pointer;
+    }
+`;

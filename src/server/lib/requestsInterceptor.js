@@ -17,6 +17,7 @@ const savePictureOnCloudinary = async (srcInBase64) => {
     return data.secure_url;
 };
 
+const delayForDeleteMessage = ms => new Promise(_ => setTimeout(_, ms));
 
 module.exports = async body => {
     if (body.operationName === 'CreateMessage') {
@@ -39,6 +40,12 @@ module.exports = async body => {
     if (body.operationName === 'UpdateChatPicture') {
         const { variables } = body;
         variables.picture = await savePictureOnCloudinary(variables.picture);
+        return body;
+    }
+    if (body.operationName === 'DeleteMessage') {
+        const { lifeTimeInSeconds } = body.variables;
+        await delayForDeleteMessage(lifeTimeInSeconds * 1000);
+
         return body;
     }
 
