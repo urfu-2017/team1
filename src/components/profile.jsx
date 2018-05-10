@@ -1,18 +1,17 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 
-//import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../styles/imageHandler';
 import {Editor, DownloadImage, DownloadButton, CreateButton, Exit} from '../styles/profile';
 import {UpdateUserAvatar} from '../graphqlQueries/mutations';
 import {withCurrentUser} from '../lib/currentUserContext';
 import ImageHandler from '../lib/imageHandler';
+import LoadScreen from '../components/ui/loadScreen';
 
 
 @withCurrentUser
 @graphql(UpdateUserAvatar.mutation, { props: UpdateUserAvatar.map })
-export default class ProfileEditor extends ImageHandler {
-    static isSaved = false;
+export default class ProfileEditor extends Component {
     static propTypes = {
         currentUser: PropTypes.object,
         mainComponentChanger: PropTypes.func
@@ -25,36 +24,42 @@ export default class ProfileEditor extends ImageHandler {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.imageHandler = new ImageHandler();
+        this.state = { isUploading: false };
     }
 
     saveAvatar = () => {
         const userId = this.props.currentUser.id;
         const reader = new window.FileReader();
 
-        this.readPictureFromInput(reader, async () => {
+        this.imageHandler.readPictureFromInput(reader, async () => {
             const avatarData = reader.result;
-            this.props.updateUserAvatar({
+            const uploadTask = this.props.updateUserAvatar({
                 userId: userId,
                 avatarUrl: avatarData
             });
+            this.setState({ isUploading: true });
+
+            await uploadTask;
+            this.setState({ isUploading: false });
+            this.imageHandler.setTextDownloadArea('Аватарка обновлена');
         });
-        ProfileEditor.isSaved = true;
+    };
+
+    changeBackground = () => {
+        this.imageHandler.state.backgroundUploaded = false;
+        this.imageHandler.drawBackground();
     };
 
     render() {
-        if (ProfileEditor.isSaved) {
-            ProfileEditor.isSaved = false;
-            return null;
-        }
         const { mainComponentChanger } = this.props;
+
         return (
             <Editor>
                 <div
                     className="editorName"
                 >
                     <Exit
-                        style= {{ top: 0 }}
                         onClick={mainComponentChanger('Chat')}
                     >
                         &#10006;
@@ -62,19 +67,20 @@ export default class ProfileEditor extends ImageHandler {
                     <h1 className="header">
                         Загрузить аватар
                     </h1>
-                </div>    
+                </div>
                 <DownloadImage
-                    onDrop={this.drop}
-                    onDragOver={this.dragover}
+                    onDrop={this.imageHandler.drop}
+                    onDragOver={this.imageHandler.dragover}
                     id="area-for-drop">
                     <p className="text" id="download_image_text">Загрузить фото</p>
+                    {this.state.isUploading && <LoadScreen/>}
                 </DownloadImage>
                 <div className="buttons">
                     <DownloadButton
                         id="upload"
                         type="file"
                         accept="image/*"
-                        onChange={this.drawBackground}
+                        onChange={this.changeBackground}
                     />
                     <CreateButton
                         id="saveAvatar"

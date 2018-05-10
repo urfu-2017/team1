@@ -17,14 +17,19 @@ subscription SubscribeToMessages($filter: MessageSubscriptionFilter!) {
     mutation
     node {
       ...messageData
+      ...messageCitation
       chat {
         id
       }
+    }
+    previousValues {
+        id
     }
   }
 }
 
 ${fragments.messageData_ql}
+${fragments.messageCitation_ql}
 `;
 
 export const SubscribeToMessages = mapper(SUBSCRIBE_TO_MESSAGES_ql,

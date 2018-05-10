@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import { withUiTheme } from '../lib/withUiTheme';
 
 
-export const MessageWrapper = styled.article`
+export const MessageWrapper = withUiTheme(styled.article`
     z-index: ${props => (props.emoji ? '20' : '0')};
     height:auto;
     padding: 10px;
@@ -19,14 +20,22 @@ export const MessageWrapper = styled.article`
     .messageBlock {
         max-width: 51%;
         min-width: 338px;
+        max-width: 338px;
         border-radius: 5px;
         min-height: 25px;
         height:auto;
+        color: ${props => (props.uiTheme.isNightTheme ? '#EEE' : props.isFromSelf ? '#fff' : '#454648')};
         position: relative;
         left: ${props => (props.isFromSelf ? 'calc(100% - 10px)' : '0')};
         transform: ${props => (props.isFromSelf ? 'translateX(-100%);' : '0')};
-        box-shadow: rgb(200, 217, 230) 2px 2px 5px 0px;
-        background-color: ${props => (props.isFromSelf ? '#92d7ef' : 'rgb(231, 235, 240)')};
+        box-shadow: ${props => props.uiTheme.isNightTheme ? '#546E7A' :'rgb(200, 217, 230)'} 2px 2px 5px 0px;
+        background-color: ${props => props.uiTheme.isNightTheme ? '#607D8B' : (props.isFromSelf ?  '#92d7ef' : 'rgb(231, 235, 240)')};
+    }
+    .messageBlock__header {
+        flex-wrap: wrap;
+        display: flex;
+        width: 100%;
+        border-bottom: 1px solid ${props => props.uiTheme.isNightTheme ? '#CFD8DC' : '#b7efe7'};
     }
     .msgFromBlock {
         padding: 8px;
@@ -34,6 +43,34 @@ export const MessageWrapper = styled.article`
         height: 40px;
         justify-content: end;
         align-items: center;
+    }
+    .mood {
+        color: ${props => (props.uiTheme.isNightTheme ? '#EEE' : props.isFromSelf ? '#fff' : '#454648')} !important;
+    }
+    .messageBlock__citation {
+        border-left: 2px solid #555;
+        padding-left: 5px;
+        margin: 2px 0 0 6px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .messageBlock__citation-text {
+        white-space: nowrap;
+    }
+    .messageBlock__citation-sender {
+        font-weight: bold;
+    }
+    .messageBlock__citation-picture {
+        max-width: 15%;
+        margin-right: 5px;
+    }
+    .messageBlock__citation-wrapper {
+        display: flex;
+        align-items: center;
+    }
+    .messageBlock__citation a {
+        text-decoration: none;
+        color: #000;
     }
     .addReactions {
         background-image: url('/static/images/happy.svg');
@@ -45,7 +82,7 @@ export const MessageWrapper = styled.article`
     }
     .msgFromUserName {
         margin: 5px;
-        color: ${props => (props.isFromSelf ? '#fff' : '#454648')};
+        color: ${props => (props.uiTheme.isNightTheme ? '#EEE' : props.isFromSelf ? '#fff' : '#454648')};
     }
     .msgTimeReactionBlock {
         align-items: center;
@@ -66,19 +103,28 @@ export const MessageWrapper = styled.article`
         padding: 6px 4px 6px 6px;
     }
     .messageBlock__time {
-        color: ${props => (props.isFromSelf ? '#fff' : '#454648')};
+        color: ${props => (props.uiTheme.isNightTheme ? '#EEE' : props.isFromSelf ? '#fff' : '#454648')};
         padding: 0 11px;
         font-size: 0.8em;
     }
+    .messageBlock__reply {
+        color: ${props => (props.isFromSelf ? '#fff' : '#454648')};
+        padding: 0 11px;
+        font-size: 0.8em;
+        cursor: pointer;
+        align: right;
+    }
+    .messageBlock__reply:hover {
+        text-decoration: underline;
+    }
     .metadata {
         margin: 7px;
-        border: 2px solid #b2ebff;
-        background-color: #ffffff;
+        border: 2px solid ${props => props.uiTheme.isNightTheme ? '#CFD8DC' : '#b7efe7'};
     }
     .metadata-container {
         padding: 8px;
         display: flex;
-        color: #42648b;
+        color: ${props => props.uiTheme.isNightTheme ? '#0D47A1' : '#42648b'};
         align-items: center;
         text-decoration: none; 
     }
@@ -108,4 +154,4 @@ export const MessageWrapper = styled.article`
         align-self: center;
         width: 90%;
     }
-`;
+`);

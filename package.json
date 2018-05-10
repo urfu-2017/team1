@@ -59,6 +59,7 @@
     "react-icons": "^2.2.7",
     "react-loading-indicator-overlay": "^1.0.3",
     "react-router-dom": "^4.2.2",
+    "react-select": "^1.2.1",
     "request": "^2.85.0",
     "retricon-without-canvas": "^1.0.0",
     "session-memory-store": "^0.2.2",

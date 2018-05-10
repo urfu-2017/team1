@@ -15,6 +15,7 @@ import ContactsList from '../contactsList';
 import {withCurrentUser} from '../../lib/currentUserContext';
 import ChatImageSender from './chatImageSender';
 import {UpdateChatPicture} from '../../graphqlQueries/mutations';
+import withLocalState from '../../lib/withLocalState';
 
 
 
@@ -29,6 +30,7 @@ import {UpdateChatPicture} from '../../graphqlQueries/mutations';
     options: ({ currentChat }) => ({ variables: { chatId: currentChat.id } }),
     props: GetChatMembers.map
 })
+@withLocalState
 export default class ChatEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -41,6 +43,7 @@ export default class ChatEditor extends React.Component {
         return members
             .map(user => (
                 <ListItem
+                    disabled
                     key={user.id}
                     primaryText={user.name}
                     rightAvatar={<Avatar src={user.avatarUrl}/>}
@@ -51,7 +54,6 @@ export default class ChatEditor extends React.Component {
     clickHandler = (addUserToChat, currentUser, contact) => {
         const { currentChat, data } = this.props;
         addUserToChat({ variables: { chatId: currentChat.id, userId: contact.id } });
-        console.log(data);
         setTimeout(data.refetch, 1000);
         this.toggleUsersList();
     };
@@ -93,7 +95,7 @@ export default class ChatEditor extends React.Component {
     };
 
     getInviteLink() {
-        const { currentChat, serverUrl } = this.props;
+        const { currentChat, localState: { serverUrl } } = this.props;
         return `${serverUrl}/invite/${currentChat.id}`;
     };
 

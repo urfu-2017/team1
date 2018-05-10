@@ -3,23 +3,24 @@ import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 import {emojiIndex} from 'emoji-mart';
 import dynamic from 'next/dynamic';
-import Mood from 'material-ui/svg-icons/social/mood'; 
-import AddPhoto from 'material-ui/svg-icons/image/add-a-photo'; 
-import Location from 'material-ui/svg-icons/communication/location-on'; 
-import Microphone from 'material-ui/svg-icons/av/mic'; 
-import Timer from 'material-ui/svg-icons/image/timer';
+import Mood from 'material-ui/svg-icons/social/mood';
+import AddPhoto from 'material-ui/svg-icons/image/add-a-photo';
+import Location from 'material-ui/svg-icons/communication/location-on';
+import Microphone from 'material-ui/svg-icons/av/mic';
 
 const EmojiPicker = dynamic(
     import('emoji-picker-react'),
     { ssr: false }
 );
 
-import { withCurrentUser } from '../../lib/currentUserContext';
+
+import {withCurrentUser} from '../../lib/currentUserContext';
 import Textarea from '../../styles/chatWindowInput';
-import { addNewMessage } from '../../lib/dataHandlers';
-import { CreateMessage } from '../../graphqlQueries/mutations';
-import { GetChatMessages } from '../../graphqlQueries/queries';
+import {addNewMessage} from '../../lib/dataHandlers';
+import {CreateMessage} from '../../graphqlQueries/mutations';
+import {GetChatMessages} from '../../graphqlQueries/queries';
 import MessageImageSender from './messageImageSender';
+import LifeTimeDropOutMenu from './lifeTimeDropOutMenu';
 
 
 @withCurrentUser
@@ -42,7 +43,9 @@ export default class MessageInput extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { message: localStorage.getItem(this.storageKey) || '' };
+        this.state = {
+            message: localStorage.getItem(this.storageKey) || '',
+        };
     }
 
     get storageKey() {
@@ -52,24 +55,19 @@ export default class MessageInput extends React.Component {
     handleSubmit = event => {
         if (this.state.message.trim().length === 0) {
             return;
-        }  // TODO: review later
+        }
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
             const message = this.getMessage();
-            // Что это? О_о
-            // const cursorInBottom = cursorIsPressedFromBelow();
 
             this.props.createMessage(message, {
                 optimisticResponse: this.optimisticResponse(message),
                 update: this.updateCache
             });
 
-            // if (cursorInBottom) {
-            //     moveCursorDown();
-            // }
-
             this.clearState();
             localStorage.setItem(this.storageKey, '');
+            this.props.resetReply();
         }
     };
 
@@ -78,7 +76,9 @@ export default class MessageInput extends React.Component {
             text: this.state.message,
             chatId: this.props.currentChatId,
             senderId: this.props.currentUserId,
-            pictures: null
+            pictures: null,
+            citationId: this.props.citedMessage && this.props.citedMessage.id,
+            lifeTimeInSeconds: this.state.lifeTimeInSeconds
     });
 
     clearState = () => {
@@ -98,6 +98,10 @@ export default class MessageInput extends React.Component {
             metadata: null,
             reactions: null,
             ...message,
+            lifeTimeInSeconds: null,
+            citation: message.citationId && {
+                ...this.props.citedMessage
+            },
             __typename: 'Message'
         }
     });
@@ -121,7 +125,7 @@ export default class MessageInput extends React.Component {
         localStorage.setItem(this.storageKey, message);
     };
 
-    openOrCloseEmojies = () => this.setState({ emoji: !this.state.emoji });
+    openOrCloseEmojies = () => this.setState({ emojiPickerVisible: !this.state.emojiPickerVisible });
 
     findEmoji = id => emojiIndex.search(id)
         .filter(x => x.id === id)
@@ -131,12 +135,11 @@ export default class MessageInput extends React.Component {
 
     onEmojiClick = (_, val) => this.addEmojiIntoText(val.name);
 
-    getPicker = () => (this.state.emoji) ?
+    getPicker = () => (this.state.emojiPickerVisible) ?
         (<EmojiPicker onEmojiClick={this.onEmojiClick} disableDiversityPicker/>) : '';
 
     getImageUploadWindow = () => (this.state.uploadWindow) ?
         (<MessageImageSender onSendImage={this.onSendImage} closeImageSender={this.openOrCloseUploadWindow}/>) : '';
-
 
     onSendImage = urlInBase64 => {
         const message = this.getMessage();
@@ -153,12 +156,16 @@ export default class MessageInput extends React.Component {
         this.setState({ uploadWindow: !this.state.uploadWindow });
     };
 
+    setLifeTime = (seconds) => {
+        this.setState({ lifeTimeInSeconds: seconds });
+    };
+
     render() {
         return (
             <Textarea>
                 <div className="inputField__style">
-                    <AddPhoto className="icon" onClick={ this.openOrCloseUploadWindow } /> 
-                    <Location className="icon" /> 
+                    <AddPhoto className="icon" onClick={ this.openOrCloseUploadWindow } />
+                    <Location className="icon" />
                     <textarea
                         className="textarea__style"
                         onKeyPress={this.handleSubmit}
@@ -166,9 +173,9 @@ export default class MessageInput extends React.Component {
                         placeholder="Сообщение..."
                         value={this.state.message}
                     />
-                    <Timer className="icon" />
-                    <Microphone className="icon" /> 
-                    <Mood className="icon" onClick={ this.openOrCloseEmojies } /> 
+                    <LifeTimeDropOutMenu setLifeTime={this.setLifeTime}/>
+                    <Microphone className="icon" />
+                    <Mood className="icon" onClick={ this.openOrCloseEmojies } />
                 </div>
                 <div>
                     {this.getImageUploadWindow()}

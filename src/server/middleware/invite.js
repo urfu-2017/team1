@@ -13,7 +13,7 @@ router.get('/', async (req, res, next) => {
     const { invite } = req.query;
     if (invite) {
         await dbConnection.addUserToChat(req.user.id, invite);
-        req.currentChatId = invite;
+        req.state.localState.currentChatId = invite;
     }
     next();
 });

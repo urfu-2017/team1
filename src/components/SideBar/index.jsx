@@ -1,16 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MenuIcon from 'react-icons/lib/fa/list';
 import AppBar from 'material-ui/AppBar';
 import {Scrollbars} from 'react-custom-scrollbars';
 
-import LoadScreen from '../ui/loadScreen';
 import {withCurrentUser} from '../../lib/currentUserContext';
-import {SubscribeToUserChats} from '../../graphqlQueries/subscriptions';
 import ChatPreview from './chatPreview';
 import Paranja from './paranja';
 import {Header, SearchInput, ChatsList} from '../../styles/chats';
 import Chat from '../Chat';
+import withLocalState from '../../lib/withLocalState';
 
 
 @withCurrentUser
@@ -47,7 +45,8 @@ export default class SideBar extends React.Component {
         this.setState(prev => ({ paranjaOpened: !prev.paranjaOpened }));
 
     render() {
-        const { currentUser } = this.props;
+        const { currentUser, toggleUiTheme } = this.props;
+
         return (
             <React.Fragment>
                 {
@@ -59,9 +58,8 @@ export default class SideBar extends React.Component {
                     />
                 }
                 <ChatsList>
-
-                    <AppBar className="menuHeader"
-                        style={{ background: "#5682a3", 'min-height': '58px', 'max-height': '58px' }}
+                    <AppBar 
+                        className="menuHeader"
                         onClick={this.toggleParanja}
                         iconClassNameRight="muidocs-icon-navigation-expand-more"
                     />

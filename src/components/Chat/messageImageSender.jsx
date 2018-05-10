@@ -1,3 +1,4 @@
+import { Component } from 'react';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -5,7 +6,7 @@ import { Editor, DownloadImage, DownloadButton, CreateButton, Exit } from '../..
 import ImageHandler from '../../lib/imageHandler';
 
 
-class MessageImageSender extends ImageHandler {
+class MessageImageSender extends Component {
     static propTypes = {
         onSendImage: PropTypes.func,
         closeImageSender: PropTypes.func
@@ -13,6 +14,7 @@ class MessageImageSender extends ImageHandler {
 
     constructor(props) {
         super(props);
+        this.imageHandler = new ImageHandler();
         this.state = {};
     }
 
@@ -20,7 +22,7 @@ class MessageImageSender extends ImageHandler {
         const { onSendImage } = this.props;
         const reader = new window.FileReader();
 
-        this.readPictureFromInput(reader, async () => {
+        this.imageHandler.readPictureFromInput(reader, async () => {
             onSendImage(reader.result);
         });
     };
@@ -39,8 +41,8 @@ class MessageImageSender extends ImageHandler {
                     <h1 className="header">Отправить картинку в чат</h1>
                 </div>
                 <DownloadImage
-                    onDrop={this.drop}
-                    onDragOver={this.dragover}
+                    onDrop={this.imageHandler.drop}
+                    onDragOver={this.imageHandler.dragover}
                     id="area-for-drop"
                 >
                     <p
@@ -55,7 +57,7 @@ class MessageImageSender extends ImageHandler {
                         id="upload"
                         type="file"
                         accept="image/*"
-                        onChange={this.drawBackground}
+                        onChange={this.imageHandler.drawBackground}
                     />
                     <CreateButton
                         id="saveAvatar"
