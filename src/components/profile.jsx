@@ -53,13 +53,13 @@ export default class ProfileEditor extends Component {
 
     render() {
         const { mainComponentChanger } = this.props;
+
         return (
             <Editor>
                 <div
                     className="editorName"
                 >
                     <Exit
-                        style= {{ top: 0 }}
                         onClick={mainComponentChanger('Chat')}
                     >
                         &#10006;
@@ -67,7 +67,7 @@ export default class ProfileEditor extends Component {
                     <h1 className="header">
                         Загрузить аватар
                     </h1>
-                </div>    
+                </div>
                 <DownloadImage
                     onDrop={this.imageHandler.drop}
                     onDragOver={this.imageHandler.dragover}

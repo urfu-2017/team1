@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Group from 'material-ui/svg-icons/social/group';
 import Person from 'material-ui/svg-icons/social/people';
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import {MenuRoot} from '../../styles/menu';
 import List from 'material-ui/List/List';
@@ -13,7 +14,7 @@ import Avatar from 'material-ui/Avatar';
 import Contacts from '../contacts';
 import {GetUserChats} from '../../graphqlQueries/queries';
 import {CreateGroupChat} from '../../graphqlQueries/mutations';
-import {withLocalState} from '../../lib/withLocalState';
+import { withUiTheme } from '../../lib/withUiTheme';
 
 
 const getNewChat = currentUser => ({
@@ -24,7 +25,7 @@ const getNewChat = currentUser => ({
 });
 
 
-@withLocalState
+@withUiTheme
 export default class Menu extends React.Component {
     static propTypes = {
         currentUser: PropTypes.shape(),
@@ -59,13 +60,13 @@ export default class Menu extends React.Component {
     );
 
     render() {
-        const { currentUser, mainComponentChanger } = this.props;
+        const { currentUser, mainComponentChanger, uiTheme, toggleUiTheme } = this.props;
         return (
             <MenuRoot>
-                <List style={{padding: "0"}}>
+                <List className="list">
                     <ListItem
-                        style={{color: "#fff", background: "#5682a3", height: "18px"}}
                         disabled
+                        className="menu"
                         onClick={mainComponentChanger('Profile')}
                         leftAvatar={
                             <Avatar src={currentUser.avatarUrl} />
@@ -75,16 +76,15 @@ export default class Menu extends React.Component {
                     </ListItem>
                     <ListItem
                         leftIcon={<Person />}
-                        style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
-                            display: "flex", alignItems: "center"}}
+                        className="list__item"
                         onClick={mainComponentChanger('Contacts')}
                     >
                         Контакты
                     </ListItem>
                     <ListItem
                         leftIcon={<ModeEdit />}
-                        style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
-                            display: "flex", alignItems: "center"}}
+                        className="list__item"
+                        onClick={mainComponentChanger('Profile')}
                         onClick={mainComponentChanger('Profile')}
                     >
                         Редактирование профиля
@@ -92,14 +92,14 @@ export default class Menu extends React.Component {
                     {this.createChatMutation(currentUser, (onClick) => (
                         <ListItem
                             leftIcon={<Group />}
-                            style={{height: "58px", border: "2px solid lavender", borderBottom: "none",
-                            display: "flex", alignItems: "center"}}
+                            className="list__item"
                             onClick={onClick}
                         >
                             Создать чат
                         </ListItem>
                     ))}
                 </List>
+                <input type="button" className="button" value="Сменить тему" onClick={toggleUiTheme}/>
             </MenuRoot>
         );
     }

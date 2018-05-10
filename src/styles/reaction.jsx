@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { withUiTheme } from '../lib/withUiTheme';
 
 export const Reactions = styled.div`
     flex-wrap: wrap;
@@ -6,17 +7,17 @@ export const Reactions = styled.div`
     display: flex;
 `;
 
-export const ReactionWrapper = styled.div`
+export const ReactionWrapper = withUiTheme(styled.div`
     display: flex;
     flexWrap: wrap;
     .reaction {
         display: flex;
         align-items: center;
         cursor: pointer;
-    
+        
         margin: 0 1px;
         padding: 2px 4px;
-        border: 1px solid #000000;    
+        border: 1px solid  ${props => props.uiTheme.isNightTheme ? '#CFD8DC' : '#000'};    
         border-radius: 4px;
         -webkit-border-radius: 4px;
         -moz-border-radius: 4px;
@@ -27,4 +28,4 @@ export const ReactionWrapper = styled.div`
     .reaction .reaction__emoji {
         margin-right: 2px;
     }
-`;
+`);

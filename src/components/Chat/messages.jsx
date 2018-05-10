@@ -10,8 +10,10 @@ import Message from './Message';
 import {messagesSubscriptionDataHandler} from '../../lib/dataHandlers';
 import {MessagesList, ScrollButton } from '../../styles/messages';
 import {SubscribeToMessages} from '../../graphqlQueries/subscriptions';
+import { withUiTheme } from '../../lib/withUiTheme';
 
 
+@withUiTheme
 export default class Messages extends React.Component {
     static propTypes = {
         messages: PropTypes.arrayOf(PropTypes.object),
@@ -70,7 +72,8 @@ export default class Messages extends React.Component {
         />;
 
     render() {
-        const { loading, error, messages, currentChatId, currentUserId } = this.props;
+        const { loading, error, messages, currentChatId, currentUserId, uiTheme: { isNightTheme } } = this.props;
+
         let content = null;
         if (loading) {
             content = Messages.LoadScreen;
@@ -94,7 +97,7 @@ export default class Messages extends React.Component {
         return (
             <React.Fragment>
                 <Scrollbars
-                    style={{ 'background-color': 'rgba(255,255,255, .7)' }}
+                    style={{ 'background-color': isNightTheme ? '##212121': '' }}
                     ref={this.setScroll}
                     onScrollStop={this.changePositionScroll}
                 >

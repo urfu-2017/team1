@@ -8,7 +8,7 @@ import Messages from './messages';
 import {GetChatInfo, GetChatMessages} from '../../graphqlQueries/queries';
 import {withCurrentUser} from '../../lib/currentUserContext';
 import ChatEditor from './chatEditor';
-import {withLocalState} from '../../lib/withLocalState';
+import withLocalState from '../../lib/withLocalState';
 import {processChat, userSubscriptionDataHandler} from '../../lib/dataHandlers';
 import {SubscribeToUsersInChat} from '../../graphqlQueries/subscriptions';
 
@@ -70,7 +70,7 @@ export default class Chat extends React.Component {
                     toggleEditor={this.toggleEditor}/>
             );
         }
-        
+
         // Nothing to see here...
         const MessagesWithData = graphql(
             GetChatMessages.query(chat.id),
@@ -93,6 +93,7 @@ export default class Chat extends React.Component {
 
     render() {
         let { localState, loading, error, chat, currentUser } = this.props;
+
         // const {id, title, picture, createdAt, members, groupchat} = chat;
         let content = null;
         if (!currentUser || !currentChatSet(localState)) {
@@ -111,10 +112,11 @@ export default class Chat extends React.Component {
             chat = processChat(currentUser.id, chat);
             content = (
                 <React.Fragment>
-                    <Header chat={chat}
-                            loading={false}
-                            toggleEditor={this.toggleEditor}
-                            editorOpened={this.state.editorOpened}/>
+                    <Header
+                        chat={chat}
+                        loading={false}
+                        toggleEditor={this.toggleEditor}
+                        editorOpened={this.state.editorOpened}/>
                     {this.getMainComponent(chat, currentUser)}
                 </React.Fragment>
             );
