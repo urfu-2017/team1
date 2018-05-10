@@ -3,7 +3,8 @@ import { withUiTheme } from '../lib/withUiTheme';
 
 
 export const MessageWrapper = withUiTheme(styled.article`
-    z-index: ${props => (props.emoji ? '20' : '0')};
+    z-index: ${props => (props.emojiPickerVisible ? '20' : '0')};
+    position: relative;
     height:auto;
     padding: 10px;
     p {
@@ -18,6 +19,7 @@ export const MessageWrapper = withUiTheme(styled.article`
         background-size: contain;
     }
     .messageBlock {
+        z-index: 10;
         max-width: 51%;
         min-width: 338px;
         max-width: 338px;
@@ -136,6 +138,7 @@ export const MessageWrapper = withUiTheme(styled.article`
         height: auto;
     }
     .pickerStyle {
+        z-index: 10;
         position: fixed;
         top: 50%;
         transform: translateY(-50%);
@@ -147,6 +150,14 @@ export const MessageWrapper = withUiTheme(styled.article`
             right: ${props => (props.isFromSelf ? '' : 'calc((100vw - 1260px) / 2)')};
             left: ${props => (props.isFromSelf ? 'calc((100vw - 1260px) / 2 + 441px)' : '')};
         }
+    }
+    .message__paranja {
+        position: absolute;
+        z-index: 5;
+        height: 100%;
+        top: 0;
+        right: 0;
+        left: 0;
     }
     .messageBlock__picture {
         padding: 5%;

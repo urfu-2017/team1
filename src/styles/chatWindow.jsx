@@ -8,7 +8,7 @@ const ChatWindowWrapper = withUiTheme(styled.section`
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    background: ${props => (props.uiTheme.isNightTheme ? '#212121;' : '#fff')};
+    background: ${props => (props.uiTheme.isNightTheme ? '#212121' : '#fff')};
 `);
 
 export default ChatWindowWrapper;

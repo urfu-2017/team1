@@ -1,9 +1,8 @@
-
 import styled from 'styled-components';
 import { withUiTheme } from '../lib/withUiTheme';
 
 const Textarea = withUiTheme(styled.div`
-    background: ${props => props.uiTheme.isNightTheme ? '#37474F' : ''}
+    background: ${props => props.uiTheme.isNightTheme ? '#37474F' : ''};
     .picker__style {
         position: absolute;
         bottom: 60px;
@@ -21,7 +20,7 @@ const Textarea = withUiTheme(styled.div`
         width: 100%;
     }
     .icon {
-        padding: 10px
+        padding: 10px;
     }
 
     .textarea__style {
@@ -35,7 +34,7 @@ const Textarea = withUiTheme(styled.div`
         padding: 16px 0 0 16px;
         box-sizing: border-box;
         display: inline-block;
-        background: ${props =>  props.uiTheme.isNightTheme ? '#37474F' : '#fff'}
+        background: ${props =>  props.uiTheme.isNightTheme ? '#37474F' : '#fff'};
     }
 
     .closeEmojiButton__style {
@@ -64,7 +63,7 @@ const Textarea = withUiTheme(styled.div`
         width: 25px;
         text-align: center;
         vertical-align: top;
-   }
+    }
 `);
 
 export default Textarea;

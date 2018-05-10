@@ -30,7 +30,7 @@ export const Editor = withUiTheme(styled.article`
         width: 100%;
         height: 40px;
         display: flex;
-        justify-content: space-around
+        justify-content: space-around;
         align-items: center;
     }
 `);
@@ -56,7 +56,7 @@ export const DownloadImage = withUiTheme(styled.div`
 `);
 
 export const DownloadButton = withUiTheme(styled.input`
-    outline:none;
+    outline: none;
     cursor: pointer;
     width: auto;
     height: auto;
@@ -68,18 +68,10 @@ export const DownloadButton = withUiTheme(styled.input`
 `);
 
 export const CreateButton = withUiTheme(styled.input`
-    outline:none;
-    cursor: pointer;
-    width: auto;
-    height: auto;
-    padding: 7px;
-    border-radius: 5px;
-    background: ${props => props.uiTheme.isNightTheme ? 'lavender' : '#5682a3'};
-    color: ${props => props.uiTheme.isNightTheme ? '#000': '#fff'};
     margin-bottom: 40px;
     background: ${props => props.uiTheme.isNightTheme ? 'lavender' : '#5682a3'};
     color: ${props => props.uiTheme.isNightTheme ? '#000': '#fff'};
-    outline:none;
+    outline: none;
     cursor: pointer;
     border: none;
     width: auto;
