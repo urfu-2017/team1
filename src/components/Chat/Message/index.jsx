@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {graphql, withApollo} from 'react-apollo';
 import dynamic from 'next/dynamic';
+import Mood from 'material-ui/svg-icons/social/mood';
 
 import {MessageWrapper} from '../../../styles/message';
 import {GetUser} from '../../../graphqlQueries/queries';
@@ -99,7 +100,6 @@ export default class Message extends React.PureComponent {
                 lifeTimeInSeconds: message.lifeTimeInSeconds
             });
         }
-        // let reactionComponents = this.createReactionComponents(message.reactions, currentUser.id);
         const createdAt = Message.formatDate(new Date(message.createdAt));
 
         return (
@@ -112,9 +112,7 @@ export default class Message extends React.PureComponent {
                             <span className="msgFromUserName">{user && user.name + delivered}</span>
                         </div>
                         <div className="msgTimeReactionBlock">
-                            <div onClick={this.toggleEmojiPicker} className="addReactions"
-                                 title="Срочно реагировать">
-                            </div>
+                            <Mood className="mood" onClick={this.toggleEmojiPicker} />
                             {this.state.mouseOver
                                 ? <div onClick={this.replyToThisMessage} className="messageBlock__reply">
                                     Ответить

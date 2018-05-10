@@ -65,7 +65,6 @@ export default class Chat extends React.Component {
             return (
                 <ChatEditor
                     currentChat={chat}
-                    serverUrl={this.props.serverUrl}
                     currentUser={currentUser}
                     toggleEditor={this.toggleEditor}/>
             );

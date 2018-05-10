@@ -16,7 +16,6 @@ class DynamicConfig {
         req.state = this.initialState;
         req.httpUrl = this.httpUrl;
         req.wsUrl = this.wsUrl;
-        req.serverUrl = process.env.URL;
     }
 
     enableProxy() {
