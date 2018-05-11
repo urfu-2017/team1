@@ -22,7 +22,6 @@ export const MessageWrapper = withUiTheme(styled.article`
         z-index: 10;
         max-width: 51%;
         min-width: 338px;
-        max-width: 338px;
         border-radius: 5px;
         min-height: 25px;
         height:auto;
@@ -122,6 +121,7 @@ export const MessageWrapper = withUiTheme(styled.article`
     .metadata {
         margin: 7px;
         border: 2px solid ${props => props.uiTheme.isNightTheme ? '#CFD8DC' : '#b7efe7'};
+        background-color: #ffffff;
     }
     .metadata-container {
         padding: 8px;
@@ -131,11 +131,20 @@ export const MessageWrapper = withUiTheme(styled.article`
         text-decoration: none; 
     }
     .metadata-container__img {
-        flex-basis: 100%;
+        margin-left: 5%;
         padding-right: 8px;
-        max-width: 178px;
         width: auto;
         height: auto;
+        max-height: 65px;
+    }
+    .metadataBlock {
+        padding: 0px 2px 5px 2px;
+    }
+    .info__siteName {
+        color: ${props => (props.isFromSelf ? '#2499f6' : '#9a989f')};
+    }
+    .info__title {
+        font-weight: 800;
     }
     .pickerStyle {
         z-index: 10;

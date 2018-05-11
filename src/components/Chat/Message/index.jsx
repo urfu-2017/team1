@@ -95,7 +95,7 @@ export default class Message extends React.PureComponent {
         // небольшой костыль: optimistic response присваивает сообщениям
         // рандомный отрицательный id, чтобы не хранить лишнее поле
         const delivered = isFromSelf ? (message.id < 0 ? '  ' : ' ✓') : '';
-        const ogdata = message.metadata && message.metadata.ogdata || {};
+        const metadata = message.metadata || {};
 
         if (message.lifeTimeInSeconds !== null && !isFromSelf) {
             this.props.deleteMessage({
@@ -133,7 +133,7 @@ export default class Message extends React.PureComponent {
                             isFromSelf={isFromSelf}
                             dangerouslySetInnerHTML={{ __html: message.text }}
                         />
-                        {ogdata.url && Object.keys(ogdata).length !== 0 && <Metadata ogdata={ogdata}/>}
+                        {Object.keys(metadata).length !== 0 && <Metadata metadata={metadata}/>}
                         {message.pictures && renderPictures(message.pictures)}
                         {message.reactions && message.reactions.length > 0 &&
                         <Reactions
