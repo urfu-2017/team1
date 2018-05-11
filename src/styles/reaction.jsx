@@ -14,7 +14,7 @@ export const ReactionWrapper = withUiTheme(styled.div`
         display: flex;
         align-items: center;
         cursor: pointer;
-        
+    
         margin: 0 1px;
         padding: 2px 4px;
         border: 1px solid  ${props => props.uiTheme.isNightTheme ? '#CFD8DC' : '#000'};    
@@ -29,3 +29,19 @@ export const ReactionWrapper = withUiTheme(styled.div`
         margin-right: 2px;
     }
 `);
+
+export const ReactionParanja = styled.div`
+    position: fixed;
+    z-index: 10;
+    @media screen and (max-width: 1260px) {
+        right: 0;
+        left: 35%;
+    }
+    @media screen and (min-width: 1261px) {
+        right: calc((100vw - 1260px) / 2);
+        left: calc((100vw - 1260px) / 2 + 441px);
+    }
+    top: 58px;
+    bottom: 0;
+    background: rgba(0,0,0,.2);
+`;
