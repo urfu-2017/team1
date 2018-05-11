@@ -17,12 +17,15 @@ const mapper = (mutation, funcName) => ({
 
 
 const CREATE_MESSAGE_ql = gql`
-mutation CreateMessage($text: String!, $chatId: ID!, $senderId: ID!, $clientSideId: Int!, $pictures: [String!] = null, 
-    $metadata: Json = null, $map: Json = null) {
+mutation CreateMessage($text: String!, $chatId: ID!, $senderId: ID!, $clientSideId: Int!, 
+    $pictures: [String!] = null, $metadata: Json = null, $citationId: ID = null,
+    $lifeTimeInSeconds: Int, $map: Json = null) {
   createMessage(text: $text, chatId: $chatId, senderId: $senderId, clientSideId: $clientSideId, 
-      pictures: $pictures, metadata: $metadata, map: $map) {
+    pictures: $pictures, metadata: $metadata, citationId: $citationId,
+    lifeTimeInSeconds: $lifeTimeInSeconds, map: $map) {
     id
     ...messageData
+    ...messageCitation
     sender {
       id
     }
@@ -30,6 +33,7 @@ mutation CreateMessage($text: String!, $chatId: ID!, $senderId: ID!, $clientSide
 }
 
 ${fragments.messageData_ql}
+${fragments.messageCitation_ql}
 `;
 
 export const CreateMessage = mapper(CREATE_MESSAGE_ql, 'createMessage');
@@ -102,6 +106,7 @@ export const AddUserToChat = mapper(ADD_USER_TO_CHAT_ql, 'addUserToChat');
 const UPDATE_USER_AVATAR_ql = gql`
 mutation UpdateUserAvatar($userId: ID!, $avatarUrl: String) {
   updateUser(id: $userId, avatarUrl: $avatarUrl) {
+    id
     avatarUrl
   }
 }
@@ -112,6 +117,7 @@ export const UpdateUserAvatar = mapper(UPDATE_USER_AVATAR_ql, 'updateUserAvatar'
 const UPDATE_MESSAGE_REACTIONS_ql = gql`
 mutation updateMessageReactions($messageId: ID!, $reactions: Json) {
   updateMessage(id: $messageId, reactions: $reactions) {
+    id
     reactions
   }
 }
@@ -159,9 +165,20 @@ export const AddUserToContacts = mapper(ADD_USER_TO_CONTACTS_ql, 'addUserToConta
 const UPDATE_CHAT_PICTURE_ql = gql`
 mutation UpdateChatPicture($chatId: ID!, $picture: String!) {
   updateChat(id: $chatId, picture: $picture) {
+    id
     picture
   }
 }
 `;
 
 export const UpdateChatPicture = mapper(UPDATE_CHAT_PICTURE_ql, 'updateChatPicture');
+
+const DELETE_MESSAGE_ql = gql`
+mutation DeleteMessage($messageId: ID!) {
+  deleteMessage(id: $messageId) {
+    id
+  }
+}
+`;
+
+export const DeleteMessage = mapper(DELETE_MESSAGE_ql, 'deleteMessage');

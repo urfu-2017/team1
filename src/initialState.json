@@ -1,7 +1,11 @@
 {
-  "paranjaOpened": false,
-  "currentChatId": {
-    "id": "",
-    "__typename": "CurrentChatIdType"
+  "localState": {
+    "currentChatId": "",
+    "serverUrl": "",
+    "__typename": "LocalState"
+  },
+  "uiTheme": {
+    "isNightTheme": true,
+    "__typename": "UiTheme"
   }
 }

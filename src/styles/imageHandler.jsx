@@ -1,6 +1,8 @@
 import styled from 'styled-components';
+import { withUiTheme } from '../lib/withUiTheme';
 
-export const Editor = styled.article`
+
+export const Editor = withUiTheme(styled.article`
     width: 100%;
     height: 100%;
     top: 0
@@ -11,7 +13,7 @@ export const Editor = styled.article`
     flex-direction: column;
     justify-content: space-between;
     transform: translateX(-50%);
-    background: #fff;
+    background: ${props => (props.uiTheme.isNightTheme ? '#212121' : '#fff')};
     .header {
         padding: 0 30px;
     }
@@ -26,7 +28,7 @@ export const Editor = styled.article`
         justifyContent: center;
         alignItems: center;
         display: flex;
-        background: #5682a3;
+        background: ${props => !props.uiTheme.isNightTheme ? '#5682a3' : '#37474F'};
         position: relative;
         color: #fff;
         width: 100%
@@ -35,9 +37,9 @@ export const Editor = styled.article`
         top: -5px;
         justify-content: center;
     }
-`;
+`);
 
-export const DownloadImage = styled.div`
+export const DownloadImage = withUiTheme(styled.div`
     text-align: center;
     min-width: 300px;
     background-size: cover;
@@ -52,32 +54,35 @@ export const DownloadImage = styled.div`
     border: 1.5px #5682a3 dashed;
     .text {
         font-size: 20px;
-        background: #fff;
+        color: ${props => props.uiTheme.isNightTheme ? '#fff' : '#454648'}
+        background:  ${props => props.uiTheme.isNightTheme ? 'none' : '#fff'};
     }
-`;
+`);
 
-export const DownloadButton = styled.input`
-    outline:none;
+export const DownloadButton = withUiTheme(styled.input`
+    outline: none;
     cursor: pointer;
     width: auto;
     height: auto;
     padding: 7px;
     border-radius: 5px;
-    background: #5682a3;
-    color: #fff;
+    background: ${props => props.uiTheme.isNightTheme ? 'lavender' : '#5682a3'};
+    color: ${props => props.uiTheme.isNightTheme ? '#000': '#fff'};
     margin-bottom: 40px;
-`;
+`);
 
-export const CreateButton = DownloadButton.extend`
-    outline:none;
+export const CreateButton = withUiTheme(styled.input`
+    outline: none;
     cursor: pointer;
     border: none;
     padding: 7px;
     border-radius: 5px;
     width: auto;
     height: 31px;
-    color: #fff;
-`;    
+    background: ${props => props.uiTheme.isNightTheme ? 'lavender' : '#5682a3'};
+    color: ${props => props.uiTheme.isNightTheme ? '#000': '#fff'};
+    margin-bottom: 40px;
+`);
 
 
 export const Exit = styled.div`

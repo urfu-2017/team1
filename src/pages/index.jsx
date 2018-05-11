@@ -13,16 +13,18 @@ export default class Index extends React.Component {
             httpUrl: req.httpUrl,
             wsUrl: req.wsUrl,
             currentChatId: req.currentChatId,
-            serverUrl: req.serverUrl
         };
     }
 
     render() {
-        return createNextPage(this.props.httpUrl, this.props.wsUrl,
-            App, { 
-                userId: this.props.currentUser.id, 
-                currentChatId: this.props.currentChatId,
-                serverUrl: this.props.serverUrl
-            });
+        const {
+            httpUrl,
+            wsUrl,
+            initialState,
+            currentUser: { id: userId },
+            currentChatId,
+        } = this.props;
+        console.log(initialState);
+        return createNextPage(httpUrl, wsUrl, initialState, App, { userId, currentChatId });
     }
 }

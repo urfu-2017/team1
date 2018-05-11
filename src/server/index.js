@@ -13,6 +13,7 @@ const cloudinary = require('cloudinary');
 
 const DynamicConfig = require('./dynamicConfig');
 const authMiddleware = require('./middleware/auth');
+const initialStateMiddleware = require('./middleware/initialState');
 const proxyMiddleware = require('./middleware/proxy');
 const inviteMiddleware = require('./middleware/invite');
 const requestInterceptor = require('./lib/requestsInterceptor');
@@ -53,6 +54,7 @@ function main(isProduction, port) {
             dynamicConfig.configureReq(req);
             next();
         })
+        .use(initialStateMiddleware)
         .use(inviteMiddleware)
         .use(routes);
 

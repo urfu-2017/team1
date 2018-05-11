@@ -14,12 +14,14 @@ const EmojiPicker = dynamic(
     { ssr: false }
 );
 
-import { withCurrentUser } from '../../lib/currentUserContext';
+
+import {withCurrentUser} from '../../lib/currentUserContext';
 import Textarea from '../../styles/chatWindowInput';
-import { addNewMessage } from '../../lib/dataHandlers';
-import { CreateMessage } from '../../graphqlQueries/mutations';
-import { GetChatMessages } from '../../graphqlQueries/queries';
+import {addNewMessage} from '../../lib/dataHandlers';
+import {CreateMessage} from '../../graphqlQueries/mutations';
+import {GetChatMessages} from '../../graphqlQueries/queries';
 import MessageImageSender from './messageImageSender';
+import LifeTimeDropOutMenu from './lifeTimeDropOutMenu';
 
 
 @withCurrentUser
@@ -42,7 +44,9 @@ export default class MessageInput extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { message: localStorage.getItem(this.storageKey) || '' };
+        this.state = {
+            message: localStorage.getItem(this.storageKey) || '',
+        };
     }
 
     get storageKey() {
@@ -52,24 +56,19 @@ export default class MessageInput extends React.Component {
     handleSubmit = event => {
         if (this.state.message.trim().length === 0) {
             return;
-        }  // TODO: review later
+        }
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
             const message = this.getMessage();
-            // Что это? О_о
-            // const cursorInBottom = cursorIsPressedFromBelow();
 
             this.props.createMessage(message, {
                 optimisticResponse: this.optimisticResponse(message),
                 update: this.updateCache
             });
 
-            // if (cursorInBottom) {
-            //     moveCursorDown();
-            // }
-
             this.clearState();
             localStorage.setItem(this.storageKey, '');
+            this.props.resetReply();
         }
     };
 
@@ -78,7 +77,9 @@ export default class MessageInput extends React.Component {
             text: this.state.message,
             chatId: this.props.currentChatId,
             senderId: this.props.currentUserId,
-            pictures: null
+            pictures: null,
+            citationId: this.props.citedMessage && this.props.citedMessage.id,
+            lifeTimeInSeconds: this.state.lifeTimeInSeconds
     });
 
     clearState = () => {
@@ -99,6 +100,10 @@ export default class MessageInput extends React.Component {
             reactions: null,
             map: null,  // TODO
             ...message,
+            lifeTimeInSeconds: null,
+            citation: message.citationId && {
+                ...this.props.citedMessage
+            },
             __typename: 'Message'
         }
     });
@@ -122,7 +127,7 @@ export default class MessageInput extends React.Component {
         localStorage.setItem(this.storageKey, message);
     };
 
-    openOrCloseEmojies = () => this.setState({ emoji: !this.state.emoji });
+    openOrCloseEmojies = () => this.setState({ emojiPickerVisible: !this.state.emojiPickerVisible });
 
     findEmoji = id => emojiIndex.search(id)
         .filter(x => x.id === id)
@@ -132,21 +137,11 @@ export default class MessageInput extends React.Component {
 
     onEmojiClick = (_, val) => this.addEmojiIntoText(val.name);
 
-    getPicker = () => (this.state.emoji) ?
+    getPicker = () => (this.state.emojiPickerVisible) ?
         (<EmojiPicker onEmojiClick={this.onEmojiClick} disableDiversityPicker/>) : '';
 
     getImageUploadWindow = () => (this.state.uploadWindow) ?
         (<MessageImageSender onSendImage={this.onSendImage} closeImageSender={this.openOrCloseUploadWindow}/>) : '';
-
-    getMap = function() {
-        if (this.state.showMap) {
-            return <Map onAPIAvailable={function () { console.info('Map API loaded'); }} width={'100%'} center={[56.81, 60.61]} zoom={13}>
-                <Marker lat={56.8170712} lon={60.61116699999} />
-            </Map>
-        } else {
-            return '';
-        }
-    }
 
     onSendImage = urlInBase64 => {
         const message = this.getMessage();
@@ -162,21 +157,6 @@ export default class MessageInput extends React.Component {
     openOrCloseUploadWindow = () => {
         this.setState({ uploadWindow: !this.state.uploadWindow });
     };
-
-    // getMap = () => {
-    //     const message = this.getMessage();
-    //     message.map = {
-    //         lat: 50,
-    //         lon: 50,                    
-    //         center: [50, 50],
-    //         zoom: 5
-    //     };
-
-    //     this.props.createMessage(message, {
-    //         optimisticResponse: this.optimisticResponse(message),
-    //         update: this.updateCache
-    //     });
-    // } 
 
     getUserLocation = () => {
         return new Promise((resolve, reject) => {
@@ -200,7 +180,7 @@ export default class MessageInput extends React.Component {
                 message.map = {
                     lat,
                     lon,                    
-                    center: [lat, lon],
+                    center: [lat.toFixed(2), lon.toFixed(2)],
                     zoom: 10
                 };
 
@@ -213,6 +193,10 @@ export default class MessageInput extends React.Component {
                 console.info(`Rejected: ${error}! Sorry, your browser does not support geolocation services.`)
             }
         );
+
+    setLifeTime = (seconds) => {
+        this.setState({ lifeTimeInSeconds: seconds });
+    };
 
     render() {
         return (
@@ -228,6 +212,7 @@ export default class MessageInput extends React.Component {
                         value={this.state.message}
                     />
                     <Timer className="icon" />
+                    <LifeTimeDropOutMenu setLifeTime={this.setLifeTime}/>
                     <Microphone className="icon" />
                     <Mood className="icon" onClick={ this.openOrCloseEmojies } />
                 </div>

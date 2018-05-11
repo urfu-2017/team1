@@ -5,12 +5,15 @@ import { Scrollbars } from 'react-custom-scrollbars';
 
 import LoadScreen from '../ui/loadScreen';
 import MessageInput from './messageInput';
-import Message from './message';
+import ReplyPreview from './replyPreview';
+import Message from './Message';
 import {messagesSubscriptionDataHandler} from '../../lib/dataHandlers';
 import {MessagesList, ScrollButton } from '../../styles/messages';
 import {SubscribeToMessages} from '../../graphqlQueries/subscriptions';
+import { withUiTheme } from '../../lib/withUiTheme';
 
 
+@withUiTheme
 export default class Messages extends React.Component {
     static propTypes = {
         messages: PropTypes.arrayOf(PropTypes.object),
@@ -30,6 +33,16 @@ export default class Messages extends React.Component {
         data: {}
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = { citedMessage: null };
+    }
+
+    // действие "ответить на сообщение" называет данное сообщение "цитируемым"
+    replyToMessage = (message = null) => {
+        this.setState({ citedMessage: message });
+    };
 
     componentDidMount() {
         this.scroll.isBottom = true;
@@ -54,10 +67,13 @@ export default class Messages extends React.Component {
         <Message
             key={message.id}
             message={message}
-            isFromSelf={message.sender.id === this.props.currentUserId}/>;
+            isFromSelf={message.sender.id === this.props.currentUserId}
+            replyToMessage={this.replyToMessage}
+        />;
 
     render() {
-        const { loading, error, messages, currentChatId, currentUserId } = this.props;
+        const { loading, error, messages, currentChatId, currentUserId, uiTheme: { isNightTheme } } = this.props;
+
         let content = null;
         if (loading) {
             content = Messages.LoadScreen;
@@ -81,7 +97,7 @@ export default class Messages extends React.Component {
         return (
             <React.Fragment>
                 <Scrollbars
-                    style={{ 'background-color': 'rgba(255,255,255, .7)' }}
+                    style={{ 'background-color': isNightTheme ? '##212121': '' }}
                     ref={this.setScroll}
                     onScrollStop={this.changePositionScroll}
                 >
@@ -89,11 +105,14 @@ export default class Messages extends React.Component {
                         {content}
                     </MessagesList>
                 </Scrollbars>
+                {this.state.citedMessage &&
+                    <ReplyPreview message={this.state.citedMessage} resetReply={this.replyToMessage} />}
                 <MessageInput
                     currentChatId={currentChatId}
                     currentUserId={currentUserId}
-                    updateMessages={this.props.data.updateQuery}
-                />
+                    citedMessage={this.state.citedMessage}
+                    resetReply={this.replyToMessage}
+                    updateMessages={this.props.data.updateQuery} />
             </React.Fragment>
         );
     }
