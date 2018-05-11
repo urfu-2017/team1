@@ -18,6 +18,7 @@ subscription SubscribeToMessages($filter: MessageSubscriptionFilter!) {
     node {
       ...messageData
       ...messageCitation
+      ...forwardedMessages
       chat {
         id
       }
@@ -30,6 +31,7 @@ subscription SubscribeToMessages($filter: MessageSubscriptionFilter!) {
 
 ${fragments.messageData_ql}
 ${fragments.messageCitation_ql}
+${fragments.forwardedMessages_ql}
 `;
 
 export const SubscribeToMessages = mapper(SUBSCRIBE_TO_MESSAGES_ql,

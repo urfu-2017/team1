@@ -5,6 +5,7 @@ import { withUiTheme } from '../lib/withUiTheme';
 export const MessageWrapper = withUiTheme(styled.article`
     height:auto;
     padding: 10px;
+    background: ${props => props.selected ? !props.uiTheme.isNightTheme ? '#e7ebf0' : '#616161' : 'transparent'};
     p {
         display: table; 
         white-space: pre-wrap;
@@ -27,6 +28,10 @@ export const MessageWrapper = withUiTheme(styled.article`
         float: ${props => (props.isFromSelf ? 'right' : 'left')};
         box-shadow: ${props => props.uiTheme.isNightTheme ? '#546E7A' :'rgb(200, 217, 230)'} 2px 2px 5px 0px;
         background-color: ${props => props.uiTheme.isNightTheme ? '#607D8B' : (props.isFromSelf ?  '#92d7ef' : 'rgb(231, 235, 240)')};
+    }
+    .messageBlock__forwarded-from {
+        font-weight: bold;
+        cursor: pointer;
     }
     .messageBlock__header {
         flex-wrap: wrap;

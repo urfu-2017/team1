@@ -1,10 +1,19 @@
 import gql from 'graphql-tag';
 
 import * as fragments from './fragments';
+import {GetChatMessages} from './queries';
+import {addNewMessage} from './dataHandlers';
 
 
-const mapper = (mutation, funcName) => ({
+export const getCreatedAt = () => (new Date()).toISOString();
+
+export const getClientSideId = () => -Math.floor(Math.random() * 1000 * 1000);
+
+
+const mapper = (mutation, funcName, update, optimisticResponse) => ({
     mutation,
+    update,
+    optimisticResponse,
     map: ({ mutate }) => {
         const funcs = {};
         funcs[funcName] = (variables, options) => mutate({
@@ -18,12 +27,15 @@ const mapper = (mutation, funcName) => ({
 
 const CREATE_MESSAGE_ql = gql`
 mutation CreateMessage($text: String!, $chatId: ID!, $senderId: ID!, $clientSideId: Int!, 
-    $pictures: [String!] = null, $metadata: Json = null, $citationId: ID = null, $lifeTimeInSeconds: Int) {
+    $pictures: [String!] = null, $metadata: Json = null, $citationId: ID = null, $lifeTimeInSeconds: Int, 
+    $forwardedMessagesIds: [ID!]) {
   createMessage(text: $text, chatId: $chatId, senderId: $senderId, clientSideId: $clientSideId, 
-    pictures: $pictures, metadata: $metadata, citationId: $citationId, lifeTimeInSeconds: $lifeTimeInSeconds) {
+    pictures: $pictures, metadata: $metadata, citationId: $citationId, lifeTimeInSeconds: $lifeTimeInSeconds,
+    forwardedMessagesIds: $forwardedMessagesIds) {
     id
     ...messageData
     ...messageCitation
+    ...forwardedMessages
     sender {
       id
     }
@@ -32,9 +44,47 @@ mutation CreateMessage($text: String!, $chatId: ID!, $senderId: ID!, $clientSide
 
 ${fragments.messageData_ql}
 ${fragments.messageCitation_ql}
+${fragments.forwardedMessages_ql}
 `;
 
-export const CreateMessage = mapper(CREATE_MESSAGE_ql, 'createMessage');
+
+const createMessage_optimistic = (message, citedMessage, forwardedMessages = []) => ({
+    __typename: 'Mutation',
+    createMessage: {
+        id: message.clientSideId,
+        createdAt: getCreatedAt(),
+        modifiedAt: null,
+        sender: {
+            id: message.senderId,
+            __typename: 'User'
+        },
+        metadata: null,
+        reactions: null,
+        ...message,
+        lifeTimeInSeconds: message.lifeTimeInSeconds || null,
+        forwardedMessages,
+        citation: message.citationId && {
+            ...citedMessage
+        },
+        __typename: 'Message'
+    }
+});
+
+
+const createMessage_update = (chatId, cache, { data: { createMessage } }) => {
+    const query = GetChatMessages.query(chatId);
+    const variables = { chatId };
+    const data = cache.readQuery({
+        query,
+        variables
+    }, true);
+    const updated = addNewMessage(createMessage, data);
+    cache.writeQuery({ query, data: updated });
+};
+
+
+export const CreateMessage = mapper(CREATE_MESSAGE_ql, 'createMessage',
+    createMessage_update, createMessage_optimistic);
 
 
 const CREATE_CHAT_ql = gql`
@@ -58,7 +108,40 @@ ${fragments.chatData_ql}
 ${fragments.userData_ql}
 `;
 
-export const CreateChat = mapper(CREATE_CHAT_ql, 'createChat');
+const createChat_optimistic = (currentUser, contact) => {
+    const id = -Math.floor(Math.random() * 1000);
+    const chat = {
+        id,
+        title: contact.name,
+        picture: contact.avatarUrl,
+        createdAt: (new Date()).toISOString(),
+        groupchat: false,
+        members: [currentUser, contact].map(
+            ({ id, name, avatarUrl }) => ({ id, name, avatarUrl, __typename: 'User' })),
+        __typename: 'Chat'
+    };
+    const updatedCurrentUser = {
+        ...currentUser,
+        chats: [...currentUser.chats].concat([chat])
+    };
+    return {
+        __typename: 'Mutation',
+        createChat: {
+            id,
+            __typename: 'Chat'
+        },
+        currentUser: {
+            ...updatedCurrentUser,
+            __typename: 'User'
+        },
+        contact: {
+            id: contact.id,
+            __typename: 'User'
+        }
+    };
+};
+
+export const CreateChat = mapper(CREATE_CHAT_ql, 'createChat', null, createChat_optimistic);
 
 
 const CREATE_GROUP_CHAT_ql = gql`

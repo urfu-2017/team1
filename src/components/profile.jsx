@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 
 import {Editor, DownloadImage, DownloadButton, CreateButton, Exit} from '../styles/profile';
-import {UpdateUserAvatar} from '../graphqlQueries/mutations';
+import {UpdateUserAvatar} from '../graphql/mutations';
 import {withCurrentUser} from '../lib/currentUserContext';
 import ImageHandler from '../lib/imageHandler';
 import LoadScreen from '../components/ui/loadScreen';

@@ -34,7 +34,7 @@ export const deleteMessage = (message, target) => {
 };
 
 
-export const messagesSubscriptionDataHandler = (previousResult, { subscriptionData, variables }) => {    
+export const messagesSubscriptionDataHandler = (previousResult, { subscriptionData, variables }) => {
     if (!previousResult.Chat) {
         return previousResult;
     }
@@ -72,6 +72,7 @@ export const chatSubscriptionDataHandler = (previousResult, { subscriptionData, 
 };
 
 
+// преобразует объект чата к пригодному для отображения виду
 export const processChat = (currentUserId, chat) => {
     if (chat.groupchat) {
         return chat;

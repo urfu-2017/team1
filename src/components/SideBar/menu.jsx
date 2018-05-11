@@ -11,8 +11,8 @@ import ListItem from 'material-ui/List/ListItem';
 import Avatar from 'material-ui/Avatar';
 
 import Contacts from '../contacts';
-import {GetUserChats} from '../../graphqlQueries/queries';
-import {CreateGroupChat} from '../../graphqlQueries/mutations';
+import {GetUserChats} from '../../graphql/queries';
+import {CreateGroupChat} from '../../graphql/mutations';
 import { withUiTheme } from '../../lib/withUiTheme';
 import withLocalState from '../../lib/withLocalState';
 
@@ -85,7 +85,6 @@ export default class Menu extends React.Component {
                     <ListItem
                         leftIcon={<ModeEdit />}
                         className="list__item"
-                        onClick={mainComponentChanger('Profile')}
                         onClick={mainComponentChanger('Profile')}
                     >
                         Редактирование профиля

@@ -1,19 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import { Scrollbars } from 'react-custom-scrollbars';
+import {withApollo} from 'react-apollo';
+import {Scrollbars} from 'react-custom-scrollbars';
 
 import LoadScreen from '../ui/loadScreen';
 import MessageInput from './messageInput';
-import ReplyPreview from './replyPreview';
+import ReplyPreview from './messageInput/replyPreview';
 import Message from './Message';
-import {messagesSubscriptionDataHandler} from '../../lib/dataHandlers';
-import {MessagesList, ScrollButton } from '../../styles/messages';
-import {SubscribeToMessages} from '../../graphqlQueries/subscriptions';
-import { withUiTheme } from '../../lib/withUiTheme';
+import ForwardPlate from './Forwarding/plate';
+import {messagesSubscriptionDataHandler} from '../../graphql/dataHandlers';
+import {MessagesList, ScrollButton} from '../../styles/messages';
+import {SubscribeToMessages} from '../../graphql/subscriptions';
+import {withUiTheme} from '../../lib/withUiTheme';
+import MessagesController from './messagesController';
 
 
 @withUiTheme
+@withApollo
 export default class Messages extends React.Component {
     static propTypes = {
         messages: PropTypes.arrayOf(PropTypes.object),
@@ -36,12 +39,32 @@ export default class Messages extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { citedMessage: null };
+        this.messagesController = new MessagesController(props.client, () => this.state);
     }
+
+    state = {
+        citedMessage: null,
+        selectedMessages: new Map(),
+        selectedMessagesDummy: ''
+    };
 
     // действие "ответить на сообщение" называет данное сообщение "цитируемым"
     replyToMessage = (message = null) => {
         this.setState({ citedMessage: message });
+    };
+
+    selectMessage = message => this.setState(prev => {
+        this.replyToMessage(null);
+        const alreadySelected = prev.selectedMessages.has(message.id);
+        alreadySelected ?
+            prev.selectedMessages.delete(message.id) :
+            prev.selectedMessages.set(message.id, message);
+        return { selectedMessagesDummy: '' };
+    });
+
+    clearMessagesSelection = () => {
+        this.state.selectedMessages.clear();
+        this.setState({ selectedMessagesDummy: '' });
     };
 
     componentDidMount() {
@@ -63,16 +86,32 @@ export default class Messages extends React.Component {
     // Не создаём новую функцию при каждом рендере
     setScroll = node => (this.scroll = node);
 
-    Message = message =>
-        <Message
-            key={message.id}
-            message={message}
-            isFromSelf={message.sender.id === this.props.currentUserId}
-            replyToMessage={this.replyToMessage}
-        />;
+    getMessages = (messages, forwardedBy) => {
+        const res = [];
+        for (const message of messages) {
+            if (message.forwardedMessages && message.forwardedMessages.length > 0) {
+                res.push(...this.getMessages(message.forwardedMessages, message.sender));
+            } else {
+                res.push(
+                    <Message
+                        key={message.id}
+                        message={message}
+                        isFromSelf={message.sender.id === this.props.currentUserId}
+                        replyToMessage={this.replyToMessage}
+                        selectMessage={this.selectMessage}
+                        forwardedBy={forwardedBy}
+                        selected={this.state.selectedMessages.has(message.id)}
+                    />);
+            }
+        }
+        return res;
+    };
 
     render() {
-        const { loading, error, messages, currentChatId, currentUserId, uiTheme: { isNightTheme } } = this.props;
+        const {
+            loading, error, messages, currentChatId,
+            currentUserId, uiTheme: { isNightTheme }
+        } = this.props;
 
         let content = null;
         if (loading) {
@@ -87,7 +126,7 @@ export default class Messages extends React.Component {
                         className="scroll"
                         onClick={() => this.scroll.scrollToBottom()}
                     />
-                    {messages.map(this.Message)}
+                    {this.getMessages(messages)}
                 </React.Fragment>
             );
             // Сообщения получены и отрисованы.
@@ -97,22 +136,28 @@ export default class Messages extends React.Component {
         return (
             <React.Fragment>
                 <Scrollbars
-                    style={{ 'background-color': isNightTheme ? '##212121': '' }}
+                    style={{ 'background-color': isNightTheme ? '##212121' : '' }}
                     ref={this.setScroll}
                     onScrollStop={this.changePositionScroll}
                 >
-                    <MessagesList >
+                    <MessagesList>
                         {content}
                     </MessagesList>
                 </Scrollbars>
                 {this.state.citedMessage &&
-                    <ReplyPreview message={this.state.citedMessage} resetReply={this.replyToMessage} />}
+                <ReplyPreview message={this.state.citedMessage} resetReply={this.replyToMessage}/>}
+                {this.state.selectedMessages.size > 0 &&
+                <ForwardPlate
+                    messages={this.state.selectedMessages}
+                    messagesController={this.messagesController}
+                    cancel={this.clearMessagesSelection}/> ||
                 <MessageInput
                     currentChatId={currentChatId}
                     currentUserId={currentUserId}
+                    messagesController={this.messagesController}
                     citedMessage={this.state.citedMessage}
                     resetReply={this.replyToMessage}
-                    updateMessages={this.props.data.updateQuery} />
+                    updateMessages={this.props.data.updateQuery}/>}
             </React.Fragment>
         );
     }
@@ -131,7 +176,7 @@ export default class Messages extends React.Component {
         }
     };
 
-    static LoadScreen = <LoadScreen offsetPercentage={100} opacity={1} />;
+    static LoadScreen = <LoadScreen offsetPercentage={100} opacity={1}/>;
 
     static ErrorScreen = <p>Encountered unknown error while loading messages :(</p>;
 }

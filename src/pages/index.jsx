@@ -24,7 +24,6 @@ export default class Index extends React.Component {
             currentUser: { id: userId },
             currentChatId,
         } = this.props;
-        console.log(initialState);
         return createNextPage(httpUrl, wsUrl, initialState, App, { userId, currentChatId });
     }
 }

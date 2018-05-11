@@ -2,8 +2,8 @@ import React from 'react';
 import Close from 'material-ui/svg-icons/navigation/close';
 import Reply from 'material-ui/svg-icons/content/reply';
 
-import {ReplyPreview} from '../../styles/messages';
-import stripHtml from '../../lib/stripHtml';
+import {ReplyPreview} from '../../../styles/messages';
+import stripHtml from '../../../lib/stripHtml';
 
 
 export default ({ message, resetReply }) => (

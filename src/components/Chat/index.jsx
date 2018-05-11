@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 import ChatWindowWrapper from '../../styles/chatWindow';
 import Header from './header';
 import Messages from './messages';
-import {GetChatInfo, GetChatMessages} from '../../graphqlQueries/queries';
+import {GetChatInfo, GetChatMessages} from '../../graphql/queries';
 import {withCurrentUser} from '../../lib/currentUserContext';
 import ChatEditor from './chatEditor';
 import withLocalState from '../../lib/withLocalState';
-import {processChat, userSubscriptionDataHandler} from '../../lib/dataHandlers';
-import {SubscribeToUsersInChat} from '../../graphqlQueries/subscriptions';
+import {processChat, userSubscriptionDataHandler} from '../../graphql/dataHandlers';
+import {SubscribeToUsersInChat} from '../../graphql/subscriptions';
 
 
 const currentChatSet = ({ currentChatId }) =>
