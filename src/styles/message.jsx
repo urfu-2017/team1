@@ -166,6 +166,7 @@ export const MessageWrapper = withUiTheme(styled.article`
         width: 90%;
     }
     .messageBlock__map {
+        height: 200px;
         margin: 5%;
         width: 90%;
         align-self: center;
