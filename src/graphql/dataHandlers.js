@@ -85,11 +85,3 @@ export const processChat = (currentUserId, chat) => {
         picture: otherUser.avatarUrl
     };
 };
-
-
-export const getTitleForPersonalChat = (userId1, userId2) => {
-    const length = Math.min(userId1.length, userId2.length);
-    return [...Array(length).keys()]
-        .map(i => String.fromCharCode(userId1.charCodeAt(i) ^ userId2.charCodeAt(i)))
-        .join();
-};

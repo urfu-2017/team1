@@ -6,12 +6,12 @@ import ContactsList from './contactsList';
 import {GetUserChats, GetUserContacts, GetAllUsers} from '../graphql/queries';
 import {AddUserToContacts, CreateChat} from '../graphql/mutations';
 import withLocalState from '../lib/withLocalState';
-import {getTitleForPersonalChat} from '../graphql/dataHandlers';
+import {idXor} from '../lib/idXor';
 import {withCurrentUser} from '../lib/currentUserContext';
 
 
 const getNewChat = (currentUser, contact) => ({
-    title: getTitleForPersonalChat(currentUser.id, contact.id),
+    title: idXor(currentUser.id, contact.id),
     picture: '',
     ownerId: currentUser.id,
     user1: currentUser.id,

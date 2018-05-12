@@ -13,7 +13,7 @@ export default class MessagesController {
             mutation: CreateMessage.mutation,
             variables: message,
             optimisticResponse: CreateMessage.optimisticResponse(
-                message, state.citedMessage, [...state.selectedMessages.values()]),
+                    message, state.citedMessage, [...state.selectedMessages.values()]),
             update
         });
     }

@@ -25,8 +25,8 @@ const EmojiPicker = dynamic(
 @withCurrentUser
 @withLocalState
 @graphql(GetUser.query, {
-    options: ({ message: { sender }, forwardedBy }) => {
-        const userId = forwardedBy ? forwardedBy.id : sender.id;
+    options: ({ message: { sender }, forwardParent }) => {
+        const userId = forwardParent && forwardParent.sender ? forwardParent.sender.id : sender.id;
         return { variables: { userId } };
     },
     props: GetUser.map
@@ -109,11 +109,11 @@ export default class Message extends React.PureComponent {
     }).format;
 
     get messageWithSender() {
-        const { message, user: sender } = this.props;
+        const { message, selectionId, user: sender } = this.props;
         return {
-            pictures: null,
             ...message,
-            sender
+            sender,
+            selectionId
         };
     }
 
@@ -136,12 +136,12 @@ export default class Message extends React.PureComponent {
     render() {
         const {
             loading, error, message, user, currentUser,
-            isFromSelf, forwardedBy, selected
+            isFromSelf, forwardParent, selected
         } = this.props;
         // небольшой костыль: optimistic response присваивает сообщениям
         // рандомный отрицательный id, чтобы не хранить лишнее поле
         const delivered = isFromSelf ? (message.id < 0 ? '  ' : ' ✓') : '';
-        const ogdata = message.metadata && message.metadata.ogdata || {};
+        const metadata = message.metadata || {};
         const createdAt = Message.formatDate(new Date(message.createdAt));
 
         return (
@@ -150,7 +150,7 @@ export default class Message extends React.PureComponent {
                                 onClick={this.toggleSelected} selected={selected}>
                     <div id={message.id} className="messageBlock"
                          onMouseEnter={this.setMouseOver} onMouseLeave={this.unsetMouseOver}>
-                        {forwardedBy &&
+                        {forwardParent &&
                         <p
                             onClick={this.goToForwardOrigin}
                             className="messageBlock__forwarded-from"
@@ -162,7 +162,7 @@ export default class Message extends React.PureComponent {
                                 <span className="msgFromUserName">{user && user.name + delivered}</span>
                             </div>
                             <div className="msgTimeReactionBlock">
-                                <Mood className="mood" onClick={this.toggleEmojiPicker}/>
+                                {!forwardParent && <Mood className="mood" onClick={this.toggleEmojiPicker}/>}
                                 {this.state.mouseOver && !this.hasTtl
                                     ? <div onClick={this.replyToThisMessage} className="messageBlock__reply">
                                         Ответить
@@ -176,7 +176,7 @@ export default class Message extends React.PureComponent {
                             isFromSelf={isFromSelf}
                             dangerouslySetInnerHTML={{ __html: message.text }}
                         />
-                        {ogdata.url && Object.keys(ogdata).length !== 0 && <Metadata ogdata={ogdata}/>}
+                        {Object.keys(metadata).length !== 0 && <Metadata metadata={metadata}/>}
                         {message.pictures && renderPictures(message.pictures)}
                         {message.reactions && message.reactions.length > 0 &&
                         <Reactions

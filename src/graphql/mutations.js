@@ -72,7 +72,13 @@ const createMessage_optimistic = (message, citedMessage, forwardedMessages = [])
 
 
 const createMessage_update = (chatId, cache, { data: { createMessage } }) => {
-    const query = GetChatMessages.query(chatId);
+    let query;
+    try {
+        query = GetChatMessages.query(chatId);
+    } catch (exc) {
+        // если кэш не заполнен
+        return;
+    }
     const variables = { chatId };
     const data = cache.readQuery({
         query,
@@ -80,6 +86,7 @@ const createMessage_update = (chatId, cache, { data: { createMessage } }) => {
     }, true);
     const updated = addNewMessage(createMessage, data);
     cache.writeQuery({ query, data: updated });
+    console.log('CREATE UPDATED');
 };
 
 

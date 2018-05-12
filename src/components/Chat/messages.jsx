@@ -4,15 +4,17 @@ import {withApollo} from 'react-apollo';
 import {Scrollbars} from 'react-custom-scrollbars';
 
 import LoadScreen from '../ui/loadScreen';
-import MessageInput from './messageInput';
-import ReplyPreview from './messageInput/replyPreview';
+import MessageInput from './MessageInput';
+import ReplyPreview from './MessageInput/replyPreview';
 import Message from './Message';
 import ForwardPlate from './Forwarding/plate';
+import {Input} from '../../styles/chatWindowInput';
 import {messagesSubscriptionDataHandler} from '../../graphql/dataHandlers';
 import {MessagesList, ScrollButton} from '../../styles/messages';
 import {SubscribeToMessages} from '../../graphql/subscriptions';
 import {withUiTheme} from '../../lib/withUiTheme';
 import MessagesController from './messagesController';
+import {idXor} from '../../lib/idXor';
 
 
 @withUiTheme
@@ -50,15 +52,16 @@ export default class Messages extends React.Component {
 
     // действие "ответить на сообщение" называет данное сообщение "цитируемым"
     replyToMessage = (message = null) => {
+        message && this.clearMessagesSelection();
         this.setState({ citedMessage: message });
     };
 
     selectMessage = message => this.setState(prev => {
         this.replyToMessage(null);
-        const alreadySelected = prev.selectedMessages.has(message.id);
+        const alreadySelected = prev.selectedMessages.has(message.selectionId);
         alreadySelected ?
-            prev.selectedMessages.delete(message.id) :
-            prev.selectedMessages.set(message.id, message);
+            prev.selectedMessages.delete(message.selectionId) :
+            prev.selectedMessages.set(message.selectionId, message);
         return { selectedMessagesDummy: '' };
     });
 
@@ -86,11 +89,24 @@ export default class Messages extends React.Component {
     // Не создаём новую функцию при каждом рендере
     setScroll = node => (this.scroll = node);
 
-    getMessages = (messages, forwardedBy) => {
+    getMessages = (messages, parent = null) => {
         const res = [];
         for (const message of messages) {
             if (message.forwardedMessages && message.forwardedMessages.length > 0) {
-                res.push(...this.getMessages(message.forwardedMessages, message.sender));
+                res.push(...this.getMessages(message.forwardedMessages, message));
+            } else if (parent) {
+                const forwardId = idXor(parent.id, message.id) + res.length;
+                res.push(
+                    <Message
+                        key={forwardId}
+                        message={message}
+                        isFromSelf={parent.sender.id === this.props.currentUserId}
+                        replyToMessage={this.replyToMessage}
+                        selectMessage={this.selectMessage}
+                        forwardParent={parent}
+                        selected={this.state.selectedMessages.has(forwardId)}
+                        selectionId={forwardId}
+                    />);
             } else {
                 res.push(
                     <Message
@@ -99,8 +115,8 @@ export default class Messages extends React.Component {
                         isFromSelf={message.sender.id === this.props.currentUserId}
                         replyToMessage={this.replyToMessage}
                         selectMessage={this.selectMessage}
-                        forwardedBy={forwardedBy}
                         selected={this.state.selectedMessages.has(message.id)}
+                        selectionId={message.id}
                     />);
             }
         }
@@ -144,20 +160,24 @@ export default class Messages extends React.Component {
                         {content}
                     </MessagesList>
                 </Scrollbars>
-                {this.state.citedMessage &&
-                <ReplyPreview message={this.state.citedMessage} resetReply={this.replyToMessage}/>}
-                {this.state.selectedMessages.size > 0 &&
-                <ForwardPlate
-                    messages={this.state.selectedMessages}
-                    messagesController={this.messagesController}
-                    cancel={this.clearMessagesSelection}/> ||
-                <MessageInput
-                    currentChatId={currentChatId}
-                    currentUserId={currentUserId}
-                    messagesController={this.messagesController}
-                    citedMessage={this.state.citedMessage}
-                    resetReply={this.replyToMessage}
-                    updateMessages={this.props.data.updateQuery}/>}
+                <Input>
+                    {this.state.citedMessage &&
+                    <ReplyPreview message={this.state.citedMessage} resetReply={this.replyToMessage}/>}
+                    {this.state.selectedMessages.size > 0 &&
+                    <div className="forward-plate">
+                        <ForwardPlate
+                            messages={this.state.selectedMessages}
+                            messagesController={this.messagesController}
+                            cancel={this.clearMessagesSelection}/>
+                    </div> ||
+                    <MessageInput
+                        currentChatId={currentChatId}
+                        currentUserId={currentUserId}
+                        messagesController={this.messagesController}
+                        citedMessage={this.state.citedMessage}
+                        resetReply={this.replyToMessage}
+                        updateMessages={this.props.data.updateQuery}/>}
+                </Input>
             </React.Fragment>
         );
     }

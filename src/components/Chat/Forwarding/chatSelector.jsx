@@ -38,13 +38,13 @@ export default class ChatSelector extends React.Component {
         text: '',
         chatId,
         senderId: this.props.currentUser.id,
-        forwardedMessagesIds: [...this.props.messages.keys()]
+        forwardedMessagesIds: [...this.props.messages.values()].map(msg => msg.id)
     });
 
     actions = [
         <FlatButton
-            label="Cancel"
-            primary={true}
+            label="Отмена"
+            secondary={true}
             onClick={this.handleClose}
         />];
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {graphql} from 'react-apollo';
 import {emojiIndex} from 'emoji-mart';
 import dynamic from 'next/dynamic';
 import Mood from 'material-ui/svg-icons/social/mood';
@@ -14,7 +13,7 @@ const EmojiPicker = dynamic(
 );
 
 import {withCurrentUser} from '../../../lib/currentUserContext';
-import Textarea from '../../../styles/chatWindowInput';
+import {Textarea} from '../../../styles/chatWindowInput';
 import {getClientSideId} from '../../../graphql/mutations';
 import {CreateMessage} from '../../../graphql/mutations';
 import MessageImageSender from '../messageImageSender';
@@ -75,7 +74,7 @@ export default class MessageInput extends React.Component {
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
             this.props.messagesController.createMessage(
-                this.message, this.props.citedMessage, this.updateCache);
+                this.message, this.updateCache);
 
             localStorage.setItem(this.storageKey, '');
             this.clearMessage();
@@ -117,7 +116,7 @@ export default class MessageInput extends React.Component {
         const message = this.message;
         message.pictures = [urlInBase64];
 
-        this.props.messagesController.createMessage(message, null, this.updateCache);
+        this.props.messagesController.createMessage(message, this.updateCache);
         this.toggleUploadWindow();
     };
 
