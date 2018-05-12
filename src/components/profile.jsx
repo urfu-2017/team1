@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {graphql} from 'react-apollo';
 
@@ -7,6 +7,7 @@ import {UpdateUserAvatar} from '../graphql/mutations';
 import {withCurrentUser} from '../lib/currentUserContext';
 import ImageHandler from '../lib/imageHandler';
 import LoadScreen from '../components/ui/loadScreen';
+import {Snackbar} from 'material-ui';
 
 
 @withCurrentUser
@@ -24,7 +25,8 @@ export default class ProfileEditor extends Component {
 
     constructor(props) {
         super(props);
-        this.imageHandler = new ImageHandler();
+
+        this.imageHandler = new ImageHandler(this.props.currentUser.avatarUrl);
         this.state = { isUploading: false };
     }
 
@@ -34,17 +36,27 @@ export default class ProfileEditor extends Component {
 
         this.imageHandler.readPictureFromInput(reader, async () => {
             const avatarData = reader.result;
+            this.setSnackbarError();
             const uploadTask = this.props.updateUserAvatar({
                 userId: userId,
                 avatarUrl: avatarData
-            });
+            }).catch(this.toggleSnackbar);
+            this.imageHandler.setTextDownloadArea('');
             this.setState({ isUploading: true });
 
             await uploadTask;
             this.setState({ isUploading: false });
-            this.imageHandler.setTextDownloadArea('Аватарка обновлена');
+            this.setState({ statusMessage: 'Загружено' });
+            this.toggleSnackbar();
+
+            setTimeout(() => this.imageHandler.setTextDownloadArea(''), 8000);
+            this.setState({ open: true });
         });
     };
+
+    setSnackbarError = () => this.setState({ statusMessage: 'Ошибка :(' });
+
+    toggleSnackbar = () => this.setState(prev => ({ snackbarOpened: !prev.snackbarOpened }));
 
     changeBackground = () => {
         this.imageHandler.state.backgroundUploaded = false;
@@ -52,7 +64,7 @@ export default class ProfileEditor extends Component {
     };
 
     render() {
-        const { mainComponentChanger } = this.props;
+        const { mainComponentChanger, currentUser } = this.props;
 
         return (
             <Editor>
@@ -69,12 +81,13 @@ export default class ProfileEditor extends Component {
                     </h1>
                 </div>
                 <DownloadImage
+                    style={{ 'background-image': `url(${currentUser.avatarUrl})` }}
                     onDrop={this.imageHandler.drop}
                     onDragOver={this.imageHandler.dragover}
                     id="area-for-drop">
                     <p className="text" id="download_image_text">Загрузить фото</p>
-                    {this.state.isUploading && <LoadScreen/>}
                 </DownloadImage>
+                {this.state.isUploading && <LoadScreen />}
                 <div className="buttons">
                     <DownloadButton
                         id="upload"
@@ -89,6 +102,11 @@ export default class ProfileEditor extends Component {
                         onClick={this.saveAvatar}
                     />
                 </div>
+                <Snackbar
+                    open={this.state.snackbarOpened}
+                    message={this.state.statusMessage}
+                    autoHideDuration={3000}
+                />
             </Editor>
         );
     }
