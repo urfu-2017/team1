@@ -11,6 +11,7 @@ import {SearchMessages} from '../../graphql/queries';
     options: ({ currentUserId, searchText, forceRefetch }) => {
         const options = {
             variables: SearchMessages.variables(currentUserId, searchText),
+            fetchPolicy: 'network-only'
         };
         if (!forceRefetch)
             options.context = { debounceKey: 'searchMessages' };
