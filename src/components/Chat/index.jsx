@@ -83,6 +83,7 @@ export default class Chat extends React.Component {
             <MessagesWithData
                 currentChatId={chat.id || null}
                 currentUserId={currentUser.id}
+                groupChat={chat.groupchat}
             />
         );
 
