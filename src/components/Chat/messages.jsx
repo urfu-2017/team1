@@ -26,7 +26,8 @@ export default class Messages extends React.Component {
         currentChatId: PropTypes.string,
         loading: PropTypes.bool,
         error: PropTypes.object,
-        data: PropTypes.object
+        data: PropTypes.object,
+        groupChat: PropTypes.bool
     };
 
     static defaultProps = {
@@ -126,7 +127,8 @@ export default class Messages extends React.Component {
     render() {
         const {
             loading, error, messages, currentChatId,
-            currentUserId, uiTheme: { isNightTheme }
+            currentUserId, uiTheme: { isNightTheme },
+            groupChat
         } = this.props;
 
         let content = null;
@@ -176,7 +178,8 @@ export default class Messages extends React.Component {
                         messagesController={this.messagesController}
                         citedMessage={this.state.citedMessage}
                         resetReply={this.replyToMessage}
-                        updateMessages={this.props.data.updateQuery}/>}
+                        updateMessages={this.props.data.updateQuery}
+                        groupChat={groupChat}/>}
                 </Input>
             </React.Fragment>
         );
