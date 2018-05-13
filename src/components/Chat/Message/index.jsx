@@ -120,12 +120,19 @@ export default class Message extends React.PureComponent {
     replyToThisMessage = e => e.stopPropagation() ||
         this.props.replyToMessage(this.messageWithSender);
 
-    goToForwardOrigin = e => {
-        e.stopPropagation();
-        const { updateCurrentChatId, message, currentUser } = this.props;
-        if (currentUser.chats.find(c => c.id === message.chat.id) === undefined) {
-            return;
+    get userHasForwardOriginChat() {
+        if (this._userHasForwardOriginChat === undefined) {
+            const { message, currentUser } = this.props;
+            this._userHasForwardOriginChat = currentUser.chats
+                .find(c => c.id === message.chat.id) !== undefined;
         }
+        return this._userHasForwardOriginChat;
+    }
+
+    goToForwardOrigin = e => {
+        if (!this.userHasForwardOriginChat) return;
+        e.stopPropagation();
+        const { message, updateCurrentChatId } = this.props;
         updateCurrentChatId(message.chat.id);
         // TODO: сделать нормальный скролл
         setTimeout(
@@ -142,7 +149,8 @@ export default class Message extends React.PureComponent {
         // рандомный отрицательный id, чтобы не хранить лишнее поле
         const delivered = isFromSelf ? (message.id < 0 ? '  ' : ' ✓') : '';
         const metadata = message.metadata || {};
-        const createdAt = Message.formatDate(new Date(message.createdAt));
+        const createdAt = Message.formatDate(new Date(
+            forwardParent && forwardParent.createdAt || message.createdAt));
 
         return (
             <React.Fragment>
@@ -152,6 +160,7 @@ export default class Message extends React.PureComponent {
                          onMouseEnter={this.setMouseOver} onMouseLeave={this.unsetMouseOver}>
                         {forwardParent &&
                         <p
+                            style={{ 'cursor': this.userHasForwardOriginChat ? 'pointer' : 'default' }}
                             onClick={this.goToForwardOrigin}
                             className="messageBlock__forwarded-from"
                         >Пересланное сообщение от {message.sender.name}</p>
