@@ -69,7 +69,8 @@
     "styled-components": "^3.2.5",
     "subscriptions-transport-ws": "^0.9.8",
     "webpack": "^4.6.0",
-    "ws": "^5.1.1"
+    "ws": "^5.1.1",
+    "apollo-link-debounce": "latest"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
