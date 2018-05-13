@@ -178,7 +178,7 @@ const SEARCH_MESSAGES_ql = gql`
 query SearchMessages($filter: MessageFilter!) {
   allMessages(filter: $filter, orderBy: createdAt_DESC) {
     id
-    text
+    rawText
     createdAt
     chat {
       id

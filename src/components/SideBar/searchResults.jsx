@@ -29,9 +29,15 @@ export default class SearchResults extends React.PureComponent {
         this.setState({ selectedMessageId: messageId });
     };
 
+
+    getMatchPosition = (messageText, regexp) => {
+        return messageText && messageText.search(regexp);
+    };
+
     render() {
-        const { loading, error, searchMessages } = this.props;
+        const { loading, error, searchMessages, searchText } = this.props;
         if (error) return <p>Error</p>;
+        const searchRegexp = new RegExp(searchText, 'i');
 
         return (
             <List>
@@ -45,7 +51,9 @@ export default class SearchResults extends React.PureComponent {
                         <MessagePreview
                             message={message}
                             goToMessage={this.goToMessage}
-                            selected={this.state.selectedMessageId === message.id}/>
+                            selected={this.state.selectedMessageId === message.id}
+                            searchText={searchText}
+                            matchPosition={this.getMatchPosition(message.rawText, searchRegexp)}/>
                         {(index < searchMessages.length - 1) &&
                         <Divider inset={true}/>}
                     </SearchResultsStyles>

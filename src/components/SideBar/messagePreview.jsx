@@ -9,6 +9,9 @@ import {getListItemStyle} from '../../styles/chat';
 import {withUiTheme} from '../../lib/withUiTheme';
 
 
+const VISIBLE_TEXT_WINDOW = 50;  // symbols
+
+
 @withCurrentUser
 @withUiTheme
 export default class MessagePreview extends React.PureComponent {
@@ -22,6 +25,28 @@ export default class MessagePreview extends React.PureComponent {
         this.props.goToMessage(chat, messageId);
     };
 
+    get messageText() {
+        let { message, matchPosition, searchText } = this.props;
+        let text = message.rawText;
+        if (matchPosition + searchText.length > VISIBLE_TEXT_WINDOW) {
+            const offset = Math.max(0, Math.floor(
+                (VISIBLE_TEXT_WINDOW - searchText.length) / 2));
+            const sliceStart = Math.max(0, matchPosition - offset);
+            const sliceEnd = sliceStart + VISIBLE_TEXT_WINDOW * 2;
+            text = '...' + text.slice(sliceStart, sliceEnd);
+            matchPosition = offset + 3;
+        }
+        return (
+            <span title={text.slice(0, VISIBLE_TEXT_WINDOW)}>
+                {text.slice(0, matchPosition)}
+                <mark>
+                    {text.slice(matchPosition, matchPosition + searchText.length)}
+                </mark>
+                {text.slice(matchPosition + searchText.length)}
+            </span>
+        );
+    }
+
     render() {
         const chat = this.chat;
         if (chat === undefined) {
@@ -29,7 +54,8 @@ export default class MessagePreview extends React.PureComponent {
         }
 
         const { selected, uiTheme } = this.props;
-        const { text, sender, createdAt } = this.props.message;
+        const { sender, createdAt } = this.props.message;
+        const text = this.messageText;
         const isFromSelf = this.props.currentUser.id === sender.id;
         const primaryText = (
             <span>
@@ -43,7 +69,7 @@ export default class MessagePreview extends React.PureComponent {
                     {isFromSelf ? 'Вы' : sender.name}{':  '}
                 </span>
                 <span className="messagePreview__text">
-                    {stripHtml(text)}
+                    {text}
                 </span>
             </p>
         );
