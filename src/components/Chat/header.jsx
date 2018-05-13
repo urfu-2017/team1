@@ -3,8 +3,8 @@ import {graphql} from 'react-apollo';
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import Close from 'material-ui/svg-icons/navigation/close';
 import {Header} from '../../styles/messages';
-import {UpdateChatTitle} from '../../graphqlQueries/mutations';
-import {chatTitle_ql} from '../../graphqlQueries/fragments';
+import {UpdateChatTitle} from '../../graphql/mutations';
+import {chatTitle_ql} from '../../graphql/fragments';
 import withLocalState from '../../lib/withLocalState';
 
 

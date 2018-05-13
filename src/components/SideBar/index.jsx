@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import AppBar from 'material-ui/AppBar';
-import {Scrollbars} from 'react-custom-scrollbars';
 
 import {withCurrentUser} from '../../lib/currentUserContext';
-import ChatPreview from './chatPreview';
 import Paranja from './paranja';
-import {Header, SearchInput, ChatsList} from '../../styles/chats';
-import Chat from '../Chat';
+import ChatsList from '../ChatsList';
+import {ChatsList as ChatsListStyle} from '../../styles/chats';
+import {Scrollbars} from 'react-custom-scrollbars';
 import withLocalState from '../../lib/withLocalState';
 
 
 @withCurrentUser
+@withLocalState
 export default class SideBar extends React.Component {
     static propTypes = {
         currentUser: PropTypes.object,
@@ -20,32 +20,20 @@ export default class SideBar extends React.Component {
 
     static defaultProps = {};
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            paranjaOpened: false
-        };
-    }
-
-    getChatsList(currentUser) {
-        const { chats } = currentUser;
-        return chats
-            .map(chat => (
-                <ChatPreview
-                    key={chat.id}
-                    chat={chat}
-                    user={currentUser}
-                    mainComponentChanger={this.props.mainComponentChanger('Chat')}
-                />
-            ));
-    }
+    state = {
+        paranjaOpened: false
+    };
 
     toggleParanja = () =>
         this.setState(prev => ({ paranjaOpened: !prev.paranjaOpened }));
 
+    selectChat = chat => {
+        this.props.updateCurrentChatId(chat.id);
+        this.props.mainComponentChanger('Chat')();
+    };
+
     render() {
-        const { currentUser, toggleUiTheme } = this.props;
+        const { currentUser } = this.props;
 
         return (
             <React.Fragment>
@@ -57,17 +45,19 @@ export default class SideBar extends React.Component {
                         mainComponentChanger={this.props.mainComponentChanger}
                     />
                 }
-                <ChatsList>
-                    <AppBar 
+                <ChatsListStyle>
+                    <AppBar
                         className="menuHeader"
                         onClick={this.toggleParanja}
                         iconClassNameRight="muidocs-icon-navigation-expand-more"
                     />
-
                     <Scrollbars universal>
-                        { currentUser.chats && this.getChatsList(currentUser) }
+                    <ChatsList
+                        chats={currentUser.chats}
+                        onChatClick={this.selectChat}
+                    />
                     </Scrollbars>
-                </ChatsList>
+                </ChatsListStyle>
             </React.Fragment>
         );
     }

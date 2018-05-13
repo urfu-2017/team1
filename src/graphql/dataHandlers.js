@@ -34,7 +34,7 @@ export const deleteMessage = (message, target) => {
 };
 
 
-export const messagesSubscriptionDataHandler = (previousResult, { subscriptionData, variables }) => {    
+export const messagesSubscriptionDataHandler = (previousResult, { subscriptionData, variables }) => {
     if (!previousResult.Chat) {
         return previousResult;
     }
@@ -72,6 +72,7 @@ export const chatSubscriptionDataHandler = (previousResult, { subscriptionData, 
 };
 
 
+// преобразует объект чата к пригодному для отображения виду
 export const processChat = (currentUserId, chat) => {
     if (chat.groupchat) {
         return chat;
@@ -83,12 +84,4 @@ export const processChat = (currentUserId, chat) => {
         title: otherUser.name,
         picture: otherUser.avatarUrl
     };
-};
-
-
-export const getTitleForPersonalChat = (userId1, userId2) => {
-    const length = Math.min(userId1.length, userId2.length);
-    return [...Array(length).keys()]
-        .map(i => String.fromCharCode(userId1.charCodeAt(i) ^ userId2.charCodeAt(i)))
-        .join();
 };

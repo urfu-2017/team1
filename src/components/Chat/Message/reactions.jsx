@@ -29,6 +29,9 @@ const Reaction = ({ reaction, isCurrentUser, onReactionClick, emojiNative, count
 
 
 export default class extends React.Component {
+    constructor(props) {
+        super(props);
+    }
     onReactionClick = emoji => {
         this.props.addReaction(emoji);
     };
@@ -43,7 +46,7 @@ export default class extends React.Component {
                         count={r.users.length}
                         isCurrentUser={r.users.includes(currentUserId)}
                         reaction={r.emoji}
-                        onReactionClick={() => this.onReactionClick(r.emoji)}
+                        onReactionClick={event => event.stopPropagation() || this.onReactionClick(r.emoji)}
                         emojiNative={findEmoji(r.emoji)}
                     />
                 ))}

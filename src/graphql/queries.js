@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 import * as fragments from './fragments';
-import {processChat} from '../lib/dataHandlers';
+import {processChat} from './dataHandlers';
 
 
 const mapper = (query, selector, name) => ({
@@ -102,12 +102,14 @@ query GetChatMessages {
     messages {
       ...messageData
       ...messageCitation
+      ...forwardedMessages
     }
   }
 }
 
 ${fragments.messageData_ql}
 ${fragments.messageCitation_ql}
+${fragments.forwardedMessages_ql}
 `;
 
 export const GetChatMessages = mapper(GET_CHAT_MESSAGES_ql,
@@ -169,3 +171,32 @@ ${fragments.chatData_ql}
 `;
 
 export const GetAllChats = mapper(GET_ALL_CHATS_ql, data => data.allChats, 'allChats');
+
+
+
+const SEARCH_MESSAGES = gql`
+query SearchMessages($filter: MessageFilter!) {
+  allMessages(filter: $filter) {
+    id
+    text
+    sender {
+      name
+    }
+  }
+}
+`;
+
+
+/*
+{
+	"filter": {
+    "chat": {
+      "members_some": {
+        "id": "cjgguhtsrt66z0191673tcn0d"
+      }
+    },
+    "text_contains": "href"
+  }
+}
+
+ */

@@ -62,7 +62,6 @@ export const ReplyPreview = styled.div`
     padding: 10px 20px 5px 40px;
     z-index: 5000;
     background: #fff;
-    border-top: 1px solid #ddd;
     position: relative;
     max-width: 100%;
     
