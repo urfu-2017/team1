@@ -1,5 +1,9 @@
 import styled from 'styled-components';
+
+import { pulse } from './pulse';
 import {withUiTheme} from '../lib/withUiTheme';
+
+
 
 
 export const Input = withUiTheme(styled.div`
@@ -34,8 +38,16 @@ export const Textarea = withUiTheme(styled.div`
         width: 100%;
         height: 50px;
     }
+    .pulse {
+        border-radius: 50% !important;
+        animation: ${pulse} 4s linear infinite;
+        background-color: #eee !important;
+    }
+
     .icon {
-        padding: 10px;
+        padding: 4px;
+        width: 24px !important;
+        height: 24px !important;
     }
 
     .textarea__style {
