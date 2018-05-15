@@ -1,17 +1,17 @@
 import { Map, Marker } from 'yandex-map-react';
 
-export default map =>
+export default replyMap =>
     (
         <Map
-            width={'100%'}
-            height={'200px'} 
+            width={'50%'}
+            height={'100px'} 
             className="messageBlock__map"
             onAPIAvailable={() => console.info('Map API loaded')}
-            center={map.center}
-            zoom={map.zoom}>
+            center={replyMap.center}
+            zoom={replyMap.zoom}>
             <Marker
-                lat={map.lat}
-                lon={map.lon}
+                lat={replyMap.lat}
+                lon={replyMap.lon}
             />
         </Map>
     )

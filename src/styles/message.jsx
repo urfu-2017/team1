@@ -66,6 +66,10 @@ export const MessageWrapper = withUiTheme(styled.article`
         max-width: 15%;
         margin-right: 5px;
     }
+    .messageBlock__citation-map {
+        max-width: 15%;
+        margin-right: 5px;
+    }
     .messageBlock__citation-wrapper {
         display: flex;
         align-items: center;

@@ -25,6 +25,7 @@ fragment messageCitation on Message {
     id
     text
     pictures
+    map
     sender {
       id
       name

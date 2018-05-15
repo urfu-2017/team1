@@ -78,6 +78,11 @@ export const ReplyPreview = styled.div`
         white-space: nowrap;
         overflow: hidden;
     }
+
+    .replyPreview__map {
+        max-width: 5%;
+        margin: 0 5px;
+    }
     
     .replyPreview__picture {
         max-width: 5%;
