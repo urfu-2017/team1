@@ -188,7 +188,9 @@ export default class MessageInput extends React.Component {
                     optimisticResponse: this.optimisticResponse(message),
                     update: this.updateCache
                 });
-            },
+            }
+        )
+        .catch(
             error => {
                 console.info(`Rejected: ${error}! Sorry, your browser does not support geolocation services.`)
             }
