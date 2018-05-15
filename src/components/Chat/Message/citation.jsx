@@ -1,5 +1,5 @@
 import React from 'react';
-import renderMap from './mapForReply';
+import renderMap from './map';
 
 import stripHtml from '../../../lib/stripHtml';
 
@@ -11,7 +11,7 @@ export default ({ message }) => {
             <div className="messageBlock__citation-wrapper">
                 {message.pictures && message.pictures.length &&
                 <img className="messageBlock__citation-picture" src={message.pictures[0]}/>}
-                {message.map && renderMap(message.map)}
+                {message.map && renderMap(message.map, '50%', '100px', 12)}
                 <span className="messageBlock__citation-text">{stripHtml(message.text)}</span>
             </div>
         </a>

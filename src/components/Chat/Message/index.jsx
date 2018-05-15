@@ -136,7 +136,7 @@ export default class Message extends React.PureComponent {
                         />
                         {ogdata.url && Object.keys(ogdata).length !== 0 && <Metadata ogdata={ogdata}/>}
                         {message.pictures && renderPictures(message.pictures)}
-                        {message.map && renderMap(message.map)}
+                        {message.map && renderMap(message.map, '100%', '200px', 11)}
                         {message.reactions && message.reactions.length > 0 &&
                         <Reactions
                             currentUserId={currentUser.id}
