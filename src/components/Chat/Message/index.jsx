@@ -133,11 +133,8 @@ export default class Message extends React.PureComponent {
         if (!this.userHasForwardOriginChat) return;
         e.stopPropagation();
         const { message, updateCurrentChatId } = this.props;
+        window.location.hash = message.id;
         updateCurrentChatId(message.chat.id);
-        // TODO: сделать нормальный скролл
-        setTimeout(
-            () => window.location = ('' + window.location).replace(/#[A-Za-z0-9_]*$/, '') + `#${message.id}`,
-            100);
     };
 
     render() {

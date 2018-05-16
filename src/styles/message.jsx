@@ -179,4 +179,7 @@ export const MessageWrapper = withUiTheme(styled.article`
         align-self: center;
         width: 90%;
     }
+    .messageForwarded__animation {
+        background: red;
+    }
 `);

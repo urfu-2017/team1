@@ -71,15 +71,50 @@ export default class Messages extends React.Component {
     };
 
     componentDidMount() {
-        this.scroll.isBottom = true;
-        this.scroll.scrollToBottom();
-    }
-
-    componentDidUpdate() {
-        if (this.scroll.isBottom) {
+        if (window.location.hash) {
+            this.scrollToMessage();
+        } else {
+            this.scroll.isBottom = true;
             this.scroll.scrollToBottom();
         }
     }
+
+    componentDidUpdate() {
+        if (window.location.hash) {
+            this.scrollToMessage();
+        } else if (this.scroll.isBottom) {
+            this.scroll.scrollToBottom();
+        }
+    }
+
+    scrollToMessage = () => {
+        const messageId = window.location.hash.slice(1);
+        const forwardedMessage = this.findMessageById(messageId);
+        if (!forwardedMessage) {
+            // при 1ой загрузке сообщения не загрузились
+            return;
+        }
+        this.removeHashFromUrl();
+        const messageWrapper = document.getElementById(forwardedMessage.id).parentNode;
+        // const messageWrapper = document.getElementById(forwardedMessage.id);
+        messageWrapper.scrollIntoView(true);
+        // test 
+        messageWrapper.style.border = 'solid 5px black';
+        messageWrapper.setAttribute('width', '500px');
+        messageWrapper.classList.add('messageForwarded__animation');
+        // setTimeout(() => messageWrapper.classList.remove('messageForwarded__animation'), 3000);
+    };
+
+    findMessageById = id => {
+        const { messages } = this.props;
+
+        return messages.find(message => message.id === id);
+    };
+
+    removeHashFromUrl = () => {
+        const urlWithoutHash = window.location.href.slice(0, window.location.href.indexOf('#'));
+        history.replaceState(null, null, urlWithoutHash);
+    };
 
     changePositionScroll = () => {
         this.scroll.isBottom =
