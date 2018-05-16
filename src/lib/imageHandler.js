@@ -38,10 +38,14 @@ class ImageHandler {
         this.readPictureFromInput(reader, () => {
             this.setTextDownloadArea('Сохраните фотографию');
             const dataUrl = reader.result;
-            const area = document.getElementById('area-for-drop');
-            area.style.backgroundImage = `url(${dataUrl})`;
+            this.setBackgroundImage(dataUrl);
         });
         this.state.backgroundUploaded = true;
+    };
+
+    setBackgroundImage = url => {
+        const area = document.getElementById('area-for-drop');
+        area.style.backgroundImage = `url(${url})`;
     };
 
     readPictureFromInput = (reader, cb) => {
