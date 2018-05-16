@@ -96,13 +96,9 @@ export default class Messages extends React.Component {
         }
         this.removeHashFromUrl();
         const messageWrapper = document.getElementById(forwardedMessage.id).parentNode;
-        // const messageWrapper = document.getElementById(forwardedMessage.id);
         messageWrapper.scrollIntoView(true);
-        // test 
-        messageWrapper.style.border = 'solid 5px black';
-        messageWrapper.setAttribute('width', '500px');
         messageWrapper.classList.add('messageForwarded__animation');
-        // setTimeout(() => messageWrapper.classList.remove('messageForwarded__animation'), 3000);
+        setTimeout(() => messageWrapper.classList.remove('messageForwarded__animation'), 5000);
     };
 
     findMessageById = id => {
