@@ -9,12 +9,13 @@ export const MessagesList = styled.section`
 `;
 
 export const Header = withUiTheme(styled.section`
+    position: relative;
     min-height: 58px;
     max-height: 58px;
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: ${props=> props.searchOpened ? 'space-around' : 'center'};
     color: #fff;
     background: ${props => !props.uiTheme.isNightTheme ? '#5682a3' : '#37474F'};
     .header__editor {
@@ -25,6 +26,26 @@ export const Header = withUiTheme(styled.section`
     .header__img {
         margin: 0 15px 0 0 !important;
         color: #fff !important;
+    }
+    .search {
+        outline:none;
+        cursor: pointer;
+        padding: 7px 16px;
+        border-radius: 5px;
+        background: lavender;
+        color: #000;
+    }
+    .search__icon {
+        right: 0;
+        position: absolute;
+        margin: 0 10px 0;
+        color: #fff !important;
+    }
+    .header__buttons {
+        min-width: 220px;
+        max-width: 220px;
+        display: flex;
+        justify-content: space-around;
     }
 `);
 

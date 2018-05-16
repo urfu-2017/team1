@@ -90,12 +90,19 @@ export default class Messages extends React.Component {
     // Не создаём новую функцию при каждом рендере
     setScroll = node => (this.scroll = node);
 
+    escapeRegExp = str => str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+
     getMessages = (messages, parent = null) => {
         const res = [];
+        const {searchText} = this.props;
         for (const message of messages) {
+            const isShow = new RegExp(this.escapeRegExp(searchText), 'gi').test(message.text) ||
+                (message.citation && new RegExp(this.escapeRegExp(searchText), 'gi')
+                    .test(message.citation.text));
+                    
             if (message.forwardedMessages && message.forwardedMessages.length > 0) {
                 res.push(...this.getMessages(message.forwardedMessages, message));
-            } else if (parent) {
+            } else if (parent && isShow) {
                 const forwardId = idXor(parent.id, message.id) + res.length;
                 res.push(
                     <Message
@@ -108,7 +115,9 @@ export default class Messages extends React.Component {
                         selected={this.state.selectedMessages.has(forwardId)}
                         selectionId={forwardId}
                     />);
-            } else {
+            } else if (isShow) {
+                console.log(message.text);
+                console.log(isShow);        
                 res.push(
                     <Message
                         key={message.id}

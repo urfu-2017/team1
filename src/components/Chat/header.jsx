@@ -1,26 +1,40 @@
 import React from 'react';
 import {graphql} from 'react-apollo';
+
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import Close from 'material-ui/svg-icons/navigation/close';
+import TextField from 'material-ui/TextField';
+import Search from 'material-ui/svg-icons/action/search';
 import {Header} from '../../styles/messages';
 import {UpdateChatTitle} from '../../graphql/mutations';
 import {chatTitle_ql} from '../../graphql/fragments';
 import withLocalState from '../../lib/withLocalState';
+import {clearStyles, searchStyles, searchHintStyles} from '../../styles/chats';
 
 
 @graphql(UpdateChatTitle.mutation, { props: UpdateChatTitle.map })
 export default class ChatHeader extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { title: '' };
+        this.state = { 
+            title: '',
+            searchText: ''
+        };
     }
 
     componentWillReceiveProps(props) {
-        const { editorOpened, loading, chat } = props;
-        editorOpened && !loading && this.setState({ title: chat.title });
+        const { editorOpened, loading, chat, searchOpened } = props;
+        editorOpened && !loading && this.setState({ title: chat.title});
+        !editorOpened && !searchOpened && this.setState({searchText: ''});
     }
 
     handleChange = event => this.setState({ title: event.target.value });
+
+    handleSearchText = event => this.setState({searchText: event.target.value});
+
+    clearSearchText = () => this.setState({ searchText: '' });
 
     handleSubmit = event => {
         const title = this.state.title;
@@ -51,6 +65,40 @@ export default class ChatHeader extends React.Component {
             }
         });
     };
+
+    searchHeader = () => {
+        const {editorOpened, searchOpened, toggleSearch, handleSearchText} = this.props;
+        return ( 
+            <React.Fragment>
+                { searchOpened &&
+                    <React.Fragment>
+                        <TextField
+                        hintText="Поиск по истории сообщений"
+                        onChange={this.handleSearchText}
+                        value={this.state.searchText}
+                        inputStyle={searchStyles}
+                        hintStyle={searchHintStyles}
+                        underlineFocusStyle={searchStyles}
+                    />
+                        <div className="header__buttons">
+                            <input
+                                type="button"
+                                value="ПОИСК"
+                                className="search"
+                                onClick={() => handleSearchText(this.state.searchText) }
+                            />
+                            <FlatButton 
+                                secondary={true} 
+                                label="Отмена" 
+                                onClick={() => { toggleSearch(); handleSearchText(''); } } 
+                            />
+                        </div>
+                    </React.Fragment>
+                }
+                {!searchOpened && !editorOpened &&
+                    <Search onClick={toggleSearch} className="search__icon"/>}
+            </React.Fragment>)
+    }
 
     groupChatHeader = (title, editorOpened) => {
         const switcher = editorOpened ?
@@ -92,12 +140,16 @@ export default class ChatHeader extends React.Component {
     };
 
     render() {
-        const { chat, editorOpened, loading } = this.props;
+        const { chat, editorOpened, loading, searchOpened, findMessages } = this.props;
         return (
-            <Header>
-                {loading && 'Загрузка...' ||
-                chat.groupchat && this.groupChatHeader(chat.title, editorOpened) ||
-                this.personalChatHeader(chat.title)}
+            <Header searchOpened={searchOpened}>
+                {
+                    loading && 'Загрузка...' ||
+                    !searchOpened && (chat.groupchat &&
+                    this.groupChatHeader(chat.title, editorOpened) ||
+                    this.personalChatHeader(chat.title))
+                }
+                {this.searchHeader()}
             </Header>
         );
     }
