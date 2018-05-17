@@ -42,6 +42,7 @@ export const ScrollButton = styled.div`
     color: #b7c5f5;
     position: fixed;
     bottom: 50px;
+    z-index: 6000;
     @media screen and (max-width: 1260px) {
         right: 50px;
     }
@@ -53,7 +54,6 @@ export const ScrollButton = styled.div`
         content: '▼';
         font-weight: 900;
         font-size: 20px;
-
     }
 `;
 
