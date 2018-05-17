@@ -73,13 +73,13 @@ export default class ChatHeader extends React.Component {
                 { searchOpened &&
                     <React.Fragment>
                         <TextField
-                        hintText="Поиск по истории сообщений"
-                        onChange={this.handleSearchText}
-                        value={this.state.searchText}
-                        inputStyle={searchStyles}
-                        hintStyle={searchHintStyles}
-                        underlineFocusStyle={searchStyles}
-                    />
+                            hintText="Поиск по истории сообщений"
+                            onChange={this.handleSearchText}
+                            value={this.state.searchText}
+                            inputStyle={searchStyles}
+                            hintStyle={searchHintStyles}
+                            underlineFocusStyle={searchStyles}
+                        />
                         <div className="header__buttons">
                             <input
                                 type="button"

@@ -115,9 +115,7 @@ export default class Messages extends React.Component {
                         selected={this.state.selectedMessages.has(forwardId)}
                         selectionId={forwardId}
                     />);
-            } else if (isShow) {
-                console.log(message.text);
-                console.log(isShow);        
+            } else if (isShow) {      
                 res.push(
                     <Message
                         key={message.id}
