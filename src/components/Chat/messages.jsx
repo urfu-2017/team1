@@ -80,6 +80,13 @@ export default class Messages extends React.Component {
         if (this.scroll.isBottom) {
             this.scroll.scrollToBottom();
         }
+        const { currentUserId, currentChatId, messages } = this.props;
+        if (messages.length > 0) {
+            const lastMessage = messages[messages.length - 1];
+            if (typeof lastMessage.id === 'string') {
+                this.messagesController.updateLastMessageChatToUser(currentUserId, currentChatId, lastMessage);
+            }
+        }
     }
 
     changePositionScroll = () => {

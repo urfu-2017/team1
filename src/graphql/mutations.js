@@ -172,6 +172,26 @@ ${fragments.chatData_ql}
 export const CreateGroupChat = mapper(CREATE_GROUP_CHAT_ql, 'createGroupChat');
 
 
+const CREATE_CHAT_AND_USER_LINK_MUTATION = gql`
+mutation CreateLastMessageChatToUser($chatId: String!, $userId: String!, $messageId: ID!) {
+  createLastMessageChatToUser(chatId: $chatId, userId: $userId, messageId: $messageId) {
+    id
+  }
+}
+`;
+
+const UPDATE_CHAT_AND_USER_LINK_MUTATION = gql`
+mutation UpdateLastMessageChatToUser($id: ID!, $messageId: ID!) {
+  updateLastMessageChatToUser(id: $id, messageId: $messageId) {
+    id
+  }
+}
+`;
+
+export const CreateChatAndUserLink = mapper(CREATE_CHAT_AND_USER_LINK_MUTATION, 'createLastMessageChatToUser');
+export const UpdateChatAndUserLink = mapper(UPDATE_CHAT_AND_USER_LINK_MUTATION, 'updateLastMessageChatToUser');
+
+
 const ADD_USER_TO_CHAT_ql = gql`
 mutation AddUserToChat($chatId: ID!, $userId: ID!) {
   addToChatOnUser(chatsChatId: $chatId, membersUserId: $userId) {

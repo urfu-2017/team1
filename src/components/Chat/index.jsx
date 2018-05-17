@@ -40,9 +40,6 @@ export default class Chat extends React.Component {
         chat: PropTypes.object
     };
 
-
-
-
     static defaultProps = {
         currentUser: {},
         localState: {},

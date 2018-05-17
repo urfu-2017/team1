@@ -4,7 +4,7 @@ import {Mutation, Query, graphql} from 'react-apollo';
 
 import ContactsList from './contactsList';
 import {GetUserChats, GetUserContacts, GetAllUsers} from '../graphql/queries';
-import {AddUserToContacts, CreateChat} from '../graphql/mutations';
+import {AddUserToContacts, CreateChat, CreateChatAndUserLink} from '../graphql/mutations';
 import withLocalState from '../lib/withLocalState';
 import {idXor} from '../lib/idXor';
 import {withCurrentUser} from '../lib/currentUserContext';

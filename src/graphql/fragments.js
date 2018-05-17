@@ -89,3 +89,12 @@ fragment chatData on Chat {
   }
 }
 `;
+
+export const lastMessageChatToUser_ql = gql`
+fragment lastMessageChatToUserData on LastMessageChatToUser {
+  id,
+  message {
+    createdAt
+  }
+}
+`
