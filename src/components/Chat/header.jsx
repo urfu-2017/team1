@@ -81,9 +81,8 @@ export default class ChatHeader extends React.Component {
                             underlineFocusStyle={searchStyles}
                         />
                         <div className="header__buttons">
-                            <input
-                                type="button"
-                                value="ПОИСК"
+                            <FlatButton
+                                label="Поиск"
                                 className="search"
                                 onClick={() => handleSearchText(this.state.searchText) }
                             />

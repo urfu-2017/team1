@@ -28,12 +28,7 @@ export const Header = withUiTheme(styled.section`
         color: #fff !important;
     }
     .search {
-        outline:none;
-        cursor: pointer;
-        padding: 7px 16px;
-        border-radius: 5px;
-        background: lavender;
-        color: #000;
+        color: #fff !important; 
     }
     .search__icon {
         right: 0;
