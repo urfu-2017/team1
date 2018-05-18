@@ -27,11 +27,11 @@ const mapper = (mutation, funcName, update, optimisticResponse) => ({
 
 const CREATE_MESSAGE_ql = gql`
 mutation CreateMessage($text: String!, $rawText: String, $chatId: ID!, $senderId: ID!, $clientSideId: Int!, 
-    $pictures: [String!] = null, $metadata: Json = null, $citationId: ID = null, $lifeTimeInSeconds: Int, 
-    $forwardedMessagesIds: [ID!]) {
+    $pictures: [String!] = null, $metadata: Json = null, $citationId: ID = null,
+    $lifeTimeInSeconds: Int, $map: Json = null, $forwardedMessagesIds: [ID!]) {
   createMessage(text: $text, rawText: $rawText, chatId: $chatId, senderId: $senderId, clientSideId: $clientSideId, 
-    pictures: $pictures, metadata: $metadata, citationId: $citationId, lifeTimeInSeconds: $lifeTimeInSeconds,
-    forwardedMessagesIds: $forwardedMessagesIds) {
+    pictures: $pictures, metadata: $metadata, citationId: $citationId,
+    lifeTimeInSeconds: $lifeTimeInSeconds, map: $map, forwardedMessagesIds: $forwardedMessagesIds) {
     id
     ...messageData
     ...messageCitation

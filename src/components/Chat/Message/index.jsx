@@ -13,6 +13,7 @@ import Reactions from './reactions';
 import Citation from './citation';
 import Metadata from './metadata';
 import renderPictures from './pictures';
+import renderMap from './map';
 import {DeleteMessage} from '../../../graphql/mutations';
 import withLocalState from '../../../lib/withLocalState';
 import formatDate from '../../../lib/formatDate';
@@ -177,6 +178,7 @@ export default class Message extends React.PureComponent {
                         />
                         {Object.keys(metadata).length !== 0 && <Metadata metadata={metadata}/>}
                         {message.pictures && renderPictures(message.pictures)}
+                        {message.map && renderMap(message.map, '100%', '200px', 11)}
                         {message.reactions && message.reactions.length > 0 &&
                         <Reactions
                             currentUserId={currentUser.id}

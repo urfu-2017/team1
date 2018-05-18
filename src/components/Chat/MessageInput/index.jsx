@@ -122,12 +122,49 @@ export default class MessageInput extends React.Component {
         this.toggleUploadWindow();
     };
 
+    getUserLocation = () => {
+        return new Promise((resolve, reject) => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    resolve(position.coords);
+                });
+            } else {
+                reject()
+            }
+        })
+    }
+
+    getMap = () => this.getUserLocation()
+        .then(
+            position => {
+                const lat = position.latitude;
+                const lon = position.longitude;
+                console.info('pos', position.latitude, position.longitude)
+
+                const message = this.message;
+                message.map = {
+                    lat,
+                    lon,                    
+                    center: [lat.toFixed(2), lon.toFixed(2)],
+                    zoom: 10
+                };
+
+                this.props.messagesController.createMessage(message, this.updateCache);
+            }
+        )
+        .catch(
+            error => {
+                console.info(`Rejected: ${error}! Sorry, your browser does not support geolocation services.`)
+            }
+        );
+
+
     render() {
         return (
             <Textarea>
                 <div className="inputField__style">
                     <AddPhoto className="icon" onClick={this.toggleUploadWindow}/>
-                    <Location className="icon"/>
+                    <Location className="icon" onClick={ this.getMap }/>
                     <textarea
                         className="textarea__style"
                         onKeyPress={this.handleSubmit}
