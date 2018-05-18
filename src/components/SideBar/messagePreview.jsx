@@ -33,7 +33,7 @@ export default class MessagePreview extends React.PureComponent {
                 (VISIBLE_TEXT_WINDOW - searchText.length) / 2));
             const sliceStart = Math.max(0, matchPosition - offset);
             const sliceEnd = sliceStart + VISIBLE_TEXT_WINDOW * 2;
-            text = '...' + text.slice(sliceStart, sliceEnd);
+            text = `...${text.slice(sliceStart, sliceEnd)}`;
             matchPosition = offset + 3;
         }
         return (

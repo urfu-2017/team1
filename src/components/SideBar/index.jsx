@@ -39,14 +39,14 @@ export default class SideBar extends React.Component {
     };
 
     handleSearchKeyPress = event => {
-        if (event.key !== 'Enter') {
+        if (event.which !== 13) {
             return;
         }
         this.setState({ forceSearchRefetch: true });
     };
 
-    get inSearchMode() {
-        return this.state.searchText && this.state.searchText.length > 0;
+    get isInSearchMode() {
+        return Boolean(this.state.searchText);
     }
 
     toggleParanja = () =>
@@ -87,7 +87,7 @@ export default class SideBar extends React.Component {
                                 underlineFocusStyle={searchStyles}
                                 fullWidth={true}
                             />
-                            {this.inSearchMode &&
+                            {this.isInSearchMode &&
                             <IconButton
                                 className="menuHeader__clear"
                                 onClick={this.clearSearchText}
@@ -97,7 +97,7 @@ export default class SideBar extends React.Component {
                         </div>
                     </AppBar>
                     <Scrollbars universal>
-                        {this.inSearchMode &&
+                        {this.isInSearchMode &&
                         <SearchResults
                             currentUserId={currentUser.id}
                             forceRefetch={this.state.forceSearchRefetch}
