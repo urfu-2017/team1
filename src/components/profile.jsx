@@ -27,7 +27,11 @@ export default class ProfileEditor extends Component {
         super(props);
 
         this.imageHandler = new ImageHandler(this.props.currentUser.avatarUrl);
-        this.state = { isUploading: false };
+        this.state = {
+            isUploading: false,
+            snackbarOpened: false,
+            statusMessage: ''
+        };
     }
 
     saveAvatar = () => {
@@ -36,27 +40,24 @@ export default class ProfileEditor extends Component {
 
         this.imageHandler.readPictureFromInput(reader, async () => {
             const avatarData = reader.result;
-            this.setSnackbarError();
             const uploadTask = this.props.updateUserAvatar({
                 userId: userId,
                 avatarUrl: avatarData
-            }).catch(this.toggleSnackbar);
+            })
+                .then(this.toggleSnackbar.bind(this, 'Загружено'))
+                .catch(this.toggleSnackbar.bind(this, 'Ошибка :('));
             this.imageHandler.setTextDownloadArea('');
             this.setState({ isUploading: true });
-
             await uploadTask;
             this.setState({ isUploading: false });
-            this.setState({ statusMessage: 'Загружено' });
-            this.toggleSnackbar();
 
             setTimeout(() => this.imageHandler.setTextDownloadArea(''), 8000);
-            this.setState({ open: true });
         });
     };
 
-    setSnackbarError = () => this.setState({ statusMessage: 'Ошибка :(' });
-
-    toggleSnackbar = () => this.setState(prev => ({ snackbarOpened: !prev.snackbarOpened }));
+    toggleSnackbar = statusMessage => {
+        this.setState(prev => ({ snackbarOpened: !prev.snackbarOpened, statusMessage }));
+    };
 
     changeBackground = () => {
         this.imageHandler.state.backgroundUploaded = false;
@@ -87,7 +88,7 @@ export default class ProfileEditor extends Component {
                     id="area-for-drop">
                     <p className="text" id="download_image_text">Загрузить фото</p>
                 </DownloadImage>
-                {this.state.isUploading && <LoadScreen />}
+                {this.state.isUploading && <LoadScreen/>}
                 <div className="buttons">
                     <DownloadButton
                         id="upload"
@@ -105,6 +106,7 @@ export default class ProfileEditor extends Component {
                 <Snackbar
                     open={this.state.snackbarOpened}
                     message={this.state.statusMessage}
+                    onRequestClose={this.toggleSnackbar}
                     autoHideDuration={3000}
                 />
             </Editor>

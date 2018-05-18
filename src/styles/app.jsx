@@ -12,6 +12,10 @@ export const getTheme = isNightTheme => ({
     appBar: {
         'min-height': '59px',
         'max-height': '59px'
+    },
+    snackbar: {
+        backgroundColor: !isNightTheme ? '#5682a3' : '#37474F',
+        textColor: '#fff'
     }
 });
 
