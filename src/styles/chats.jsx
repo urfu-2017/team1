@@ -19,7 +19,6 @@ export const searchHintStyles = {
     color: grey200
 };
 
-
 export const Header = styled.header`
     height: 49px;
     background: ${props => !props.isNightTheme ? '#5682a3' : '#37474F'};
@@ -30,13 +29,6 @@ export const Header = styled.header`
         cursor: pointer;
         color: #fff;
     }
-    
-`;
-
-export const SearchInput = styled.input`
-    height: 40px;
-    width: 80%;
-    visibility: hidden;
 `;
 
 export const ChatsList = withUiTheme(styled.section`
@@ -50,6 +42,16 @@ export const ChatsList = withUiTheme(styled.section`
     .menuHeader {
         min-height: 59px;
         max-height: 59px; 
+    }
+    .menuHeader__search {
+        display: flex;
+        margin: auto;
+        align-items: center;
+        width: 100%;
+    }
+    .menuHeader__clear {
+        margin-left: -35px !important;
+        color: #fff !important;
     }
 `);
 

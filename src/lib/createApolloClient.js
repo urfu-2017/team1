@@ -1,5 +1,6 @@
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
+import DebounceLink from 'apollo-link-debounce';
 import { withClientState } from 'apollo-link-state';
 import { BatchHttpLink } from 'apollo-link-batch-http';
 import { WebSocketLink } from 'apollo-link-ws';
@@ -62,6 +63,7 @@ function create(httpUrl, wsUrl, initialState) {
 
         link = ApolloLink.from([
             stateLink,
+            new DebounceLink(400),
             ApolloLink.split(
                 ({ query }) => {
                     const { kind, operation } = getMainDefinition(query);

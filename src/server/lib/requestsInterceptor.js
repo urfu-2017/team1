@@ -19,13 +19,18 @@ const savePictureOnCloudinary = async (srcInBase64) => {
 
 const delayForDeleteMessage = ms => new Promise(_ => setTimeout(_, ms));
 
+const stripHtmlregex = /(<([^>]+)>)/ig;
+const stripHtml = text => text.replace(stripHtmlregex, '');
+
 module.exports = async body => {
     if (body.operationName === 'CreateMessage') {
         const { variables } = body;
         let { text, pictures } = variables;
         variables.metadata = await getMetadata(text);
         text = escape(text);
-        variables.text = emoji.emojify(marked(text));
+        text = emoji.emojify(marked(text));
+        variables.text = text;
+        variables.rawText = stripHtml(text);
         if (pictures) {
             pictures[0] = await savePictureOnCloudinary(pictures[0]);
         }
