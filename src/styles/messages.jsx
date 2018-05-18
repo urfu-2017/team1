@@ -11,7 +11,7 @@ export const MessagesList = withUiTheme(styled.section`
     }
     @keyframes light {
         from {
-            background: ${props => !props.uiTheme.isNightTheme ? '#e7ebf0' : '#616161'};
+            background: ${props => !props.uiTheme.isNightTheme ? '#9cc' : '#f7f7fc'};
         }
         to {
             background: ${props => (props.uiTheme.isNightTheme ? '#212121' : '#fff')};

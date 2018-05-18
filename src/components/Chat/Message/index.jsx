@@ -41,14 +41,18 @@ export default class Message extends React.PureComponent {
         message: PropTypes.object,
         sender: PropTypes.object,
         currentUser: PropTypes.object,
-        replyToMessage: PropTypes.func
+        replyToMessage: PropTypes.func,
+        currentChatId: PropTypes.string,
+        scrollToMessage: PropTypes.func
     };
 
     static defaultProps = {
         isFromSelf: false,
         message: {},
         sender: {},
-        currentUser: {}
+        currentUser: {},
+        currentChatId: '',
+        scrollToMessage: () => {}
     };
 
     constructor(props) {
@@ -129,7 +133,11 @@ export default class Message extends React.PureComponent {
         e.stopPropagation();
         const { message, updateCurrentChatId } = this.props;
         window.location.hash = message.id;
-        updateCurrentChatId(message.chat.id);
+        if (message.chat.id === this.props.currentChatId) {
+            this.props.scrollToMessage();
+        } else {
+            updateCurrentChatId(message.chat.id);
+        }
     };
 
     render() {
