@@ -57,9 +57,13 @@ export default class MessageInput extends React.Component {
 
     handleChange = event => {
         const message = event.target.value;
+        this.setMessage(message);
+    };
+
+    setMessage = message => {
         this.setState({ message });
         localStorage.setItem(this.storageKey, message);
-    };
+    }
 
     toggleEmojiPicker = () => this.setState(
         prev => ({ emojiPickerVisible: !prev.emojiPickerVisible })
@@ -181,8 +185,6 @@ export default class MessageInput extends React.Component {
                         value={this.state.message}
                     />
                     {!this.props.groupChat && <LifeTimeDropOutMenu setLifeTime={this.setLifeTime}/>}
-                    <Microphone className="icon"/>
-                    <LifeTimeDropOutMenu setLifeTime={this.setLifeTime}/>
                     <IconButton 
                         touch={true}
                         disableTouchRipple

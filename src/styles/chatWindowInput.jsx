@@ -40,8 +40,8 @@ export const Textarea = withUiTheme(styled.div`
     }
     .pulse {
         border-radius: 50% !important;
-        animation: ${pulse} 4s linear infinite;
-        background-color: #eee !important;
+        animation: ${pulse} 2s linear infinite;
+        background-color: #5682a3 !important;
     }
 
     .icon {

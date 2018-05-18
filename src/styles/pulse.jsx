@@ -6,16 +6,16 @@ export const pulse = keyframes`
     }
 
     30%{
-        transform: scale(1.1);
+        transform: scale(1.3);
     }
 
     60%{
-        transform: scale(1.2);
-    }
-    80%{
         transform: scale(1.1);
     }
-    100%{
+    80%{
         transform: scale(1);
+    }
+    100%{
+        transform: scale(.9);
     }
 `
