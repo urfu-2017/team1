@@ -13,8 +13,7 @@ import Avatar from 'material-ui/Avatar';
 
 import Contacts from '../contacts';
 import {GetUserChats} from '../../graphql/queries';
-import {CreateGroupChat} from '../../graphql/mutations';
-import { withUiTheme } from '../../lib/withUiTheme';
+import {CreateGroupChat, UpdateUserIsNightTheme} from '../../graphql/mutations';
 import withLocalState from '../../lib/withLocalState';
 
 
@@ -27,7 +26,6 @@ const getNewChat = currentUser => ({
 
 
 @withLocalState
-@withUiTheme
 export default class Menu extends React.Component {
     static propTypes = {
         currentUser: PropTypes.shape(),
@@ -62,7 +60,7 @@ export default class Menu extends React.Component {
     );
 
     render() {
-        const { currentUser, mainComponentChanger, toggleUiTheme } = this.props;
+        const { currentUser, mainComponentChanger } = this.props;
         return (
             <MenuRoot>
                 <List className="list">
@@ -71,20 +69,20 @@ export default class Menu extends React.Component {
                         className="menu"
                         onClick={mainComponentChanger('Profile')}
                         leftAvatar={
-                            <Avatar src={currentUser.avatarUrl} />
+                            <Avatar src={currentUser.avatarUrl}/>
                         }
                     >
                         {currentUser.name}
                     </ListItem>
                     <ListItem
-                        leftIcon={<Person />}
+                        leftIcon={<Person/>}
                         className="list__item"
                         onClick={mainComponentChanger('Contacts')}
                     >
                         Контакты
                     </ListItem>
                     <ListItem
-                        leftIcon={<ModeEdit />}
+                        leftIcon={<ModeEdit/>}
                         className="list__item"
                         onClick={mainComponentChanger('Profile')}
                     >
@@ -92,7 +90,7 @@ export default class Menu extends React.Component {
                     </ListItem>
                     {this.createChatMutation(currentUser, (onClick) => (
                         <ListItem
-                            leftIcon={<Group />}
+                            leftIcon={<Group/>}
                             className="list__item"
                             onClick={onClick}
                         >
@@ -100,7 +98,15 @@ export default class Menu extends React.Component {
                         </ListItem>
                     ))}
                 </List>
-                <FlatButton label="Сменить тему" onClick={toggleUiTheme}/>
+                <Mutation
+                    mutation={UpdateUserIsNightTheme.mutation}
+                    variables={{ userId: currentUser.id, isNightTheme: !currentUser.isNightTheme}}
+                    optimisticResponse={UpdateUserIsNightTheme
+                        .optimisticResponse(currentUser.id, !currentUser.isNightTheme)}
+                >{
+                    updateUserIsNightTheme =>
+                        <FlatButton label="Сменить тему" onClick={updateUserIsNightTheme}/>
+                }</Mutation>
             </MenuRoot>
         );
     }

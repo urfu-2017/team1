@@ -1,12 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import {graphql} from 'react-apollo';
 
-import {grey800} from 'material-ui/styles/colors';
 import LoadScreen from './ui/loadScreen';
 import {GetCurrentUser} from '../graphql/queries';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import Chat from './Chat';
@@ -24,15 +21,13 @@ import {
 import {userSubscriptionDataHandler, chatSubscriptionDataHandler} from '../graphql/dataHandlers';
 import withLocalState from '../lib/withLocalState';
 
+
 @withLocalState
-@graphql(
-    GetCurrentUser.query,
-    {
-        skip: ({ userId }) => !userId,
-        options: ({ userId }) => ({ variables: { userId } }),
-        props: GetCurrentUser.map
-    }
-)
+@graphql(GetCurrentUser.query, {
+    skip: ({ userId }) => !userId,
+    options: ({ userId }) => ({ variables: { userId } }),
+    props: GetCurrentUser.map
+})
 export default class App extends React.Component {
     constructor(props) {
         super(props);
@@ -60,16 +55,25 @@ export default class App extends React.Component {
         }
     };
 
-    toggleUiTheme = () => this.setState(prev => ({ isNightTheme: !prev.isNightTheme }));
+    toggleUiTheme = () => {
+        const { userId, currentUser, updateUserIsNightTheme } = this.props;
+
+        currentUser.isNightTheme = !currentUser.isNightTheme;
+        updateUserIsNightTheme({
+            userId,
+            isNightTheme: !currentUser.isNightTheme
+        });
+    };
 
     render() {
         // Динамически выбираем, какой компонент будет отображён в основном окне
         const MainComponent = this.components[this.state.mainComponentName];
         const { currentUser } = this.props;
         !currentUser.error && !currentUser.loading && this.subscribe();
+        const isNightTheme = currentUser.isNightTheme || false;
         return (
-            <UiThemeProvider value={{isNightTheme: this.state.isNightTheme, toggleUiTheme: this.state.toggleUiTheme}}>
-                <MuiThemeProvider muiTheme={getMuiTheme(getTheme(this.state.isNightTheme))}>
+            <UiThemeProvider value={isNightTheme}>
+                <MuiThemeProvider muiTheme={getMuiTheme(getTheme(isNightTheme))}>
                     <Wrapper>
                         {currentUser.error && <p>Error</p> ||
                         currentUser.loading && App.LoadScreen ||
