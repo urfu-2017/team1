@@ -51,6 +51,7 @@ export const MessageWrapper = withUiTheme(styled.article`
         align-items: center;
     }
     .mood {
+        cursor: pointer;
         color: ${props => (props.uiTheme.isNightTheme ? '#EEE' : props.isFromSelf ? '#fff' : '#454648')} !important;
     }
     .messageBlock__citation {

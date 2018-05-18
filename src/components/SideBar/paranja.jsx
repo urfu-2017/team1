@@ -23,6 +23,7 @@ export default class Paranja extends React.Component {
             <ParanjaWrapper onClick={toggleParanja}>
                 <Menu
                     currentUser={currentUser}
+                    toggleParanja={toggleParanja}
                     mainComponentChanger={mainComponentChanger}
                 />
             </ParanjaWrapper>

@@ -60,7 +60,7 @@ export default class Menu extends React.Component {
     );
 
     render() {
-        const { currentUser, mainComponentChanger } = this.props;
+        const { currentUser, mainComponentChanger, toggleParanja } = this.props;
         return (
             <MenuRoot>
                 <List className="list">
@@ -105,7 +105,12 @@ export default class Menu extends React.Component {
                         .optimisticResponse(currentUser.id, !currentUser.isNightTheme)}
                 >{
                     updateUserIsNightTheme =>
-                        <FlatButton label="Сменить тему" onClick={updateUserIsNightTheme}/>
+                        <FlatButton
+                            label="Сменить тему"
+                            onClick={() => {
+                                toggleParanja();
+                                updateUserIsNightTheme();
+                            }} />
                 }</Mutation>
             </MenuRoot>
         );
