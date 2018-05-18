@@ -143,7 +143,7 @@ export default class Message extends React.PureComponent {
     render() {
         const {
             loading, error, message, user, currentUser,
-            isFromSelf, forwardParent, selected
+            isFromSelf, forwardParent, selected, hash
         } = this.props;
         // небольшой костыль: optimistic response присваивает сообщениям
         // рандомный отрицательный id, чтобы не хранить лишнее поле
@@ -155,7 +155,7 @@ export default class Message extends React.PureComponent {
             <React.Fragment>
                 <MessageWrapper isFromSelf={isFromSelf} emojiPickerVisible={this.state.emojiPickerVisible}
                                 onClick={this.toggleSelected} selected={selected}>
-                    <div id={message.id} className="messageBlock"
+                    <div id={hash} className="messageBlock"
                          onMouseEnter={this.setMouseOver} onMouseLeave={this.unsetMouseOver}>
                         {forwardParent &&
                         <p

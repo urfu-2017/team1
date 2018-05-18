@@ -91,13 +91,13 @@ export default class Messages extends React.Component {
 
     scrollToMessage = () => {
         const messageId = window.location.hash.slice(1);
-        const forwardedMessage = this.props.messages.find(message => message.id === messageId);
-        if (!forwardedMessage) {
+        let messageWrapper = document.getElementById(messageId);
+        if (!messageWrapper) {
             // при 1ой загрузке сообщения не загрузились
             return;
         }
         removeHashFromUrl();
-        const messageWrapper = document.getElementById(forwardedMessage.id).parentNode;
+        messageWrapper = messageWrapper.parentNode;
         messageWrapper.scrollIntoView(true);
         messageWrapper.classList.add('messageForwarded__animation');
         setTimeout(() => messageWrapper.classList.remove('messageForwarded__animation'), 5000);
@@ -122,7 +122,7 @@ export default class Messages extends React.Component {
             const isShow = new RegExp(this.escapeRegExp(searchText), 'gi').test(message.text) ||
                 (message.citation && new RegExp(this.escapeRegExp(searchText), 'gi')
                     .test(message.citation.text));
-                    
+
             if (message.forwardedMessages && message.forwardedMessages.length > 0) {
                 res.push(...this.getMessages(message.forwardedMessages, message));
             } else if (parent && isShow) {
@@ -130,6 +130,7 @@ export default class Messages extends React.Component {
                 res.push(
                     <Message
                         key={forwardId}
+                        hash={forwardId}
                         message={message}
                         isFromSelf={parent.sender.id === this.props.currentUserId}
                         replyToMessage={this.replyToMessage}
@@ -140,10 +141,11 @@ export default class Messages extends React.Component {
                         currentChatId={this.props.currentChatId}
                         scrollToMessage={this.bindedScrollToMessage}
                     />);
-            } else if (isShow) {      
+            } else if (isShow) {
                 res.push(
                     <Message
                         key={message.id}
+                        hash={message.id}
                         message={message}
                         isFromSelf={message.sender.id === this.props.currentUserId}
                         replyToMessage={this.replyToMessage}

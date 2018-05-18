@@ -24,8 +24,7 @@ export default class SearchResults extends React.PureComponent {
 
     goToMessage = (chat, messageId) => {
         this.props.selectChat(chat);
-        // TODO:
-        window.location = ('' + window.location).replace(/#[A-Za-z0-9_]*$/, '') + `#${messageId}`;
+        window.location.hash = messageId;
         this.setState({ selectedMessageId: messageId });
     };
 

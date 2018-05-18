@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 
 import * as fragments from './fragments';
 import {processChat} from './dataHandlers';
+import {idXor} from '../lib/idXor';
 
 
 const mapper = (query, selector, name, variables) => ({
@@ -181,6 +182,14 @@ query SearchMessages($filter: MessageFilter!) {
     id
     rawText
     createdAt
+    citation {
+      id
+      rawText
+    }
+    forwardedMessages {
+      id
+      rawText
+    }
     chat {
       id
     }
@@ -199,9 +208,45 @@ const searchMessages_vars = (currentuserId, substring) => ({
                 id: currentuserId
             }
         },
-        rawText_contains: substring
+        OR: [
+            { rawText_contains: substring },
+            { forwardedMessages_some: { rawText_contains: substring } },
+            { citation: { rawText_contains: substring } },
+        ]
     }
 });
 
-export const SearchMessages = mapper(SEARCH_MESSAGES_ql, data => data.allMessages,
-    'searchMessages', searchMessages_vars);
+
+export const SearchMessages = {
+    query: SEARCH_MESSAGES_ql,
+    map: (req) => {
+        const props = {
+            data: req.data,
+            loading: req.data && req.data.loading || !req.data && true,
+            error: req.data && req.data.error || null
+        };
+        if (req.data.allMessages) {
+            props.searchMessages = req.data.allMessages
+                .reduce((acc, curr) => {
+                    if (!curr.forwardedMessages.length) {
+                        acc.push(curr);
+                    } else {
+                        acc.push(...curr.forwardedMessages.map((msg, i) => ({
+                            ...msg, id: idXor(curr.id, msg.id) + i,
+                            sender: curr.sender, chat: curr.chat,
+                            createdAt: curr.createdAt
+                        })))
+                    }
+                    return acc;
+                }, [])
+                .map(msg => {
+                    const rawText = [msg.rawText, msg.citation && msg.citation.rawText]
+                        .filter(Boolean)
+                        .join('\n');
+                    return { ...msg, rawText };
+                });
+        }
+        return props;
+    },
+    variables: searchMessages_vars
+};
