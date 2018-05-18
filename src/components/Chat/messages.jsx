@@ -26,7 +26,8 @@ export default class Messages extends React.Component {
         currentChatId: PropTypes.string,
         loading: PropTypes.bool,
         error: PropTypes.object,
-        data: PropTypes.object
+        data: PropTypes.object,
+        groupChat: PropTypes.bool
     };
 
     static defaultProps = {
@@ -120,12 +121,19 @@ export default class Messages extends React.Component {
     // Не создаём новую функцию при каждом рендере
     setScroll = node => (this.scroll = node);
 
+    escapeRegExp = str => str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+
     getMessages = (messages, parent = null) => {
         const res = [];
+        const {searchText} = this.props;
         for (const message of messages) {
+            const isShow = new RegExp(this.escapeRegExp(searchText), 'gi').test(message.text) ||
+                (message.citation && new RegExp(this.escapeRegExp(searchText), 'gi')
+                    .test(message.citation.text));
+                    
             if (message.forwardedMessages && message.forwardedMessages.length > 0) {
                 res.push(...this.getMessages(message.forwardedMessages, message));
-            } else if (parent) {
+            } else if (parent && isShow) {
                 const forwardId = idXor(parent.id, message.id) + res.length;
                 res.push(
                     <Message
@@ -138,7 +146,7 @@ export default class Messages extends React.Component {
                         selected={this.state.selectedMessages.has(forwardId)}
                         selectionId={forwardId}
                     />);
-            } else {
+            } else if (isShow) {      
                 res.push(
                     <Message
                         key={message.id}
@@ -157,7 +165,8 @@ export default class Messages extends React.Component {
     render() {
         const {
             loading, error, messages, currentChatId,
-            currentUserId, uiTheme: { isNightTheme }
+            currentUserId, uiTheme: { isNightTheme },
+            groupChat
         } = this.props;
 
         let content = null;
@@ -207,7 +216,8 @@ export default class Messages extends React.Component {
                         messagesController={this.messagesController}
                         citedMessage={this.state.citedMessage}
                         resetReply={this.replyToMessage}
-                        updateMessages={this.props.data.updateQuery}/>}
+                        updateMessages={this.props.data.updateQuery}
+                        groupChat={groupChat}/>}
                 </Input>
             </React.Fragment>
         );

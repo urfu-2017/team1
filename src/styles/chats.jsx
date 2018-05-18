@@ -1,5 +1,24 @@
 import styled from 'styled-components';
 import { withUiTheme } from '../lib/withUiTheme';
+import {grey50, grey200} from 'material-ui/styles/colors';
+
+
+export const clearStyles = {
+    width: 25,
+    height: 25,
+    color: grey50
+};
+
+export const searchStyles = {
+    color: grey50,
+    borderColor: grey50
+};
+
+export const searchHintStyles = {
+    borderColor: grey200,
+    color: grey200
+};
+
 
 export const Header = styled.header`
     height: 49px;
@@ -11,6 +30,7 @@ export const Header = styled.header`
         cursor: pointer;
         color: #fff;
     }
+    
 `;
 
 export const SearchInput = styled.input`

@@ -40,6 +40,9 @@ export default class Chat extends React.Component {
         chat: PropTypes.object
     };
 
+
+
+
     static defaultProps = {
         currentUser: {},
         localState: {},
@@ -50,14 +53,14 @@ export default class Chat extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { editorOpened: false };
+        this.state = { editorOpened: false, searchOpened: false, searchText: ''  };
     }
 
     componentWillReceiveProps(props) {
-        const { editorOpened, localState } = props;
+        const { editorOpened, searchOpened, localState } = props;
         if (this.props.editorOpened !== editorOpened ||
             localState.currentChatId !== this.props.localState.currentChatId)
-            this.setState({ editorOpened });
+            this.setState({ editorOpened, searchOpened, searchText: '' });
     }
 
     getMainComponent(chat, currentUser) {
@@ -83,16 +86,20 @@ export default class Chat extends React.Component {
             <MessagesWithData
                 currentChatId={chat.id || null}
                 currentUserId={currentUser.id}
+                groupChat={chat.groupchat}
+                searchText={this.state.searchText}
             />
         );
-
     }
 
     toggleEditor = () => this.setState(prev => ({ editorOpened: !prev.editorOpened }));
 
+    toggleSearch = () => this.setState(prev => ({ searchOpened: !prev.searchOpened }));
+
+    handleSearchText = searchText => this.setState({searchText});
+    
     render() {
         let { localState, loading, error, chat, currentUser } = this.props;
-
         // const {id, title, picture, createdAt, members, groupchat} = chat;
         let content = null;
         if (!currentUser || !currentChatSet(localState)) {
@@ -102,7 +109,7 @@ export default class Chat extends React.Component {
         } else if (loading || !chat) {
             content = (
                 <React.Fragment>
-                    <Header loading={true}/>
+                    <Header loading={true} searchOpened={false}/>
                     {this.getMainComponent(chat, currentUser)}
                 </React.Fragment>
             );
@@ -115,7 +122,11 @@ export default class Chat extends React.Component {
                         chat={chat}
                         loading={false}
                         toggleEditor={this.toggleEditor}
-                        editorOpened={this.state.editorOpened}/>
+                        toggleSearch={this.toggleSearch}
+                        searchOpened={this.state.searchOpened}
+                        editorOpened={this.state.editorOpened}
+                        handleSearchText={this.handleSearchText}
+                    />
                     {this.getMainComponent(chat, currentUser)}
                 </React.Fragment>
             );

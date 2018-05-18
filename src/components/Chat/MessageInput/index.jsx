@@ -25,13 +25,15 @@ export default class MessageInput extends React.Component {
     static propTypes = {
         currentChatId: PropTypes.string,
         currentUserId: PropTypes.string,
-        emoji: PropTypes.bool
+        emoji: PropTypes.bool,
+        groupChat: PropTypes.bool
     };
 
     static defaultProps = {
         currentChatId: '',
         currentUserId: '',
-        emoji: false
+        emoji: false,
+        groupChat: true
     };
 
     constructor(props) {
@@ -133,7 +135,7 @@ export default class MessageInput extends React.Component {
                         placeholder="Сообщение..."
                         value={this.state.message}
                     />
-                    <LifeTimeDropOutMenu setLifeTime={this.setLifeTime}/>
+                    {!this.props.groupChat && <LifeTimeDropOutMenu setLifeTime={this.setLifeTime}/>}
                     <Microphone className="icon"/>
                     <Mood className="icon" onClick={this.toggleEmojiPicker}/>
                 </div>

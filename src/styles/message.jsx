@@ -22,7 +22,7 @@ export const MessageWrapper = withUiTheme(styled.article`
     .messageBlock {
         z-index: 10;
         max-width: 51%;
-        min-width: 338px;
+        min-width: 340px;
         border-radius: 5px;
         min-height: 25px;
         height:auto;
