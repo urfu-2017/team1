@@ -1,4 +1,3 @@
-
 export class SpeechRecognition {
     constructor() {
         this.message = []
@@ -27,12 +26,12 @@ export class SpeechRecognition {
     start = setMessage => {
         this.createRecognizer();
         
-        if(this.recognizer) {
-            if(!navigator.getUserMedia) {
+        if (this.recognizer) {
+            if (!navigator.getUserMedia) {
                 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||
                     navigator.mozGetUserMedia || navigator.msGetUserMedia;
             }
-            if(navigator.getUserMedia) {
+            if (navigator.getUserMedia) {
                 navigator.getUserMedia({
                     audio: true
                 }, () => {
@@ -40,7 +39,6 @@ export class SpeechRecognition {
                 }, () => {
                     this.tooltip = "Разрешите использовать микрофон";
                 })
-
             }
             else {
                 this.tooltip = "Не поддерживается getUserMedia"
@@ -59,6 +57,7 @@ export class SpeechRecognition {
             };
         } 
     }
+
     stop = () => {
         this.recognizer.stop();
         console.log('stop');
