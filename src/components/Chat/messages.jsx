@@ -15,6 +15,7 @@ import {SubscribeToMessages} from '../../graphql/subscriptions';
 import {withUiTheme} from '../../lib/withUiTheme';
 import MessagesController from './messagesController';
 import {idXor} from '../../lib/idXor';
+import removeHashFromUrl from '../../lib/removeHashFromUrl';
 
 
 @withUiTheme
@@ -72,15 +73,37 @@ export default class Messages extends React.Component {
     };
 
     componentDidMount() {
-        this.scroll.isBottom = true;
-        this.scroll.scrollToBottom();
-    }
-
-    componentDidUpdate() {
-        if (this.scroll.isBottom) {
+        if (window.location.hash) {
+            this.scrollToMessage();
+        } else {
+            this.scroll.isBottom = true;
             this.scroll.scrollToBottom();
         }
     }
+
+    componentDidUpdate() {
+        if (window.location.hash) {
+            this.scrollToMessage();
+        } else if (this.scroll.isBottom) {
+            this.scroll.scrollToBottom();
+        }
+    }
+
+    scrollToMessage = () => {
+        const messageId = window.location.hash.slice(1);
+        const forwardedMessage = this.props.messages.find(message => message.id === messageId);
+        if (!forwardedMessage) {
+            // при 1ой загрузке сообщения не загрузились
+            return;
+        }
+        removeHashFromUrl();
+        const messageWrapper = document.getElementById(forwardedMessage.id).parentNode;
+        messageWrapper.scrollIntoView(true);
+        messageWrapper.classList.add('messageForwarded__animation');
+        setTimeout(() => messageWrapper.classList.remove('messageForwarded__animation'), 5000);
+    };
+
+    bindedScrollToMessage = this.scrollToMessage.bind(this);
 
     changePositionScroll = () => {
         this.scroll.isBottom =
@@ -114,6 +137,8 @@ export default class Messages extends React.Component {
                         forwardParent={parent}
                         selected={this.state.selectedMessages.has(forwardId)}
                         selectionId={forwardId}
+                        currentChatId={this.props.currentChatId}
+                        scrollToMessage={this.bindedScrollToMessage}
                     />);
             } else if (isShow) {      
                 res.push(
@@ -125,6 +150,8 @@ export default class Messages extends React.Component {
                         selectMessage={this.selectMessage}
                         selected={this.state.selectedMessages.has(message.id)}
                         selectionId={message.id}
+                        currentChatId={this.props.currentChatId}
+                        scrollToMessage={this.bindedScrollToMessage}
                     />);
             }
         }

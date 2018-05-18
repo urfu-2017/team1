@@ -2,11 +2,22 @@ import styled from 'styled-components';
 import { withUiTheme } from '../lib/withUiTheme';
 
 
-export const MessagesList = styled.section`
+export const MessagesList = withUiTheme(styled.section`
     width: 100%;
     display: flex;
     flex-direction: column;
-`;
+    .messageForwarded__animation {
+        animation: light 5s 1 ease-in;
+    }
+    @keyframes light {
+        from {
+            background: ${props => !props.uiTheme.isNightTheme ? '#9cc' : '#f7f7fc'};
+        }
+        to {
+            background: ${props => (props.uiTheme.isNightTheme ? '#212121' : '#fff')};
+        }
+    }
+`);
 
 export const Header = withUiTheme(styled.section`
     position: relative;
