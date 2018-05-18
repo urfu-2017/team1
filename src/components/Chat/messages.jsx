@@ -82,7 +82,6 @@ export default class Messages extends React.Component {
     }
 
     componentDidUpdate() {
-        console.log('update');
         if (window.location.hash) {
             this.scrollToMessage();
         } else if (this.scroll.isBottom) {
@@ -103,6 +102,8 @@ export default class Messages extends React.Component {
         messageWrapper.classList.add('messageForwarded__animation');
         setTimeout(() => messageWrapper.classList.remove('messageForwarded__animation'), 5000);
     };
+
+    bindedScrollToMessage = this.scrollToMessage.bind(this);
 
     changePositionScroll = () => {
         this.scroll.isBottom =
@@ -137,7 +138,7 @@ export default class Messages extends React.Component {
                         selected={this.state.selectedMessages.has(forwardId)}
                         selectionId={forwardId}
                         currentChatId={this.props.currentChatId}
-                        scrollToMessage={this.scrollToMessage.bind(this)}
+                        scrollToMessage={this.bindedScrollToMessage}
                     />);
             } else if (isShow) {      
                 res.push(
@@ -150,7 +151,7 @@ export default class Messages extends React.Component {
                         selected={this.state.selectedMessages.has(message.id)}
                         selectionId={message.id}
                         currentChatId={this.props.currentChatId}
-                        scrollToMessage={this.scrollToMessage.bind(this)}
+                        scrollToMessage={this.bindedScrollToMessage}
                     />);
             }
         }
