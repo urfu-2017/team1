@@ -15,6 +15,7 @@ import Metadata from './metadata';
 import renderPictures from './pictures';
 import {DeleteMessage} from '../../../graphql/mutations';
 import withLocalState from '../../../lib/withLocalState';
+import formatDate from '../../../lib/formatDate';
 
 const EmojiPicker = dynamic(
     import('emoji-picker-react'),
@@ -101,13 +102,6 @@ export default class Message extends React.PureComponent {
 
     hiddenParanja = () => this.setState({ emojiPickerVisible: false });
 
-    static formatDate = new Intl.DateTimeFormat('ru', {
-        hour: 'numeric',
-        minute: 'numeric',
-        day: 'numeric',
-        month: 'long'
-    }).format;
-
     get messageWithSender() {
         const { message, selectionId, user: sender } = this.props;
         return {
@@ -149,8 +143,7 @@ export default class Message extends React.PureComponent {
         // рандомный отрицательный id, чтобы не хранить лишнее поле
         const delivered = isFromSelf ? (message.id < 0 ? '  ' : ' ✓') : '';
         const metadata = message.metadata || {};
-        const createdAt = Message.formatDate(new Date(
-            forwardParent && forwardParent.createdAt || message.createdAt));
+        const createdAt = formatDate(forwardParent && forwardParent.createdAt || message.createdAt);
 
         return (
             <React.Fragment>
