@@ -70,6 +70,10 @@ export const MessageWrapper = withUiTheme(styled.article`
         max-width: 15%;
         margin-right: 5px;
     }
+    .messageBlock__citation-map {
+        max-width: 15%;
+        margin-right: 5px;
+    }
     .messageBlock__citation-wrapper {
         display: flex;
         align-items: center;
@@ -178,5 +182,13 @@ export const MessageWrapper = withUiTheme(styled.article`
         object-fit: contain;
         align-self: center;
         width: 90%;
+    }
+    .messageBlock__map {
+        height: 200px;
+        margin: 5%;
+        width: 90%;
+        align-self: center;
+        height: 200px;
+        border: 1px solid red;
     }
 `);
