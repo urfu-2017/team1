@@ -1,4 +1,4 @@
-import {GetLocalState} from '../graphqlQueries/localState';
+import {GetLocalState} from '../graphql/localState';
 
 
 const mutation = (fieldName, variableName) => (_, variables, { cache }) => {

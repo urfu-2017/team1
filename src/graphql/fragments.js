@@ -34,6 +34,35 @@ fragment messageCitation on Message {
 }  
 `;
 
+export const forwardedMessages_ql = gql`
+fragment forwardedMessages on Message {
+  forwardedMessages {
+    id
+    text
+    createdAt
+    pictures
+    map
+    citation {
+      id
+      text
+      map
+      pictures
+      sender {
+        id
+        name
+      }
+    }
+    chat {
+      id
+    }
+    sender {
+      id
+      name
+    }
+  }
+}  
+`;
+
 export const userData_ql = gql`
 fragment userData on User {
   id

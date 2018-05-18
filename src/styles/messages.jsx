@@ -9,12 +9,13 @@ export const MessagesList = styled.section`
 `;
 
 export const Header = withUiTheme(styled.section`
+    position: relative;
     min-height: 58px;
     max-height: 58px;
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: ${props=> props.searchOpened ? 'space-around' : 'center'};
     color: #fff;
     background: ${props => !props.uiTheme.isNightTheme ? '#5682a3' : '#37474F'};
     .header__editor {
@@ -25,6 +26,21 @@ export const Header = withUiTheme(styled.section`
     .header__img {
         margin: 0 15px 0 0 !important;
         color: #fff !important;
+    }
+    .search {
+        color: #fff !important; 
+    }
+    .search__icon {
+        right: 0;
+        position: absolute;
+        margin: 0 10px 0;
+        color: #fff !important;
+    }
+    .header__buttons {
+        min-width: 220px;
+        max-width: 220px;
+        display: flex;
+        justify-content: space-around;
     }
 `);
 
@@ -42,6 +58,7 @@ export const ScrollButton = styled.div`
     color: #b7c5f5;
     position: fixed;
     bottom: 50px;
+    z-index: 6000;
     @media screen and (max-width: 1260px) {
         right: 50px;
     }
@@ -53,7 +70,6 @@ export const ScrollButton = styled.div`
         content: '▼';
         font-weight: 900;
         font-size: 20px;
-
     }
 `;
 
@@ -62,7 +78,6 @@ export const ReplyPreview = styled.div`
     padding: 10px 20px 5px 40px;
     z-index: 5000;
     background: #fff;
-    border-top: 1px solid #ddd;
     position: relative;
     max-width: 100%;
     

@@ -6,14 +6,12 @@ export const getListItemStyle = (isSelected, isNightTheme) => {
     if (isSelected) {
         background = !isNightTheme ? '#e7ebf0' : '#616161';
     }
-    const borderColor = isNightTheme ? '#424242' : 'lavender';
 
     return {
-        background,
-        borderTop: `1px solid ${borderColor}`,
-        borderBottom: `1px solid ${borderColor}`
+        background
     }
-}
+};
+
 
 export const ChatWrapper = styled.article`
     background-color: ${props => (props.select ? '#b7c5f5' : '#e6e6fa')};

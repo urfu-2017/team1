@@ -1,7 +1,6 @@
 import { Map, Marker } from 'yandex-map-react';
 
-export default (map, width, height, zoom) =>
-    (
+export default (map, width, height, zoom) => (
         <Map
             width={width}
             height={height} 

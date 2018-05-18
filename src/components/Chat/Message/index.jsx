@@ -6,7 +6,7 @@ import Mood from 'material-ui/svg-icons/social/mood';
 
 import {MessageWrapper} from '../../../styles/message';
 import {ReactionParanja} from '../../../styles/reaction';
-import {GetUser} from '../../../graphqlQueries/queries';
+import {GetUser} from '../../../graphql/queries';
 import {withCurrentUser} from '../../../lib/currentUserContext';
 import ReactionsController from './reactionsController';
 import Reactions from './reactions';
@@ -14,7 +14,9 @@ import Citation from './citation';
 import Metadata from './metadata';
 import renderPictures from './pictures';
 import renderMap from './map';
-import {DeleteMessage} from '../../../graphqlQueries/mutations';
+import {DeleteMessage} from '../../../graphql/mutations';
+import withLocalState from '../../../lib/withLocalState';
+import formatDate from '../../../lib/formatDate';
 
 const EmojiPicker = dynamic(
     import('emoji-picker-react'),
@@ -23,10 +25,12 @@ const EmojiPicker = dynamic(
 
 @withApollo
 @withCurrentUser
+@withLocalState
 @graphql(GetUser.query, {
-    options: ({ message: { sender } }) => ({
-        variables: { userId: sender.id }
-    }),
+    options: ({ message: { sender }, forwardParent }) => {
+        const userId = forwardParent && forwardParent.sender ? forwardParent.sender.id : sender.id;
+        return { variables: { userId } };
+    },
     props: GetUser.map
 })
 @graphql(DeleteMessage.mutation, { props: DeleteMessage.map })
@@ -55,73 +59,114 @@ export default class Message extends React.PureComponent {
             apolloClient, currentUser.id, message.id, message.reactions);
         this.state = {
             emojiPickerVisible: false,
-            mouseOver: false
+            mouseOver: false,
+            selected: false
         };
+        this.hasTtl && this.deleteSelf();
+    }
+
+    get hasTtl() {
+        return Boolean(this.props.message.lifeTimeInSeconds);
+    }
+
+    deleteSelf() {
+        const { isFromSelf, message, deleteMessage } = this.props;
+        !isFromSelf && deleteMessage({
+            messageId: message.id,
+            lifeTimeInSeconds: message.lifeTimeInSeconds
+        });
     }
 
     setMouseOver = () => this.setState({ mouseOver: true });
 
     unsetMouseOver = () => this.setState({ mouseOver: false });
 
-    toggleEmojiPicker = () =>
+    toggleEmojiPicker = e => {
+        e && e.stopPropagation();
         this.setState(prev => ({ emojiPickerVisible: !prev.emojiPickerVisible }));
+    };
 
-    addReactionFromPicker = (_, emoji) => {
+    toggleSelected = () => {
+        if (this.hasTtl) {
+            return;
+        }
+        this.setState(prev => ({ selected: !prev.selected }));
+        const { selectMessage } = this.props;
+        selectMessage(this.messageWithSender);
+    };
+
+    addReactionFromPicker = (e, emoji) => {
+        e && e.stopPropagation && e.stopPropagation();
         this.toggleEmojiPicker();
         this.reactionsController.addReaction(emoji.name);
     };
 
-    hiddenParanja = () => (this.setState({ emojiPickerVisible: false }));
-
-    static formatDate = new Intl.DateTimeFormat('ru', {
-        hour: 'numeric',
-        minute: 'numeric',
-        day: 'numeric',
-        month: 'long'
-    }).format;
+    hiddenParanja = () => this.setState({ emojiPickerVisible: false });
 
     get messageWithSender() {
-        // TODO: что, если user ещё нет?
-        const { message, user: sender } = this.props;
+        const { message, selectionId, user: sender } = this.props;
         return {
             ...message,
-            sender
+            sender,
+            selectionId
         };
     }
 
-    replyToThisMessage = () => this.props.replyToMessage(this.messageWithSender);
+    replyToThisMessage = e => e.stopPropagation() ||
+        this.props.replyToMessage(this.messageWithSender);
+
+    get userHasForwardOriginChat() {
+        if (this._userHasForwardOriginChat === undefined) {
+            const { message, currentUser } = this.props;
+            this._userHasForwardOriginChat = currentUser.chats
+                .find(c => c.id === message.chat.id) !== undefined;
+        }
+        return this._userHasForwardOriginChat;
+    }
+
+    goToForwardOrigin = e => {
+        if (!this.userHasForwardOriginChat) return;
+        e.stopPropagation();
+        const { message, updateCurrentChatId } = this.props;
+        updateCurrentChatId(message.chat.id);
+        // TODO: сделать нормальный скролл
+        setTimeout(
+            () => window.location = ('' + window.location).replace(/#[A-Za-z0-9_]*$/, '') + `#${message.id}`,
+            100);
+    };
 
     render() {
-        const { loading, error, message, user, currentUser, isFromSelf } = this.props;
+        const {
+            loading, error, message, user, currentUser,
+            isFromSelf, forwardParent, selected
+        } = this.props;
         // небольшой костыль: optimistic response присваивает сообщениям
         // рандомный отрицательный id, чтобы не хранить лишнее поле
         const delivered = isFromSelf ? (message.id < 0 ? '  ' : ' ✓') : '';
-        const ogdata = message.metadata && message.metadata.ogdata || {};
-
-        if (message.lifeTimeInSeconds !== null && !isFromSelf) {
-            this.props.deleteMessage({
-                messageId: message.id,
-                lifeTimeInSeconds: message.lifeTimeInSeconds
-            });
-        }
-        const createdAt = Message.formatDate(new Date(message.createdAt));
+        const metadata = message.metadata || {};
+        const createdAt = formatDate(forwardParent && forwardParent.createdAt || message.createdAt);
 
         return (
             <React.Fragment>
-                <MessageWrapper
-                    isFromSelf={isFromSelf}
-                    emojiPickerVisible={this.state.emojiPickerVisible}
-                >
+                <MessageWrapper isFromSelf={isFromSelf} emojiPickerVisible={this.state.emojiPickerVisible}
+                                onClick={this.toggleSelected} selected={selected}>
                     <div id={message.id} className="messageBlock"
                          onMouseEnter={this.setMouseOver} onMouseLeave={this.unsetMouseOver}>
+                        {forwardParent &&
+                        <p
+                            style={{ 'cursor': this.userHasForwardOriginChat ? 'pointer' : 'default' }}
+                            onClick={this.goToForwardOrigin}
+                            className="messageBlock__forwarded-from"
+                        >Пересланное сообщение от {message.sender.name}</p>
+                        }
                         <div className="messageBlock__header">
                             <img className="msgFromUserPic" src={user && user.avatarUrl} width="30px"/>
                             <div className="msgFromBlock">
                                 <span className="msgFromUserName">{user && user.name + delivered}</span>
                             </div>
                             <div className="msgTimeReactionBlock">
-                                <Mood className="mood" onClick={this.toggleEmojiPicker} />
-                                {this.state.mouseOver
+                                {!forwardParent && <Mood className="mood" onClick={this.toggleEmojiPicker}/>}
+                                {this.state.mouseOver && !this.hasTtl
                                     ? <div onClick={this.replyToThisMessage} className="messageBlock__reply">
                                         Ответить
                                     </div>
@@ -134,7 +179,7 @@ export default class Message extends React.PureComponent {
                             isFromSelf={isFromSelf}
                             dangerouslySetInnerHTML={{ __html: message.text }}
                         />
-                        {ogdata.url && Object.keys(ogdata).length !== 0 && <Metadata ogdata={ogdata}/>}
+                        {Object.keys(metadata).length !== 0 && <Metadata metadata={metadata}/>}
                         {message.pictures && renderPictures(message.pictures)}
                         {message.map && renderMap(message.map, '100%', '200px', 11)}
                         {message.reactions && message.reactions.length > 0 &&
@@ -152,19 +197,11 @@ export default class Message extends React.PureComponent {
                             />
                         )}
                     </div>
-                    {
-                        this.state.emojiPickerVisible &&
-                        <div
-                            className="message__paranja"
-                            onClick={this.hiddenParanja}
-                        />
-                    }
                 </MessageWrapper>
                 {this.state.emojiPickerVisible &&
-                    <ReactionParanja
-                        onClick={this.hiddenParanja}
-                    />
-                }
+                <ReactionParanja
+                    onClick={this.hiddenParanja}
+                />}
             </React.Fragment>
         );
     }

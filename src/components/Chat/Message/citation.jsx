@@ -3,10 +3,13 @@ import renderMap from './map';
 
 import stripHtml from '../../../lib/stripHtml';
 
-export default ({ message }) => {
-    return(
+
+const stopPropagation = e => e.stopPropagation();
+
+
+export default ({ message }) => (
     <div className="messageBlock__citation">
-        <a href={`#${message.id}`}>
+        <a href={`#${message.id}`} onClick={stopPropagation}>
             <p className="messageBlock__citation-sender">{message.sender.name}</p>
             <div className="messageBlock__citation-wrapper">
                 {message.pictures && message.pictures.length &&
@@ -16,4 +19,4 @@ export default ({ message }) => {
             </div>
         </a>
     </div>
-)};
+);
