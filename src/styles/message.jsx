@@ -7,6 +7,7 @@ export const MessageWrapper = withUiTheme(styled.article`
     position: relative;
     height:auto;
     padding: 10px;
+    background: ${props => props.selected ? !props.uiTheme.isNightTheme ? '#e7ebf0' : '#616161' : 'transparent'};
     p {
         display: table; 
         white-space: pre-wrap;
@@ -21,7 +22,7 @@ export const MessageWrapper = withUiTheme(styled.article`
     .messageBlock {
         z-index: 10;
         max-width: 51%;
-        min-width: 338px;
+        min-width: 340px;
         border-radius: 5px;
         min-height: 25px;
         height:auto;
@@ -31,6 +32,10 @@ export const MessageWrapper = withUiTheme(styled.article`
         transform: ${props => (props.isFromSelf ? 'translateX(-100%);' : '0')};
         box-shadow: ${props => props.uiTheme.isNightTheme ? '#546E7A' :'rgb(200, 217, 230)'} 2px 2px 5px 0px;
         background-color: ${props => props.uiTheme.isNightTheme ? '#607D8B' : (props.isFromSelf ?  '#92d7ef' : 'rgb(231, 235, 240)')};
+    }
+    .messageBlock__forwarded-from {
+        font-weight: bold;
+        cursor: pointer;
     }
     .messageBlock__header {
         flex-wrap: wrap;
@@ -62,6 +67,10 @@ export const MessageWrapper = withUiTheme(styled.article`
         font-weight: bold;
     }
     .messageBlock__citation-picture {
+        max-width: 15%;
+        margin-right: 5px;
+    }
+    .messageBlock__citation-map {
         max-width: 15%;
         margin-right: 5px;
     }
@@ -173,5 +182,13 @@ export const MessageWrapper = withUiTheme(styled.article`
         object-fit: contain;
         align-self: center;
         width: 90%;
+    }
+    .messageBlock__map {
+        height: 200px;
+        margin: 5%;
+        width: 90%;
+        align-self: center;
+        height: 200px;
+        border: 1px solid red;
     }
 `);

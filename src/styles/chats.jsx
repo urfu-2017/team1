@@ -1,5 +1,23 @@
 import styled from 'styled-components';
 import { withUiTheme } from '../lib/withUiTheme';
+import {grey50, grey200} from 'material-ui/styles/colors';
+
+
+export const clearStyles = {
+    width: 25,
+    height: 25,
+    color: grey50
+};
+
+export const searchStyles = {
+    color: grey50,
+    borderColor: grey50
+};
+
+export const searchHintStyles = {
+    borderColor: grey200,
+    color: grey200
+};
 
 export const Header = styled.header`
     height: 49px;
@@ -13,12 +31,6 @@ export const Header = styled.header`
     }
 `;
 
-export const SearchInput = styled.input`
-    height: 40px;
-    width: 80%;
-    visibility: hidden;
-`;
-
 export const ChatsList = withUiTheme(styled.section`
     width: 35%;
     min-width: 250px;
@@ -30,6 +42,16 @@ export const ChatsList = withUiTheme(styled.section`
     .menuHeader {
         min-height: 59px;
         max-height: 59px; 
+    }
+    .menuHeader__search {
+        display: flex;
+        margin: auto;
+        align-items: center;
+        width: 100%;
+    }
+    .menuHeader__clear {
+        margin-left: -35px !important;
+        color: #fff !important;
     }
 `);
 

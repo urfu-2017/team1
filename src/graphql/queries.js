@@ -1,10 +1,10 @@
 import gql from 'graphql-tag';
 
 import * as fragments from './fragments';
-import {processChat} from '../lib/dataHandlers';
+import {processChat} from './dataHandlers';
 
 
-const mapper = (query, selector, name) => ({
+const mapper = (query, selector, name, variables) => ({
     query,
     map: (req) => {
         const props = {
@@ -16,7 +16,8 @@ const mapper = (query, selector, name) => ({
             props[name] = selector(req.data);
         }
         return props;
-    }
+    },
+    variables
 });
 
 
@@ -102,12 +103,14 @@ query GetChatMessages {
     messages {
       ...messageData
       ...messageCitation
+      ...forwardedMessages
     }
   }
 }
 
 ${fragments.messageData_ql}
 ${fragments.messageCitation_ql}
+${fragments.forwardedMessages_ql}
 `;
 
 export const GetChatMessages = mapper(GET_CHAT_MESSAGES_ql,
@@ -169,3 +172,35 @@ ${fragments.chatData_ql}
 `;
 
 export const GetAllChats = mapper(GET_ALL_CHATS_ql, data => data.allChats, 'allChats');
+
+
+const SEARCH_MESSAGES_ql = gql`
+query SearchMessages($filter: MessageFilter!) {
+  allMessages(filter: $filter, orderBy: createdAt_DESC) {
+    id
+    rawText
+    createdAt
+    chat {
+      id
+    }
+    sender {
+      id
+      name
+    }
+  }
+}
+`;
+
+const searchMessages_vars = (currentuserId, substring) => ({
+    filter: {
+        chat: {
+            members_some: {
+                id: currentuserId
+            }
+        },
+        rawText_contains: substring
+    }
+});
+
+export const SearchMessages = mapper(SEARCH_MESSAGES_ql, data => data.allMessages,
+    'searchMessages', searchMessages_vars);

@@ -1,4 +1,4 @@
-import {UpdateMessageReactions} from '../../../graphqlQueries/mutations';
+import {UpdateMessageReactions} from '../../../graphql/mutations';
 
 
 export default class ReactionsController {

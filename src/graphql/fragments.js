@@ -11,6 +11,7 @@ fragment messageData on Message {
   metadata
   clientSideId
   reactions
+  map
   lifeTimeInSeconds
   sender {
     id
@@ -24,6 +25,36 @@ fragment messageCitation on Message {
     id
     text
     pictures
+    map
+    sender {
+      id
+      name
+    }
+  }
+}  
+`;
+
+export const forwardedMessages_ql = gql`
+fragment forwardedMessages on Message {
+  forwardedMessages {
+    id
+    text
+    createdAt
+    pictures
+    map
+    citation {
+      id
+      text
+      map
+      pictures
+      sender {
+        id
+        name
+      }
+    }
+    chat {
+      id
+    }
     sender {
       id
       name

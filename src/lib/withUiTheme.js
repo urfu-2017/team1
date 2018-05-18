@@ -1,5 +1,5 @@
 // import {graphql, compose} from 'react-apollo';
-// import {GetUiTheme, UpdateTheme} from '../graphqlQueries/localState';
+// import {GetUiTheme, UpdateTheme} from '../graphql/localState';
 //
 //
 // export default compose(
@@ -19,11 +19,11 @@ export const { Provider, Consumer } = React.createContext({});
 export const withUiTheme = Decorated => {
     return (props) => (
         <Consumer>
-            { ({isNightTheme, toggleUiTheme}) => 
-                <Decorated 
-                    {...props} 
-                    toggleUiTheme={toggleUiTheme} 
-                    uiTheme={{ isNightTheme }} 
+            { ({isNightTheme, toggleUiTheme}) =>
+                <Decorated
+                    {...props}
+                    toggleUiTheme={toggleUiTheme}
+                    uiTheme={{ isNightTheme }}
                 />
             }
         </Consumer>

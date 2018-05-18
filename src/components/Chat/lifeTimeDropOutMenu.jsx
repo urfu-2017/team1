@@ -3,6 +3,8 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Timer from 'material-ui/svg-icons/image/timer';
 
+import {DropOutMenuWrapper} from '../../styles/lifeTimeDropOutMenu'
+
 const items = [];
 
 items.push(<MenuItem value={null} key={1} label={<Timer />} primaryText={`Off`} />);
@@ -17,19 +19,21 @@ items.push(<MenuItem value={3600} key={8} label="1 h" primaryText={'1 hour'} />)
 export default class LifeTimeDropOutMenu extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: null};
+    this.state = { value: null };
   }
 
   handleChange = (event, index, value) => {
-      this.setState({value});
-      this.props.setLifeTime(value);
+    this.setState({ value });
+    this.props.setLifeTime(value);
   }
 
   render() {
     return (
-      <DropDownMenu maxHeight={200} value={this.state.value} onChange={this.handleChange}>
-        {items}
-      </DropDownMenu>
+      <DropOutMenuWrapper>
+        <DropDownMenu maxHeight={200} value={this.state.value} onChange={this.handleChange}>
+          {items}
+        </DropDownMenu>
+      </DropOutMenuWrapper>
     );
   }
 }

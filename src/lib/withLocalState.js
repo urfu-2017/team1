@@ -1,5 +1,5 @@
 import {graphql, compose} from 'react-apollo';
-import {GetLocalState, UpdateCurrentChatId} from '../graphqlQueries/localState';
+import {GetLocalState, UpdateCurrentChatId} from '../graphql/localState';
 
 
 export default compose(

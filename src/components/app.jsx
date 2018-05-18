@@ -4,7 +4,7 @@ import {graphql} from 'react-apollo';
 
 import {grey800} from 'material-ui/styles/colors';
 import LoadScreen from './ui/loadScreen';
-import {GetCurrentUser} from '../graphqlQueries/queries';
+import {GetCurrentUser} from '../graphql/queries';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -20,8 +20,8 @@ import {Provider as UiThemeProvider} from '../lib/withUiTheme';
 import {
     SubscribeToCurrentUser, SubscribeToUserChats, SubscribeToUsersHavingPersonalChats
 }
-    from '../graphqlQueries/subscriptions';
-import {userSubscriptionDataHandler, chatSubscriptionDataHandler} from '../lib/dataHandlers';
+    from '../graphql/subscriptions';
+import {userSubscriptionDataHandler, chatSubscriptionDataHandler} from '../graphql/dataHandlers';
 import withLocalState from '../lib/withLocalState';
 
 @withLocalState

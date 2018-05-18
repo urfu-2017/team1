@@ -5,14 +5,10 @@ import ListItem from 'material-ui/List/ListItem';
 import Avatar from 'material-ui/Avatar';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import {Scrollbars} from 'react-custom-scrollbars';
+import {RaisedButton} from 'material-ui';
 
 import LoadScreen from './ui/loadScreen';
-import {
-    Search,
-    CloseButton,
-    CreateButton,
-    ContactsWrapper
-} from '../styles/contacts';
+import {ContactsWrapper} from '../styles/contacts';
 import {withCurrentUser} from '../lib/currentUserContext';
 
 
@@ -48,14 +44,14 @@ export default class ContactsList extends React.Component {
     }
 
     static getContactsItem = (clickHandler, currentUser, contact) => (
-            <ListItem
-                insetChildren
-                primaryText={contact.name}
-                key={contact.id}
-                leftAvatar={<Avatar src={contact.avatarUrl} />}
-                rightIcon={<CommunicationChatBubble />}
-                onClick={() => clickHandler(currentUser, contact)}
-            />
+        <ListItem
+            insetChildren
+            primaryText={contact.name}
+            key={contact.id}
+            leftAvatar={<Avatar src={contact.avatarUrl}/>}
+            rightIcon={<CommunicationChatBubble/>}
+            onClick={() => clickHandler(currentUser, contact)}
+        />
     );
 
     render() {
@@ -74,7 +70,7 @@ export default class ContactsList extends React.Component {
                 </Scrollbars>
                 {closeAction &&
                 <div className="buttons">
-                    <input type="button" className="button_close" value="Закрыть" onClick={closeAction} />
+                    <RaisedButton label="Закрыть" onClick={closeAction}/>
                 </div>}
             </ContactsWrapper>
         );

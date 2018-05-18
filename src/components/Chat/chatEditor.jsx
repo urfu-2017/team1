@@ -8,13 +8,13 @@ import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
 import Avatar from 'material-ui/Avatar';
 
-import {GetChatMembers, GetUserContacts} from '../../graphqlQueries/queries';
-import {AddUserToChat} from '../../graphqlQueries/mutations';
+import {GetChatMembers, GetUserContacts} from '../../graphql/queries';
+import {AddUserToChat} from '../../graphql/mutations';
 import {Editor, AddButton, UserList, Contact} from '../../styles/chatEditor';
 import ContactsList from '../contactsList';
 import {withCurrentUser} from '../../lib/currentUserContext';
 import ChatImageSender from './chatImageSender';
-import {UpdateChatPicture} from '../../graphqlQueries/mutations';
+import {UpdateChatPicture} from '../../graphql/mutations';
 import withLocalState from '../../lib/withLocalState';
 
 
