@@ -41,6 +41,7 @@ query GetUser($userId: ID!) {
     chats {
       ...chatData
     }
+    isNightTheme
   }
 }
 
