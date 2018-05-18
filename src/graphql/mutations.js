@@ -60,6 +60,7 @@ const createMessage_optimistic = (message, citedMessage, forwardedMessages = [])
         },
         metadata: null,
         reactions: null,
+        map: null,
         ...message,
         lifeTimeInSeconds: message.lifeTimeInSeconds || null,
         forwardedMessages,
