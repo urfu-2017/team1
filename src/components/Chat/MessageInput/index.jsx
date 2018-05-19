@@ -170,6 +170,7 @@ export default class MessageInput extends React.Component {
     getMap = () => this.getUserLocation()
         .then(
             position => {
+                const { messagesController, currentChatId } = this.props;
                 const lat = position.latitude;
                 const lon = position.longitude;
                 console.info('pos', position.latitude, position.longitude)
@@ -182,7 +183,7 @@ export default class MessageInput extends React.Component {
                     zoom: 10
                 };
 
-                this.props.messagesController.createMessage(message, this.updateCache);
+                messagesController.createMessage(currentChatId, message, this.updateCache);
             }
         )
         .catch(
