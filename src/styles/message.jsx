@@ -38,6 +38,7 @@ export const MessageWrapper = withUiTheme(styled.article`
         cursor: pointer;
     }
     .messageBlock__header {
+        cursor: pointer;
         flex-wrap: wrap;
         display: flex;
         width: 100%;
