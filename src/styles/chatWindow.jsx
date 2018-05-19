@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { withUiTheme } from '../lib/withUiTheme';
 
 const ChatWindowWrapper = withUiTheme(styled.section`
-    width: 65%;
+    width: 64%;
     min-width: 500px;
     position: relative;
     display: flex;
