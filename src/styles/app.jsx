@@ -19,6 +19,12 @@ export const getTheme = isNightTheme => ({
     }
 });
 
+export const Page = withUiTheme(styled.div`
+    width: 100%;
+    height: 100%;
+    background: ${props => (props.uiTheme.isNightTheme ? '#212121' : '#fff')};
+`)
+
 export const Wrapper = withUiTheme(styled.main`
     height: 100%;
     max-width: 1260px;
