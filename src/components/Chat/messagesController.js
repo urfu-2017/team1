@@ -1,4 +1,9 @@
-import { CreateMessage, CreateChatAndUserLink, UpdateChatAndUserLink } from '../../graphql/mutations';
+import { 
+    CreateMessage, 
+    CreateChatAndUserLink, 
+    UpdateChatAndUserLink, 
+    UpdateLastMessageChat 
+} from '../../graphql/mutations';
 import { GetLastMessageChatToUser } from '../../graphql/queries';
 
 export default class MessagesController {
@@ -9,15 +14,27 @@ export default class MessagesController {
         this.isLastMessageChatInProgress = false;
     }
 
-    async createMessage(message, update) {
+    async createMessage(chatId, message, update) {
         const state = this.getState();
-        await this.apolloClient.mutate({
+        const messageData = await this.apolloClient.mutate({
             mutation: CreateMessage.mutation,
             variables: message,
             optimisticResponse: CreateMessage.optimisticResponse(
                     message, state.citedMessage, [...state.selectedMessages.values()]),
-            update
+            update: (cache, data) => {
+                this.updateChatLastMessage(chatId, data.data.createMessage);
+                update(cache, data);
+            }
         });
+    }
+
+    async updateChatLastMessage(chatId, message) {
+        if (typeof message.id === 'string') {
+            this.apolloClient.mutate({
+                mutation: UpdateLastMessageChat.mutation,
+                variables: { messageId: message.id, chatId }
+            })
+        }
     }
 
     async updateLastMessageChatToUser(userId, chatId, message) {

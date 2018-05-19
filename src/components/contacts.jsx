@@ -3,7 +3,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import {Mutation, Query, graphql} from 'react-apollo';
 
 import ContactsList from './contactsList';
-import {GetUserChats, GetUserContacts, GetAllUsers} from '../graphql/queries';
+import {GetUserChats, GetUserContacts, GetAllUsers, GetLastMessageChatToUser} from '../graphql/queries';
 import {AddUserToContacts, CreateChat, CreateChatAndUserLink} from '../graphql/mutations';
 import withLocalState from '../lib/withLocalState';
 import {idXor} from '../lib/idXor';

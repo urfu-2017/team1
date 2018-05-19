@@ -70,17 +70,17 @@ export default class MessageInput extends React.Component {
     };
 
     handleSubmit = event => {
+        const { currentChatId, messagesController, resetReply } = this.props;
         if (this.state.message.trim().length === 0) {
             return;
         }
-        if (event.key === 'Enter' && !event.shiftKey) {
+        if (event.which === 13 && !event.shiftKey) {
             event.preventDefault();
-            this.props.messagesController.createMessage(
-                this.message, this.updateCache);
+            messagesController.createMessage(currentChatId, this.message, this.updateCache);
 
             localStorage.setItem(this.storageKey, '');
             this.clearMessage();
-            this.props.resetReply();
+            resetReply();
         }
     };
 
@@ -115,10 +115,11 @@ export default class MessageInput extends React.Component {
     onEmojiClick = (_, val) => this.addEmojiIntoText(val.name);
 
     onSendImage = urlInBase64 => {
+        const { currentChatId, messagesController } = this.props;
         const message = this.message;
         message.pictures = [urlInBase64];
+        messagesController.createMessage(currentChatId, message, this.updateCache);
 
-        this.props.messagesController.createMessage(message, this.updateCache);
         this.toggleUploadWindow();
     };
 

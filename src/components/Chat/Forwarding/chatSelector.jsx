@@ -29,7 +29,7 @@ export default class ChatSelector extends React.Component {
         const { messagesController, updateCurrentChatId } = this.props;
         const message = this.getMessage(chat.id);
         const update = (...args) => CreateMessage.update(chat.id, ...args);
-        messagesController.createMessage(message, update)
+        messagesController.createMessage(chat.id, message, update)
             .then(() => this.handleClose() || updateCurrentChatId(chat.id));
     };
 

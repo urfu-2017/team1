@@ -173,6 +173,28 @@ ${fragments.chatData_ql}
 export const GetAllChats = mapper(GET_ALL_CHATS_ql, data => data.allChats, 'allChats');
 
 
+const GET_USER_LAST_MESSAGE_CHAT_TO_USER_ql = userId => gql`
+query GetLastMessageChatToUser {
+  allLastMessageChatToUsers(filter: {
+    userId: "${userId}"
+  }) {
+    id,
+    chatId,
+    message {
+      id,
+      createdAt
+    }
+  }
+}
+`;
+
+export const GetUserLastMessageChatToUser = mapper(
+  GET_USER_LAST_MESSAGE_CHAT_TO_USER_ql,
+  data => data.allLastMessageChatToUsers,
+  'allLastMessageChatToUsers'
+);
+
+
 const GET_LAST_MESSAGE_CHAT_TO_USER_ql = (userId, chatId) => gql`
 query GetLastMessageChatToUser {
   allLastMessageChatToUsers(filter: {

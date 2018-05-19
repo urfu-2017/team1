@@ -8,13 +8,16 @@ import ChatsList from '../ChatsList';
 import {ChatsList as ChatsListStyle} from '../../styles/chats';
 import {Scrollbars} from 'react-custom-scrollbars';
 import withLocalState from '../../lib/withLocalState';
+import { withLastMessageChatToUser } from '../../lib/withLastMessageChatToUser';
 
 
 @withCurrentUser
+@withLastMessageChatToUser
 @withLocalState
 export default class SideBar extends React.Component {
     static propTypes = {
         currentUser: PropTypes.object,
+        allLastMessageChatToUsers: PropTypes.arrayOf(PropTypes.shape()),
         mainComponentChanger: PropTypes.func
     };
 
@@ -33,8 +36,7 @@ export default class SideBar extends React.Component {
     };
 
     render() {
-        const { currentUser } = this.props;
-
+        const { currentUser, allLastMessageChatToUsers } = this.props;
         return (
             <React.Fragment>
                 {
@@ -55,6 +57,7 @@ export default class SideBar extends React.Component {
                     <ChatsList
                         chats={currentUser.chats}
                         onChatClick={this.selectChat}
+                        allLastMessageChatToUsers={allLastMessageChatToUsers}
                     />
                     </Scrollbars>
                 </ChatsListStyle>
