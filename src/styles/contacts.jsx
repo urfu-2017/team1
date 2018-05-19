@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const tabStyle = { width: '100%' };
+export const tabStyle = { width: '65%' };
 export const InnerBlockStyle = { height: '100%' };
 export const ItemContainerStyle = { height: '60px' };
 
