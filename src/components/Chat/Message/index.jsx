@@ -183,14 +183,14 @@ export default class Message extends React.PureComponent {
                             </div>
                         </div>
                         {message.citation && <Citation message={message.citation}/>}
-                        <div
-                            className="messageBlock__text"
-                            isFromSelf={isFromSelf}
-                            dangerouslySetInnerHTML={{ __html: message.text }}
-                        />
-                        {Object.keys(metadata).length !== 0 && <Metadata metadata={metadata}/>}
-                        {message.pictures && renderPictures(message.pictures)}
                         <div onClick={stopPropagation}>
+                            <div
+                                className="messageBlock__text"
+                                isFromSelf={isFromSelf}
+                                dangerouslySetInnerHTML={{ __html: message.text }}
+                            />
+                            {Object.keys(metadata).length !== 0 && <Metadata metadata={metadata}/>}
+                            {message.pictures && renderPictures(message.pictures)}
                             {message.map && renderMap(message.map, '100%', '200px', 11)}
                         </div>
                         {message.reactions && message.reactions.length > 0 &&

@@ -40,7 +40,7 @@ export const Textarea = withUiTheme(styled.div`
     }
     .pulse {
         border-radius: 50% !important;
-        animation: ${pulse} 2s linear infinite;
+        animation: ${pulse} 1.5s linear infinite;
         background-color: #5682a3 !important;
     }
 
@@ -48,6 +48,7 @@ export const Textarea = withUiTheme(styled.div`
         padding: 4px;
         width: 24px !important;
         height: 24px !important;
+        cursor: pointer;
     }
 
     .textarea__style {
@@ -66,7 +67,6 @@ export const Textarea = withUiTheme(styled.div`
     }
 
     .closeEmojiButton__style {
-        cursor: pointer;
         display: inline-block;
         width: 20px;
         margin-left: 170px;
