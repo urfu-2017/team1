@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import {graphql, Mutation} from 'react-apollo';
 import {Scrollbars} from 'react-custom-scrollbars';
 
@@ -47,7 +47,7 @@ export default class ChatEditor extends React.Component {
                     disabled
                     key={user.id}
                     primaryText={user.name}
-                    rightAvatar={<Avatar src={user.avatarUrl}/>}
+                    rightAvatar={<Avatar className="avatar" src={user.avatarUrl}/>}
                 />
             ));
     }
@@ -113,7 +113,8 @@ export default class ChatEditor extends React.Component {
                              alt="Изображение чата"/>
                         <div className="chat-editor">
                             <h1 className="chat-editor__header">{currentChat.title}</h1>
-                            <FlatButton
+                            <RaisedButton
+                                primary={true}
                                 label="Добавить пользователя"
                                 onClick={this.toggleUsersList}
                             />

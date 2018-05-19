@@ -105,6 +105,7 @@ export const MessageWrapper = withUiTheme(styled.article`
         width: 40px;
         height: 40px;
         border-radius: 50% 50%;
+        object-fit: cover;
     }
     .messageBlock__text {
         white-space: pre-wrap;

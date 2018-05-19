@@ -69,7 +69,7 @@ export default class Menu extends React.Component {
                         className="menu"
                         onClick={mainComponentChanger('Profile')}
                         leftAvatar={
-                            <Avatar src={currentUser.avatarUrl}/>
+                            <Avatar className="avatar" src={currentUser.avatarUrl}/>
                         }
                     >
                         {currentUser.name}
