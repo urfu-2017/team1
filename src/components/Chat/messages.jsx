@@ -194,7 +194,7 @@ export default class Messages extends React.Component {
         return (
             <React.Fragment>
                 <Scrollbars
-                    style={{ 'background-color': isNightTheme ? '##212121' : '' }}
+                    style={{ 'background-color': isNightTheme ? '#212121' : '' }}
                     ref={this.setScroll}
                     onScrollStop={this.changePositionScroll}
                 >

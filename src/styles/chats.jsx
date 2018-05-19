@@ -32,7 +32,7 @@ export const Header = styled.header`
 `;
 
 export const ChatsList = withUiTheme(styled.section`
-    width: 350px;
+    width: 35%;
     min-width: 250px;
     display: flex;
     flex-direction: column;
