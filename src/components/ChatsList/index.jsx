@@ -24,8 +24,8 @@ export default class ChatsList extends React.Component {
 
     isHasUnreadMessage(chat) {
         const { allLastMessageChatToUsers, localState: { currentChatId } } = this.props;
+        const { lastMessage } = chat;
         for (let rel of allLastMessageChatToUsers) {
-            const { lastMessage } = chat;
             if (chat.id === rel.chatId) {
                 if (lastMessage && currentChatId !== chat.id) {
                     const lastMessageCreatedAt = moment(lastMessage.createdAt);
@@ -36,7 +36,8 @@ export default class ChatsList extends React.Component {
                 }
             }
         }
-        return false;
+        const isHasLastMessage = Boolean(lastMessage)
+        return isHasLastMessage;
     }
 
     render() {
