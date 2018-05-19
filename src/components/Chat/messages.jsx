@@ -16,6 +16,7 @@ import {withUiTheme} from '../../lib/withUiTheme';
 import MessagesController from './messagesController';
 import {idXor} from '../../lib/idXor';
 import removeHashFromUrl from '../../lib/removeHashFromUrl';
+import stripHtml from '../../lib/stripHtml';
 
 
 @withUiTheme
@@ -120,14 +121,15 @@ export default class Messages extends React.Component {
     getMessages = (messages, parent = null) => {
         const res = [];
         const {searchText} = this.props;
+        const searchRegexp = new RegExp(this.escapeRegExp(searchText), 'gi');
         for (const message of messages) {
-            const isShow = new RegExp(this.escapeRegExp(searchText), 'gi').test(message.text) ||
-                (message.citation && new RegExp(this.escapeRegExp(searchText), 'gi')
-                    .test(message.citation.text));
+            const isShown = !searchText.length ||
+                searchRegexp.test(stripHtml(message.text)) ||
+                (message.citation && searchRegexp.test(stripHtml(message.citation.text)));
 
             if (message.forwardedMessages && message.forwardedMessages.length > 0) {
                 res.push(...this.getMessages(message.forwardedMessages, message));
-            } else if (parent && isShow) {
+            } else if (parent && isShown) {
                 const forwardId = idXor(parent.id, message.id) + res.length;
                 res.push(
                     <Message
@@ -143,7 +145,7 @@ export default class Messages extends React.Component {
                         currentChatId={this.props.currentChatId}
                         scrollToMessage={this.bindedScrollToMessage}
                     />);
-            } else if (isShow) {
+            } else if (isShown) {
                 res.push(
                     <Message
                         key={message.id}

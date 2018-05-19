@@ -18,7 +18,7 @@ import {clearStyles, searchStyles, searchHintStyles} from '../../styles/chats';
 export default class ChatHeader extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             title: '',
             searchText: ''
         };
@@ -26,15 +26,15 @@ export default class ChatHeader extends React.Component {
 
     componentWillReceiveProps(props) {
         const { editorOpened, loading, chat, searchOpened } = props;
-        editorOpened && !loading && this.setState({ title: chat.title});
-        !editorOpened && !searchOpened && this.setState({searchText: ''});
+        editorOpened && !loading && this.setState({ title: chat.title });
+        !editorOpened && !searchOpened && this.setState({ searchText: '' });
     }
 
     handleChange = event => this.setState({ title: event.target.value });
 
-    handleSearchText = event => this.setState({searchText: event.target.value});
-
-    clearSearchText = () => this.setState({ searchText: '' });
+    handleSearchText = event => {
+        this.props.handleSearchText(event.target.value);
+    };
 
     handleSubmit = event => {
         const title = this.state.title;
@@ -66,53 +66,48 @@ export default class ChatHeader extends React.Component {
         });
     };
 
-    handleSearchKeyPress = event => {
-        const { handleSearchText } = this.props;
-
-        if (event.which === 13) {         
-            handleSearchText(this.state.searchText)
-        }
-    }
-
     searchHeader = () => {
-        const {editorOpened, searchOpened, toggleSearch, handleSearchText} = this.props;
-        return ( 
+        const { editorOpened, searchOpened, toggleSearch, handleSearchText } = this.props;
+        return (
             <React.Fragment>
-                { searchOpened &&
-                    <React.Fragment>
-                        <TextField
-                            hintText="Поиск по истории сообщений"
-                            onChange={this.handleSearchText}
-                            onKeyPress={this.handleSearchKeyPress}
-                            value={this.state.searchText}
-                            inputStyle={searchStyles}
-                            hintStyle={searchHintStyles}
-                            underlineFocusStyle={searchStyles}
+                {searchOpened &&
+                <React.Fragment>
+                    <TextField
+                        hintText="Поиск по истории сообщений"
+                        onChange={this.handleSearchText}
+                        onKeyPress={this.handleSearchKeyPress}
+                        inputStyle={searchStyles}
+                        hintStyle={searchHintStyles}
+                        underlineFocusStyle={searchStyles}
+                        autoFocus={true}
+                    />
+                    <div className="header__buttons">
+                        <FlatButton
+                            label="Поиск"
+                            className="search"
+                            onClick={() => handleSearchText(this.state.searchText)}
                         />
-                        <div className="header__buttons">
-                            <FlatButton
-                                label="Поиск"
-                                className="search"
-                                onClick={() => handleSearchText(this.state.searchText) }
-                            />
-                            <FlatButton 
-                                secondary={true} 
-                                label="Отмена" 
-                                onClick={() => { toggleSearch(); handleSearchText(''); } } 
-                            />
-                        </div>
-                    </React.Fragment>
+                        <FlatButton
+                            secondary={true}
+                            label="Отмена"
+                            onClick={() => {
+                                toggleSearch();
+                                handleSearchText('');
+                            }}
+                        />
+                    </div>
+                </React.Fragment>
                 }
                 {!searchOpened && !editorOpened &&
-                    <Search onClick={toggleSearch} className="search__icon"/>
+                <Search onClick={toggleSearch} className="search__icon"/>
                 }
-            </React.Fragment>)
-    }
+            </React.Fragment>);
+    };
 
     groupChatHeader = (title, editorOpened) => {
         const switcher = editorOpened ?
-            <Close className="header__img" /> :
-            <ModeEdit className="header__img" />;
+            <Close className="header__img"/> :
+            <ModeEdit className="header__img"/>;
         const prefix = (
             <React.Fragment>
                 {switcher}
@@ -125,15 +120,15 @@ export default class ChatHeader extends React.Component {
                 <Header onClick={this.props.toggleEditor}>
                     {prefix}
                     {editorOpened &&
-                        <input
-                            value={this.state.title}
-                            size={title.length}
-                            style={{ outline: "none", border: "none" }}
-                            onChange={this.handleChange}
-                            onKeyPress={this.handleSubmit}
-                            autoFocus
-                            onFocus={e => e.target.select()}
-                        />
+                    <input
+                        value={this.state.title}
+                        size={title.length}
+                        style={{ outline: "none", border: "none" }}
+                        onChange={this.handleChange}
+                        onKeyPress={this.handleSubmit}
+                        autoFocus
+                        onFocus={e => e.target.select()}
+                    />
                     }
                 </Header>
             </React.Fragment>
@@ -155,8 +150,8 @@ export default class ChatHeader extends React.Component {
                 {
                     loading && 'Загрузка...' ||
                     !searchOpened && (chat.groupchat &&
-                    this.groupChatHeader(chat.title, editorOpened) ||
-                    this.personalChatHeader(chat.title))
+                        this.groupChatHeader(chat.title, editorOpened) ||
+                        this.personalChatHeader(chat.title))
                 }
                 {this.searchHeader()}
             </Header>
