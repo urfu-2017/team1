@@ -30,6 +30,8 @@ export default class MessagesController {
 
     async updateChatLastMessage(chatId, message) {
         if (typeof message.id === 'string') {
+            // Apollo-вские subscribtion хреново работают с вложенными структурами
+            // поэтому обновляем modifiedAt чтобы subscription подхватывал измения
             this.apolloClient.mutate({
                 mutation: UpdateLastMessageChat.mutation,
                 variables: { messageId: message.id, chatId, modifiedAt: new Date() }
