@@ -100,6 +100,11 @@ export const MessageWrapper = withUiTheme(styled.article`
         display: flex;
         justify-content: space-between;
     }
+    .msgDeleteBlock {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+    }
     .msgFromUserPic {
         padding: 8px;
         width: 40px;

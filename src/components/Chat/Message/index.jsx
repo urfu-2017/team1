@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {graphql, withApollo} from 'react-apollo';
 import dynamic from 'next/dynamic';
 import Mood from 'material-ui/svg-icons/social/mood';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
 
 import {MessageWrapper} from '../../../styles/message';
 import {ReactionParanja} from '../../../styles/reaction';
@@ -180,6 +181,9 @@ export default class Message extends React.PureComponent {
                                         Ответить
                                     </div>
                                     : <div className="messageBlock__time">{createdAt}</div>}
+                            </div>
+                            <div className="msgDeleteBlock">
+                                {message.lifeTimeInSeconds && <ActionDelete/>}
                             </div>
                         </div>
                         {message.citation && <Citation message={message.citation}/>}
