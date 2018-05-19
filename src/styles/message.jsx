@@ -168,7 +168,7 @@ export const MessageWrapper = withUiTheme(styled.article`
             left: ${props => (props.isFromSelf ? '35vw' : '')};
         }
         @media screen and (min-width: 1249px) {
-            right: ${props => (props.isFromSelf ? '' : 'calc((100vw - 1220px) / 2)')};
+            right: ${props => (props.isFromSelf ? '' : 'calc((100vw - 1231px) / 2)')};
             left: ${props => (props.isFromSelf ? 'calc((100vw - 1248px) / 2 + 436px)' : '')};
         }
     }

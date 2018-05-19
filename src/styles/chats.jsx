@@ -61,7 +61,7 @@ export const Paranja = styled.section`
     z-index: 2;
     position: absolute;
     background: rgba(0,0,0,.2);
-    max-width: 1260px;
+    max-width: 1248px;
 `;
 
 export const Contacts = styled.section`

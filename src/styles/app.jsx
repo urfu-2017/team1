@@ -27,7 +27,7 @@ export const Page = withUiTheme(styled.div`
 
 export const Wrapper = withUiTheme(styled.main`
     height: 100%;
-    width: 1248px;
+    width: 1260px;
     display: flex;
     margin: 0 auto;
     overflow: hidden;
