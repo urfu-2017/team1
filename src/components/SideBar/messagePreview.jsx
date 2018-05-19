@@ -37,7 +37,7 @@ export default class MessagePreview extends React.PureComponent {
             matchPosition = offset + 3;
         }
         return (
-            <span title={text.slice(0, VISIBLE_TEXT_WINDOW)}>
+            <span title={message.rawText.slice(0, VISIBLE_TEXT_WINDOW * 2)}>
                 {text.slice(0, matchPosition)}
                 <mark>
                     {text.slice(matchPosition, matchPosition + searchText.length)}

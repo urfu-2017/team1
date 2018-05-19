@@ -87,10 +87,10 @@ export const ScrollButton = styled.div`
 `;
 
 
-export const ReplyPreview = styled.div`
+export const ReplyPreview = withUiTheme(styled.div`
     padding: 10px 20px 5px 40px;
     z-index: 5000;
-    background: #fff;
+    background: ${props => props.uiTheme.isNightTheme ? '#37474F' : '#fff'};
     position: relative;
     max-width: 100%;
     
@@ -128,4 +128,4 @@ export const ReplyPreview = styled.div`
         right: 10px;
         cursor: pointer;
     }
-`;
+`);
