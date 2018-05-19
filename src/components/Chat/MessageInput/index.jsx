@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types';
 import {emojiIndex} from 'emoji-mart';
 import dynamic from 'next/dynamic';
@@ -43,7 +44,8 @@ export default class MessageInput extends React.Component {
         this.speechRecognition = new SpeechRecognition();
         this.state = {
             message: localStorage.getItem(this.storageKey) || '',
-            className: "microphone"
+            className: "microphone",
+            emojiPickerVisible: false
         };
     }
 
@@ -122,6 +124,28 @@ export default class MessageInput extends React.Component {
 
     onEmojiClick = (_, val) => this.addEmojiIntoText(val.name);
 
+    componentDidMount() {
+        document.addEventListener('click', this.closeEmojiPicker);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('click', this.closeEmojiPicker);
+    }
+
+    closeEmojiPicker = e => {
+        const emojiPicker = ReactDOM.findDOMNode(this.nodeEmojiPicker);
+        if (!emojiPicker) {
+            return;
+        }
+        const mood = ReactDOM.findDOMNode(this.nodeMood);
+        if (e.target === mood) {
+            return;
+        }
+        if(!emojiPicker.contains(e.target)) {
+            this.setState({ emojiPickerVisible: false });
+        }
+    };
+
     onSendImage = urlInBase64 => {
         const { currentChatId, messagesController } = this.props;
         const message = this.message;
@@ -172,6 +196,10 @@ export default class MessageInput extends React.Component {
         this.setState({className});
     }
 
+    setNodeEmojiPicker = node => (this.nodeEmojiPicker = node);
+
+    setNodeMood = node => (this.nodeMood = node);
+
     render() {
         return (
             <Textarea>
@@ -205,7 +233,7 @@ export default class MessageInput extends React.Component {
                         <Microphone
 />
                     </IconButton>
-                    <Mood className="icon" onClick={this.toggleEmojiPicker}/>
+                    <Mood className="icon" onClick={this.toggleEmojiPicker} ref={this.setNodeMood}/>
                 </div>
                 {this.state.uploadWindow &&
                 <MessageImageSender
@@ -215,7 +243,9 @@ export default class MessageInput extends React.Component {
                     {this.state.emojiPickerVisible &&
                     <EmojiPicker
                         onEmojiClick={this.onEmojiClick}
-                        disableDiversityPicker/>}
+                        disableDiversityPicker
+                        ref={this.setNodeEmojiPicker}
+                    />}
                 </div>
             </Textarea>
         );
