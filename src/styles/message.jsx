@@ -163,13 +163,13 @@ export const MessageWrapper = withUiTheme(styled.article`
         position: fixed;
         top: 50%;
         transform: translateY(-50%);
-        @media screen and (max-width: 1260px) {
-            right: ${props => (props.isFromSelf ? '' : '0')};
+        @media screen and (max-width: 1248px) {
+            right: ${props => (props.isFromSelf ? '' : '15px')};
             left: ${props => (props.isFromSelf ? '35vw' : '')};
         }
-        @media screen and (min-width: 1261px) {
-            right: ${props => (props.isFromSelf ? '' : 'calc((100vw - 1260px) / 2)')};
-            left: ${props => (props.isFromSelf ? 'calc((100vw - 1260px) / 2 + 441px)' : '')};
+        @media screen and (min-width: 1249px) {
+            right: ${props => (props.isFromSelf ? '' : 'calc((100vw - 1230px) / 2)')};
+            left: ${props => (props.isFromSelf ? 'calc((100vw - 1248px) / 2 + 436px)' : '')};
         }
     }
     .message__paranja {

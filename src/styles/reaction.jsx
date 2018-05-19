@@ -33,13 +33,12 @@ export const ReactionWrapper = withUiTheme(styled.div`
 export const ReactionParanja = styled.div`
     position: fixed;
     z-index: 10;
-    @media screen and (max-width: 1260px) {
-        right: 0;
+    @media screen and (max-width: 1248px) {
         left: 35%;
     }
-    @media screen and (min-width: 1261px) {
-        right: calc((100vw - 1260px) / 2);
-        left: calc((100vw - 1260px) / 2 + 441px);
+    @media screen and (min-width: 1249px) {
+        right: calc((100vw - 1230px) / 2);
+        left: calc((100vw - 1248px) / 2 + 436px);
     }
     top: 58px;
     bottom: 0;
