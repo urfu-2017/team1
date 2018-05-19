@@ -12,6 +12,10 @@ export const getListItemStyle = (isSelected, isNightTheme) => {
     }
 };
 
+export const AvatarStyle = {
+    'object-fit': 'cover'
+}
+
 
 export const ChatWrapper = styled.article`
     background-color: ${props => (props.select ? '#b7c5f5' : '#e6e6fa')};

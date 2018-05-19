@@ -15,6 +15,7 @@ import {SubscribeToMessages} from '../../graphql/subscriptions';
 import {withUiTheme} from '../../lib/withUiTheme';
 import MessagesController from './messagesController';
 import {idXor} from '../../lib/idXor';
+import removeHashFromUrl from '../../lib/removeHashFromUrl';
 
 
 @withUiTheme
@@ -48,7 +49,8 @@ export default class Messages extends React.Component {
     state = {
         citedMessage: null,
         selectedMessages: new Map(),
-        selectedMessagesDummy: ''
+        selectedMessagesDummy: '',
+        isBottom: true
     };
 
     // действие "ответить на сообщение" называет данное сообщение "цитируемым"
@@ -72,12 +74,18 @@ export default class Messages extends React.Component {
     };
 
     componentDidMount() {
-        this.scroll.isBottom = true;
-        this.scroll.scrollToBottom();
+        if (window.location.hash) {
+            this.scrollToMessage();
+        } else {
+            this.state.isBottom = true;
+            this.scroll.scrollToBottom();
+        }
     }
 
     componentDidUpdate() {
-        if (this.scroll.isBottom) {
+        if (window.location.hash) {
+            this.scrollToMessage();
+        } else if (this.state.isBottom) {
             this.scroll.scrollToBottom();
         }
         const { currentUserId, currentChatId, messages } = this.props;
@@ -89,9 +97,26 @@ export default class Messages extends React.Component {
         }
     }
 
+    scrollToMessage = () => {
+        const messageId = window.location.hash.slice(1);
+        let messageWrapper = document.getElementById(messageId);
+        if (!messageWrapper) {
+            // при 1ой загрузке сообщения не загрузились
+            return;
+        }
+        removeHashFromUrl();
+        messageWrapper = messageWrapper.parentNode;
+        messageWrapper.scrollIntoView(true);
+        messageWrapper.classList.add('messageForwarded__animation');
+        setTimeout(() => messageWrapper.classList.remove('messageForwarded__animation'), 5000);
+    };
+
+    bindedScrollToMessage = this.scrollToMessage.bind(this);
+
     changePositionScroll = () => {
-        this.scroll.isBottom =
-            (this.scroll.getScrollHeight() === this.scroll.getScrollTop() + this.scroll.getClientHeight());
+        this.setState({
+            isBottom: this.scroll.getScrollHeight() === this.scroll.getScrollTop() + this.scroll.getClientHeight()
+        });
     };
 
     // Не создаём новую функцию при каждом рендере
@@ -106,7 +131,7 @@ export default class Messages extends React.Component {
             const isShow = new RegExp(this.escapeRegExp(searchText), 'gi').test(message.text) ||
                 (message.citation && new RegExp(this.escapeRegExp(searchText), 'gi')
                     .test(message.citation.text));
-                    
+
             if (message.forwardedMessages && message.forwardedMessages.length > 0) {
                 res.push(...this.getMessages(message.forwardedMessages, message));
             } else if (parent && isShow) {
@@ -114,6 +139,7 @@ export default class Messages extends React.Component {
                 res.push(
                     <Message
                         key={forwardId}
+                        hash={forwardId}
                         message={message}
                         isFromSelf={parent.sender.id === this.props.currentUserId}
                         replyToMessage={this.replyToMessage}
@@ -121,17 +147,22 @@ export default class Messages extends React.Component {
                         forwardParent={parent}
                         selected={this.state.selectedMessages.has(forwardId)}
                         selectionId={forwardId}
+                        currentChatId={this.props.currentChatId}
+                        scrollToMessage={this.bindedScrollToMessage}
                     />);
-            } else if (isShow) {      
+            } else if (isShow) {
                 res.push(
                     <Message
                         key={message.id}
+                        hash={message.id}
                         message={message}
                         isFromSelf={message.sender.id === this.props.currentUserId}
                         replyToMessage={this.replyToMessage}
                         selectMessage={this.selectMessage}
                         selected={this.state.selectedMessages.has(message.id)}
                         selectionId={message.id}
+                        currentChatId={this.props.currentChatId}
+                        scrollToMessage={this.bindedScrollToMessage}
                     />);
             }
         }
@@ -153,11 +184,13 @@ export default class Messages extends React.Component {
         } else {
             content = (
                 <React.Fragment>
-                    <ScrollButton
-                        type="button"
-                        className="scroll"
-                        onClick={() => this.scroll.scrollToBottom()}
-                    />
+                    {!this.state.isBottom &&
+                        <ScrollButton
+                            type="button"
+                            className="scroll"
+                            onClick={this.scroll.scrollToBottom}
+                        />
+                    }
                     {this.getMessages(messages)}
                 </React.Fragment>
             );
@@ -168,7 +201,7 @@ export default class Messages extends React.Component {
         return (
             <React.Fragment>
                 <Scrollbars
-                    style={{ 'background-color': isNightTheme ? '##212121' : '' }}
+                    style={{ 'background-color': isNightTheme ? '#212121' : '' }}
                     ref={this.setScroll}
                     onScrollStop={this.changePositionScroll}
                 >

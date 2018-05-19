@@ -2,9 +2,10 @@ import gql from 'graphql-tag';
 
 import * as fragments from './fragments';
 import {processChat} from './dataHandlers';
+import {idXor} from '../lib/idXor';
 
 
-const mapper = (query, selector, name) => ({
+const mapper = (query, selector, name, variables) => ({
     query,
     map: (req) => {
         const props = {
@@ -16,7 +17,8 @@ const mapper = (query, selector, name) => ({
             props[name] = selector(req.data);
         }
         return props;
-    }
+    },
+    variables
 });
 
 
@@ -40,6 +42,7 @@ query GetUser($userId: ID!) {
     chats {
       ...chatData
     }
+    isNightTheme
   }
 }
 
@@ -216,29 +219,77 @@ export const GetLastMessageChatToUser = mapper(
 );
 
 
-const SEARCH_MESSAGES = gql`
+const SEARCH_MESSAGES_ql = gql`
 query SearchMessages($filter: MessageFilter!) {
-  allMessages(filter: $filter) {
+  allMessages(filter: $filter, orderBy: createdAt_DESC) {
     id
-    text
+    rawText
+    createdAt
+    citation {
+      id
+      rawText
+    }
+    forwardedMessages {
+      id
+      rawText
+    }
+    chat {
+      id
+    }
     sender {
+      id
       name
     }
   }
 }
 `;
 
+const searchMessages_vars = (currentuserId, substring) => ({
+    filter: {
+        chat: {
+            members_some: {
+                id: currentuserId
+            }
+        },
+        OR: [
+            { rawText_contains: substring },
+            { forwardedMessages_some: { rawText_contains: substring } },
+            { citation: { rawText_contains: substring } },
+        ]
+    }
+});
 
-/*
-{
-	"filter": {
-    "chat": {
-      "members_some": {
-        "id": "cjgguhtsrt66z0191673tcn0d"
-      }
+
+export const SearchMessages = {
+    query: SEARCH_MESSAGES_ql,
+    map: (req) => {
+        const props = {
+            data: req.data,
+            loading: req.data && req.data.loading || !req.data && true,
+            error: req.data && req.data.error || null
+        };
+        if (req.data.allMessages) {
+            props.searchMessages = req.data.allMessages
+                .reduce((acc, curr) => {
+                    if (!curr.forwardedMessages.length) {
+                        acc.push(curr);
+                    } else {
+                        acc.push(...curr.forwardedMessages.map((msg, i) => ({
+                            ...msg, id: idXor(curr.id, msg.id) + i,
+                            sender: curr.sender, chat: curr.chat,
+                            createdAt: curr.createdAt
+                        })))
+                    }
+                    return acc;
+                }, [])
+                .map(msg => {
+                    const rawText = [msg.rawText, msg.citation && msg.citation.rawText]
+                        .filter(Boolean)
+                        .join('\n');
+                    return { ...msg, rawText };
+                });
+        }
+        return props;
     },
-    "text_contains": "href"
-  }
-}
-
- */
+    variables: searchMessages_vars
+};

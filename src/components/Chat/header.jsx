@@ -66,6 +66,14 @@ export default class ChatHeader extends React.Component {
         });
     };
 
+    handleSearchKeyPress = event => {
+        const { handleSearchText } = this.props;
+
+        if (event.which === 13) {         
+            handleSearchText(this.state.searchText)
+        }
+    }
+
     searchHeader = () => {
         const {editorOpened, searchOpened, toggleSearch, handleSearchText} = this.props;
         return ( 
@@ -75,6 +83,7 @@ export default class ChatHeader extends React.Component {
                         <TextField
                             hintText="Поиск по истории сообщений"
                             onChange={this.handleSearchText}
+                            onKeyPress={this.handleSearchKeyPress}
                             value={this.state.searchText}
                             inputStyle={searchStyles}
                             hintStyle={searchHintStyles}
@@ -95,7 +104,8 @@ export default class ChatHeader extends React.Component {
                     </React.Fragment>
                 }
                 {!searchOpened && !editorOpened &&
-                    <Search onClick={toggleSearch} className="search__icon"/>}
+                    <Search onClick={toggleSearch} className="search__icon"/>
+                }
             </React.Fragment>)
     }
 

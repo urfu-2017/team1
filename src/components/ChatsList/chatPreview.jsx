@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ListItem from 'material-ui/List/ListItem';
 import Avatar from 'material-ui/Avatar';
 import Brightness from 'material-ui/svg-icons/image/brightness-1';
-import {getListItemStyle} from '../../styles/chat';
+import {getListItemStyle, AvatarStyle} from '../../styles/chat';
 import {withUiTheme} from '../../lib/withUiTheme';
 import withLocalState from '../../lib/withLocalState';
 
@@ -38,7 +38,7 @@ export default class ChatPreview extends React.PureComponent {
                 primaryText={chat.title}
                 onClick={this.onChatClickHandler}
                 innerDivStyle={getListItemStyle(this.isSelected(), uiTheme.isNightTheme)}
-                leftAvatar={<Avatar src={chat.picture}/>}
+                leftAvatar={<Avatar style={AvatarStyle} src={chat.picture}/>}
                 {...extensionAttrs}
             />
         );

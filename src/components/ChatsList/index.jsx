@@ -3,7 +3,7 @@ import React from 'react';
 import moment from 'moment';
 
 import {List} from 'material-ui/List';
-import {Divider} from 'material-ui';
+import {Divider, Subheader} from 'material-ui';
 import PropTypes from 'prop-types';
 
 import ChatPreview from './chatPreview';
@@ -41,16 +41,20 @@ export default class ChatsList extends React.Component {
 
         return (
             <List>
-                {chats.length && chats.filter(chatsFilter).map((chat, i) => (
-                    <React.Fragment key={chat.id}>
-                        <ChatPreview
-                            isHasUnreadMessage={this.isHasUnreadMessage(chat)}
-                            onChatClick={onChatClick}
-                            chat={chat}
-                        />
-                        {(i < chats.length - 1) && <Divider inset={true}/>}
-                    </React.Fragment>
-                ))}
+                {chats.length ?
+                    chats.filter(chatsFilter).map((chat, i) => (
+                        <React.Fragment key={chat.id}>
+                            <ChatPreview
+                                isHasUnreadMessage={this.isHasUnreadMessage(chat)}
+                                onChatClick={onChatClick}
+                                chat={chat}
+                            />
+                            {(i < chats.length - 1) && <Divider inset={true}/>}
+                        </React.Fragment>
+                    )) :
+                    <Subheader>
+                        Вы не состоите ни в одном чате
+                    </Subheader>}
             </List>
         );
     }

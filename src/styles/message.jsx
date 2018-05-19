@@ -7,7 +7,7 @@ export const MessageWrapper = withUiTheme(styled.article`
     position: relative;
     height:auto;
     padding: 10px;
-    background: ${props => props.selected ? !props.uiTheme.isNightTheme ? '#e7ebf0' : '#616161' : 'transparent'};
+    background: ${props => props.selected ? props.uiTheme.isNightTheme ? '#555555' : '#e8f0fd' : 'transparent'};
     p {
         display: table; 
         white-space: pre-wrap;
@@ -51,10 +51,11 @@ export const MessageWrapper = withUiTheme(styled.article`
         align-items: center;
     }
     .mood {
+        cursor: pointer;
         color: ${props => (props.uiTheme.isNightTheme ? '#EEE' : props.isFromSelf ? '#fff' : '#454648')} !important;
     }
     .messageBlock__citation {
-        border-left: 2px solid #555;
+        border-left: 2px solid ${props => props.uiTheme.isNightTheme ? '#CFD8DC' : '#b7efe7'};
         padding-left: 5px;
         margin: 2px 0 0 6px;
         overflow: hidden;
@@ -70,13 +71,17 @@ export const MessageWrapper = withUiTheme(styled.article`
         max-width: 15%;
         margin-right: 5px;
     }
+    .messageBlock__citation-map {
+        max-width: 15%;
+        margin-right: 5px;
+    }
     .messageBlock__citation-wrapper {
         display: flex;
         align-items: center;
     }
     .messageBlock__citation a {
         text-decoration: none;
-        color: #000;
+        color: ${props => props.uiTheme.isNightTheme || props.isFromSelf ? '#fff' : '#454648'};
     }
     .addReactions {
         background-image: url('/static/images/happy.svg');
@@ -100,6 +105,7 @@ export const MessageWrapper = withUiTheme(styled.article`
         width: 40px;
         height: 40px;
         border-radius: 50% 50%;
+        object-fit: cover;
     }
     .messageBlock__text {
         white-space: pre-wrap;
@@ -114,7 +120,7 @@ export const MessageWrapper = withUiTheme(styled.article`
         font-size: 0.8em;
     }
     .messageBlock__reply {
-        color: ${props => (props.isFromSelf ? '#fff' : '#454648')};
+        color: ${props => (props.isFromSelf || props.uiTheme.isNightTheme ? '#fff' : '#454648')};
         padding: 0 11px;
         font-size: 0.8em;
         cursor: pointer;
@@ -167,7 +173,7 @@ export const MessageWrapper = withUiTheme(styled.article`
     }
     .message__paranja {
         position: absolute;
-        z-index: 5;
+        z-index: 3000;
         height: 100%;
         top: 0;
         right: 0;
@@ -178,5 +184,13 @@ export const MessageWrapper = withUiTheme(styled.article`
         object-fit: contain;
         align-self: center;
         width: 90%;
+    }
+    .messageBlock__map {
+        height: 200px;
+        margin: 5%;
+        width: 90%;
+        align-self: center;
+        height: 200px;
+        border: 1px solid red;
     }
 `);

@@ -12,8 +12,18 @@ export const getTheme = isNightTheme => ({
     appBar: {
         'min-height': '59px',
         'max-height': '59px'
+    },
+    snackbar: {
+        backgroundColor: isNightTheme ? '#aaa' : '#555',
+        textColor: isNightTheme ? '#333' : '#ccc'
     }
 });
+
+export const Page = withUiTheme(styled.div`
+    width: 100%;
+    height: 100%;
+    background: ${props => (props.uiTheme.isNightTheme ? '#212121' : '#fff')};
+`)
 
 export const Wrapper = withUiTheme(styled.main`
     height: 100%;

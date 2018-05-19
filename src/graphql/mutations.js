@@ -26,12 +26,12 @@ const mapper = (mutation, funcName, update, optimisticResponse) => ({
 
 
 const CREATE_MESSAGE_ql = gql`
-mutation CreateMessage($text: String!, $chatId: ID!, $senderId: ID!, $clientSideId: Int!, 
-    $pictures: [String!] = null, $metadata: Json = null, $citationId: ID = null, $lifeTimeInSeconds: Int, 
-    $forwardedMessagesIds: [ID!]) {
-  createMessage(text: $text, chatId: $chatId, senderId: $senderId, clientSideId: $clientSideId, 
-    pictures: $pictures, metadata: $metadata, citationId: $citationId, lifeTimeInSeconds: $lifeTimeInSeconds,
-    forwardedMessagesIds: $forwardedMessagesIds) {
+mutation CreateMessage($text: String!, $rawText: String, $chatId: ID!, $senderId: ID!, $clientSideId: Int!, 
+    $pictures: [String!] = null, $metadata: Json = null, $citationId: ID = null,
+    $lifeTimeInSeconds: Int, $map: Json = null, $forwardedMessagesIds: [ID!]) {
+  createMessage(text: $text, rawText: $rawText, chatId: $chatId, senderId: $senderId, clientSideId: $clientSideId, 
+    pictures: $pictures, metadata: $metadata, citationId: $citationId,
+    lifeTimeInSeconds: $lifeTimeInSeconds, map: $map, forwardedMessagesIds: $forwardedMessagesIds) {
     id
     ...messageData
     ...messageCitation
@@ -60,6 +60,7 @@ const createMessage_optimistic = (message, citedMessage, forwardedMessages = [])
         },
         metadata: null,
         reactions: null,
+        map: null,
         ...message,
         lifeTimeInSeconds: message.lifeTimeInSeconds || null,
         forwardedMessages,
@@ -254,6 +255,28 @@ mutation UpdateUserAvatar($userId: ID!, $avatarUrl: String) {
 `;
 
 export const UpdateUserAvatar = mapper(UPDATE_USER_AVATAR_ql, 'updateUserAvatar');
+
+
+const UPDATE_USER_ISNIGHTTHEME_ql = gql`
+mutation UpdateUserIsNightTheme($userId: ID!, $isNightTheme: Boolean!) {
+  updateUser(id: $userId, isNightTheme: $isNightTheme) {
+    id
+    isNightTheme
+  }
+}
+`;
+
+const updateUserIsNightTheme_optimistic = (userId, isNightTheme) => ({
+    updateUser: {
+        id: userId,
+        isNightTheme,
+        __typename: 'User'
+    }
+});
+
+export const UpdateUserIsNightTheme = mapper(UPDATE_USER_ISNIGHTTHEME_ql, 'updateUserIsNightTheme',
+    null, updateUserIsNightTheme_optimistic);
+
 
 const UPDATE_MESSAGE_REACTIONS_ql = gql`
 mutation updateMessageReactions($messageId: ID!, $reactions: Json) {

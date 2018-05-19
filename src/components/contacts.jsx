@@ -3,8 +3,9 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import {Mutation, Query, graphql} from 'react-apollo';
 
 import ContactsList from './contactsList';
-import {GetUserChats, GetUserContacts, GetAllUsers, GetLastMessageChatToUser} from '../graphql/queries';
-import {AddUserToContacts, CreateChat, CreateChatAndUserLink} from '../graphql/mutations';
+import {tabStyle, InnerBlockStyle, ItemContainerStyle} from '../styles/contacts';
+import {GetUserChats, GetUserContacts, GetAllUsers} from '../graphql/queries';
+import {AddUserToContacts, CreateChat} from '../graphql/mutations';
 import withLocalState from '../lib/withLocalState';
 import {idXor} from '../lib/idXor';
 import {withCurrentUser} from '../lib/currentUserContext';
@@ -39,24 +40,25 @@ export default class Contacts extends React.Component {
         const { showAllUsers } = this.state;
         return (
             <Tabs
-                style={{ width: "100%", background: "#fff" }}
-                tabTemplateStyle={{ height: '100%' }}
-                contentContainerStyle={{ height: '100%' }}
-                tabItemContainerStyle={{ height: '60px' }}
+                style={tabStyle}
+                tabTemplateStyle={InnerBlockStyle}
+                contentContainerStyle={InnerBlockStyle}
+                tabItemContainerStyle={ItemContainerStyle}
                 value={showAllUsers ? 'allUsers' : 'contacts'}
                 onChange={this.toggleAllUsers}
             >
                 <Tab
                     label="Контакты"
                     value="contacts"
-                    style={{ width: "100%", background: "#5682a3" }}>
+                    style={tabStyle}
+                >
                     {showAllUsers || this.withCreateChat(this.myContactsTab)}
 
                 </Tab>
                 <Tab
                     label="Все пользователи"
                     value="allUsers"
-                    style={{ width: "100%", background: "#5682a3" }}>
+                    style={tabStyle}>
                     {showAllUsers && this.withCreateChat(this.withAddToContacts(this.allUsersTab))}
                 </Tab>
             </Tabs>
@@ -110,7 +112,6 @@ export default class Contacts extends React.Component {
         const { loading, error, contacts } = this.props;
 
         return <ContactsList
-            style={{ background: "#fff" }}
             title="Начать чат:"
             clickHandler={this.contactClickHandler.bind(this, createChat)}
             contactsFilter={this.filterCurrentUser}
@@ -164,7 +165,6 @@ export default class Contacts extends React.Component {
 
     allUsersTab = ({ addUserToContacts, createChat, allUsers, loading, error }) => (
         <ContactsList
-            style={{ background: "#fff" }}
             title="Добавить в контакты:"
             contactsFilter={this.filterContacts}
             clickHandler={this.userClickHandler.bind(this, createChat, addUserToContacts)}

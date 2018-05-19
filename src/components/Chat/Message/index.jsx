@@ -13,13 +13,19 @@ import Reactions from './reactions';
 import Citation from './citation';
 import Metadata from './metadata';
 import renderPictures from './pictures';
+import renderMap from './map';
 import {DeleteMessage} from '../../../graphql/mutations';
 import withLocalState from '../../../lib/withLocalState';
+import formatDate from '../../../lib/formatDate';
 
 const EmojiPicker = dynamic(
     import('emoji-picker-react'),
     { ssr: false }
 );
+
+
+const stopPropagation = e => e.stopPropagation();
+
 
 @withApollo
 @withCurrentUser
@@ -39,14 +45,18 @@ export default class Message extends React.PureComponent {
         message: PropTypes.object,
         sender: PropTypes.object,
         currentUser: PropTypes.object,
-        replyToMessage: PropTypes.func
+        replyToMessage: PropTypes.func,
+        currentChatId: PropTypes.string,
+        scrollToMessage: PropTypes.func
     };
 
     static defaultProps = {
         isFromSelf: false,
         message: {},
         sender: {},
-        currentUser: {}
+        currentUser: {},
+        currentChatId: '',
+        scrollToMessage: () => {}
     };
 
     constructor(props) {
@@ -101,13 +111,6 @@ export default class Message extends React.PureComponent {
 
     hiddenParanja = () => this.setState({ emojiPickerVisible: false });
 
-    static formatDate = new Intl.DateTimeFormat('ru', {
-        hour: 'numeric',
-        minute: 'numeric',
-        day: 'numeric',
-        month: 'long'
-    }).format;
-
     get messageWithSender() {
         const { message, selectionId, user: sender } = this.props;
         return {
@@ -133,30 +136,30 @@ export default class Message extends React.PureComponent {
         if (!this.userHasForwardOriginChat) return;
         e.stopPropagation();
         const { message, updateCurrentChatId } = this.props;
-        updateCurrentChatId(message.chat.id);
-        // TODO: сделать нормальный скролл
-        setTimeout(
-            () => window.location = ('' + window.location).replace(/#[A-Za-z0-9_]*$/, '') + `#${message.id}`,
-            100);
+        window.location.hash = message.id;
+        if (message.chat.id === this.props.currentChatId) {
+            this.props.scrollToMessage();
+        } else {
+            updateCurrentChatId(message.chat.id);
+        }
     };
 
     render() {
         const {
             loading, error, message, user, currentUser,
-            isFromSelf, forwardParent, selected
+            isFromSelf, forwardParent, selected, hash
         } = this.props;
         // небольшой костыль: optimistic response присваивает сообщениям
         // рандомный отрицательный id, чтобы не хранить лишнее поле
         const delivered = isFromSelf ? (message.id < 0 ? '  ' : ' ✓') : '';
         const metadata = message.metadata || {};
-        const createdAt = Message.formatDate(new Date(
-            forwardParent && forwardParent.createdAt || message.createdAt));
+        const createdAt = formatDate(forwardParent && forwardParent.createdAt || message.createdAt);
 
         return (
             <React.Fragment>
                 <MessageWrapper isFromSelf={isFromSelf} emojiPickerVisible={this.state.emojiPickerVisible}
                                 onClick={this.toggleSelected} selected={selected}>
-                    <div id={message.id} className="messageBlock"
+                    <div id={hash} className="messageBlock"
                          onMouseEnter={this.setMouseOver} onMouseLeave={this.unsetMouseOver}>
                         {forwardParent &&
                         <p
@@ -187,6 +190,9 @@ export default class Message extends React.PureComponent {
                         />
                         {Object.keys(metadata).length !== 0 && <Metadata metadata={metadata}/>}
                         {message.pictures && renderPictures(message.pictures)}
+                        <div onClick={stopPropagation}>
+                            {message.map && renderMap(message.map, '100%', '200px', 11)}
+                        </div>
                         {message.reactions && message.reactions.length > 0 &&
                         <Reactions
                             currentUserId={currentUser.id}

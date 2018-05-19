@@ -2,11 +2,22 @@ import styled from 'styled-components';
 import { withUiTheme } from '../lib/withUiTheme';
 
 
-export const MessagesList = styled.section`
+export const MessagesList = withUiTheme(styled.section`
     width: 100%;
     display: flex;
     flex-direction: column;
-`;
+    .messageForwarded__animation {
+        animation: light 5s 1 ease-in;
+    }
+    @keyframes light {
+        from {
+            background: ${props => !props.uiTheme.isNightTheme ? '#9cc' : '#f7f7fc'};
+        }
+        to {
+            background: ${props => (props.uiTheme.isNightTheme ? '#212121' : '#fff')};
+        }
+    }
+`);
 
 export const Header = withUiTheme(styled.section`
     position: relative;
@@ -24,6 +35,7 @@ export const Header = withUiTheme(styled.section`
         justify-content: space-between;
     }
     .header__img {
+        cursor: pointer !important;
         margin: 0 15px 0 0 !important;
         color: #fff !important;
     }
@@ -33,7 +45,10 @@ export const Header = withUiTheme(styled.section`
     .search__icon {
         right: 0;
         position: absolute;
-        margin: 0 10px 0;
+        cursor: pointer !important;
+        padding: 10px;
+        width: 30px !important;
+        height: 30px !important;
         color: #fff !important;
     }
     .header__buttons {
@@ -44,11 +59,11 @@ export const Header = withUiTheme(styled.section`
     }
 `);
 
-export const ScrollButton = styled.div`
+export const ScrollButton = withUiTheme(styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white;
+    background-color: ${props => props.uiTheme.isNightTheme ? '#37474F' : '#fff' };
     padding: 0;
     margin-bottom: 10px;
     width: 30px;
@@ -71,13 +86,13 @@ export const ScrollButton = styled.div`
         font-weight: 900;
         font-size: 20px;
     }
-`;
+`);
 
 
-export const ReplyPreview = styled.div`
+export const ReplyPreview = withUiTheme(styled.div`
     padding: 10px 20px 5px 40px;
     z-index: 5000;
-    background: #fff;
+    background: ${props => props.uiTheme.isNightTheme ? '#37474F' : '#fff'};
     position: relative;
     max-width: 100%;
     
@@ -92,6 +107,11 @@ export const ReplyPreview = styled.div`
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+    }
+
+    .replyPreview__map {
+        max-width: 5%;
+        margin: 0 5px;
     }
     
     .replyPreview__picture {
@@ -110,4 +130,4 @@ export const ReplyPreview = styled.div`
         right: 10px;
         cursor: pointer;
     }
-`;
+`);

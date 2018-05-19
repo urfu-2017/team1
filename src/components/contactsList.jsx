@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
 import Avatar from 'material-ui/Avatar';
+import RaisedButton from 'material-ui/RaisedButton';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import {Scrollbars} from 'react-custom-scrollbars';
-import {RaisedButton} from 'material-ui';
 
 import LoadScreen from './ui/loadScreen';
 import {ContactsWrapper} from '../styles/contacts';
@@ -48,7 +48,7 @@ export default class ContactsList extends React.Component {
             insetChildren
             primaryText={contact.name}
             key={contact.id}
-            leftAvatar={<Avatar src={contact.avatarUrl}/>}
+            leftAvatar={<Avatar className="avatar" src={contact.avatarUrl}/>}
             rightIcon={<CommunicationChatBubble/>}
             onClick={() => clickHandler(currentUser, contact)}
         />
@@ -70,7 +70,10 @@ export default class ContactsList extends React.Component {
                 </Scrollbars>
                 {closeAction &&
                 <div className="buttons">
-                    <RaisedButton label="Закрыть" onClick={closeAction}/>
+                    <RaisedButton
+                        primary={true}
+                        label="Закрыть"
+                        onClick={closeAction}/>
                 </div>}
             </ContactsWrapper>
         );

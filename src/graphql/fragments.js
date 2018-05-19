@@ -11,6 +11,7 @@ fragment messageData on Message {
   metadata
   clientSideId
   reactions
+  map
   lifeTimeInSeconds
   sender {
     id
@@ -24,6 +25,7 @@ fragment messageCitation on Message {
     id
     text
     pictures
+    map
     sender {
       id
       name
@@ -39,9 +41,11 @@ fragment forwardedMessages on Message {
     text
     createdAt
     pictures
+    map
     citation {
       id
       text
+      map
       pictures
       sender {
         id

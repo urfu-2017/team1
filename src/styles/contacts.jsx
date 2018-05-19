@@ -28,6 +28,9 @@ export const ContactsWrapper = styled.article`
         background: lavender;
         color: #000;
     }
+    .avatar {
+        object-fit: cover;
+    }
 `;
 
 export const CreateButton = styled.input`
