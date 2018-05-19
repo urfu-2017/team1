@@ -37,7 +37,7 @@ export const ReactionParanja = styled.div`
         left: 35%;
     }
     @media screen and (min-width: 1249px) {
-        right: calc((100vw - 1230px) / 2);
+        right: calc((100vw - 1220px) / 2);
         left: calc((100vw - 1248px) / 2 + 436px);
     }
     top: 58px;
