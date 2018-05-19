@@ -35,6 +35,7 @@ export const Header = withUiTheme(styled.section`
         justify-content: space-between;
     }
     .header__img {
+        cursor: pointer !important;
         margin: 0 15px 0 0 !important;
         color: #fff !important;
     }
@@ -44,6 +45,7 @@ export const Header = withUiTheme(styled.section`
     .search__icon {
         right: 0;
         position: absolute;
+        cursor: pointer !important;
         margin: 0 10px 0;
         color: #fff !important;
     }

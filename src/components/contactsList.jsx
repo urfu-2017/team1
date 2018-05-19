@@ -5,7 +5,7 @@ import ListItem from 'material-ui/List/ListItem';
 import Avatar from 'material-ui/Avatar';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import {Scrollbars} from 'react-custom-scrollbars';
-import {RaisedButton} from 'material-ui';
+import {FlatButton} from 'material-ui';
 
 import LoadScreen from './ui/loadScreen';
 import {ContactsWrapper} from '../styles/contacts';
@@ -70,7 +70,7 @@ export default class ContactsList extends React.Component {
                 </Scrollbars>
                 {closeAction &&
                 <div className="buttons">
-                    <RaisedButton label="Закрыть" onClick={closeAction}/>
+                    <FlatButton label="Закрыть" onClick={closeAction}/>
                 </div>}
             </ContactsWrapper>
         );

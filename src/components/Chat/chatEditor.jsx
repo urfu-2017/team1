@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import FlatButton from 'material-ui/FlatButton';
 import {graphql, Mutation} from 'react-apollo';
 import {Scrollbars} from 'react-custom-scrollbars';
 
@@ -112,9 +113,8 @@ export default class ChatEditor extends React.Component {
                              alt="Изображение чата"/>
                         <div className="chat-editor">
                             <h1 className="chat-editor__header">{currentChat.title}</h1>
-                            <AddButton
-                                type="button"
-                                value="Добавить пользователя"
+                            <FlatButton
+                                label="Добавить пользователя"
                                 onClick={this.toggleUsersList}
                             />
                         </div>
