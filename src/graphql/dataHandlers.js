@@ -71,8 +71,10 @@ export const chatSubscriptionDataHandler = client => (previousResult, { subscrip
     const { Chat } = subscriptionData.data;
     if (Chat.updatedFields.find(f => f === 'lastMessageReceivedAt')) {
         const chat = Chat.node;
-        const { localState } = client.cache.readQuery({ query: GetLocalState.query });
-        if (localState.currentChatId !== chat.id) {
+        const { localState: { currentChatId } } = client.cache.readQuery({ query: GetLocalState.query });
+        if (currentChatId.length === 0) {
+            notificateAboutNewMessage();
+        } else if (currentChatId !== chat.id) {
             notificateAboutNewMessage();
         }
     }
