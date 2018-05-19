@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 import * as fragments from './fragments';
-import {GetChatMessages} from './queries';
+import {GetChatMessages, GetLastMessageChatToUser, GetUserLastMessageChatToUser} from './queries';
 import {addNewMessage} from './dataHandlers';
 
 
@@ -176,6 +176,13 @@ const CREATE_CHAT_AND_USER_LINK_MUTATION = gql`
 mutation CreateLastMessageChatToUser($chatId: String!, $userId: String!, $messageId: ID!) {
   createLastMessageChatToUser(chatId: $chatId, userId: $userId, messageId: $messageId) {
     id
+    chatId
+    userId
+    message {
+      id
+      text
+      createdAt
+    }
   }
 }
 `;
@@ -184,12 +191,22 @@ const UPDATE_CHAT_AND_USER_LINK_MUTATION = gql`
 mutation UpdateLastMessageChatToUser($id: ID!, $messageId: ID!) {
   updateLastMessageChatToUser(id: $id, messageId: $messageId) {
     id
+    chatId
+    userId
+    message {
+      id
+      text
+      createdAt
+    }
   }
 }
 `;
 
 export const CreateChatAndUserLink = mapper(CREATE_CHAT_AND_USER_LINK_MUTATION, 'createLastMessageChatToUser');
-export const UpdateChatAndUserLink = mapper(UPDATE_CHAT_AND_USER_LINK_MUTATION, 'updateLastMessageChatToUser');
+export const UpdateChatAndUserLink = mapper(
+  UPDATE_CHAT_AND_USER_LINK_MUTATION, 
+  'updateLastMessageChatToUser'
+);
 
 
 const ADD_USER_TO_CHAT_ql = gql`
