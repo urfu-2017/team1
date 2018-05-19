@@ -10,7 +10,7 @@ import Chat from './Chat';
 import SideBar from './SideBar';
 import Contacts from './contacts';
 import Profile from './profile';
-import {Wrapper, getTheme} from '../styles/app';
+import {Page, Wrapper, getTheme} from '../styles/app';
 
 import {Provider as CurrentUserProvider} from '../lib/currentUserContext';
 import {Provider as UiThemeProvider} from '../lib/withUiTheme';
@@ -71,17 +71,19 @@ export default class App extends React.Component {
         return (
             <UiThemeProvider value={isNightTheme}>
                 <MuiThemeProvider muiTheme={getMuiTheme(getTheme(isNightTheme))}>
-                    <Wrapper>
-                        {currentUser.error && <p>Error</p> ||
-                        currentUser.loading && <App.LoadScreen isNightTheme={this.state.savedIsNightTheme}/> ||
-                        (
-                            <CurrentUserProvider value={currentUser}>
-                                <SideBar mainComponentChanger={this.changeMainComponent}/>
-                                <MainComponent {...this.state.mainComponentProps}
-                                               mainComponentChanger={this.changeMainComponent}/>
-                            </CurrentUserProvider>
-                        )}
-                    </Wrapper>
+                    <Page>
+                        <Wrapper>
+                            {currentUser.error && <p>Error</p> ||
+                            currentUser.loading && <App.LoadScreen isNightTheme={this.state.savedIsNightTheme}/> ||
+                            (
+                                <CurrentUserProvider value={currentUser}>
+                                    <SideBar mainComponentChanger={this.changeMainComponent}/>
+                                    <MainComponent {...this.state.mainComponentProps}
+                                                mainComponentChanger={this.changeMainComponent}/>
+                                </CurrentUserProvider>
+                            )}
+                        </Wrapper>
+                    </Page>
                 </MuiThemeProvider>
             </UiThemeProvider>
         );
