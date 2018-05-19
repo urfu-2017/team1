@@ -205,7 +205,7 @@ export const UpdateUserAvatar = mapper(UPDATE_USER_AVATAR_ql, 'updateUserAvatar'
 
 
 const UPDATE_USER_ISNIGHTTHEME_ql = gql`
-mutation UpdateUserAvatar($userId: ID!, $isNightTheme: Boolean!) {
+mutation UpdateUserIsNightTheme($userId: ID!, $isNightTheme: Boolean!) {
   updateUser(id: $userId, isNightTheme: $isNightTheme) {
     id
     isNightTheme
