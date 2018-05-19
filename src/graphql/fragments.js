@@ -86,9 +86,12 @@ fragment chatData on Chat {
   picture
   createdAt
   groupchat
-  modifiedAt
+  lastMessageReceivedAt
   lastMessage {
     id
+    sender {
+      id
+    }
     createdAt
     text
   }

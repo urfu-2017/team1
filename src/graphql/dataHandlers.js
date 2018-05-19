@@ -1,3 +1,6 @@
+import {GetLocalState} from '../graphql/localState';
+import { notificateAboutNewMessage } from "../lib/notification";
+
 // декораторы только на классы?! Идиотизм...
 export const addNewMessage = (message, target) => {
     let messages = [...target.Chat.messages];
@@ -64,7 +67,15 @@ export const userSubscriptionDataHandler = (previousResult, { subscriptionData, 
 };
 
 
-export const chatSubscriptionDataHandler = (previousResult, { subscriptionData, variables }) => {
+export const chatSubscriptionDataHandler = client => (previousResult, { subscriptionData, variables }) => {
+    const { Chat } = subscriptionData.data;
+    if (Chat.updatedFields.find(f => f === 'lastMessageReceivedAt')) {
+        const chat = Chat.node;
+        const { localState } = client.cache.readQuery({ query: GetLocalState.query });
+        if (localState.currentChatId !== chat.id) {
+            notificateAboutNewMessage();
+        }
+    }
     if (!previousResult.Chat) {
         return previousResult;
     }

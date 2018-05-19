@@ -1,5 +1,5 @@
 import React from 'react';
-import {graphql} from 'react-apollo';
+import {graphql, withApollo} from 'react-apollo';
 
 import LoadScreen from './ui/loadScreen';
 import {GetCurrentUser} from '../graphql/queries';
@@ -22,6 +22,7 @@ import {userSubscriptionDataHandler, chatSubscriptionDataHandler} from '../graph
 import withLocalState from '../lib/withLocalState';
 
 
+@withApollo
 @withLocalState
 @graphql(GetCurrentUser.query, {
     skip: ({ userId }) => !userId,
@@ -94,7 +95,7 @@ export default class App extends React.Component {
     personalChatsSubscription = null;
 
     subscribe = () => {
-        const { currentUser } = this.props;
+        const { client: apolloClient, currentUser } = this.props;
         if (!this.userSubscription) {
             this.userSubscription = this.props.data.subscribeToMore({
                 document: SubscribeToCurrentUser.subscription,
@@ -106,7 +107,7 @@ export default class App extends React.Component {
             this.chatsSubscription = this.props.data.subscribeToMore({
                 document: SubscribeToUserChats.subscription,
                 variables: SubscribeToUserChats.vars(currentUser.id),
-                updateQuery: chatSubscriptionDataHandler
+                updateQuery: chatSubscriptionDataHandler(apolloClient)
             });
         }
         // TODO: исчезают все чаты

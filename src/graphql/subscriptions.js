@@ -130,6 +130,10 @@ subscription SubscribeToChat($filter: ChatSubscriptionFilter!) {
     node {
       ...chatData
     }
+    updatedFields
+    previousValues {
+        lastMessageReceivedAt
+    }
   }
 }
 

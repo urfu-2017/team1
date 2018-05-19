@@ -230,8 +230,8 @@ export const AddUserToChat = mapper(ADD_USER_TO_CHAT_ql, 'addUserToChat');
 
 
 const UPDATE_LAST_MESSAGE_CHAT_ql = gql`
-mutation UpdateLastMessageChat($chatId: ID!, $messageId: ID!, $modifiedAt: DateTime) {
-  updateChat(id: $chatId, lastMessageId: $messageId, modifiedAt: $modifiedAt) {
+mutation UpdateLastMessageChat($chatId: ID!, $messageId: ID!, $lastMessageReceivedAt: DateTime) {
+  updateChat(id: $chatId, lastMessageId: $messageId, lastMessageReceivedAt: $lastMessageReceivedAt) {
     id
     lastMessage {
       id,
