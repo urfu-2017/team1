@@ -15,7 +15,6 @@ export class SpeechRecognition {
             recognizer = new SpeechRecognition();
             recognizer.lang = 'ru-RU';
             recognizer.continuous = true;
-            // recognizer.interimResults = true;
         } else {
            this.tooltip = 'Браузер не поддерживает распознователь речи';
         }
@@ -28,8 +27,8 @@ export class SpeechRecognition {
         
         if (this.recognizer) {
             if (!navigator.getUserMedia) {
-                navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||
-                    navigator.mozGetUserMedia || navigator.msGetUserMedia;
+                navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
+                    || navigator.mozGetUserMedia || navigator.msGetUserMedia;
             }
             if (navigator.getUserMedia) {
                 navigator.getUserMedia({
@@ -41,7 +40,7 @@ export class SpeechRecognition {
                 })
             }
             else {
-                this.tooltip = "Не поддерживается getUserMedia"
+                this.tooltip = "Не поддерживается getUserMedia";
             }
 
             this.recognizer.addEventListener('error', event => {
@@ -60,7 +59,5 @@ export class SpeechRecognition {
 
     stop = () => {
         this.recognizer.stop();
-        console.log('stop');
-        
     }
 }
