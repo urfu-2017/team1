@@ -23,11 +23,13 @@ export default class ChatsList extends React.Component {
         const { allLastMessageChatToUsers } = this.props;
         for (let rel of allLastMessageChatToUsers) {
             const { lastMessage } = chat;
-            if (chat.id === rel.chatId && lastMessage) {
-                const lastMessageCreatedAt = moment(lastMessage.createdAt);
-                const relMessageCreateAt = moment(rel.message.createdAt);
-                if (lastMessageCreatedAt > relMessageCreateAt) {
-                    return true;
+            if (chat.id === rel.chatId) {
+                if (lastMessage) {
+                    const lastMessageCreatedAt = moment(lastMessage.createdAt);
+                    const relMessageCreateAt = moment(rel.message.createdAt);
+                    return lastMessageCreatedAt > relMessageCreateAt;
+                } else {
+                    return false;
                 }
             }
         }

@@ -93,17 +93,18 @@ export default class App extends React.Component {
     personalChatsSubscription = null;
 
     subscribe = () => {
+        const { currentUser } = this.props;
         if (!this.userSubscription) {
             this.userSubscription = this.props.data.subscribeToMore({
                 document: SubscribeToCurrentUser.subscription,
-                variables: SubscribeToCurrentUser.vars(this.props.currentUser.id),
+                variables: SubscribeToCurrentUser.vars(currentUser.id),
                 updateQuery: userSubscriptionDataHandler
             });
         }
         if (!this.chatsSubscription) {
             this.chatsSubscription = this.props.data.subscribeToMore({
                 document: SubscribeToUserChats.subscription,
-                variables: SubscribeToUserChats.vars(this.props.currentUser.id),
+                variables: SubscribeToUserChats.vars(currentUser.id),
                 updateQuery: chatSubscriptionDataHandler
             });
         }

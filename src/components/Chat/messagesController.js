@@ -32,7 +32,7 @@ export default class MessagesController {
         if (typeof message.id === 'string') {
             this.apolloClient.mutate({
                 mutation: UpdateLastMessageChat.mutation,
-                variables: { messageId: message.id, chatId }
+                variables: { messageId: message.id, chatId, modifiedAt: new Date() }
             })
         }
     }
