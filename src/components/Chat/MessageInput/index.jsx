@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {emojiIndex} from 'emoji-mart';
 import dynamic from 'next/dynamic';
+import IconButton from 'material-ui/IconButton';
 import Mood from 'material-ui/svg-icons/social/mood';
 import AddPhoto from 'material-ui/svg-icons/image/add-a-photo';
 import Location from 'material-ui/svg-icons/communication/location-on';
@@ -12,6 +13,7 @@ const EmojiPicker = dynamic(
     { ssr: false }
 );
 
+import {SpeechRecognition} from '../../../lib/speechRecognition';
 import {withCurrentUser} from '../../../lib/currentUserContext';
 import {Textarea} from '../../../styles/chatWindowInput';
 import {getClientSideId} from '../../../graphql/mutations';
@@ -38,8 +40,10 @@ export default class MessageInput extends React.Component {
 
     constructor(props) {
         super(props);
+        this.speechRecognition = new SpeechRecognition();
         this.state = {
             message: localStorage.getItem(this.storageKey) || '',
+            className: "microphone"
         };
     }
 
@@ -53,9 +57,13 @@ export default class MessageInput extends React.Component {
 
     handleChange = event => {
         const message = event.target.value;
+        this.setMessage(message);
+    };
+
+    setMessage = message => {
         this.setState({ message });
         localStorage.setItem(this.storageKey, message);
-    };
+    }
 
     toggleEmojiPicker = () => this.setState(
         prev => ({ emojiPickerVisible: !prev.emojiPickerVisible })
@@ -159,6 +167,10 @@ export default class MessageInput extends React.Component {
         );
 
 
+    setClassName = className => {
+        this.setState({className});
+    }
+
     render() {
         return (
             <Textarea>
@@ -173,7 +185,25 @@ export default class MessageInput extends React.Component {
                         value={this.state.message}
                     />
                     {!this.props.groupChat && <LifeTimeDropOutMenu setLifeTime={this.setLifeTime}/>}
-                    <Microphone className="icon"/>
+                    <IconButton 
+                        touch={true}
+                        disableTouchRipple
+                        className={this.state.className}
+                        disabled={!this.speechRecognition.Tooltip ? false: true }
+                        tooltip={this.speechRecognition.Tooltip}
+                        tooltipPosition="top-left"
+                        onMouseDown={() => {
+                            this.speechRecognition.start(this.setMessage);
+                            this.setClassName("pulse"); 
+                        }}
+                        onMouseUp={() => {
+                            this.speechRecognition.stop();
+                            this.setClassName("microphone");
+                        }} 
+                    >   
+                        <Microphone
+/>
+                    </IconButton>
                     <Mood className="icon" onClick={this.toggleEmojiPicker}/>
                 </div>
                 {this.state.uploadWindow &&
