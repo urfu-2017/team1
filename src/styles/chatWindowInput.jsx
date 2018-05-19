@@ -61,6 +61,7 @@ export const Textarea = withUiTheme(styled.div`
         padding: 16px 0 0 16px;
         box-sizing: border-box;
         display: inline-block;
+        color: ${props => props.uiTheme.isNightTheme ? '#fff' : '#000'};
         background: ${props => props.uiTheme.isNightTheme ? '#37474F' : '#fff'};
     }
 

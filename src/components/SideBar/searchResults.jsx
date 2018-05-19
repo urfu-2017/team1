@@ -13,8 +13,9 @@ import {SearchMessages} from '../../graphql/queries';
             variables: SearchMessages.variables(currentUserId, searchText),
             fetchPolicy: 'network-only'
         };
-        if (!forceRefetch)
+        if (!forceRefetch) {
             options.context = { debounceKey: 'searchMessages' };
+        }
         return options;
     },
     props: SearchMessages.map
@@ -30,33 +31,44 @@ export default class SearchResults extends React.PureComponent {
 
 
     getMatchPosition = (messageText, regexp) => {
-        return messageText && messageText.search(regexp);
+        if (typeof messageText !== 'string') {
+            return -1;
+        }
+        return messageText.search(regexp);
     };
 
     render() {
         const { loading, error, searchMessages, searchText } = this.props;
-        if (error) return <p>Error</p>;
+        if (error) {
+            return <p>Error</p>;
+        }
         const searchRegexp = new RegExp(searchText, 'i');
+        const messages = searchMessages
+            ? searchMessages
+                .map(message => [message, this.getMatchPosition(message.rawText, searchRegexp)])
+                .filter(([_, matchPosition]) => matchPosition >= 0)
+            : [];
 
         return (
             <List>
                 <Subheader>
                     {loading ? 'Поиск...' :
-                    searchMessages.length ? `Результаты поиска (${searchMessages.length}):` :
-                    'Ничего не найдено :('}
+                        messages.length ? `Результаты поиска (${messages.length}):` :
+                            'Ничего не найдено :('}
                 </Subheader>
-                {!loading && searchMessages.map((message, index) => (
-                    <SearchResultsStyles key={message.id}>
-                        <MessagePreview
-                            message={message}
-                            goToMessage={this.goToMessage}
-                            selected={this.state.selectedMessageId === message.id}
-                            searchText={searchText}
-                            matchPosition={this.getMatchPosition(message.rawText, searchRegexp)}/>
-                        {(index < searchMessages.length - 1) &&
-                        <Divider inset={true}/>}
-                    </SearchResultsStyles>
-                ))}
+                {!loading && messages
+                    .map(([message, matchPosition], index) => (
+                        <SearchResultsStyles key={message.id}>
+                            <MessagePreview
+                                message={message}
+                                goToMessage={this.goToMessage}
+                                selected={this.state.selectedMessageId === message.id}
+                                searchText={searchText}
+                                matchPosition={matchPosition}/>
+                            {(index < messages.length - 1) &&
+                            <Divider inset={true}/>}
+                        </SearchResultsStyles>
+                    ))}
             </List>
         );
     }
