@@ -65,7 +65,6 @@ export default class App extends React.Component {
         if (!currentUser.error && !currentUser.loading) {
             this.subscribe();
         }
-        console.log(this.state.savedIsNightTheme);
         const isNightTheme = currentUser.isNightTheme;
         return (
             <UiThemeProvider value={isNightTheme}>
