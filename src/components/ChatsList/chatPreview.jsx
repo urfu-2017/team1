@@ -17,7 +17,8 @@ export default class ChatPreview extends React.PureComponent {
     };
 
     static defaultProps = {
-        chat: {}
+        chat: {},
+        isHasUnreadMessage: false
     };
 
     onChatClickHandler = () => {

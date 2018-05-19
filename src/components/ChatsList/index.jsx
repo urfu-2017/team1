@@ -14,11 +14,13 @@ export default class ChatsList extends React.Component {
     static propTypes = {
         chatsFilter: PropTypes.func,
         localState: PropTypes.shape(),
+        isHasUnreadDisplay: PropTypes.bool,
         allLastMessageChatToUsers: PropTypes.arrayOf(PropTypes.shape())
     };
 
     static defaultProps = {
         chatsFilter: () => true,
+        isHasUnreadDisplay: false,
         allLastMessageChatToUsers: []
     };
 
@@ -41,7 +43,7 @@ export default class ChatsList extends React.Component {
     }
 
     render() {
-        const { chats, chatsFilter, onChatClick } = this.props;
+        const { chats, chatsFilter, onChatClick, isHasUnreadDisplay } = this.props;
 
         return (
             <List>
@@ -49,7 +51,7 @@ export default class ChatsList extends React.Component {
                     chats.filter(chatsFilter).map((chat, i) => (
                         <React.Fragment key={chat.id}>
                             <ChatPreview
-                                isHasUnreadMessage={this.isHasUnreadMessage(chat)}
+                                isHasUnreadMessage={isHasUnreadDisplay && this.isHasUnreadMessage(chat)}
                                 onChatClick={onChatClick}
                                 chat={chat}
                             />
