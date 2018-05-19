@@ -66,6 +66,8 @@ export default class App extends React.Component {
             this.subscribe();
         }
         const isNightTheme = currentUser.isNightTheme;
+        isNightTheme !== undefined && localStorage
+            .setItem('isNightTheme', JSON.stringify(isNightTheme));
         return (
             <UiThemeProvider value={isNightTheme}>
                 <MuiThemeProvider muiTheme={getMuiTheme(getTheme(isNightTheme))}>

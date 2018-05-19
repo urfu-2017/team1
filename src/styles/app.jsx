@@ -14,8 +14,8 @@ export const getTheme = isNightTheme => ({
         'max-height': '59px'
     },
     snackbar: {
-        backgroundColor: !isNightTheme ? '#5682a3' : '#37474F',
-        textColor: '#fff'
+        backgroundColor: isNightTheme ? '#aaa' : '#555',
+        textColor: isNightTheme ? '#333' : '#ccc'
     }
 });
 
