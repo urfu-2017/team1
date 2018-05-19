@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { withUiTheme } from '../lib/withUiTheme';
 
 export const MenuRoot = withUiTheme(styled.section`
-    width: 350px;
+    width: 35%;
     height: 100%;
     display: flex;
     flex-direction: column;
