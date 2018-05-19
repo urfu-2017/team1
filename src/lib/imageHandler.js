@@ -36,7 +36,7 @@ class ImageHandler {
         }
         const reader = new window.FileReader();
         this.readPictureFromInput(reader, () => {
-            this.setTextDownloadArea('Сохраните фотографию');
+            this.setTextDownloadArea('Ваше изображение прикреплено');
             const dataUrl = reader.result;
             this.setBackgroundImage(dataUrl);
         });
