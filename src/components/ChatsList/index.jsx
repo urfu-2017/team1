@@ -7,10 +7,13 @@ import {Divider, Subheader} from 'material-ui';
 import PropTypes from 'prop-types';
 
 import ChatPreview from './chatPreview';
+import withLocalState from '../../lib/withLocalState';
 
+@withLocalState
 export default class ChatsList extends React.Component {
     static propTypes = {
         chatsFilter: PropTypes.func,
+        localState: PropTypes.shape(),
         allLastMessageChatToUsers: PropTypes.arrayOf(PropTypes.shape())
     };
 
@@ -20,11 +23,11 @@ export default class ChatsList extends React.Component {
     };
 
     isHasUnreadMessage(chat) {
-        const { allLastMessageChatToUsers } = this.props;
+        const { allLastMessageChatToUsers, localState: { currentChatId } } = this.props;
         for (let rel of allLastMessageChatToUsers) {
             const { lastMessage } = chat;
             if (chat.id === rel.chatId) {
-                if (lastMessage) {
+                if (lastMessage && currentChatId !== chat.id) {
                     const lastMessageCreatedAt = moment(lastMessage.createdAt);
                     const relMessageCreateAt = moment(rel.message.createdAt);
                     return lastMessageCreatedAt > relMessageCreateAt;
