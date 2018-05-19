@@ -45,8 +45,8 @@ export const MenuRoot = withUiTheme(styled.section`
     .list__item {
         height: 58px !important;
         border: 2px solid ${props => props.uiTheme.isNightTheme ? '#424242' : 'lavender' } !important;
-        borderBottom: none !important;
-        borderLeft: none !important;
+        border-bottom: none !important;
+        border-left: none !important;
         display: flex !important;
         alignItems: center !important;
     }
@@ -63,5 +63,8 @@ export const MenuRoot = withUiTheme(styled.section`
         color: #000;
         margin: 0 auto;
         margin-bottom: 20px;
-    }    
+    }
+    .avatar {
+        object-fit: cover;
+    }
 `);

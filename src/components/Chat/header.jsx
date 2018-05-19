@@ -104,7 +104,8 @@ export default class ChatHeader extends React.Component {
                     </React.Fragment>
                 }
                 {!searchOpened && !editorOpened &&
-                    <Search onClick={toggleSearch} className="search__icon"/>}
+                    <Search onClick={toggleSearch} className="search__icon"/>
+                }
             </React.Fragment>)
     }
 

@@ -23,6 +23,7 @@ export const Editor = styled.article`
         width: 130px;
         margin: 20px 50px;
         border-radius: 50% 50%;
+        object-fit: cover;
     }
     .chat-editor {
         height: 130px;
@@ -72,5 +73,8 @@ export const AddButton = styled.input`
 export const UserList = styled.section`
     width: 80%;
     height: 400px;
+    .avatar {
+        object-fit: cover;
+    }
 `;
 

@@ -46,7 +46,9 @@ export const Header = withUiTheme(styled.section`
         right: 0;
         position: absolute;
         cursor: pointer !important;
-        margin: 0 10px 0;
+        padding: 10px;
+        width: 30px !important;
+        height: 30px !important;
         color: #fff !important;
     }
     .header__buttons {
@@ -57,11 +59,11 @@ export const Header = withUiTheme(styled.section`
     }
 `);
 
-export const ScrollButton = styled.div`
+export const ScrollButton = withUiTheme(styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white;
+    background-color: ${props => props.uiTheme.isNightTheme ? '#37474F' : '#fff' };
     padding: 0;
     margin-bottom: 10px;
     width: 30px;
@@ -84,7 +86,7 @@ export const ScrollButton = styled.div`
         font-weight: 900;
         font-size: 20px;
     }
-`;
+`);
 
 
 export const ReplyPreview = withUiTheme(styled.div`

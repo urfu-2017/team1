@@ -5,7 +5,7 @@ import Avatar from 'material-ui/Avatar';
 import stripHtml from '../../lib/stripHtml';
 import {withCurrentUser} from '../../lib/currentUserContext';
 import formatDate from '../../lib/formatDate';
-import {getListItemStyle} from '../../styles/chat';
+import {getListItemStyle, AvatarStyle} from '../../styles/chat';
 import {withUiTheme} from '../../lib/withUiTheme';
 
 
@@ -77,7 +77,7 @@ export default class MessagePreview extends React.PureComponent {
         return (
             <React.Fragment>
                 <ListItem
-                    leftAvatar={<Avatar src={chat.picture}/>}
+                    leftAvatar={<Avatar style={AvatarStyle} src={chat.picture}/>}
                     primaryText={primaryText}
                     secondaryText={secondaryText}
                     secondaryTextLines={1}
