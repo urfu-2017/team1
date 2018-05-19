@@ -110,6 +110,8 @@ export default class Menu extends React.Component {
                             onClick={() => {
                                 toggleParanja();
                                 updateUserIsNightTheme();
+                                localStorage
+                                    .setItem('isNightTheme', JSON.stringify(!currentUser.isNightTheme));
                             }} />
                 }</Mutation>
             </MenuRoot>

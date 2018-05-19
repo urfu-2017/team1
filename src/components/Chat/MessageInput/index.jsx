@@ -104,7 +104,7 @@ export default class MessageInput extends React.Component {
 
         return {
             clientSideId: getClientSideId(),
-            text: message,
+            text: message.trim(),
             chatId: currentChatId,
             senderId: currentUserId,
             pictures: null,
@@ -152,7 +152,7 @@ export default class MessageInput extends React.Component {
                 const message = this.message;
                 message.map = {
                     lat,
-                    lon,                    
+                    lon,
                     center: [lat.toFixed(2), lon.toFixed(2)],
                     zoom: 10
                 };
@@ -185,22 +185,22 @@ export default class MessageInput extends React.Component {
                         value={this.state.message}
                     />
                     {!this.props.groupChat && <LifeTimeDropOutMenu setLifeTime={this.setLifeTime}/>}
-                    <IconButton 
+                    <IconButton
                         touch={true}
                         disableTouchRipple
                         className={this.state.className}
-                        disabled={!this.speechRecognition.Tooltip ? false: true }
+                        disabled={!this.speechRecognition.Tooltip ? false : true}
                         tooltip={this.speechRecognition.Tooltip}
                         tooltipPosition="top-left"
                         onMouseDown={() => {
                             this.speechRecognition.start(this.setMessage);
-                            this.setClassName("pulse"); 
+                            this.setClassName("pulse");
                         }}
                         onMouseUp={() => {
                             this.speechRecognition.stop();
                             this.setClassName("microphone");
-                        }} 
-                    >   
+                        }}
+                    >
                         <Microphone
 />
                     </IconButton>

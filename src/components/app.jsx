@@ -36,9 +36,12 @@ export default class App extends React.Component {
             mainComponentName: 'Chat',
             mainComponentProps: null,
             currentChatId: '',
-            isNightTheme: false,
-            toggleUiTheme: this.toggleUiTheme
+            savedIsNightTheme: false
         };
+    }
+
+    componentDidMount() {
+        this.setState({ savedIsNightTheme: JSON.parse(localStorage.getItem('isNightTheme')) });
     }
 
     components = {
@@ -55,37 +58,28 @@ export default class App extends React.Component {
         }
     };
 
-    toggleUiTheme = () => {
-        const { userId, currentUser, updateUserIsNightTheme } = this.props;
-
-        currentUser.isNightTheme = !currentUser.isNightTheme;
-        updateUserIsNightTheme({
-            userId,
-            isNightTheme: !currentUser.isNightTheme
-        });
-    };
-
     render() {
         // Динамически выбираем, какой компонент будет отображён в основном окне
         const MainComponent = this.components[this.state.mainComponentName];
         const { currentUser } = this.props;
-        !currentUser.error && !currentUser.loading && this.subscribe();
-        const isNightTheme = currentUser.isNightTheme || false;
+        if (!currentUser.error && !currentUser.loading) {
+            this.subscribe();
+        }
+        console.log(this.state.savedIsNightTheme);
+        const isNightTheme = currentUser.isNightTheme;
         return (
             <UiThemeProvider value={isNightTheme}>
                 <MuiThemeProvider muiTheme={getMuiTheme(getTheme(isNightTheme))}>
                     <Wrapper>
                         {currentUser.error && <p>Error</p> ||
-                        currentUser.loading && App.LoadScreen ||
+                        currentUser.loading && <App.LoadScreen isNightTheme={this.state.savedIsNightTheme}/> ||
                         (
                             <CurrentUserProvider value={currentUser}>
-                                <SideBar mainComponentChanger={this.changeMainComponent}
-                                />
+                                <SideBar mainComponentChanger={this.changeMainComponent}/>
                                 <MainComponent {...this.state.mainComponentProps}
                                                mainComponentChanger={this.changeMainComponent}/>
                             </CurrentUserProvider>
-                        )
-                        }
+                        )}
                     </Wrapper>
                 </MuiThemeProvider>
             </UiThemeProvider>
@@ -121,5 +115,12 @@ export default class App extends React.Component {
         // }
     };
 
-    static LoadScreen = <LoadScreen/>;
+    static LoadScreen = ({ isNightTheme }) => (
+        <div style={{
+            position: 'absolute', top: 0, bottom: 0, left: 0, right: 0,
+            background: isNightTheme ? '#212121' : '#fff'
+        }}>
+            <LoadScreen/>
+        </div>
+    );
 }
