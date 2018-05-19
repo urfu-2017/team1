@@ -49,7 +49,8 @@ export default class Messages extends React.Component {
     state = {
         citedMessage: null,
         selectedMessages: new Map(),
-        selectedMessagesDummy: ''
+        selectedMessagesDummy: '',
+        isBottom: true
     };
 
     // действие "ответить на сообщение" называет данное сообщение "цитируемым"
@@ -76,7 +77,7 @@ export default class Messages extends React.Component {
         if (window.location.hash) {
             this.scrollToMessage();
         } else {
-            this.scroll.isBottom = true;
+            this.state.isBottom = true;
             this.scroll.scrollToBottom();
         }
     }
@@ -84,7 +85,7 @@ export default class Messages extends React.Component {
     componentDidUpdate() {
         if (window.location.hash) {
             this.scrollToMessage();
-        } else if (this.scroll.isBottom) {
+        } else if (this.state.isBottom) {
             this.scroll.scrollToBottom();
         }
     }
@@ -106,8 +107,9 @@ export default class Messages extends React.Component {
     bindedScrollToMessage = this.scrollToMessage.bind(this);
 
     changePositionScroll = () => {
-        this.scroll.isBottom =
-            (this.scroll.getScrollHeight() === this.scroll.getScrollTop() + this.scroll.getClientHeight());
+        this.setState({
+            isBottom: this.scroll.getScrollHeight() === this.scroll.getScrollTop() + this.scroll.getClientHeight()
+        });
     };
 
     // Не создаём новую функцию при каждом рендере
@@ -175,11 +177,13 @@ export default class Messages extends React.Component {
         } else {
             content = (
                 <React.Fragment>
-                    <ScrollButton
-                        type="button"
-                        className="scroll"
-                        onClick={() => this.scroll.scrollToBottom()}
-                    />
+                    {!this.state.isBottom &&
+                        <ScrollButton
+                            type="button"
+                            className="scroll"
+                            onClick={this.scroll.scrollToBottom}
+                        />
+                    }
                     {this.getMessages(messages)}
                 </React.Fragment>
             );
