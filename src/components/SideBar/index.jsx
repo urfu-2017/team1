@@ -115,6 +115,7 @@ export default class SideBar extends React.Component {
                             chats={currentUser.chats}
                             onChatClick={this.selectChat}
                             isHasUnreadDisplay={true}
+                            isUnreadLoading={allLastMessageChatToUsers.loading}
                             allLastMessageChatToUsers={allLastMessageChatToUsers.data.allLastMessageChatToUsers}
                         />}
                     </Scrollbars>
