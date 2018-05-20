@@ -3,6 +3,7 @@ import { withUiTheme } from '../lib/withUiTheme';
 
 
 export const Editor = withUiTheme(styled.article`
+    z-index: 7000;
     width: 100%;
     height: 100%;
     top: 0
