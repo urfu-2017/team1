@@ -44,7 +44,8 @@ export default class MessagesController {
             this.isUpdateLastMessageChatUpdateInProgress = true;
             const data = await this.apolloClient.query({
                 query: GetLastMessageChatToUser.query(userId, chatId),
-                variables: { userId, chatId }
+                variables: { userId, chatId },
+                fetchPolicy: 'network-only'
             });
             const lastMessageChatToUser = GetLastMessageChatToUser.map(data).allLastMessageChatToUsers[0];
             let mutationVariables = { userId, chatId, messageId: message.id };
