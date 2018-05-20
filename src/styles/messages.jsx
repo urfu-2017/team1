@@ -60,7 +60,7 @@ export const Header = withUiTheme(styled.section`
 `);
 
 export const ScrollButton = withUiTheme(styled.div`
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     background-color: ${props => props.uiTheme.isNightTheme ? '#37474F' : '#fff' };
