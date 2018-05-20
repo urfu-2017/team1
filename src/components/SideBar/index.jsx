@@ -14,7 +14,6 @@ import Clear from 'material-ui/svg-icons/content/clear';
 import SearchResults from './searchResults';
 
 
-
 @withCurrentUser
 @withLastMessageChatToUser
 @withLocalState
