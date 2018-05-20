@@ -167,6 +167,11 @@ subscription SubscribeToAllLastMessage($filter: LastMessageChatToUserSubscriptio
       id
       chatId
       userId
+      message {
+        id
+        text
+        createdAt
+      }
     }
   }
 }`;
