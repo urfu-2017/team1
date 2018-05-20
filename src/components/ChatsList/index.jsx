@@ -39,7 +39,7 @@ export default class ChatsList extends React.Component {
             }
         }
         const isHasLastMessage = Boolean(lastMessage)
-        return isHasLastMessage;
+        return isHasLastMessage && currentChatId !== chat.id;
     }
 
     render() {

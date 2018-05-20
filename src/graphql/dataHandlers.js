@@ -85,6 +85,13 @@ export const chatSubscriptionDataHandler = client => (previousResult, { subscrip
 };
 
 
+export const allMessagesChatSubscriptionDataHandler = (previousResult, { subscriptionData, variables }) => {
+    const { data: { LastMessageChatToUser: { node } } } = subscriptionData;
+    const allLastMessageChatToUsers = [...previousResult.allLastMessageChatToUsers, node];
+    return {...previousResult, allLastMessageChatToUsers };
+};
+
+
 // преобразует объект чата к пригодному для отображения виду
 export const processChat = (currentUserId, chat) => {
     if (chat.groupchat) {

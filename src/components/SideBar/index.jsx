@@ -12,7 +12,8 @@ import { withLastMessageChatToUser } from '../../lib/withLastMessageChatToUser';
 import {IconButton, TextField} from 'material-ui';
 import Clear from 'material-ui/svg-icons/content/clear';
 import SearchResults from './searchResults';
-
+import { allMessagesChatSubscriptionDataHandler } from '../../graphql/dataHandlers';
+import { SubscribeToAllLastMessages } from '../../graphql/subscriptions';
 
 
 @withCurrentUser
@@ -21,7 +22,7 @@ import SearchResults from './searchResults';
 export default class SideBar extends React.Component {
     static propTypes = {
         currentUser: PropTypes.object,
-        allLastMessageChatToUsers: PropTypes.arrayOf(PropTypes.shape()),
+        allLastMessageChatToUsers: PropTypes.shape(),
         mainComponentChanger: PropTypes.func
     };
 
@@ -32,6 +33,10 @@ export default class SideBar extends React.Component {
         searchText: '',
         forceSearchRefetch: false
     };
+
+    componentDidUpdate() {
+        this.subscribe();
+    }
 
     setSearchText = (text = '') => this.setState({ searchText: text });
 
@@ -110,11 +115,24 @@ export default class SideBar extends React.Component {
                             chats={currentUser.chats}
                             onChatClick={this.selectChat}
                             isHasUnreadDisplay={true}
-                            allLastMessageChatToUsers={allLastMessageChatToUsers}
+                            allLastMessageChatToUsers={allLastMessageChatToUsers.data.allLastMessageChatToUsers}
                         />}
                     </Scrollbars>
                 </ChatsListStyle>
             </React.Fragment>
         );
+    }
+
+    allLastMessageChatToUsersSubscription = null;
+
+    subscribe = () => {
+        const { currentUser } = this.props;
+        if(!this.allLastMessageChatToUsersSubscription) {
+            this.allLastMessageChatToUsersSubscription = this.props.allLastMessageChatToUsers.subscribeToMore({
+                document: SubscribeToAllLastMessages.subscription,
+                variables: SubscribeToAllLastMessages.vars(currentUser.id),
+                updateQuery: allMessagesChatSubscriptionDataHandler
+            });
+        }
     }
 }

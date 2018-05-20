@@ -8,10 +8,7 @@ export const withLastMessageChatToUser = Decorated => {
     return (props) => {
         const { currentUser } = props;
         return <Query query={GetUserLastMessageChatToUser.query(currentUser.id)} fetchPolicy='network-only'>
-            {response => {
-                const { allLastMessageChatToUsers } = GetUserLastMessageChatToUser.map(response);
-                return <Decorated {...props} allLastMessageChatToUsers={allLastMessageChatToUsers} />
-            }}
+            {response => <Decorated {...props} allLastMessageChatToUsers={response} />}
         </Query>;
     }
 }

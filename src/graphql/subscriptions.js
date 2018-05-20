@@ -158,3 +158,23 @@ export const SubscribeToUserChats = mapper(SUBSCRIBE_TO_CHAT_ql,
         }
     })
 );
+
+const SUBSCRIBE_TO_ALL_LAST_MESSAGES_ql = gql`
+subscription SubscribeToAllLastMessage($filter: LastMessageChatToUserSubscriptionFilter!) {
+  LastMessageChatToUser(filter: $filter) {
+    mutation
+    node {
+      id
+      chatId
+      userId
+    }
+  }
+}`;
+
+export const SubscribeToAllLastMessages = mapper(SUBSCRIBE_TO_ALL_LAST_MESSAGES_ql,
+    userId => ({
+        node: {
+            userId: userId
+        }
+    })
+);
