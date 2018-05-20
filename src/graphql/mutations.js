@@ -124,6 +124,8 @@ const createChat_optimistic = (currentUser, contact) => {
         picture: contact.avatarUrl,
         createdAt: (new Date()).toISOString(),
         groupchat: false,
+        lastMessage: null,
+        lastMessageReceivedAt: null,
         members: [currentUser, contact].map(
             ({ id, name, avatarUrl }) => ({ id, name, avatarUrl, __typename: 'User' })),
         __typename: 'Chat'
@@ -205,7 +207,7 @@ mutation UpdateLastMessageChatToUser($id: ID!, $messageId: ID!) {
 
 export const CreateChatAndUserLink = mapper(CREATE_CHAT_AND_USER_LINK_MUTATION, 'createLastMessageChatToUser');
 export const UpdateChatAndUserLink = mapper(
-  UPDATE_CHAT_AND_USER_LINK_MUTATION, 
+  UPDATE_CHAT_AND_USER_LINK_MUTATION,
   'updateLastMessageChatToUser'
 );
 
