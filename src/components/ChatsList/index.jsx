@@ -8,14 +8,11 @@ import PropTypes from 'prop-types';
 
 import ChatPreview from './chatPreview';
 import withLocalState from '../../lib/withLocalState';
-import { withCurrentUser } from '../../lib/currentUserContext';
 
-@withCurrentUser
 @withLocalState
 export default class ChatsList extends React.Component {
     static propTypes = {
         chatsFilter: PropTypes.func,
-        currentUser: PropTypes.shape(),
         localState: PropTypes.shape(),
         isHasUnreadDisplay: PropTypes.bool,
         allLastMessageChatToUsers: PropTypes.arrayOf(PropTypes.shape())
@@ -28,13 +25,11 @@ export default class ChatsList extends React.Component {
     };
 
     isHasUnreadMessage(chat) {
-        const { allLastMessageChatToUsers, localState: { currentChatId }, currentUser } = this.props;
+        const { allLastMessageChatToUsers, localState: { currentChatId } } = this.props;
         const { lastMessage } = chat;
-        const isCurrentChat = currentChatId === chat.id;
-        const isHasLastMessage = Boolean(lastMessage)
         for (let rel of allLastMessageChatToUsers) {
             if (chat.id === rel.chatId) {
-                if (!isCurrentChat && isHasLastMessage) {
+                if (lastMessage && currentChatId !== chat.id) {
                     const lastMessageCreatedAt = moment(lastMessage.createdAt);
                     const relMessageCreateAt = moment(rel.message.createdAt);
                     return lastMessageCreatedAt > relMessageCreateAt;
@@ -43,7 +38,8 @@ export default class ChatsList extends React.Component {
                 }
             }
         }
-        return !isCurrentChat && isHasLastMessage && lastMessage.sender.id !== currentUser.id;
+        const isHasLastMessage = Boolean(lastMessage)
+        return isHasLastMessage;
     }
 
     render() {
