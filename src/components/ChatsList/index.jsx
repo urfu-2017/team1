@@ -47,7 +47,7 @@ export default class ChatsList extends React.Component {
 
         return (
             <List>
-                {chats.length ?
+                {chats && chats.length ?
                     chats.filter(chatsFilter).map((chat, i) => (
                         <React.Fragment key={chat.id}>
                             <ChatPreview
