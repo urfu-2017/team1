@@ -6,6 +6,6 @@ initialState.localState.serverUrl = process.env.URL;
 
 
 module.exports = (req, res, next) => {
-    req.state = { ...initialState };
+    req.state = JSON.parse(JSON.stringify(initialState));
     next();
 };
